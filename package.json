@@ -1,0 +1,43 @@
+{
+  "name": "@leofcoin/peernet",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "discovery-swarm-webrtc --port=4000",
+    "demo": "jsproject --serve ./ --port 6868",
+    "c": "rollup -c",
+    "w": "rollup -c -w",
+    "b": "browserify client.js -o browser.js --standalone Peernet"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@geut/discovery-swarm-webrtc": "^4.0.1",
+    "@leofcoin/multi-wallet": "^2.0.0",
+    "@leofcoin/storage": "^2.0.3",
+    "bs32": "^0.1.6",
+    "bs58": "^4.0.1",
+    "bs58check": "^2.1.2",
+    "crypto-js": "^4.0.0",
+    "is-hex": "^1.1.3",
+    "keccak": "^3.0.1",
+    "koa": "^2.13.0",
+    "node-fetch": "^2.6.1",
+    "protons": "^2.0.0",
+    "qr-scanner": "^1.2.0",
+    "qrcode": "^1.4.4",
+    "socket-request-client": "^1.5.0",
+    "socket-request-server": "^1.5.0",
+    "varint": "^6.0.0",
+    "wrtc": "^0.4.6"
+  },
+  "devDependencies": {
+    "@rollup/plugin-json": "^4.1.0",
+    "browserify": "^16.5.2",
+    "rollup": "^2.33.1",
+    "tape": "^5.0.1"
+  }
+}
