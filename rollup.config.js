@@ -4,8 +4,26 @@ import json from '@rollup/plugin-json'
 export default [{
 	input: 'src/peernet.js',
 	output: {
-		file: 'client.js',
+		file: 'dist/commonjs/peernet.js',
 		format: 'cjs'
+	},
+	plugins: [
+		json()
+	]
+}, {
+	input: 'src/peernet.js',
+	output: {
+		file: 'browser.js',
+		format: 'cjs'
+	},
+	plugins: [
+		json()
+	]
+}, {
+	input: 'src/peernet.js',
+	output: {
+		file: 'dist/module/peernet.js',
+		format: 'es'
 	},
 	plugins: [
 		json()

@@ -1,4 +1,4 @@
-const Client = require('./client.js')
+const Client = require('./dist/commonjs/peernet.js')
 const PeernetMessage = require('./dist/messages/peernet.js');
 const DHTMessage = require('./dist/messages/dht.js');
 

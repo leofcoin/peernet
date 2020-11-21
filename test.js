@@ -1,4 +1,4 @@
-const Client = require('./client.js')
+const Client = require('./dist/commonjs/peernet.js')
 
 const client = new Client({id: Buffer.from('testtesttesttesttesttesttesttest')})
 
