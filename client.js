@@ -7,10 +7,6 @@ var PubSub = require('@vandeurenglenn/little-pubsub');
 var sha256 = require('crypto-js/sha256');
 var bs32 = require('bs32');
 var MultiWallet = require('@leofcoin/multi-wallet');
-var AES = require('crypto-js/aes.js');
-var ENC = require('crypto-js/enc-utf8.js');
-var QRCode = require('qrcode');
-var path = require('path');
 var fetch$1 = require('node-fetch');
 var websocket = require('websocket');
 var http$1 = require('http');
@@ -29,9 +25,6 @@ var PubSub__default = /*#__PURE__*/_interopDefaultLegacy(PubSub);
 var sha256__default = /*#__PURE__*/_interopDefaultLegacy(sha256);
 var bs32__default = /*#__PURE__*/_interopDefaultLegacy(bs32);
 var MultiWallet__default = /*#__PURE__*/_interopDefaultLegacy(MultiWallet);
-var AES__default = /*#__PURE__*/_interopDefaultLegacy(AES);
-var ENC__default = /*#__PURE__*/_interopDefaultLegacy(ENC);
-var QRCode__default = /*#__PURE__*/_interopDefaultLegacy(QRCode);
 var fetch__default = /*#__PURE__*/_interopDefaultLegacy(fetch$1);
 var Koa__default = /*#__PURE__*/_interopDefaultLegacy(Koa);
 var protons__default = /*#__PURE__*/_interopDefaultLegacy(protons);
@@ -289,165 +282,6 @@ class LeofcoinStorage$1 {
         
     if (isNaN(data)) return data.toString()
     return data
-  }
-
-}
-
-const DEFAULT_QR_OPTIONS = {
-  scale: 5,
-  margin: 0,
-  errorCorrectionLevel: 'M',
-  rendererOpts: {
-    quality: 1
-  }
-};
-
-const expected = (expected, actual) => {
-  const entries = Object.entries(actual)
-    .map(entry => entry.join(!entry[1] ? `: undefined - ${entry[1]} ` : `: ${typeof entry[1]} - `));
-
-  return `\nExpected:\n\t${expected.join('\n\t')}\n\nactual:\n\t${entries.join('\n\t')}`;
-};
-
-const debug = log => {
-  if (globalThis.DEBUG) console.log(`%c ${log}`, 'color: #0080ff;');
-};
-
-class e{static hasCamera(){return navigator.mediaDevices?navigator.mediaDevices.enumerateDevices().then(a=>a.some(a=>"videoinput"===a.kind)).catch(()=>!1):Promise.resolve(!1)}constructor(a,b,c=this._onDecodeError.bind(this),d=e.DEFAULT_CANVAS_SIZE,f="environment"){this.$video=a;this.$canvas=document.createElement("canvas");this._onDecode=b;this._preferredFacingMode=f;this._flashOn=this._paused=this._active=!1;"number"===typeof c?(d=c,console.warn("You're using a deprecated version of the QrScanner constructor which will be removed in the future")):
-this._onDecodeError=c;this.$canvas.width=d;this.$canvas.height=d;this._sourceRect={x:0,y:0,width:d,height:d};this._updateSourceRect=this._updateSourceRect.bind(this);this._onPlay=this._onPlay.bind(this);this._onVisibilityChange=this._onVisibilityChange.bind(this);this.$video.playsInline=!0;this.$video.muted=!0;this.$video.disablePictureInPicture=!0;this.$video.addEventListener("loadedmetadata",this._updateSourceRect);this.$video.addEventListener("play",this._onPlay);document.addEventListener("visibilitychange",
-this._onVisibilityChange);this._qrEnginePromise=e.createQrEngine();}hasFlash(){if(!("ImageCapture"in window))return Promise.resolve(!1);let a=this.$video.srcObject?this.$video.srcObject.getVideoTracks()[0]:null;return a?(new ImageCapture(a)).getPhotoCapabilities().then(a=>a.fillLightMode.includes("flash")).catch(a=>{console.warn(a);return !1}):Promise.reject("Camera not started or not available")}isFlashOn(){return this._flashOn}toggleFlash(){return this._setFlash(!this._flashOn)}turnFlashOff(){return this._setFlash(!1)}turnFlashOn(){return this._setFlash(!0)}destroy(){this.$video.removeEventListener("loadedmetadata",
-this._updateSourceRect);this.$video.removeEventListener("play",this._onPlay);document.removeEventListener("visibilitychange",this._onVisibilityChange);this.stop();e._postWorkerMessage(this._qrEnginePromise,"close");}start(){if(this._active&&!this._paused)return Promise.resolve();"https:"!==window.location.protocol&&console.warn("The camera stream is only accessible if the page is transferred via https.");this._active=!0;this._paused=!1;if(document.hidden)return Promise.resolve();clearTimeout(this._offTimeout);
-this._offTimeout=null;if(this.$video.srcObject)return this.$video.play(),Promise.resolve();let a=this._preferredFacingMode;return this._getCameraStream(a,!0).catch(()=>{a="environment"===a?"user":"environment";return this._getCameraStream()}).then(b=>{a=this._getFacingMode(b)||a;this.$video.srcObject=b;this.$video.play();this._setVideoMirror(a);}).catch(a=>{this._active=!1;throw a;})}stop(){this.pause();this._active=!1;}pause(){this._paused=!0;this._active&&(this.$video.pause(),this._offTimeout||(this._offTimeout=
-setTimeout(()=>{let a=this.$video.srcObject?this.$video.srcObject.getTracks():[];for(let b of a)b.stop();this._offTimeout=this.$video.srcObject=null;},300)));}static scanImage(a,b=null,c=null,d=null,f=!1,k=!1){let g=c instanceof Worker,h=Promise.all([c||e.createQrEngine(),e._loadImage(a)]).then(([a,h])=>{c=a;let k;[d,k]=this._drawToCanvas(h,b,d,f);return c instanceof Worker?(g||c.postMessage({type:"inversionMode",data:"both"}),new Promise((a,b)=>{let f,l,g;l=d=>{"qrResult"===d.data.type&&(c.removeEventListener("message",
-l),c.removeEventListener("error",g),clearTimeout(f),null!==d.data.data?a(d.data.data):b(e.NO_QR_CODE_FOUND));};g=a=>{c.removeEventListener("message",l);c.removeEventListener("error",g);clearTimeout(f);b("Scanner error: "+(a?a.message||a:"Unknown Error"));};c.addEventListener("message",l);c.addEventListener("error",g);f=setTimeout(()=>g("timeout"),1E4);let h=k.getImageData(0,0,d.width,d.height);c.postMessage({type:"decode",data:h},[h.data.buffer]);})):new Promise((a,b)=>{let f=setTimeout(()=>b("Scanner error: timeout"),
-1E4);c.detect(d).then(c=>{c.length?a(c[0].rawValue):b(e.NO_QR_CODE_FOUND);}).catch(a=>b("Scanner error: "+(a.message||a))).finally(()=>clearTimeout(f));})});b&&k&&(h=h.catch(()=>e.scanImage(a,null,c,d,f)));return h=h.finally(()=>{g||e._postWorkerMessage(c,"close");})}setGrayscaleWeights(a,b,c,d=!0){e._postWorkerMessage(this._qrEnginePromise,"grayscaleWeights",{red:a,green:b,blue:c,useIntegerApproximation:d});}setInversionMode(a){e._postWorkerMessage(this._qrEnginePromise,"inversionMode",a);}static createQrEngine(a=
-e.WORKER_PATH){return ("BarcodeDetector"in window?BarcodeDetector.getSupportedFormats():Promise.resolve([])).then(b=>-1!==b.indexOf("qr_code")?new BarcodeDetector({formats:["qr_code"]}):new Worker(a))}_onPlay(){this._updateSourceRect();this._scanFrame();}_onVisibilityChange(){document.hidden?this.pause():this._active&&this.start();}_updateSourceRect(){let a=Math.round(2/3*Math.min(this.$video.videoWidth,this.$video.videoHeight));this._sourceRect.width=this._sourceRect.height=a;this._sourceRect.x=(this.$video.videoWidth-
-a)/2;this._sourceRect.y=(this.$video.videoHeight-a)/2;}_scanFrame(){if(!this._active||this.$video.paused||this.$video.ended)return !1;requestAnimationFrame(()=>{1>=this.$video.readyState?this._scanFrame():this._qrEnginePromise.then(a=>e.scanImage(this.$video,this._sourceRect,a,this.$canvas,!0)).then(this._onDecode,a=>{this._active&&(-1!==(a.message||a).indexOf("service unavailable")&&(this._qrEnginePromise=e.createQrEngine()),this._onDecodeError(a));}).then(()=>this._scanFrame());});}_onDecodeError(a){a!==
-e.NO_QR_CODE_FOUND&&console.log(a);}_getCameraStream(a,b=!1){let c=[{width:{min:1024}},{width:{min:768}},{}];a&&(b&&(a={exact:a}),c.forEach(b=>b.facingMode=a));return this._getMatchingCameraStream(c)}_getMatchingCameraStream(a){return navigator.mediaDevices&&0!==a.length?navigator.mediaDevices.getUserMedia({video:a.shift()}).catch(()=>this._getMatchingCameraStream(a)):Promise.reject("Camera not found.")}_setFlash(a){return this.hasFlash().then(b=>b?this.$video.srcObject.getVideoTracks()[0].applyConstraints({advanced:[{torch:a}]}):
-Promise.reject("No flash available")).then(()=>this._flashOn=a)}_setVideoMirror(a){this.$video.style.transform="scaleX("+("user"===a?-1:1)+")";}_getFacingMode(a){return (a=a.getVideoTracks()[0])?/rear|back|environment/i.test(a.label)?"environment":/front|user|face/i.test(a.label)?"user":null:null}static _drawToCanvas(a,b=null,c=null,d=!1){c=c||document.createElement("canvas");let f=b&&b.x?b.x:0,k=b&&b.y?b.y:0,g=b&&b.width?b.width:a.width||a.videoWidth;b=b&&b.height?b.height:a.height||a.videoHeight;
-d||c.width===g&&c.height===b||(c.width=g,c.height=b);d=c.getContext("2d",{alpha:!1});d.imageSmoothingEnabled=!1;d.drawImage(a,f,k,g,b,0,0,c.width,c.height);return [c,d]}static _loadImage(a){if(a instanceof HTMLCanvasElement||a instanceof HTMLVideoElement||window.ImageBitmap&&a instanceof window.ImageBitmap||window.OffscreenCanvas&&a instanceof window.OffscreenCanvas)return Promise.resolve(a);if(a instanceof Image)return e._awaitImageLoad(a).then(()=>a);if(a instanceof File||a instanceof Blob||a instanceof
-URL||"string"===typeof a){let b=new Image;b.src=a instanceof File||a instanceof Blob?URL.createObjectURL(a):a;return e._awaitImageLoad(b).then(()=>{(a instanceof File||a instanceof Blob)&&URL.revokeObjectURL(b.src);return b})}return Promise.reject("Unsupported image type.")}static _awaitImageLoad(a){return new Promise((b,c)=>{if(a.complete&&0!==a.naturalWidth)b();else {let d,f;d=()=>{a.removeEventListener("load",d);a.removeEventListener("error",f);b();};f=()=>{a.removeEventListener("load",d);a.removeEventListener("error",
-f);c("Image load error");};a.addEventListener("load",d);a.addEventListener("error",f);}})}static _postWorkerMessage(a,b,c){return Promise.resolve(a).then(a=>{a instanceof Worker&&a.postMessage({type:b,data:c});})}}e.DEFAULT_CANVAS_SIZE=400;e.NO_QR_CODE_FOUND="No QR code found";e.WORKER_PATH="qr-scanner-worker.min.js";
-
-e.WORKER_PATH = path.join(__dirname, 'qr-scanner-worker.js');
-
-class LFCAccount {
-  constructor(network) {
-    this.network = network;
-  }
-  
-  async generateQR(input, options = {}) {
-    options = { ...DEFAULT_QR_OPTIONS, ...options };
-  
-    
-    return QRCode__default['default'].toDataURL(input, options);
-  }
-  
-  async generateProfileQR(profile = {}, options = {}) {
-    if (!profile || !profile.mnemonic) throw expected(['mnemonic: String'], profile)
-    profile = JSON.stringify(profile);
-    return this.generateQR(profile, options);
-  }
-  //
-  
-  /**
-   * @return {object} { identity, accounts, config }
-   */
-  async generateProfile() {
-    const wallet = new MultiWallet__default['default'](this.network);
-    /**
-     * @type {string}
-     */
-    const mnemonic = await wallet.generate();
-    /**
-     * @type {object}
-     */
-    const account = wallet.account(0);
-    /**
-     * @type {object}
-     */
-    const external = account.external(0);
-    const internal = account.internal(0);
-    
-    return {
-      identity: {
-        mnemonic,
-        multiWIF: wallet.export(),
-        publicKey: external.publicKey,
-        privateKey: external.privateKey,
-        walletId: external.id
-      },
-      accounts: [['main account', external.address, internal.address]],
-      config: {
-        miner: {
-          intensity: 1,
-          address: external.address,
-          donationAddress: undefined,
-          donationAmount: 1 //percent
-        }
-       }
-    }
-  }
-  
-  
-  async importAccount(identity, password, qr = false) {
-    if (qr) {
-      identity = await e.scanImage(identity);
-      console.log({identity});
-      identity = AES__default['default'].decrypt(identity, password);
-      console.log(identity.toString());
-      identity = JSON.parse(identity.toString(ENC__default['default']));
-      if (identity.mnemonic) {
-        const wallet = new MultiWallet__default['default'](this.network);
-        await wallet.recover(identity.mnemonic);
-        const account = wallet.account(0);
-        const external = account.external(0);
-        identity = {
-          mnemonic: identity.mnemonic,
-          publicKey: external.publicKey,
-          privateKey: external.privateKey,
-          walletId: external.id
-        };
-        let config = await configStore.get();
-        config = { ...config, ...{ identity } };
-        await configStore.put(config);
-      }    
-      return identity
-      
-      // return await this.generateQR(decrypted)
-    }
-    if (!identity) throw new Error('expected identity to be defined')
-    if (identity.mnemonic) {
-      const wallet = new MultiWallet__default['default'](this.network);
-      wallet.recover(identity.mnemonic);
-      const account = wallet.account(0);
-      const external = account.external(0);
-      identity = {
-        mnemonic: identity.mnemonic,
-        publicKey: external.publicKey,
-        privateKey: external.privateKey,
-        walletId: external.id
-      };
-    }
-    let config = await configStore.get();
-    config = { ...config, ...{ identity } };
-    await configStore.put(config);
-    
-    return identity
-  }
-  
-  async exportAccount(password, qr = false) {
-    if (!password) throw expected(['password: String'], password)
-    
-    const identity = await walletStore.get('identity');
-    const account = await accountStore.get('public');
-    
-    if (!identity.mnemonic) throw expected(['mnemonic: String'], identity)
-    
-    const encrypted = AES__default['default'].encrypt(JSON.stringify({ ...identity, ...account }), password).toString();
-    if (!qr) return encrypted
-    
-    return await this.generateQR(encrypted)
   }
 
 }
@@ -1637,7 +1471,6 @@ const distanceInKmBetweenEarthCoordinates = (lat1, lon1, lat2, lon2) => {
 
   lat1 = degreesToRadians(lat1);
   lat2 = degreesToRadians(lat2);
-console.log(lat1, lat2);
   var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
           Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
@@ -1688,7 +1521,6 @@ class DhtEarth {
     all = await Promise.all(all);
     
     const closestPeer = all.reduce((p, c) => {
-      console.log(c);
       if (c.distance === NaN) c.distance = 0;
       if (c.distance < p || p === 0) return c.provider;
     }, 0);
@@ -1707,7 +1539,6 @@ class DhtEarth {
    * 
    */  
   async addProvider(address, hash) {
-    console.log({address, hash});
     let providers = [];
     if (this.providerMap.has(hash)) providers = this.providerMap.get(hash);
       
@@ -1718,6 +1549,10 @@ class DhtEarth {
   
   
 }
+
+const debug = log => {
+  if (globalThis.DEBUG) console.log(`%c ${log}`, 'color: #0080ff;');
+};
 
 globalThis.leofcoin = globalThis.leofcoin || {};
 globalThis.peernet = globalThis.peernet || {};
@@ -1780,12 +1615,9 @@ class Peernet {
   }
   
   async _init(options) {
-    console.log(options);
     const { daemon, environment } = await this.target();
-    console.log(daemon, environment);
     if (daemon) {
       globalThis.peernet.client = await httpClient({protocol: 'peernet-v0.1.0', host: '127.0.0.1', port: 1000});
-      console.log(peernet.client);
       globalThis.accountStore = globalThis.accountStore || await new LeofcoinStorageClient('lfc-account', options.root);
       globalThis.walletStore = globalThis.walletStore || await new LeofcoinStorageClient('lfc-wallet', options.root);
       globalThis.blockStore = globalThis.blockStore || await new LeofcoinStorageClient('lfc-block', options.root);
@@ -1797,33 +1629,7 @@ class Peernet {
       if (environment !== 'browser') http();
     }
     
-    const account = await accountStore.get();
-    const wallet = await walletStore.get();
-    
-    if (!wallet.identity) {
-      const account = new LFCAccount(this.network);
-      const { identity, accounts, config } = await account.generateProfile();
-      wallet.identity = identity;
-      wallet.accounts = accounts;
-      wallet.version = 1;
-      walletStore.put(wallet);
-      await accountStore.put('config', config);
-      await accountStore.put('public', { walletId: wallet.identity.walletId });
-    } else {
-      // check if we are using correct accounts version
-      // if arr[0] is not an array, it means old version
-      if (!Array.isArray(wallet.accounts[0])) {
-        wallet.accounts = [wallet.accounts];
-        walletStore.put('accounts', wallet.accounts);
-      }
-      
-      // ensure we don't need barbaric methods again.
-      if (!wallet.version) walletStore.put('version', 1);
-      // TODO: convert accounts[account] to objbased { name, addresses }
-    }
-    
     const { walletId } = await accountStore.get('public');
-    console.log({walletId});
     // peernet id
     options.id = Buffer.from(walletId.slice(0, 32));
     this.id = walletId;

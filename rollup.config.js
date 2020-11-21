@@ -1,8 +1,6 @@
 import { execSync } from 'child_process';
 import json from '@rollup/plugin-json'
 
-execSync('cp node_modules/qr-scanner/qr-scanner-worker.min.js qr-scanner-worker.js')
-
 export default [{
 	input: 'src/peernet.js',
 	output: {

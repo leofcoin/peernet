@@ -1,7 +1,6 @@
 import Client from './client'
 import LeofcoinStorage from './../node_modules/@leofcoin/storage/src/level.js'
 import {decode} from 'bs32'
-import Account from './account'
 import MultiWallet from '@leofcoin/multi-wallet'
 import fetch from 'node-fetch'
 import http from './http/http.js'
@@ -92,31 +91,6 @@ export default class Peernet {
       globalThis.blockStore = globalThis.blockStore || new LeofcoinStorage('lfc-block', options.root)
       
       if (environment !== 'browser') http()
-    }
-    
-    const account = await accountStore.get()
-    const wallet = await walletStore.get()
-    
-    if (!wallet.identity) {
-      const account = new Account(this.network)
-      const { identity, accounts, config } = await account.generateProfile()
-      wallet.identity = identity
-      wallet.accounts = accounts
-      wallet.version = 1
-      walletStore.put(wallet)
-      await accountStore.put('config', config);
-      await accountStore.put('public', { walletId: wallet.identity.walletId });
-    } else {
-      // check if we are using correct accounts version
-      // if arr[0] is not an array, it means old version
-      if (!Array.isArray(wallet.accounts[0])) {
-        wallet.accounts = [wallet.accounts]
-        walletStore.put('accounts', wallet.accounts)
-      }
-      
-      // ensure we don't need barbaric methods again.
-      if (!wallet.version) walletStore.put('version', 1)
-      // TODO: convert accounts[account] to objbased { name, addresses }
     }
     
     const { walletId } = await accountStore.get('public')
