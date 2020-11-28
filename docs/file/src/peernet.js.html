@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/peernet.js | @leofcoin/peernet</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client.js~PeernetClient.html">PeernetClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/disco-peer.js~DiscoPeer.html">DiscoPeer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/peer-info.js~PeerInfo.html">PeerInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/peernet.js~Peernet.html">Peernet</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-debug">debug</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-expected">expected</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#codec">codec</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec-format-interface.js~FormatInterface.html">FormatInterface</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec.js~PeernetCodec.html">PeernetCodec</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#dht">dht</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/dht/dht.js~DhtEarth.html">DhtEarth</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#hash">hash</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/hash/hash.js~DiscoHash.html">DiscoHash</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#http">http</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-http">http</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#http-client">http/client</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/api.js~api.html">api</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/http-client.js~HttpClientApi.html">HttpClientApi</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/storage.js~LeofcoinStorageClient.html">LeofcoinStorageClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-client">client</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#messages">messages</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data-response.js~DataMessageResponse.html">DataMessageResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data.js~DataMessage.html">DataMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht-response.js~DHTMessageResponse.html">DHTMessageResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht.js~DHTMessage.html">DHTMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/peernet.js~PeernetMessage.html">PeernetMessage</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/peernet.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Client from &apos;./client&apos;
+import LeofcoinStorage from &apos;./../node_modules/@leofcoin/storage/src/level.js&apos;
+import {decode} from &apos;bs32&apos;
+import MultiWallet from &apos;@leofcoin/multi-wallet&apos;
+import fetch from &apos;node-fetch&apos;
+import http from &apos;./http/http.js&apos;
+import httpClient from &apos;./http/client/client.js&apos;
+import LeofcoinStorageClient from &apos;./http/client/storage.js&apos;
+import PeernetMessage from &apos;./messages/peernet.js&apos;
+import DHTMessage from &apos;./messages/dht.js&apos;
+import DHTMessageResponse from &apos;./messages/dht-response.js&apos;
+import DataMessage from &apos;./messages/data.js&apos;
+import DataMessageResponse from &apos;./messages/data-response.js&apos;
+import Codec from &apos;./codec/codec.js&apos;
+import Hash from &apos;./hash/hash.js&apos;
+import DHT from &apos;./dht/dht.js&apos;
+import {debug} from &apos;./utils.js&apos;
+
+globalThis.leofcoin = globalThis.leofcoin || {}
+globalThis.peernet = globalThis.peernet || {}
+
+let hasDaemon = false;
+const https = (() =&gt; {
+  if (!globalThis.location) return false;
+  return Boolean(globalThis.location.protocol === &apos;https:&apos;)
+})();
+
+/**
+ * @access public
+ * @example
+ * const peernet = new Peernet();
+ */
+export default class Peernet {
+  /**
+   * @access public
+   * @param {Object} options
+   * @param {String} options.network - desired network
+   * @param {String} options.root - path to root directory
+   * 
+   * @return {Promise} instance of Peernet
+   *
+   * @example
+   * const peernet = new Peernet({network: &apos;leofcoin&apos;, root: &apos;.leofcoin&apos;});
+   * // testnet
+   * const peernet = new Peernet({network: &apos;leofcoin:olivia&apos;, root: &apos;.leofcoin&apos;});
+   */
+  constructor(options = {}) {
+    /**
+     * @property {String} network - current network
+     */
+    this.network = options.network || &apos;leofcoin&apos;
+    const parts = this.network.split(&apos;:&apos;)
+    
+    if (!options.root) {
+      if (parts[1])  options.root = `.${parts[0]}/peernet/${parts[1]}`
+      else options.root = `.${this.network}/peernet`
+    }
+    
+    // peernetDHT aka closesPeer by coordinates
+    /**
+     * @type {Object}
+     * @property {Object} peer Instance of Peer
+     */
+    this.dht = new DHT()
+    
+    /**
+     * Array of peers 
+     * @type {Array}
+     * @property {Object} peer Instance of Peer
+     */
+    this.peers = []
+    
+    /**
+     * proto Object containing proto
+     * @type {Object}
+     * @property {PeernetMessage} protos[peernet-message] messageNode
+     * @property {DHTMessage} protos[peernet-dht] messageNode
+     * @property {DHTMessageResponse} protos[peernet-dht-response] messageNode
+     * @property {DataMessage} protos[peernet-data] messageNode
+     * @property {DataMessageResponse} protos[peernet-data-response] messageNode
+     */
+    this.protos = {
+      &apos;peernet-message&apos;: PeernetMessage,
+      &apos;peernet-dht&apos;: DHTMessage,
+      &apos;peernet-dht-response&apos;: DHTMessageResponse,
+      &apos;peernet-data&apos;: DataMessage,
+      &apos;peernet-data-response&apos;: DataMessageResponse
+    }    
+    
+    this._init(options)
+  }
+  async hasDaemon() {
+    try {
+      let response = await fetch(&apos;http://127.0.0.1:1000/api/version&apos;)
+      response = await response.json()
+      return Boolean(response.client === &apos;@peernet/api/http&apos;)
+    } catch (e) {
+      return false
+    }
+  }
+  
+  /**
+   * Get current environment
+   * @return {String} current environment [node, electron, browser]
+   */
+  async environment() {
+    const _navigator = globalThis.navigator
+    if (!_navigator) {
+      return &apos;node&apos;
+    } else if (_navigator &amp;&amp; /electron/i.test(_navigator.userAgent)) {
+      return &apos;electron&apos;
+    } else {
+      return &apos;browser&apos;
+    }
+  }
+  
+  /**
+   * * Get current environment
+   * @return {Object} result
+   * @property {Boolean} reult.daemon whether or not daemon is running
+   * @property {Boolean} reult.environment Current environment
+   */
+  async target() {
+    let daemon = false
+    const environment = await this.environment()
+    if (!https) daemon = await this.hasDaemon()
+
+    return { daemon, environment }
+  }
+  
+  /**
+   * @private
+   */
+  async _init(options) {
+    const { daemon, environment } = await this.target()
+    if (daemon) {
+      globalThis.peernet.client = await httpClient({protocol: &apos;peernet-v0.1.0&apos;, host: &apos;127.0.0.1&apos;, port: 1000})
+      globalThis.accountStore = globalThis.accountStore || await new LeofcoinStorageClient(&apos;lfc-account&apos;, options.root)
+      globalThis.walletStore = globalThis.walletStore || await new LeofcoinStorageClient(&apos;lfc-wallet&apos;, options.root)
+      globalThis.blockStore = globalThis.blockStore || await new LeofcoinStorageClient(&apos;lfc-block&apos;, options.root)
+    } else {
+      globalThis.accountStore = globalThis.accountStore || new LeofcoinStorage(&apos;lfc-account&apos;, options.root)
+      globalThis.walletStore = globalThis.walletStore || new LeofcoinStorage(&apos;lfc-wallet&apos;, options.root)
+      globalThis.blockStore = globalThis.blockStore || new LeofcoinStorage(&apos;lfc-block&apos;, options.root)
+      
+      if (environment !== &apos;browser&apos;) http()
+    }
+    
+    const { walletId } = await accountStore.get(&apos;public&apos;)
+    // peernet id
+    options.id = Buffer.from(walletId.slice(0, 32))
+    this.id = walletId
+    this.peerId = options.id
+    
+    pubsub.subscribe(&apos;peer:connected&apos;, peer =&gt; {
+      peer.on(&apos;data&apos;, message =&gt; this._protoHandler(message, peer))
+      this.peers.push(peer)
+    })
+    this.client = new Client(options)
+  }
+  
+  protoFor(data) {
+    if (!Buffer.isBuffer(data)) data = Buffer.from(data)
+    const codec = new Codec(data)
+    if (!codec.name) throw new Error(&apos;proto not found&apos;)
+    const Proto = this.protos[codec.name]
+    return new Proto(data)
+  }
+  
+  /**
+   * @private
+   */
+  async _protoHandler(message, peer) {
+    message = JSON.parse(message.toString())
+    const id = message.id
+    message = new PeernetMessage(Buffer.from(message.data))
+    
+    const codec = new Codec(message.decoded.data)
+    let Proto = this.protos[codec.name]
+    
+    let proto = new Proto(message.decoded.data)
+    if (proto.name === &apos;peernet-dht&apos;) {
+      const hash = proto.decoded.hash
+      const has = await this.has(hash)      
+      const data = new DHTMessageResponse({hash, has})
+      
+      const message = {
+        from: this.client.id,
+        to: Buffer.from(peer.id),
+        data: data.encoded
+      }
+      
+      const signature = await this.hashAndSignMessage(message)
+      
+      const node = new PeernetMessage({
+        ...message,
+        signature
+      })
+      
+      peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+    } else if (proto.name === &apos;peernet-data&apos;) {
+      const hash = proto.decoded.hash
+      const has = await blockStore.has(hash)
+      if (has) {
+        let data = await blockStore.get(hash)
+        data = new DataMessageResponse({hash, data: Buffer.from(data)})
+        
+        const node = await this.prepareMessage(this.client.id, peer.id, data.encoded)
+        
+        peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+      }
+    }
+    // PeernetDHTMessage()
+    // PeernetDHTMessageResponse
+    // pubsub.publish(&apos;socket-data&apos;, { message, peer })
+  }
+  
+  /**
+   * performs a walk and resolves first encounter
+   */
+  async walk(hash) {
+    if (!hash) throw &apos;hash expected, received undefined&apos;
+    const data = new DHTMessage({hash})
+    for (const peer of this.peers) {
+      const node = await this.prepareMessage(this.client.id, peer.id, data.encoded)
+      
+      const result = await peer.request(node.encoded)
+      
+      let proto = this.protoFor(result.data)
+      
+      if (proto.name !== &apos;peernet-message&apos;) throw new Error(&apos;Nodes/Data should be send encapsulated by peernet-message&apos;)
+      const from = proto.decoded.from
+      proto = this.protoFor(proto.decoded.data)
+      
+      if (proto.name !== &apos;peernet-dht-response&apos;) throw new Error(`Routing error: Received proto ${proto.name} expected peernet-dht-response`)
+
+      const peerInfo = {
+        family: peer.connection.remoteFamily || peer.connection.localFamily,
+        address: peer.connection.remoteAddress || peer.connection.localAddress,
+        port: peer.connection.remotePort || peer.connection.localPort,
+        id: from
+      }
+      
+      if (proto.decoded.has) this.dht.addProvider(peerInfo, proto.decoded.hash)
+    }
+  }
+  
+  
+  async providersFor(hash) {
+    let providers = await this.dht.providersFor(hash)
+    // walk the network to find a provider
+    if (!providers || providers.length === 0) {
+      await this.walk(hash)
+      providers = await this.dht.providersFor(hash)
+      // second walk the network to find a provider
+      if (!providers || providers.length === 0) {
+        await this.walk(hash)
+        providers = await this.dht.providersFor(hash)
+      }
+    }
+    // undefined if no providers given
+    return providers
+  }
+  
+  async get(hash) {
+    debug(`get ${hash}`)
+    let data = await blockStore.has(hash)
+    if (data) return await blockStore.get(hash)
+    let providers = await this.providersFor(hash)
+    if (!providers || providers.size === 0) throw `nothing found for ${hash}`
+    debug(`found ${providers.size} for ${hash}`)
+    
+    // get closest peer on earth
+    const closestPeer = await this.dht.closestPeer(providers)
+    
+    // get peer instance by id
+    const id = closestPeer.id.toString()
+    const closest = this.peers.filter((peer) =&gt; {
+      if (peer.id.toString() === id) return peer
+    })
+    
+    data = new DataMessage({hash})
+    
+    const message = {
+      from: this.client.id,
+      to: Buffer.from(id),
+      data: data.encoded
+    }
+    
+    const signature = await this.hashAndSignMessage(message)
+    
+    const node = new PeernetMessage({
+      ...message,
+      signature
+    })
+        
+    data = await closest[0].request(node.encoded)
+    let proto = this.protoFor(Buffer.from(data.data))
+    proto = this.protoFor(proto.decoded.data)
+    this.put(hash, proto.decoded.data)
+    return proto.decoded.data
+  }
+  
+  async put(hash, data) {
+    return await blockStore.put(hash, data)
+  }
+  
+  async has(hash) {
+    return await blockStore.has(hash)
+  }
+  
+  async hashAndSignMessage(message) {
+    const hasher = new Hash(message, { name: &apos;peernet-message&apos; })
+    const identity = await walletStore.get(&apos;identity&apos;)
+    
+    const wallet = new MultiWallet(this.network)
+    wallet.import(identity.multiWIF)
+    return wallet.sign(hasher.hash.slice(0, 32))
+  }
+  
+  /**
+   * @param {String} from - peer id
+   * @param {String} to - peer id
+   * @param {String|PeernetMessage} data - data encoded message string or the messageNode itself
+   */
+  async prepareMessage(from, to, data) {
+    if (!Buffer.isBuffer(from)) from = new Buffer.from(from)
+    if (!Buffer.isBuffer(to)) to = new Buffer.from(to)
+    if (data.encoded) data = data.encoded
+    
+    const message = {
+      from,
+      to,
+      data
+    }    
+    const signature = await his.hashAndSignMessage(message)  
+    const node = new PeernetMessage({
+      ...message,
+      signature
+    })
+    
+    return node
+  }
+  
+  publish(event, data) {
+    for (const peer of this.peers) {
+      peer.write()
+    }
+  }
+  
+  subscribe(event, cb) {
+    // this.peers.
+  }
+  // async block(index) {
+  //   const _values = []
+  //   for (const peer of this.peers) {
+  //     const value = await peer.request({type: &apos;block&apos;, index})
+  //     console.log(value);
+  //   }
+  // 
+  // }
+}</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

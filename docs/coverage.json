@@ -1,0 +1,262 @@
+{
+  "coverage": "11.32%",
+  "expectCount": 159,
+  "actualCount": 18,
+  "files": {
+    "src/client.js": {
+      "expectCount": 6,
+      "actualCount": 0,
+      "undocumentLines": [
+        11,
+        12,
+        15,
+        17,
+        25,
+        90
+      ]
+    },
+    "src/codec/codec-format-interface.js": {
+      "expectCount": 20,
+      "actualCount": 0,
+      "undocumentLines": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        31,
+        35,
+        41,
+        46,
+        50,
+        53,
+        57,
+        64,
+        69,
+        74,
+        79,
+        84,
+        89,
+        94
+      ]
+    },
+    "src/codec/codec.js": {
+      "expectCount": 22,
+      "actualCount": 0,
+      "undocumentLines": [
+        7,
+        8,
+        9,
+        17,
+        18,
+        36,
+        44,
+        49,
+        54,
+        59,
+        63,
+        70,
+        74,
+        76,
+        78,
+        79,
+        82,
+        90,
+        95,
+        100,
+        104,
+        110
+      ]
+    },
+    "src/dht/dht.js": {
+      "expectCount": 12,
+      "actualCount": 6,
+      "undocumentLines": [
+        3,
+        14,
+        27,
+        31,
+        45,
+        50
+      ]
+    },
+    "src/disco-peer.js": {
+      "expectCount": 8,
+      "actualCount": 0,
+      "undocumentLines": [
+        1,
+        2,
+        3,
+        4,
+        9,
+        32,
+        36,
+        41
+      ]
+    },
+    "src/hash/hash.js": {
+      "expectCount": 23,
+      "actualCount": 0,
+      "undocumentLines": [
+        8,
+        9,
+        10,
+        12,
+        16,
+        36,
+        40,
+        44,
+        48,
+        52,
+        56,
+        60,
+        64,
+        68,
+        72,
+        76,
+        80,
+        90,
+        91,
+        93,
+        95,
+        103,
+        119
+      ]
+    },
+    "src/http/client/api.js": {
+      "expectCount": 8,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        4,
+        9,
+        21,
+        27,
+        31,
+        35,
+        39
+      ]
+    },
+    "src/http/client/client.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        3
+      ]
+    },
+    "src/http/client/http-client.js": {
+      "expectCount": 6,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        4,
+        9,
+        11,
+        16,
+        31
+      ]
+    },
+    "src/http/client/storage.js": {
+      "expectCount": 6,
+      "actualCount": 0,
+      "undocumentLines": [
+        1,
+        2,
+        3,
+        4,
+        7,
+        21
+      ]
+    },
+    "src/http/http.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        6
+      ]
+    },
+    "src/messages/data-response.js": {
+      "expectCount": 3,
+      "actualCount": 0,
+      "undocumentLines": [
+        5,
+        7,
+        11
+      ]
+    },
+    "src/messages/data.js": {
+      "expectCount": 3,
+      "actualCount": 0,
+      "undocumentLines": [
+        5,
+        7,
+        11
+      ]
+    },
+    "src/messages/dht-response.js": {
+      "expectCount": 3,
+      "actualCount": 0,
+      "undocumentLines": [
+        6,
+        8,
+        12
+      ]
+    },
+    "src/messages/dht.js": {
+      "expectCount": 3,
+      "actualCount": 0,
+      "undocumentLines": [
+        5,
+        7,
+        11
+      ]
+    },
+    "src/messages/peernet.js": {
+      "expectCount": 3,
+      "actualCount": 0,
+      "undocumentLines": [
+        5,
+        7,
+        11
+      ]
+    },
+    "src/peer-info.js": {
+      "expectCount": 3,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        4,
+        5
+      ]
+    },
+    "src/peernet.js": {
+      "expectCount": 26,
+      "actualCount": 12,
+      "undocumentLines": [
+        22,
+        23,
+        92,
+        152,
+        153,
+        159,
+        162,
+        249,
+        265,
+        304,
+        308,
+        312,
+        345,
+        351
+      ]
+    },
+    "src/utils.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        1,
+        8
+      ]
+    }
+  }
+}

@@ -1,0 +1,4419 @@
+[
+  {
+    "__docId__": 1,
+    "kind": "external",
+    "name": "Infinity",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Infinity",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 2,
+    "kind": "external",
+    "name": "NaN",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~NaN",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 3,
+    "kind": "external",
+    "name": "undefined",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~undefined",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 4,
+    "kind": "external",
+    "name": "null",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~null",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 5,
+    "kind": "external",
+    "name": "Object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Object",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 6,
+    "kind": "external",
+    "name": "object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~object",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 7,
+    "kind": "external",
+    "name": "Function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Function",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 8,
+    "kind": "external",
+    "name": "function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~function",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 9,
+    "kind": "external",
+    "name": "Boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Boolean",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 10,
+    "kind": "external",
+    "name": "boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~boolean",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 11,
+    "kind": "external",
+    "name": "Symbol",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Symbol",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 12,
+    "kind": "external",
+    "name": "Error",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Error",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 13,
+    "kind": "external",
+    "name": "EvalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~EvalError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 14,
+    "kind": "external",
+    "name": "InternalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~InternalError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 15,
+    "kind": "external",
+    "name": "RangeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~RangeError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 16,
+    "kind": "external",
+    "name": "ReferenceError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~ReferenceError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 17,
+    "kind": "external",
+    "name": "SyntaxError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~SyntaxError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 18,
+    "kind": "external",
+    "name": "TypeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~TypeError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 19,
+    "kind": "external",
+    "name": "URIError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~URIError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 20,
+    "kind": "external",
+    "name": "Number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Number",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 21,
+    "kind": "external",
+    "name": "number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~number",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 22,
+    "kind": "external",
+    "name": "Date",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Date",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 23,
+    "kind": "external",
+    "name": "String",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~String",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 24,
+    "kind": "external",
+    "name": "string",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~string",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 25,
+    "kind": "external",
+    "name": "RegExp",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~RegExp",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 26,
+    "kind": "external",
+    "name": "Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 27,
+    "kind": "external",
+    "name": "Int8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Int8Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 28,
+    "kind": "external",
+    "name": "Uint8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint8Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 29,
+    "kind": "external",
+    "name": "Uint8ClampedArray",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint8ClampedArray",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 30,
+    "kind": "external",
+    "name": "Int16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Int16Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 31,
+    "kind": "external",
+    "name": "Uint16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint16Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 32,
+    "kind": "external",
+    "name": "Int32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Int32Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 33,
+    "kind": "external",
+    "name": "Uint32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint32Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 34,
+    "kind": "external",
+    "name": "Float32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Float32Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 35,
+    "kind": "external",
+    "name": "Float64Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Float64Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 36,
+    "kind": "external",
+    "name": "Map",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Map",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 37,
+    "kind": "external",
+    "name": "Set",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Set",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 38,
+    "kind": "external",
+    "name": "WeakMap",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~WeakMap",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 39,
+    "kind": "external",
+    "name": "WeakSet",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~WeakSet",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 40,
+    "kind": "external",
+    "name": "ArrayBuffer",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~ArrayBuffer",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 41,
+    "kind": "external",
+    "name": "DataView",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~DataView",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 42,
+    "kind": "external",
+    "name": "JSON",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~JSON",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 43,
+    "kind": "external",
+    "name": "Promise",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Promise",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 44,
+    "kind": "external",
+    "name": "Generator",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Generator",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 45,
+    "kind": "external",
+    "name": "GeneratorFunction",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~GeneratorFunction",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 46,
+    "kind": "external",
+    "name": "Reflect",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Reflect",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 47,
+    "kind": "external",
+    "name": "Proxy",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Proxy",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 48,
+    "kind": "file",
+    "name": "src/client.js",
+    "content": "import crypto from 'crypto'\r\nimport swarm from '@geut/discovery-swarm-webrtc'\r\nimport wrtc from 'wrtc'\r\nimport Pubsub from '@vandeurenglenn/little-pubsub'\r\nimport DiscoPeer from './disco-peer.js'\r\nimport sha256 from 'crypto-js/sha256'\r\n\r\nglobalThis.connections = new Map()\r\nglobalThis.pubsub = globalThis.pubsub || new Pubsub()\r\n\r\nexport default class PeernetClient {\r\n  constructor(options = {}) {\r\n    if (!options.id) options.id = Buffer.from('00000000000000000000000000000000')\r\n    \r\n    this.id = options.id\r\n    \r\n    this.sw = swarm({\r\n      id: options.id,\r\n      bootstrap: ['wss://discovery-swarm.herokuapp.com', 'ws://localhost:4000'],\r\n      simplePeer: {\r\n        wrtc\r\n      }\r\n    })\r\n     \r\n    this.topic = Buffer.from(sha256('peernet-v0.1.0').toString())\r\n     \r\n    this.sw.join(this.topic.slice(0, 32))\r\n     \r\n    const arrayOfPeers = this.sw.getPeers()\r\n    \r\n    this.sw.on('connection', async (connection, info) => {\r\n      // connected\r\n      const id = info.id.toString()\r\n      if (id === this.id.toString()) return\r\n      \r\n      const channel = connection.channelName\r\n      let channels = [channel]\r\n      let peer\r\n      if (connections.has(id)) {\r\n        const value = connections.get(id)\r\n        const _channels = value.channels\r\n        channels = [ ...channels, ..._channels ]\r\n        peer = value.peer\r\n      } else {\r\n        peer = new DiscoPeer(id, connection)\r\n        pubsub.publish('peer:connected', peer)\r\n      }\r\n      connections.set(id, {channels, peer})\r\n      // connection.on('data', (data) => console.log({data}))\r\n      // connection.write('peerId')\r\n    });\r\n    \r\n    this.sw.on('candidates-updated', async (channel, candidates) => {\r\n      // TODO: Channels ...\r\n      for (const candidate of candidates) {\r\n        const id = candidate.toString()\r\n        let channels = [channel]\r\n        if (id === this.id.toString()) return\r\n        console.log({id});\r\n        \r\n        if (!connections.has(id)) {\r\n          const connection = await this.sw.connect(channel, candidate)\r\n          const peer = new DiscoPeer(id, connection)\r\n          connections.set(id, {channels, peer})\r\n          pubsub.publish('peer:connected', peer)\r\n        } else {\r\n          const value = connections.get(id)\r\n          const _channels = value.channels\r\n          channels = [ ...channels, ..._channels ]\r\n          connections.set(id, {channels, peer: value.peer})\r\n        }\r\n      \r\n      }\r\n    })\r\n    \r\n    this.sw.on('connection-closed', (connection, info) => {\r\n      setTimeout(() => {\r\n        if (connections.has(info.id.toString())) connections.delete(info.id.toString())\r\n      }, 500);\r\n    })\r\n    \r\n    if (globalThis.onbeforeunload) globalThis.onbeforeunload = () => {\r\n      this.sw.leave(this.topic)\r\n      return setTimeout(() => {\r\n        \r\n      }, 1000)\r\n    }\r\n  }\r\n  \r\n  _peers() {\r\n    return this.sw.getPeers()\r\n  }\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/client.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 49,
+    "kind": "class",
+    "name": "PeernetClient",
+    "memberof": "src/client.js",
+    "static": true,
+    "longname": "src/client.js~PeernetClient",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/client.js",
+    "importStyle": "PeernetClient",
+    "description": null,
+    "lineNumber": 11,
+    "undocument": true,
+    "interface": false
+  },
+  {
+    "__docId__": 50,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/client.js~PeernetClient",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/client.js~PeernetClient#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 12,
+    "undocument": true
+  },
+  {
+    "__docId__": 51,
+    "kind": "member",
+    "name": "id",
+    "memberof": "src/client.js~PeernetClient",
+    "static": false,
+    "longname": "src/client.js~PeernetClient#id",
+    "access": "public",
+    "description": null,
+    "lineNumber": 15,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 52,
+    "kind": "member",
+    "name": "sw",
+    "memberof": "src/client.js~PeernetClient",
+    "static": false,
+    "longname": "src/client.js~PeernetClient#sw",
+    "access": "public",
+    "description": null,
+    "lineNumber": 17,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 53,
+    "kind": "member",
+    "name": "topic",
+    "memberof": "src/client.js~PeernetClient",
+    "static": false,
+    "longname": "src/client.js~PeernetClient#topic",
+    "access": "public",
+    "description": null,
+    "lineNumber": 25,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 54,
+    "kind": "method",
+    "name": "_peers",
+    "memberof": "src/client.js~PeernetClient",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/client.js~PeernetClient#_peers",
+    "access": "private",
+    "description": null,
+    "lineNumber": 90,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 55,
+    "kind": "file",
+    "name": "src/codec/codec-format-interface.js",
+    "content": "import bs32 from 'bs32';\r\nimport bs58 from 'bs58';\r\nimport isHex from 'is-hex';\r\nimport Codec from './codec';\r\nimport Hash from './../hash/hash'\r\n\r\nexport default class FormatInterface {\r\n  constructor(buffer, proto, options = {}) {    \r\n    this.protoEncode = proto.encode\r\n    this.protoDecode = proto.decode\r\n    if (options.name) this.name = options.name\r\n    this.hashFormat = options.hashFormat || 'bs32'\r\n    \r\n    if (Buffer.isBuffer(buffer)) {\r\n      const codec = new Codec(buffer)\r\n      \r\n      if (codec.name) {\r\n        this.fromEncoded(buffer)\r\n      } else {\r\n        this.create(buffer)\r\n      }        \r\n    } else if (typeof buffer === 'string') {\r\n      if (isHex(buffer)) this.fromHex(buffer)\r\n      else if (bs32.test(buffer)) this.fromBs32(buffer)\r\n      else this.fromBs58(buffer) \r\n    } else if (typeof buffer === 'object' && !Array.isArray(buffer)) {\r\n      this.create(buffer)\r\n    }\r\n  }\r\n  \r\n  get peernetHash() {\r\n    return new Hash(this.decoded, {name: this.name})\r\n  }\r\n  \r\n  get hash() {\r\n    const upper = this.hashFormat.charAt(0).toUpperCase()\r\n    const format = `${upper}${this.hashFormat.substring(1, this.hashFormat.length)}`\r\n    return this.peernetHash[`to${format}`]()\r\n  }\r\n    \r\n  decode() {\r\n    let encoded = this.encoded;\r\n    const discoCodec = new Codec(this.encoded.toString('hex'))\r\n    encoded = encoded.slice(discoCodec.codecBuffer.length)\r\n    this.name = discoCodec.name\r\n    this.decoded = this.protoDecode(encoded)\r\n    return this.decoded\r\n  }\r\n  \r\n  encode(decoded) {    \r\n    if (!decoded) decoded = this.decoded;\r\n    const codec = new Codec(this.name)\r\n    this.encoded = Buffer.concat([codec.codecBuffer, this.protoEncode(decoded)])\r\n    return this.encoded\r\n  }\r\n  \r\n  fromEncoded(encoded) {\r\n    const codec = new Codec(encoded)\r\n    this.name = codec.name\r\n    this.encoded = encoded \r\n    this.decode()\r\n  }\r\n  \r\n  fromHex(hex) {\r\n    this.encoded = Buffer.from(hex, 'hex')\r\n    this.decode()\r\n  }  \r\n  \r\n  fromBs32(input) {\r\n    this.encoded = bs32.decode(input)\r\n    this.decode()\r\n  }\r\n  \r\n  fromBs58(input) {\r\n    this.encoded = bs58.decode(input)\r\n    this.decode()\r\n  }\r\n  \r\n  toHex() {\r\n    if(!this.encoded) this.encode()\r\n    return this.encoded.toString('hex')\r\n  }\r\n  \r\n  toBs32() {    \r\n    if(!this.encoded) this.encode()\r\n    return bs32.encode(this.encoded)\r\n  }\r\n  \r\n  toBs58() {    \r\n    if(!this.encoded) this.encode()\r\n    return bs58.encode(this.encoded)\r\n  }\r\n  \r\n  create(data) {\r\n    this.decoded = data\r\n    this.encode(data)\r\n  }\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/codec/codec-format-interface.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 56,
+    "kind": "class",
+    "name": "FormatInterface",
+    "memberof": "src/codec/codec-format-interface.js",
+    "static": true,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/codec/codec-format-interface.js",
+    "importStyle": "FormatInterface",
+    "description": null,
+    "lineNumber": 7,
+    "undocument": true,
+    "interface": false
+  },
+  {
+    "__docId__": 57,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 8,
+    "undocument": true
+  },
+  {
+    "__docId__": 58,
+    "kind": "member",
+    "name": "protoEncode",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#protoEncode",
+    "access": "public",
+    "description": null,
+    "lineNumber": 9,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 59,
+    "kind": "member",
+    "name": "protoDecode",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#protoDecode",
+    "access": "public",
+    "description": null,
+    "lineNumber": 10,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 60,
+    "kind": "member",
+    "name": "name",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#name",
+    "access": "public",
+    "description": null,
+    "lineNumber": 11,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 61,
+    "kind": "member",
+    "name": "hashFormat",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#hashFormat",
+    "access": "public",
+    "description": null,
+    "lineNumber": 12,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 62,
+    "kind": "get",
+    "name": "peernetHash",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#peernetHash",
+    "access": "public",
+    "description": null,
+    "lineNumber": 31,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 63,
+    "kind": "get",
+    "name": "hash",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#hash",
+    "access": "public",
+    "description": null,
+    "lineNumber": 35,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 64,
+    "kind": "method",
+    "name": "decode",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#decode",
+    "access": "public",
+    "description": null,
+    "lineNumber": 41,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 66,
+    "kind": "member",
+    "name": "decoded",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#decoded",
+    "access": "public",
+    "description": null,
+    "lineNumber": 46,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 67,
+    "kind": "method",
+    "name": "encode",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#encode",
+    "access": "public",
+    "description": null,
+    "lineNumber": 50,
+    "undocument": true,
+    "params": [
+      {
+        "name": "decoded",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 68,
+    "kind": "member",
+    "name": "encoded",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#encoded",
+    "access": "public",
+    "description": null,
+    "lineNumber": 53,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 69,
+    "kind": "method",
+    "name": "fromEncoded",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#fromEncoded",
+    "access": "public",
+    "description": null,
+    "lineNumber": 57,
+    "undocument": true,
+    "params": [
+      {
+        "name": "encoded",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 72,
+    "kind": "method",
+    "name": "fromHex",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#fromHex",
+    "access": "public",
+    "description": null,
+    "lineNumber": 64,
+    "undocument": true,
+    "params": [
+      {
+        "name": "hex",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 74,
+    "kind": "method",
+    "name": "fromBs32",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#fromBs32",
+    "access": "public",
+    "description": null,
+    "lineNumber": 69,
+    "undocument": true,
+    "params": [
+      {
+        "name": "input",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 76,
+    "kind": "method",
+    "name": "fromBs58",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#fromBs58",
+    "access": "public",
+    "description": null,
+    "lineNumber": 74,
+    "undocument": true,
+    "params": [
+      {
+        "name": "input",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 78,
+    "kind": "method",
+    "name": "toHex",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#toHex",
+    "access": "public",
+    "description": null,
+    "lineNumber": 79,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 79,
+    "kind": "method",
+    "name": "toBs32",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#toBs32",
+    "access": "public",
+    "description": null,
+    "lineNumber": 84,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 80,
+    "kind": "method",
+    "name": "toBs58",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#toBs58",
+    "access": "public",
+    "description": null,
+    "lineNumber": 89,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 81,
+    "kind": "method",
+    "name": "create",
+    "memberof": "src/codec/codec-format-interface.js~FormatInterface",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec-format-interface.js~FormatInterface#create",
+    "access": "public",
+    "description": null,
+    "lineNumber": 94,
+    "undocument": true,
+    "params": [
+      {
+        "name": "data",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 83,
+    "kind": "file",
+    "name": "src/codec/codec.js",
+    "content": "import varint from 'varint';\r\nimport bs32 from 'bs32';\r\nimport bs58 from 'bs58';\r\nimport isHex from 'is-hex';\r\nimport codecs from './codecs'\r\n\r\nexport default class PeernetCodec {\r\n  constructor(buffer, _codecs) {\r\n    if (_codecs) this.codecs = { ...codecs, ..._codecs}\r\n    else this.codecs = codecs\r\n    if (buffer) {\r\n      if (Buffer.isBuffer(buffer)) {\r\n        const codec = varint.decode(buffer);\r\n        const name = this.getCodecName(codec)\r\n        \r\n        if (name) {\r\n          this.name = name\r\n          this.encoded = buffer \r\n          this.decode(buffer)\r\n        } else {\r\n          this.encode(buffer)\r\n        }\r\n        \r\n        \r\n      }\r\n      if (typeof buffer === 'string') {\r\n        if (this.codecs[buffer]) this.fromName(buffer)\r\n        else if (isHex(buffer)) this.fromHex(buffer)\r\n        else if (bs32.test(buffer)) this.fromBs32(buffer)\r\n        else this.fromBs58(buffer)        \r\n      } \r\n      if (!isNaN(buffer)) if (this.codecs[this.getCodecName(buffer)]) this.fromCodec(buffer)\r\n    }\r\n  }\r\n  \r\n  fromEncoded(encoded) {\r\n    const codec = varint.decode(encoded);\r\n    const name = this.getCodecName(codec)\r\n    this.name = name\r\n    this.encoded = encoded \r\n    this.decode(encoded)\r\n  }\r\n  \r\n  fromHex(hex) {\r\n    this.encoded = Buffer.from(hex, 'hex')\r\n    this.decode()\r\n  }\r\n  \r\n  fromBs32(input) {\r\n    this.encoded = bs32.decode(input)\r\n    this.decode()\r\n  }\r\n  \r\n  fromBs58(input) {\r\n    this.encoded = bs58.decode(input)\r\n    this.decode()\r\n  }\r\n  \r\n  getCodec(name) {\r\n    return this.codecs[name].codec\r\n  }\r\n  \r\n  getCodecName(codec) {\r\n    return Object.keys(this.codecs).reduce((p, c) => {\r\n      if (parseInt(Buffer.from(`${this.getCodec(c)}`, 'hex').toString('hex'), 16) === codec) return c;\r\n      else return p;\r\n    }, undefined)\r\n  }\r\n  \r\n  getHashAlg(name) {\r\n    return this.codecs[name].hashAlg\r\n  }\r\n  \r\n  fromCodec(codec) {    \r\n    this.name = this.getCodecName(codec)\r\n    this.hashAlg = this.getHashAlg(this.name)\r\n    \r\n    this.codec = this.getCodec(this.name)\r\n    this.codecBuffer = Buffer.from(varint.encode(parseInt(Buffer.from(`${this.codec}`, 'hex').toString('hex'), 16)), 'hex');\r\n  }\r\n  \r\n  fromName(name) {\r\n    const codec = this.getCodec(name)\r\n    this.name = name    \r\n    this.codec = codec\r\n    this.hashAlg = this.getHashAlg(name)\r\n    this.codecBuffer = Buffer.from(varint.encode(parseInt(Buffer.from(`${codec}`, 'hex').toString('hex'), 16)), 'hex');\r\n  }\r\n  \r\n  toBs32() {\r\n    this.encode()\r\n    return bs32.encode(this.encoded)\r\n  }\r\n  \r\n  toBs58() {\r\n    this.encode()\r\n    return bs58.encode(this.encoded)\r\n  }\r\n  \r\n  toHex() {\r\n    return this.encoded.toString('hex')\r\n  }\r\n  \r\n  decode() {\r\n    const codec = varint.decode(this.encoded);\r\n    this.fromCodec(codec)\r\n    this.name = this.getCodecName(codec)\r\n  }\r\n  \r\n  encode() {\r\n    const codec = Buffer.from(varint.encode(parseInt(Buffer.from(`${this.codec}`, 'hex').toString('hex'), 16)), 'hex');\r\n    this.encoded = codec\r\n    return this.encoded\r\n  }\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/codec/codec.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 84,
+    "kind": "class",
+    "name": "PeernetCodec",
+    "memberof": "src/codec/codec.js",
+    "static": true,
+    "longname": "src/codec/codec.js~PeernetCodec",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/codec/codec.js",
+    "importStyle": "PeernetCodec",
+    "description": null,
+    "lineNumber": 7,
+    "undocument": true,
+    "interface": false
+  },
+  {
+    "__docId__": 85,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 8,
+    "undocument": true
+  },
+  {
+    "__docId__": 86,
+    "kind": "member",
+    "name": "codecs",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#codecs",
+    "access": "public",
+    "description": null,
+    "lineNumber": 9,
+    "undocument": true,
+    "type": {
+      "types": [
+        "{...codecs: Object, ..._codecs: Object}"
+      ]
+    }
+  },
+  {
+    "__docId__": 88,
+    "kind": "member",
+    "name": "name",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#name",
+    "access": "public",
+    "description": null,
+    "lineNumber": 17,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 89,
+    "kind": "member",
+    "name": "encoded",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#encoded",
+    "access": "public",
+    "description": null,
+    "lineNumber": 18,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 90,
+    "kind": "method",
+    "name": "fromEncoded",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#fromEncoded",
+    "access": "public",
+    "description": null,
+    "lineNumber": 36,
+    "undocument": true,
+    "params": [
+      {
+        "name": "encoded",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 93,
+    "kind": "method",
+    "name": "fromHex",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#fromHex",
+    "access": "public",
+    "description": null,
+    "lineNumber": 44,
+    "undocument": true,
+    "params": [
+      {
+        "name": "hex",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 95,
+    "kind": "method",
+    "name": "fromBs32",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#fromBs32",
+    "access": "public",
+    "description": null,
+    "lineNumber": 49,
+    "undocument": true,
+    "params": [
+      {
+        "name": "input",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 97,
+    "kind": "method",
+    "name": "fromBs58",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#fromBs58",
+    "access": "public",
+    "description": null,
+    "lineNumber": 54,
+    "undocument": true,
+    "params": [
+      {
+        "name": "input",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 99,
+    "kind": "method",
+    "name": "getCodec",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#getCodec",
+    "access": "public",
+    "description": null,
+    "lineNumber": 59,
+    "undocument": true,
+    "params": [
+      {
+        "name": "name",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 100,
+    "kind": "method",
+    "name": "getCodecName",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#getCodecName",
+    "access": "public",
+    "description": null,
+    "lineNumber": 63,
+    "undocument": true,
+    "params": [
+      {
+        "name": "codec",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 101,
+    "kind": "method",
+    "name": "getHashAlg",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#getHashAlg",
+    "access": "public",
+    "description": null,
+    "lineNumber": 70,
+    "undocument": true,
+    "params": [
+      {
+        "name": "name",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 102,
+    "kind": "method",
+    "name": "fromCodec",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#fromCodec",
+    "access": "public",
+    "description": null,
+    "lineNumber": 74,
+    "undocument": true,
+    "params": [
+      {
+        "name": "codec",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 104,
+    "kind": "member",
+    "name": "hashAlg",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#hashAlg",
+    "access": "public",
+    "description": null,
+    "lineNumber": 76,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 105,
+    "kind": "member",
+    "name": "codec",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#codec",
+    "access": "public",
+    "description": null,
+    "lineNumber": 78,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 106,
+    "kind": "member",
+    "name": "codecBuffer",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#codecBuffer",
+    "access": "public",
+    "description": null,
+    "lineNumber": 79,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 107,
+    "kind": "method",
+    "name": "fromName",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#fromName",
+    "access": "public",
+    "description": null,
+    "lineNumber": 82,
+    "undocument": true,
+    "params": [
+      {
+        "name": "name",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 112,
+    "kind": "method",
+    "name": "toBs32",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#toBs32",
+    "access": "public",
+    "description": null,
+    "lineNumber": 90,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 113,
+    "kind": "method",
+    "name": "toBs58",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#toBs58",
+    "access": "public",
+    "description": null,
+    "lineNumber": 95,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 114,
+    "kind": "method",
+    "name": "toHex",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#toHex",
+    "access": "public",
+    "description": null,
+    "lineNumber": 100,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 115,
+    "kind": "method",
+    "name": "decode",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#decode",
+    "access": "public",
+    "description": null,
+    "lineNumber": 104,
+    "undocument": true,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 117,
+    "kind": "method",
+    "name": "encode",
+    "memberof": "src/codec/codec.js~PeernetCodec",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/codec/codec.js~PeernetCodec#encode",
+    "access": "public",
+    "description": null,
+    "lineNumber": 110,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 119,
+    "kind": "file",
+    "name": "src/codec/codecs.js",
+    "content": "export default {  \r\n  // just a hash\r\n  'disco-hash': {\r\n    codec: '30',\r\n    hashAlg: 'dbl-keccak-512'//,\r\n    // testnet: 'olivia'\r\n  },\r\n  'peernet-dht': {\r\n    codec: '706468',\r\n    hashAlg: 'keccak-256'\r\n  },\r\n  'peernet-dht-response': {\r\n    codec: '706472',\r\n    hashAlg: 'keccak-256'\r\n  },\r\n  // data\r\n  'peernet-data': {\r\n    codec: '706461',\r\n    hashAlg: 'keccak-256'\r\n  },\r\n  'peernet-data-response': {\r\n    codec: '70646172',\r\n    hashAlg: 'keccak-256'\r\n  },\r\n  // message\r\n  'peernet-message': {\r\n    codec: '706d65',\r\n    hashAlg: 'keccak-512'\r\n  },\r\n  // normal block\r\n  'leofcoin-block': {\r\n    codec: '6c62',\r\n    hashAlg: 'dbl-keccak-512'//,\r\n    // testnet: 'olivia'\r\n  },\r\n  // itx\r\n  'leofcoin-itx': {\r\n    codec: '6c69',\r\n    hashAlg: 'keccak-512'//,\r\n    // testnet: 'olivia'\r\n  },\r\n  // peer reputation\r\n  'leofcoin-pr': {\r\n    codec: '6c70',\r\n    hashAlg: 'keccak-256'//,\r\n    // testnet: 'olivia'\r\n  }\r\n}\r\n",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/codec/codecs.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 120,
+    "kind": "file",
+    "name": "src/dht/dht.js",
+    "content": "import fetch from 'node-fetch';\r\n\r\nconst lastFetched = {\r\n  address: {\r\n    value: undefined,\r\n    timestamp: 0\r\n  },\r\n  ptr: {\r\n    value: undefined,\r\n    timestamp: 0\r\n  }\r\n}\r\n\r\nconst getAddress = async () => {\r\n  const {address} = lastFetched\r\n  const now = Math.round(new Date().getTime() / 1000);\r\n  if (now - address.timestamp > 300) {\r\n    address.value = await fetch('https://ipv6.icanhazip.com/')\r\n    address.value = await address.value.text()\r\n    address.timestamp = Math.round(new Date().getTime() / 1000);  \r\n    lastFetched.address = address;\r\n  }\r\n  \r\n  return address.value\r\n}\r\n\r\nconst degreesToRadians = degrees => {\r\n  return degrees * Math.PI / 180;\r\n}\r\n\r\nconst distanceInKmBetweenEarthCoordinates = (lat1, lon1, lat2, lon2) => {\r\n  var earthRadiusKm = 6371;\r\n\r\n  var dLat = degreesToRadians(lat2-lat1);\r\n  var dLon = degreesToRadians(lon2-lon1);\r\n\r\n  lat1 = degreesToRadians(lat1);\r\n  lat2 = degreesToRadians(lat2);\r\n  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +\r\n          Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); \r\n  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); \r\n  return earthRadiusKm * c;\r\n}\r\n\r\nexport default class DhtEarth {\r\n  /**\r\n   * \r\n   */\r\n  constructor() {\r\n    this.providerMap = new Map();\r\n  }\r\n  \r\n  /**\r\n   * \r\n   */\r\n  async getCoordinates(provider) {\r\n    const {address} = provider\r\n    // const {address} = parseAddress(provider)\r\n    const request = `http://ip-api.com/json/${address}`\r\n    let response = await fetch(request)\r\n    response = await response.json()\r\n    const { lat, lon } = response;\r\n    return { latitude: lat, longitude: lon }\r\n  }\r\n  \r\n  /**\r\n   * \r\n   */\r\n  async getDistance(peer, provider) {\r\n    const { latitude, longitude } = await this.getCoordinates(provider.address)\r\n    return {provider, distance: distanceInKmBetweenEarthCoordinates(peer.latitude,peer.longitude,latitude,longitude)}\r\n  }\r\n  \r\n  /**\r\n   * \r\n   */\r\n  async closestPeer(providers) {\r\n    let all = []\r\n    const address = await getAddress();\r\n    const peerLoc = await this.getCoordinates(address)\r\n    \r\n    for (const provider of providers) {\r\n      all.push(this.getDistance(peerLoc, provider))\r\n    }\r\n    \r\n    all = await Promise.all(all)\r\n    \r\n    const closestPeer = all.reduce((p, c) => {\r\n      if (c.distance === NaN) c.distance = 0\r\n      if (c.distance < p || p === 0) return c.provider;\r\n    }, 0)\r\n    \r\n    return closestPeer;\r\n  }\r\n  \r\n  /**\r\n   * \r\n   */\r\n  async providersFor(hash) {\r\n    return this.providerMap.get(hash);\r\n  }  \r\n  \r\n  /**\r\n   * \r\n   */  \r\n  async addProvider(address, hash) {\r\n    let providers = [];\r\n    if (this.providerMap.has(hash)) providers = this.providerMap.get(hash)\r\n      \r\n    providers = new Set([...providers, address])\r\n    this.providerMap.set(hash, providers)\r\n    return providers;\r\n  }\r\n  \r\n  \r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/dht/dht.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 121,
+    "kind": "variable",
+    "name": "lastFetched",
+    "memberof": "src/dht/dht.js",
+    "static": true,
+    "longname": "src/dht/dht.js~lastFetched",
+    "access": "public",
+    "export": false,
+    "importPath": "@leofcoin/peernet/src/dht/dht.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "type": {
+      "types": [
+        "{\"address\": *, \"ptr\": *}"
+      ]
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 122,
+    "kind": "function",
+    "name": "getAddress",
+    "memberof": "src/dht/dht.js",
+    "generator": false,
+    "async": true,
+    "static": true,
+    "longname": "src/dht/dht.js~getAddress",
+    "access": "public",
+    "export": false,
+    "importPath": "@leofcoin/peernet/src/dht/dht.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 14,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 123,
+    "kind": "function",
+    "name": "degreesToRadians",
+    "memberof": "src/dht/dht.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/dht/dht.js~degreesToRadians",
+    "access": "public",
+    "export": false,
+    "importPath": "@leofcoin/peernet/src/dht/dht.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 27,
+    "undocument": true,
+    "params": [
+      {
+        "name": "degrees",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 124,
+    "kind": "function",
+    "name": "distanceInKmBetweenEarthCoordinates",
+    "memberof": "src/dht/dht.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/dht/dht.js~distanceInKmBetweenEarthCoordinates",
+    "access": "public",
+    "export": false,
+    "importPath": "@leofcoin/peernet/src/dht/dht.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 31,
+    "undocument": true,
+    "params": [
+      {
+        "name": "lat1",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "lon1",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "lat2",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "lon2",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 125,
+    "kind": "class",
+    "name": "DhtEarth",
+    "memberof": "src/dht/dht.js",
+    "static": true,
+    "longname": "src/dht/dht.js~DhtEarth",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/dht/dht.js",
+    "importStyle": "DhtEarth",
+    "description": null,
+    "lineNumber": 45,
+    "undocument": true,
+    "interface": false
+  },
+  {
+    "__docId__": 126,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/dht/dht.js~DhtEarth",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/dht/dht.js~DhtEarth#constructor",
+    "access": "public",
+    "description": "",
+    "lineNumber": 49
+  },
+  {
+    "__docId__": 127,
+    "kind": "member",
+    "name": "providerMap",
+    "memberof": "src/dht/dht.js~DhtEarth",
+    "static": false,
+    "longname": "src/dht/dht.js~DhtEarth#providerMap",
+    "access": "public",
+    "description": null,
+    "lineNumber": 50,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 128,
+    "kind": "method",
+    "name": "getCoordinates",
+    "memberof": "src/dht/dht.js~DhtEarth",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/dht/dht.js~DhtEarth#getCoordinates",
+    "access": "public",
+    "description": "",
+    "lineNumber": 56,
+    "params": [
+      {
+        "name": "provider",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "{\"latitude\": *, \"longitude\": *}"
+      ]
+    }
+  },
+  {
+    "__docId__": 129,
+    "kind": "method",
+    "name": "getDistance",
+    "memberof": "src/dht/dht.js~DhtEarth",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/dht/dht.js~DhtEarth#getDistance",
+    "access": "public",
+    "description": "",
+    "lineNumber": 69,
+    "params": [
+      {
+        "name": "peer",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "provider",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "{\"provider\": *, \"distance\": *}"
+      ]
+    }
+  },
+  {
+    "__docId__": 130,
+    "kind": "method",
+    "name": "closestPeer",
+    "memberof": "src/dht/dht.js~DhtEarth",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/dht/dht.js~DhtEarth#closestPeer",
+    "access": "public",
+    "description": "",
+    "lineNumber": 77,
+    "params": [
+      {
+        "name": "providers",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 131,
+    "kind": "method",
+    "name": "providersFor",
+    "memberof": "src/dht/dht.js~DhtEarth",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/dht/dht.js~DhtEarth#providersFor",
+    "access": "public",
+    "description": "",
+    "lineNumber": 99,
+    "params": [
+      {
+        "name": "hash",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 132,
+    "kind": "method",
+    "name": "addProvider",
+    "memberof": "src/dht/dht.js~DhtEarth",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/dht/dht.js~DhtEarth#addProvider",
+    "access": "public",
+    "description": "",
+    "lineNumber": 106,
+    "params": [
+      {
+        "name": "address",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "hash",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 133,
+    "kind": "file",
+    "name": "src/disco-peer.js",
+    "content": "export default class DiscoPeer {\r\n  constructor(id, connection) {\r\n    this.id = id\r\n    this.connection = connection\r\n    \r\n    this.connection.on('data', message => pubsub.publish('data', message))\r\n  }\r\n  \r\n  request(data) {\r\n    return new Promise((resolve, reject) => {\r\n      const id = Math.random().toString(36).slice(-12)\r\n      data = Buffer.from(JSON.stringify({id, data}))\r\n      const _onData = message => {\r\n        message = JSON.parse(message.toString())\r\n        if (message.id !== id) return\r\n        \r\n        resolve(message.data)        \r\n      }\r\n      \r\n      pubsub.subscribe('data', _onData)\r\n      \r\n      // cleanup subscriptions\r\n      setTimeout(() => {\r\n        pubsub.unsubscribe('data', _onData)\r\n      }, 5000);\r\n      \r\n      this.write(data)\r\n    });\r\n    \r\n  }\r\n  \r\n  write(data) {\r\n    this.connection.send(data)\r\n  }\r\n  \r\n  on(event = 'data', cb) {\r\n    pubsub.subscribe(event, cb)\r\n    // this.connection.on(event, cb)\r\n  }\r\n  \r\n  removeListener(event = 'data', cb) {\r\n    pubsub.unsubscribe(event, cb)    \r\n  }\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/disco-peer.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 134,
+    "kind": "class",
+    "name": "DiscoPeer",
+    "memberof": "src/disco-peer.js",
+    "static": true,
+    "longname": "src/disco-peer.js~DiscoPeer",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/disco-peer.js",
+    "importStyle": "DiscoPeer",
+    "description": null,
+    "lineNumber": 1,
+    "undocument": true,
+    "interface": false
+  },
+  {
+    "__docId__": 135,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/disco-peer.js~DiscoPeer",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/disco-peer.js~DiscoPeer#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 2,
+    "undocument": true
+  },
+  {
+    "__docId__": 136,
+    "kind": "member",
+    "name": "id",
+    "memberof": "src/disco-peer.js~DiscoPeer",
+    "static": false,
+    "longname": "src/disco-peer.js~DiscoPeer#id",
+    "access": "public",
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 137,
+    "kind": "member",
+    "name": "connection",
+    "memberof": "src/disco-peer.js~DiscoPeer",
+    "static": false,
+    "longname": "src/disco-peer.js~DiscoPeer#connection",
+    "access": "public",
+    "description": null,
+    "lineNumber": 4,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 138,
+    "kind": "method",
+    "name": "request",
+    "memberof": "src/disco-peer.js~DiscoPeer",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/disco-peer.js~DiscoPeer#request",
+    "access": "public",
+    "description": null,
+    "lineNumber": 9,
+    "undocument": true,
+    "params": [
+      {
+        "name": "data",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 139,
+    "kind": "method",
+    "name": "write",
+    "memberof": "src/disco-peer.js~DiscoPeer",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/disco-peer.js~DiscoPeer#write",
+    "access": "public",
+    "description": null,
+    "lineNumber": 32,
+    "undocument": true,
+    "params": [
+      {
+        "name": "data",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 140,
+    "kind": "method",
+    "name": "on",
+    "memberof": "src/disco-peer.js~DiscoPeer",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/disco-peer.js~DiscoPeer#on",
+    "access": "public",
+    "description": null,
+    "lineNumber": 36,
+    "undocument": true,
+    "params": [
+      {
+        "name": "event",
+        "optional": true,
+        "types": [
+          "string"
+        ],
+        "defaultRaw": "data",
+        "defaultValue": "data"
+      },
+      {
+        "name": "cb",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 141,
+    "kind": "method",
+    "name": "removeListener",
+    "memberof": "src/disco-peer.js~DiscoPeer",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/disco-peer.js~DiscoPeer#removeListener",
+    "access": "public",
+    "description": null,
+    "lineNumber": 41,
+    "undocument": true,
+    "params": [
+      {
+        "name": "event",
+        "optional": true,
+        "types": [
+          "string"
+        ],
+        "defaultRaw": "data",
+        "defaultValue": "data"
+      },
+      {
+        "name": "cb",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 142,
+    "kind": "file",
+    "name": "src/hash/hash.js",
+    "content": "import createKeccakHash from 'keccak';\r\nimport varint from 'varint';\r\nimport bs32 from 'bs32';\r\nimport bs58 from 'bs58';\r\nimport isHex from 'is-hex';\r\nimport DiscoCodec from './../codec/codec';\r\n\r\nexport default class DiscoHash {\r\n  constructor(buffer, options = {}) {\r\n    if (options.name) this.name = options.name\r\n    else this.name = 'disco-hash'\r\n    if (options.codecs) this.codecs = options.codecs\r\n    if (buffer) {\r\n      \r\n      if (Buffer.isBuffer(buffer)) {\r\n        this.discoCodec = new DiscoCodec(buffer, this.codecs)\r\n        const name = this.discoCodec.name\r\n        \r\n        if (name) {\r\n          this.name = name\r\n          this.decode(buffer)\r\n        } else {\r\n          this.encode(buffer)\r\n        }\r\n      }\r\n      \r\n      if (typeof buffer === 'string') {\r\n        if (isHex(buffer)) this.fromHex(buffer)\r\n        if (bs32.test(buffer)) this.fromBs32(buffer)\r\n        else this.fromBs58(buffer)\r\n      } else if (typeof buffer === 'object') this.fromJSON(buffer)\r\n    }\r\n    \r\n  }\r\n  \r\n  get prefix() {\r\n    return Buffer.concat([this.discoCodec.codecBuffer, this.length])\r\n  }\r\n  \r\n  get length() {\r\n    return Buffer.from(varint.encode(this.size))\r\n  }\r\n  \r\n  get buffer() {\r\n    return this.hash\r\n  }\r\n  \r\n  toHex() {\r\n    return this.hash.toString('hex')\r\n  }\r\n  \r\n  fromHex(hex) {\r\n    return this.decode(Buffer.from(hex, 'hex'))\r\n  }\r\n  \r\n  fromJSON(json) {\r\n    return this.encode(Buffer.from(JSON.stringify(json)))\r\n  }\r\n  \r\n  toBs32() {\r\n    return bs32.encode(this.hash)\r\n  }\r\n  \r\n  fromBs32(bs) {\r\n    return this.decode(bs32.decode(bs))\r\n  }\r\n  \r\n  toBs58() {\r\n    return bs58.encode(this.hash)\r\n  }\r\n  \r\n  fromBs58(bs) {\r\n    return this.decode(bs58.decode(bs))\r\n  }\r\n  \r\n  toString(encoding = 'utf8') {\r\n    return this.hash.toString(encoding)\r\n  }\r\n  \r\n  encode(buffer, name) {\r\n    if (!this.name && name) this.name = name;\r\n    if (!buffer) buffer = this.buffer;\r\n    this.discoCodec = new DiscoCodec(this.name, this.codecs)\r\n    this.discoCodec.fromName(this.name)\r\n    let hashAlg = this.discoCodec.hashAlg\r\n    if (hashAlg.includes('dbl')) {\r\n      hashAlg = hashAlg.replace('dbl-', '')\r\n      buffer = createKeccakHash(hashAlg.replace('-', '')).update(buffer).digest()          \r\n    }    \r\n    this.digest = createKeccakHash(hashAlg.replace('-', '')).update(buffer).digest()   \r\n    this.size = this.digest.length\r\n    \r\n    this.codec = this.discoCodec.encode();\r\n    this.codec = this.discoCodec.codecBuffer\r\n    this.hash = Buffer.concat([\r\n      this.prefix,\r\n      this.digest\r\n    ])\r\n    \r\n    return this.hash\r\n  }\r\n  \r\n  validate(buffer) {\r\n    if (Buffer.isBuffer(buffer)) {\r\n      const codec = varint.decode(buffer);              \r\n      if (this.codecs[codec]) {\r\n        this.decode(buffer)\r\n      } else {\r\n        this.encode(buffer)\r\n      }      \r\n    }\r\n    if (typeof buffer === 'string') {\r\n      if (isHex(buffer)) this.fromHex(buffer)\r\n      if (bs32.test(buffer)) this.fromBs32(buffer)\r\n    }\r\n    if (typeof buffer === 'object') this.fromJSON(buffer)\r\n  }\r\n  \r\n  decode(buffer) {\r\n    this.hash = buffer\r\n    const codec = varint.decode(buffer);\r\n    \r\n    this.discoCodec = new DiscoCodec(codec, this.codecs)\r\n    // TODO: validate codec\r\n    buffer = buffer.slice(varint.decode.bytes);        \r\n    this.size = varint.decode(buffer);\r\n    this.digest = buffer.slice(varint.decode.bytes);        \r\n    if (this.digest.length !== this.size) {\r\n      throw new Error(`hash length inconsistent: 0x${this.hash.toString('hex')}`)\r\n    }\r\n    \r\n    // const discoCodec = new DiscoCodec(codec, this.codecs)\r\n    \r\n    this.name = this.discoCodec.name\r\n    \r\n    \r\n    this.size = this.digest.length\r\n    \r\n    return {\r\n      codec: this.codec,\r\n      name: this.name,\r\n      size: this.size,\r\n      length: this.length,\r\n      digest: this.digest\r\n    }\r\n  }\r\n}\r\n",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/hash/hash.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 143,
+    "kind": "class",
+    "name": "DiscoHash",
+    "memberof": "src/hash/hash.js",
+    "static": true,
+    "longname": "src/hash/hash.js~DiscoHash",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/hash/hash.js",
+    "importStyle": "DiscoHash",
+    "description": null,
+    "lineNumber": 8,
+    "undocument": true,
+    "interface": false
+  },
+  {
+    "__docId__": 144,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 9,
+    "undocument": true
+  },
+  {
+    "__docId__": 145,
+    "kind": "member",
+    "name": "name",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#name",
+    "access": "public",
+    "description": null,
+    "lineNumber": 10,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 147,
+    "kind": "member",
+    "name": "codecs",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#codecs",
+    "access": "public",
+    "description": null,
+    "lineNumber": 12,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 148,
+    "kind": "member",
+    "name": "discoCodec",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#discoCodec",
+    "access": "public",
+    "description": null,
+    "lineNumber": 16,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 150,
+    "kind": "get",
+    "name": "prefix",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#prefix",
+    "access": "public",
+    "description": null,
+    "lineNumber": 36,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 151,
+    "kind": "get",
+    "name": "length",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#length",
+    "access": "public",
+    "description": null,
+    "lineNumber": 40,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 152,
+    "kind": "get",
+    "name": "buffer",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#buffer",
+    "access": "public",
+    "description": null,
+    "lineNumber": 44,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 153,
+    "kind": "method",
+    "name": "toHex",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#toHex",
+    "access": "public",
+    "description": null,
+    "lineNumber": 48,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 154,
+    "kind": "method",
+    "name": "fromHex",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#fromHex",
+    "access": "public",
+    "description": null,
+    "lineNumber": 52,
+    "undocument": true,
+    "params": [
+      {
+        "name": "hex",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 155,
+    "kind": "method",
+    "name": "fromJSON",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#fromJSON",
+    "access": "public",
+    "description": null,
+    "lineNumber": 56,
+    "undocument": true,
+    "params": [
+      {
+        "name": "json",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 156,
+    "kind": "method",
+    "name": "toBs32",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#toBs32",
+    "access": "public",
+    "description": null,
+    "lineNumber": 60,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 157,
+    "kind": "method",
+    "name": "fromBs32",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#fromBs32",
+    "access": "public",
+    "description": null,
+    "lineNumber": 64,
+    "undocument": true,
+    "params": [
+      {
+        "name": "bs",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 158,
+    "kind": "method",
+    "name": "toBs58",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#toBs58",
+    "access": "public",
+    "description": null,
+    "lineNumber": 68,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 159,
+    "kind": "method",
+    "name": "fromBs58",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#fromBs58",
+    "access": "public",
+    "description": null,
+    "lineNumber": 72,
+    "undocument": true,
+    "params": [
+      {
+        "name": "bs",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 160,
+    "kind": "method",
+    "name": "toString",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#toString",
+    "access": "public",
+    "description": null,
+    "lineNumber": 76,
+    "undocument": true,
+    "params": [
+      {
+        "name": "encoding",
+        "optional": true,
+        "types": [
+          "string"
+        ],
+        "defaultRaw": "utf8",
+        "defaultValue": "utf8"
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 161,
+    "kind": "method",
+    "name": "encode",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#encode",
+    "access": "public",
+    "description": null,
+    "lineNumber": 80,
+    "undocument": true,
+    "params": [
+      {
+        "name": "buffer",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "name",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 164,
+    "kind": "member",
+    "name": "digest",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#digest",
+    "access": "public",
+    "description": null,
+    "lineNumber": 90,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 165,
+    "kind": "member",
+    "name": "size",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#size",
+    "access": "public",
+    "description": null,
+    "lineNumber": 91,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 166,
+    "kind": "member",
+    "name": "codec",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#codec",
+    "access": "public",
+    "description": null,
+    "lineNumber": 93,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 168,
+    "kind": "member",
+    "name": "hash",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#hash",
+    "access": "public",
+    "description": null,
+    "lineNumber": 95,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 169,
+    "kind": "method",
+    "name": "validate",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#validate",
+    "access": "public",
+    "description": null,
+    "lineNumber": 103,
+    "undocument": true,
+    "params": [
+      {
+        "name": "buffer",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 170,
+    "kind": "method",
+    "name": "decode",
+    "memberof": "src/hash/hash.js~DiscoHash",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/hash/hash.js~DiscoHash#decode",
+    "access": "public",
+    "description": null,
+    "lineNumber": 119,
+    "undocument": true,
+    "params": [
+      {
+        "name": "buffer",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "{\"codec\": *, \"name\": *, \"size\": *, \"length\": *, \"digest\": *}"
+      ]
+    }
+  },
+  {
+    "__docId__": 177,
+    "kind": "file",
+    "name": "src/http/api.js",
+    "content": "import {version} from './../../package.json'\r\n\r\nexport default {\r\n  version: ({send}) => send({client: '@peernet/api/http', version}),\r\n  ready: ({send}) => {\r\n    if (globalThis.states.ready) send(true)\r\n    else pubsub.subscribe('ready', () => send(true))\r\n  },\r\n  storage: async (params, {send, error}) => {\r\n    console.log(params);\r\n    const { name, root, key, value, method } = params\r\n    try {\r\n      if (name && root) {\r\n        globalThis[name] = globalThis[name] || await new LeofcoinStorage(name, root)\r\n      } else {\r\n        return error('Expected name & root')\r\n      }\r\n      if (method === 'put') {\r\n        await globalThis[name].put(key, value)\r\n        return send('ok')\r\n      } \r\n      if (method === 'remove') {\r\n        await globalThis[name].remove(key, value)\r\n        return send('ok')\r\n      }\r\n      value = await globalThis[name].get(key)\r\n      return send(value)\r\n    } catch (e) {\r\n      return error(e)\r\n    }\r\n  },\r\n  getConfig: async (params, {send, error}) => {\r\n    try {\r\n      const config = await api.getConfig(params)\r\n      send(config)\r\n    } catch (e) {\r\n      error(e)\r\n    }\r\n  },\r\n  setMinerConfig: async (params, {send, error}) => {\r\n    try {\r\n      await api.setMinerConfig(params)\r\n      send('ok')\r\n    } catch (e) {\r\n      error(e)\r\n    }\r\n  },\r\n  getMinerConfig: async ({send, error}) => {\r\n    try {\r\n      const config = await api.getMinerConfig()\r\n      send(config)\r\n    } catch (e) {\r\n      error(e)\r\n    }\r\n  },\r\n  wallet: async ({send}) => {\r\n    const wallet = await walletStore.get()\r\n    send(wallet)\r\n  },\r\n  addresses: async ({send, error}) => {\r\n    try {\r\n      const adresses = await api.addresses()\r\n      send(adresses)\r\n    } catch (e) {\r\n      error(e)\r\n    }\r\n  },\r\n  accountNames: async (params, {send, error}) => {\r\n    try {\r\n      const adresses = await api.accountNames(params.index)\r\n      send(adresses)\r\n    } catch (e) {\r\n      error(e)\r\n    }\r\n  },\r\n  accounts: async ({send}) => {\r\n    const accounts = await accountStore.get()\r\n    send(accounts)\r\n  },\r\n  account: async (params, {send}) => {\r\n    const account = await accountStore.get(params)\r\n    send(account)\r\n  },\r\n  balance: async (params, {send, error}) => {\r\n    console.log('balance');\r\n    try {\r\n      console.log(await api.getBalanceForAddress(params.address));\r\n      const value = await api.getBalanceForAddress(params.address)\r\n      send(value)\r\n    } catch (e) {\r\n      console.log(e);\r\n      error(e)\r\n    }\r\n  },  \r\n  balanceAfter: async (params, {send, error}) => {\r\n    try {\r\n      const value = await api.getBalanceForAddressAfter(params.address, params.index)\r\n      send(value)\r\n    } catch (e) {\r\n      error(e)\r\n    }\r\n  },\r\n  mine: async (params, {send, error}) => {\r\n    api.mine(params)\r\n    send('ok')\r\n  },\r\n  lastBlock: async ({send, error}) => {\r\n    try {\r\n      const value = await api.lastBlock()\r\n      send(value)\r\n    } catch (e) {\r\n      error(e)\r\n    }\r\n  }\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/http/api.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 178,
+    "kind": "file",
+    "name": "src/http/client/api.js",
+    "content": "import HttpClientApi from './http-client.js'\r\n\r\nexport default class extends HttpClientApi {\r\n  constructor(config = {}) {\r\n    config.apiPath = 'api';\r\n    return (async () => {\r\n      await super(config)\r\n      \r\n      this.properties = {\r\n        wallet: 'get',\r\n        version: 'get',\r\n        addresses: 'get',\r\n        config: 'get',\r\n        account: 'get',\r\n        accounts: 'get',\r\n        transaction: 'any',\r\n        transactions: 'get',\r\n        block: 'get',\r\n        blocks: 'get'   \r\n      }\r\n      this.keys = Object.keys(this.properties)\r\n      return this\r\n    })()\r\n    \r\n  }\r\n  \r\n  async request(url, data) {\r\n    return await this.client.request({url, params: data})\r\n  }  \r\n  \r\n  async ready() {\r\n    return await this.request('ready')\r\n  }\r\n  \r\n  async version() {\r\n    return await this.request('version')\r\n  }\r\n  \r\n  async account(index) {\r\n    return await this.request('account', {index})\r\n  }\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/http/client/api.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 179,
+    "kind": "class",
+    "name": "api",
+    "memberof": "src/http/client/api.js",
+    "static": true,
+    "longname": "src/http/client/api.js~api",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/http/client/api.js",
+    "importStyle": "api",
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "interface": false,
+    "extends": [
+      "src/http/client/http-client.js~HttpClientApi"
+    ]
+  },
+  {
+    "__docId__": 180,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/http/client/api.js~api",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/http/client/api.js~api#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 4,
+    "undocument": true
+  },
+  {
+    "__docId__": 181,
+    "kind": "member",
+    "name": "properties",
+    "memberof": "src/http/client/api.js~api",
+    "static": false,
+    "longname": "src/http/client/api.js~api#properties",
+    "access": "public",
+    "description": null,
+    "lineNumber": 9,
+    "undocument": true,
+    "type": {
+      "types": [
+        "{\"wallet\": string, \"version\": string, \"addresses\": string, \"config\": string, \"account\": string, \"accounts\": string, \"transaction\": string, \"transactions\": string, \"block\": string, \"blocks\": string}"
+      ]
+    }
+  },
+  {
+    "__docId__": 182,
+    "kind": "member",
+    "name": "keys",
+    "memberof": "src/http/client/api.js~api",
+    "static": false,
+    "longname": "src/http/client/api.js~api#keys",
+    "access": "public",
+    "description": null,
+    "lineNumber": 21,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 183,
+    "kind": "method",
+    "name": "request",
+    "memberof": "src/http/client/api.js~api",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/http/client/api.js~api#request",
+    "access": "public",
+    "description": null,
+    "lineNumber": 27,
+    "undocument": true,
+    "params": [
+      {
+        "name": "url",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "data",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 184,
+    "kind": "method",
+    "name": "ready",
+    "memberof": "src/http/client/api.js~api",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/http/client/api.js~api#ready",
+    "access": "public",
+    "description": null,
+    "lineNumber": 31,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 185,
+    "kind": "method",
+    "name": "version",
+    "memberof": "src/http/client/api.js~api",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/http/client/api.js~api#version",
+    "access": "public",
+    "description": null,
+    "lineNumber": 35,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 186,
+    "kind": "method",
+    "name": "account",
+    "memberof": "src/http/client/api.js~api",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/http/client/api.js~api#account",
+    "access": "public",
+    "description": null,
+    "lineNumber": 39,
+    "undocument": true,
+    "params": [
+      {
+        "name": "index",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 187,
+    "kind": "file",
+    "name": "src/http/client/client.js",
+    "content": "import HttpClientApi from './api.js'\r\n\r\nexport default (config = {}) => {\r\n  if (typeof config !== 'object') config = {}\r\n  if (!config.protocol) config.protocol = 'peernet-v0.1.0'\r\n  if (!config.port) config.port = 1000\r\n  if (!config.host) config.host = '127.0.0.1'\r\n    \r\n  return new HttpClientApi(config)\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/http/client/client.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 188,
+    "kind": "function",
+    "name": "client",
+    "memberof": "src/http/client/client.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/http/client/client.js~client",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/http/client/client.js",
+    "importStyle": "client",
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "params": [
+      {
+        "name": "config",
+        "optional": true,
+        "types": [
+          "{}"
+        ],
+        "defaultRaw": {},
+        "defaultValue": "{}"
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 189,
+    "kind": "file",
+    "name": "src/http/client/http-client.js",
+    "content": "import Client from './../../../node_modules/socket-request-client/src/index.js'\r\n\r\nexport default class HttpClientApi {\r\n  constructor(config = {}) {\r\n    if (!config.apiPath) config.apiPath = 'api'\r\n    \r\n    const address = `ws://${config.host}:${config.port}`\r\n    \r\n    this.apiUrl = url => `${address}/${url}`;\r\n    return (async () => {\r\n      this.client = await Client(address, config.protocol, {pubsub: config.pubsub, retry: 3000})\r\n      return this\r\n    })()\r\n  }\r\n  \r\n  async get (url, obj) {\r\n    const headers = {}\r\n    let body = null\r\n    let method = 'GET'\r\n    if (obj) {\r\n      method = 'POST'\r\n      headers['Content-Type'] = 'application/json'\r\n      body = JSON.stringify(obj)\r\n    }\r\n    let response = await this.client.request(url, { headers, body, method })\r\n    const type = response.headers.get('content-type').split(';')[0]\r\n    if (type==='application/json') response = await response.json()\r\n    return response\r\n  }\r\n  \r\n  async put (url, obj) {\r\n    const headers = {}\r\n    let body = {}\r\n    if (obj) {\r\n      headers['Content-Type'] = 'application/json'\r\n      body = JSON.stringify(obj)\r\n    }\r\n    \r\n    let response = await fetch(this.apiUrl(url), { method: 'PUT', headers, body})\r\n    const type = response.headers.get('content-type').split(';')[0]\r\n    if (type==='application/json') response = await response.json()\r\n    return response\r\n  }\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/http/client/http-client.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 190,
+    "kind": "class",
+    "name": "HttpClientApi",
+    "memberof": "src/http/client/http-client.js",
+    "static": true,
+    "longname": "src/http/client/http-client.js~HttpClientApi",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/http/client/http-client.js",
+    "importStyle": "HttpClientApi",
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "interface": false
+  },
+  {
+    "__docId__": 191,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/http/client/http-client.js~HttpClientApi",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/http/client/http-client.js~HttpClientApi#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 4,
+    "undocument": true
+  },
+  {
+    "__docId__": 192,
+    "kind": "member",
+    "name": "apiUrl",
+    "memberof": "src/http/client/http-client.js~HttpClientApi",
+    "static": false,
+    "longname": "src/http/client/http-client.js~HttpClientApi#apiUrl",
+    "access": "public",
+    "description": null,
+    "lineNumber": 9,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 193,
+    "kind": "member",
+    "name": "client",
+    "memberof": "src/http/client/http-client.js~HttpClientApi",
+    "static": false,
+    "longname": "src/http/client/http-client.js~HttpClientApi#client",
+    "access": "public",
+    "description": null,
+    "lineNumber": 11,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 194,
+    "kind": "method",
+    "name": "get",
+    "memberof": "src/http/client/http-client.js~HttpClientApi",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/http/client/http-client.js~HttpClientApi#get",
+    "access": "public",
+    "description": null,
+    "lineNumber": 16,
+    "undocument": true,
+    "params": [
+      {
+        "name": "url",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "obj",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 195,
+    "kind": "method",
+    "name": "put",
+    "memberof": "src/http/client/http-client.js~HttpClientApi",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/http/client/http-client.js~HttpClientApi#put",
+    "access": "public",
+    "description": null,
+    "lineNumber": 31,
+    "undocument": true,
+    "params": [
+      {
+        "name": "url",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "obj",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 196,
+    "kind": "file",
+    "name": "src/http/client/storage.js",
+    "content": "export default class LeofcoinStorageClient {\r\n  constructor(name, root) {\r\n    this.name = name\r\n    this.root = root\r\n  }\r\n  \r\n  async get(key) {\r\n    try {\r\n      const result = await globalThis.peernet.client.request('storage', {\r\n        name: this.name,\r\n        root: this.root,\r\n        key\r\n      })\r\n      return result\r\n    } catch (e) {\r\n      console.log(e);\r\n      return undefined\r\n    }\r\n  }\r\n  \r\n  async put(key, value) {\r\n    try {\r\n      const result = await globalThis.peernet.client.request('storage', {\r\n        name: this.name,\r\n        root: this.root,\r\n        key,\r\n        value,\r\n        method: 'put'\r\n      })\r\n      return result\r\n    } catch (e) {\r\n      console.log(e);\r\n      return undefined\r\n    }\r\n  }\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/http/client/storage.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 197,
+    "kind": "class",
+    "name": "LeofcoinStorageClient",
+    "memberof": "src/http/client/storage.js",
+    "static": true,
+    "longname": "src/http/client/storage.js~LeofcoinStorageClient",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/http/client/storage.js",
+    "importStyle": "LeofcoinStorageClient",
+    "description": null,
+    "lineNumber": 1,
+    "undocument": true,
+    "interface": false
+  },
+  {
+    "__docId__": 198,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/http/client/storage.js~LeofcoinStorageClient",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/http/client/storage.js~LeofcoinStorageClient#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 2,
+    "undocument": true
+  },
+  {
+    "__docId__": 199,
+    "kind": "member",
+    "name": "name",
+    "memberof": "src/http/client/storage.js~LeofcoinStorageClient",
+    "static": false,
+    "longname": "src/http/client/storage.js~LeofcoinStorageClient#name",
+    "access": "public",
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 200,
+    "kind": "member",
+    "name": "root",
+    "memberof": "src/http/client/storage.js~LeofcoinStorageClient",
+    "static": false,
+    "longname": "src/http/client/storage.js~LeofcoinStorageClient#root",
+    "access": "public",
+    "description": null,
+    "lineNumber": 4,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 201,
+    "kind": "method",
+    "name": "get",
+    "memberof": "src/http/client/storage.js~LeofcoinStorageClient",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/http/client/storage.js~LeofcoinStorageClient#get",
+    "access": "public",
+    "description": null,
+    "lineNumber": 7,
+    "undocument": true,
+    "params": [
+      {
+        "name": "key",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 202,
+    "kind": "method",
+    "name": "put",
+    "memberof": "src/http/client/storage.js~LeofcoinStorageClient",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/http/client/storage.js~LeofcoinStorageClient#put",
+    "access": "public",
+    "description": null,
+    "lineNumber": 21,
+    "undocument": true,
+    "params": [
+      {
+        "name": "key",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "value",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 203,
+    "kind": "file",
+    "name": "src/http/http.js",
+    "content": "import api from './api.js'\r\nimport server from './../../node_modules/socket-request-server/src/index'\r\nimport { createServer } from 'http'\r\nimport Koa from 'koa'\r\nimport {version} from './../../package.json'\r\nexport default (config = {}) => {\r\n  if (typeof config !== 'object') config = {}\r\n  if (!config.protocol) config.protocol = 'peernet-v0.1.0'\r\n  if (!config.port) config.port = 1000\r\n  if (!config.host) config.host = '127.0.0.1'\r\n  \r\n  const app = new Koa()\r\n  \r\n  app.use(async ctx => {\r\n    const url = ctx.url.split('/api/')[1]\r\n    if (url === 'version') ctx.body = {client: '@peernet/api/http', version}\r\n  })\r\n  \r\n  const httpServer = createServer(app.callback())\r\n  \r\n  config.httpServer = httpServer\r\n  \r\n  httpServer.listen(config.port, () => {\r\n    console.log(`listening on ${config.port}`);\r\n  });\r\n  \r\n  return server(config, api)\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/http/http.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 204,
+    "kind": "function",
+    "name": "http",
+    "memberof": "src/http/http.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/http/http.js~http",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/http/http.js",
+    "importStyle": "http",
+    "description": null,
+    "lineNumber": 6,
+    "undocument": true,
+    "params": [
+      {
+        "name": "config",
+        "optional": true,
+        "types": [
+          "{}"
+        ],
+        "defaultRaw": {},
+        "defaultValue": "{}"
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 205,
+    "kind": "file",
+    "name": "src/messages/data-response.js",
+    "content": "import protons from 'protons'\r\nimport proto from './../proto/data-response.proto.js'\r\nimport CodecFormat from './../codec/codec-format-interface.js'\r\n\r\nexport default class DataMessageResponse extends CodecFormat {\r\n  \r\n  get keys() {\r\n    return [ 'hash', 'data' ]\r\n  }\r\n  \r\n  constructor(data) {\r\n    const name = 'peernet-data-response'\r\n    super(data, protons(proto).PeernetDataMessageResponse, {name})\r\n  }\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/messages/data-response.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 206,
+    "kind": "class",
+    "name": "DataMessageResponse",
+    "memberof": "src/messages/data-response.js",
+    "static": true,
+    "longname": "src/messages/data-response.js~DataMessageResponse",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/messages/data-response.js",
+    "importStyle": "DataMessageResponse",
+    "description": null,
+    "lineNumber": 5,
+    "undocument": true,
+    "interface": false,
+    "extends": [
+      "src/codec/codec-format-interface.js~CodecFormat"
+    ]
+  },
+  {
+    "__docId__": 207,
+    "kind": "get",
+    "name": "keys",
+    "memberof": "src/messages/data-response.js~DataMessageResponse",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/messages/data-response.js~DataMessageResponse#keys",
+    "access": "public",
+    "description": null,
+    "lineNumber": 7,
+    "undocument": true,
+    "type": {
+      "types": [
+        "string[]"
+      ]
+    }
+  },
+  {
+    "__docId__": 208,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/messages/data-response.js~DataMessageResponse",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/messages/data-response.js~DataMessageResponse#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 11,
+    "undocument": true
+  },
+  {
+    "__docId__": 209,
+    "kind": "file",
+    "name": "src/messages/data.js",
+    "content": "import protons from 'protons'\r\nimport proto from './../proto/data.proto.js'\r\nimport CodecFormat from './../codec/codec-format-interface.js'\r\n\r\nexport default class DataMessage extends CodecFormat {\r\n  \r\n  get keys() {\r\n    return [ 'hash' ]\r\n  }\r\n  \r\n  constructor(data) {\r\n    const name = 'peernet-data'\r\n    super(data, protons(proto).PeernetDataMessage, {name})\r\n  }\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/messages/data.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 210,
+    "kind": "class",
+    "name": "DataMessage",
+    "memberof": "src/messages/data.js",
+    "static": true,
+    "longname": "src/messages/data.js~DataMessage",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/messages/data.js",
+    "importStyle": "DataMessage",
+    "description": null,
+    "lineNumber": 5,
+    "undocument": true,
+    "interface": false,
+    "extends": [
+      "src/codec/codec-format-interface.js~CodecFormat"
+    ]
+  },
+  {
+    "__docId__": 211,
+    "kind": "get",
+    "name": "keys",
+    "memberof": "src/messages/data.js~DataMessage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/messages/data.js~DataMessage#keys",
+    "access": "public",
+    "description": null,
+    "lineNumber": 7,
+    "undocument": true,
+    "type": {
+      "types": [
+        "string[]"
+      ]
+    }
+  },
+  {
+    "__docId__": 212,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/messages/data.js~DataMessage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/messages/data.js~DataMessage#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 11,
+    "undocument": true
+  },
+  {
+    "__docId__": 213,
+    "kind": "file",
+    "name": "src/messages/dht-response.js",
+    "content": "import protons from 'protons'\r\nimport proto from './../proto/dht-response.proto.js'\r\nimport { encode, decode } from 'bs32'\r\nimport CodecFormat from './../codec/codec-format-interface.js'\r\n\r\nexport default class DHTMessageResponse extends CodecFormat {\r\n  \r\n  get keys() {\r\n    return [ 'hash', 'has' ]\r\n  }\r\n  \r\n  constructor(data) {\r\n    const name = 'peernet-dht-response'\r\n    super(data, protons(proto).PeernetDHTMessageResponse, {name})\r\n  }\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/messages/dht-response.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 214,
+    "kind": "class",
+    "name": "DHTMessageResponse",
+    "memberof": "src/messages/dht-response.js",
+    "static": true,
+    "longname": "src/messages/dht-response.js~DHTMessageResponse",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/messages/dht-response.js",
+    "importStyle": "DHTMessageResponse",
+    "description": null,
+    "lineNumber": 6,
+    "undocument": true,
+    "interface": false,
+    "extends": [
+      "src/codec/codec-format-interface.js~CodecFormat"
+    ]
+  },
+  {
+    "__docId__": 215,
+    "kind": "get",
+    "name": "keys",
+    "memberof": "src/messages/dht-response.js~DHTMessageResponse",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/messages/dht-response.js~DHTMessageResponse#keys",
+    "access": "public",
+    "description": null,
+    "lineNumber": 8,
+    "undocument": true,
+    "type": {
+      "types": [
+        "string[]"
+      ]
+    }
+  },
+  {
+    "__docId__": 216,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/messages/dht-response.js~DHTMessageResponse",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/messages/dht-response.js~DHTMessageResponse#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 12,
+    "undocument": true
+  },
+  {
+    "__docId__": 217,
+    "kind": "file",
+    "name": "src/messages/dht.js",
+    "content": "import protons from 'protons'\r\nimport proto from './../proto/dht.proto.js'\r\nimport CodecFormat from './../codec/codec-format-interface.js'\r\n\r\nexport default class DHTMessage extends CodecFormat {\r\n  \r\n  get keys() {\r\n    return [ 'hash' ]\r\n  }\r\n  \r\n  constructor(data) {\r\n    const name = 'peernet-dht'\r\n    super(data, protons(proto).PeernetDHTMessage, {name})\r\n  }\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/messages/dht.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 218,
+    "kind": "class",
+    "name": "DHTMessage",
+    "memberof": "src/messages/dht.js",
+    "static": true,
+    "longname": "src/messages/dht.js~DHTMessage",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/messages/dht.js",
+    "importStyle": "DHTMessage",
+    "description": null,
+    "lineNumber": 5,
+    "undocument": true,
+    "interface": false,
+    "extends": [
+      "src/codec/codec-format-interface.js~CodecFormat"
+    ]
+  },
+  {
+    "__docId__": 219,
+    "kind": "get",
+    "name": "keys",
+    "memberof": "src/messages/dht.js~DHTMessage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/messages/dht.js~DHTMessage#keys",
+    "access": "public",
+    "description": null,
+    "lineNumber": 7,
+    "undocument": true,
+    "type": {
+      "types": [
+        "string[]"
+      ]
+    }
+  },
+  {
+    "__docId__": 220,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/messages/dht.js~DHTMessage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/messages/dht.js~DHTMessage#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 11,
+    "undocument": true
+  },
+  {
+    "__docId__": 221,
+    "kind": "file",
+    "name": "src/messages/peernet.js",
+    "content": "import protons from 'protons'\r\nimport proto from './../proto/peernet.proto.js'\r\nimport CodecFormat from './../codec/codec-format-interface.js'\r\n\r\nexport default class PeernetMessage extends CodecFormat {\r\n  \r\n  get keys() {\r\n    return [ 'data', 'signature', 'from', 'to', 'id' ]\r\n  }\r\n  \r\n  constructor(buffer) {\r\n    const name = 'peernet-message'\r\n    super(buffer, protons(proto).PeernetMessage, {name})\r\n  }\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/messages/peernet.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 222,
+    "kind": "class",
+    "name": "PeernetMessage",
+    "memberof": "src/messages/peernet.js",
+    "static": true,
+    "longname": "src/messages/peernet.js~PeernetMessage",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/messages/peernet.js",
+    "importStyle": "PeernetMessage",
+    "description": null,
+    "lineNumber": 5,
+    "undocument": true,
+    "interface": false,
+    "extends": [
+      "src/codec/codec-format-interface.js~CodecFormat"
+    ]
+  },
+  {
+    "__docId__": 223,
+    "kind": "get",
+    "name": "keys",
+    "memberof": "src/messages/peernet.js~PeernetMessage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/messages/peernet.js~PeernetMessage#keys",
+    "access": "public",
+    "description": null,
+    "lineNumber": 7,
+    "undocument": true,
+    "type": {
+      "types": [
+        "string[]"
+      ]
+    }
+  },
+  {
+    "__docId__": 224,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/messages/peernet.js~PeernetMessage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/messages/peernet.js~PeernetMessage#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 11,
+    "undocument": true
+  },
+  {
+    "__docId__": 225,
+    "kind": "file",
+    "name": "src/peer-info.js",
+    "content": "import CodecFormat from './codec/codec-format-interface'\r\n\r\nexport default class PeerInfo extends CodecFormat {\r\n  constructor(data, options) {\r\n    this.keys = ['id', 'address', 'family']\r\n    super(data, options)  \r\n  }\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/peer-info.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 226,
+    "kind": "class",
+    "name": "PeerInfo",
+    "memberof": "src/peer-info.js",
+    "static": true,
+    "longname": "src/peer-info.js~PeerInfo",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/peer-info.js",
+    "importStyle": "PeerInfo",
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "interface": false,
+    "extends": [
+      "src/codec/codec-format-interface.js~CodecFormat"
+    ]
+  },
+  {
+    "__docId__": 227,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/peer-info.js~PeerInfo",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/peer-info.js~PeerInfo#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 4,
+    "undocument": true
+  },
+  {
+    "__docId__": 228,
+    "kind": "member",
+    "name": "keys",
+    "memberof": "src/peer-info.js~PeerInfo",
+    "static": false,
+    "longname": "src/peer-info.js~PeerInfo#keys",
+    "access": "public",
+    "description": null,
+    "lineNumber": 5,
+    "undocument": true,
+    "type": {
+      "types": [
+        "string[]"
+      ]
+    }
+  },
+  {
+    "__docId__": 229,
+    "kind": "file",
+    "name": "src/peernet.js",
+    "content": "import Client from './client'\r\nimport LeofcoinStorage from './../node_modules/@leofcoin/storage/src/level.js'\r\nimport {decode} from 'bs32'\r\nimport MultiWallet from '@leofcoin/multi-wallet'\r\nimport fetch from 'node-fetch'\r\nimport http from './http/http.js'\r\nimport httpClient from './http/client/client.js'\r\nimport LeofcoinStorageClient from './http/client/storage.js'\r\nimport PeernetMessage from './messages/peernet.js'\r\nimport DHTMessage from './messages/dht.js'\r\nimport DHTMessageResponse from './messages/dht-response.js'\r\nimport DataMessage from './messages/data.js'\r\nimport DataMessageResponse from './messages/data-response.js'\r\nimport Codec from './codec/codec.js'\r\nimport Hash from './hash/hash.js'\r\nimport DHT from './dht/dht.js'\r\nimport {debug} from './utils.js'\r\n\r\nglobalThis.leofcoin = globalThis.leofcoin || {}\r\nglobalThis.peernet = globalThis.peernet || {}\r\n\r\nlet hasDaemon = false;\r\nconst https = (() => {\r\n  if (!globalThis.location) return false;\r\n  return Boolean(globalThis.location.protocol === 'https:')\r\n})();\r\n\r\n/**\r\n * @access public\r\n * @example\r\n * const peernet = new Peernet();\r\n */\r\nexport default class Peernet {\r\n  /**\r\n   * @access public\r\n   * @param {Object} options\r\n   * @param {String} options.network - desired network\r\n   * @param {String} options.root - path to root directory\r\n   * \r\n   * @return {Promise} instance of Peernet\r\n   *\r\n   * @example\r\n   * const peernet = new Peernet({network: 'leofcoin', root: '.leofcoin'});\r\n   * // testnet\r\n   * const peernet = new Peernet({network: 'leofcoin:olivia', root: '.leofcoin'});\r\n   */\r\n  constructor(options = {}) {\r\n    /**\r\n     * @property {String} network - current network\r\n     */\r\n    this.network = options.network || 'leofcoin'\r\n    const parts = this.network.split(':')\r\n    \r\n    if (!options.root) {\r\n      if (parts[1])  options.root = `.${parts[0]}/peernet/${parts[1]}`\r\n      else options.root = `.${this.network}/peernet`\r\n    }\r\n    \r\n    // peernetDHT aka closesPeer by coordinates\r\n    /**\r\n     * @type {Object}\r\n     * @property {Object} peer Instance of Peer\r\n     */\r\n    this.dht = new DHT()\r\n    \r\n    /**\r\n     * Array of peers \r\n     * @type {Array}\r\n     * @property {Object} peer Instance of Peer\r\n     */\r\n    this.peers = []\r\n    \r\n    /**\r\n     * proto Object containing proto\r\n     * @type {Object}\r\n     * @property {PeernetMessage} protos[peernet-message] messageNode\r\n     * @property {DHTMessage} protos[peernet-dht] messageNode\r\n     * @property {DHTMessageResponse} protos[peernet-dht-response] messageNode\r\n     * @property {DataMessage} protos[peernet-data] messageNode\r\n     * @property {DataMessageResponse} protos[peernet-data-response] messageNode\r\n     */\r\n    this.protos = {\r\n      'peernet-message': PeernetMessage,\r\n      'peernet-dht': DHTMessage,\r\n      'peernet-dht-response': DHTMessageResponse,\r\n      'peernet-data': DataMessage,\r\n      'peernet-data-response': DataMessageResponse\r\n    }    \r\n    \r\n    this._init(options)\r\n  }\r\n  async hasDaemon() {\r\n    try {\r\n      let response = await fetch('http://127.0.0.1:1000/api/version')\r\n      response = await response.json()\r\n      return Boolean(response.client === '@peernet/api/http')\r\n    } catch (e) {\r\n      return false\r\n    }\r\n  }\r\n  \r\n  /**\r\n   * Get current environment\r\n   * @return {String} current environment [node, electron, browser]\r\n   */\r\n  async environment() {\r\n    const _navigator = globalThis.navigator\r\n    if (!_navigator) {\r\n      return 'node'\r\n    } else if (_navigator && /electron/i.test(_navigator.userAgent)) {\r\n      return 'electron'\r\n    } else {\r\n      return 'browser'\r\n    }\r\n  }\r\n  \r\n  /**\r\n   * * Get current environment\r\n   * @return {Object} result\r\n   * @property {Boolean} reult.daemon whether or not daemon is running\r\n   * @property {Boolean} reult.environment Current environment\r\n   */\r\n  async target() {\r\n    let daemon = false\r\n    const environment = await this.environment()\r\n    if (!https) daemon = await this.hasDaemon()\r\n\r\n    return { daemon, environment }\r\n  }\r\n  \r\n  /**\r\n   * @private\r\n   */\r\n  async _init(options) {\r\n    const { daemon, environment } = await this.target()\r\n    if (daemon) {\r\n      globalThis.peernet.client = await httpClient({protocol: 'peernet-v0.1.0', host: '127.0.0.1', port: 1000})\r\n      globalThis.accountStore = globalThis.accountStore || await new LeofcoinStorageClient('lfc-account', options.root)\r\n      globalThis.walletStore = globalThis.walletStore || await new LeofcoinStorageClient('lfc-wallet', options.root)\r\n      globalThis.blockStore = globalThis.blockStore || await new LeofcoinStorageClient('lfc-block', options.root)\r\n    } else {\r\n      globalThis.accountStore = globalThis.accountStore || new LeofcoinStorage('lfc-account', options.root)\r\n      globalThis.walletStore = globalThis.walletStore || new LeofcoinStorage('lfc-wallet', options.root)\r\n      globalThis.blockStore = globalThis.blockStore || new LeofcoinStorage('lfc-block', options.root)\r\n      \r\n      if (environment !== 'browser') http()\r\n    }\r\n    \r\n    const { walletId } = await accountStore.get('public')\r\n    // peernet id\r\n    options.id = Buffer.from(walletId.slice(0, 32))\r\n    this.id = walletId\r\n    this.peerId = options.id\r\n    \r\n    pubsub.subscribe('peer:connected', peer => {\r\n      peer.on('data', message => this._protoHandler(message, peer))\r\n      this.peers.push(peer)\r\n    })\r\n    this.client = new Client(options)\r\n  }\r\n  \r\n  protoFor(data) {\r\n    if (!Buffer.isBuffer(data)) data = Buffer.from(data)\r\n    const codec = new Codec(data)\r\n    if (!codec.name) throw new Error('proto not found')\r\n    const Proto = this.protos[codec.name]\r\n    return new Proto(data)\r\n  }\r\n  \r\n  /**\r\n   * @private\r\n   */\r\n  async _protoHandler(message, peer) {\r\n    message = JSON.parse(message.toString())\r\n    const id = message.id\r\n    message = new PeernetMessage(Buffer.from(message.data))\r\n    \r\n    const codec = new Codec(message.decoded.data)\r\n    let Proto = this.protos[codec.name]\r\n    \r\n    let proto = new Proto(message.decoded.data)\r\n    if (proto.name === 'peernet-dht') {\r\n      const hash = proto.decoded.hash\r\n      const has = await this.has(hash)      \r\n      const data = new DHTMessageResponse({hash, has})\r\n      \r\n      const message = {\r\n        from: this.client.id,\r\n        to: Buffer.from(peer.id),\r\n        data: data.encoded\r\n      }\r\n      \r\n      const signature = await this.hashAndSignMessage(message)\r\n      \r\n      const node = new PeernetMessage({\r\n        ...message,\r\n        signature\r\n      })\r\n      \r\n      peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))\r\n    } else if (proto.name === 'peernet-data') {\r\n      const hash = proto.decoded.hash\r\n      const has = await blockStore.has(hash)\r\n      if (has) {\r\n        let data = await blockStore.get(hash)\r\n        data = new DataMessageResponse({hash, data: Buffer.from(data)})\r\n        \r\n        const node = await this.prepareMessage(this.client.id, peer.id, data.encoded)\r\n        \r\n        peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))\r\n      }\r\n    }\r\n    // PeernetDHTMessage()\r\n    // PeernetDHTMessageResponse\r\n    // pubsub.publish('socket-data', { message, peer })\r\n  }\r\n  \r\n  /**\r\n   * performs a walk and resolves first encounter\r\n   */\r\n  async walk(hash) {\r\n    if (!hash) throw 'hash expected, received undefined'\r\n    const data = new DHTMessage({hash})\r\n    for (const peer of this.peers) {\r\n      const node = await this.prepareMessage(this.client.id, peer.id, data.encoded)\r\n      \r\n      const result = await peer.request(node.encoded)\r\n      \r\n      let proto = this.protoFor(result.data)\r\n      \r\n      if (proto.name !== 'peernet-message') throw new Error('Nodes/Data should be send encapsulated by peernet-message')\r\n      const from = proto.decoded.from\r\n      proto = this.protoFor(proto.decoded.data)\r\n      \r\n      if (proto.name !== 'peernet-dht-response') throw new Error(`Routing error: Received proto ${proto.name} expected peernet-dht-response`)\r\n\r\n      const peerInfo = {\r\n        family: peer.connection.remoteFamily || peer.connection.localFamily,\r\n        address: peer.connection.remoteAddress || peer.connection.localAddress,\r\n        port: peer.connection.remotePort || peer.connection.localPort,\r\n        id: from\r\n      }\r\n      \r\n      if (proto.decoded.has) this.dht.addProvider(peerInfo, proto.decoded.hash)\r\n    }\r\n  }\r\n  \r\n  \r\n  async providersFor(hash) {\r\n    let providers = await this.dht.providersFor(hash)\r\n    // walk the network to find a provider\r\n    if (!providers || providers.length === 0) {\r\n      await this.walk(hash)\r\n      providers = await this.dht.providersFor(hash)\r\n      // second walk the network to find a provider\r\n      if (!providers || providers.length === 0) {\r\n        await this.walk(hash)\r\n        providers = await this.dht.providersFor(hash)\r\n      }\r\n    }\r\n    // undefined if no providers given\r\n    return providers\r\n  }\r\n  \r\n  async get(hash) {\r\n    debug(`get ${hash}`)\r\n    let data = await blockStore.has(hash)\r\n    if (data) return await blockStore.get(hash)\r\n    let providers = await this.providersFor(hash)\r\n    if (!providers || providers.size === 0) throw `nothing found for ${hash}`\r\n    debug(`found ${providers.size} for ${hash}`)\r\n    \r\n    // get closest peer on earth\r\n    const closestPeer = await this.dht.closestPeer(providers)\r\n    \r\n    // get peer instance by id\r\n    const id = closestPeer.id.toString()\r\n    const closest = this.peers.filter((peer) => {\r\n      if (peer.id.toString() === id) return peer\r\n    })\r\n    \r\n    data = new DataMessage({hash})\r\n    \r\n    const message = {\r\n      from: this.client.id,\r\n      to: Buffer.from(id),\r\n      data: data.encoded\r\n    }\r\n    \r\n    const signature = await this.hashAndSignMessage(message)\r\n    \r\n    const node = new PeernetMessage({\r\n      ...message,\r\n      signature\r\n    })\r\n        \r\n    data = await closest[0].request(node.encoded)\r\n    let proto = this.protoFor(Buffer.from(data.data))\r\n    proto = this.protoFor(proto.decoded.data)\r\n    this.put(hash, proto.decoded.data)\r\n    return proto.decoded.data\r\n  }\r\n  \r\n  async put(hash, data) {\r\n    return await blockStore.put(hash, data)\r\n  }\r\n  \r\n  async has(hash) {\r\n    return await blockStore.has(hash)\r\n  }\r\n  \r\n  async hashAndSignMessage(message) {\r\n    const hasher = new Hash(message, { name: 'peernet-message' })\r\n    const identity = await walletStore.get('identity')\r\n    \r\n    const wallet = new MultiWallet(this.network)\r\n    wallet.import(identity.multiWIF)\r\n    return wallet.sign(hasher.hash.slice(0, 32))\r\n  }\r\n  \r\n  /**\r\n   * @param {String} from - peer id\r\n   * @param {String} to - peer id\r\n   * @param {String|PeernetMessage} data - data encoded message string or the messageNode itself\r\n   */\r\n  async prepareMessage(from, to, data) {\r\n    if (!Buffer.isBuffer(from)) from = new Buffer.from(from)\r\n    if (!Buffer.isBuffer(to)) to = new Buffer.from(to)\r\n    if (data.encoded) data = data.encoded\r\n    \r\n    const message = {\r\n      from,\r\n      to,\r\n      data\r\n    }    \r\n    const signature = await his.hashAndSignMessage(message)  \r\n    const node = new PeernetMessage({\r\n      ...message,\r\n      signature\r\n    })\r\n    \r\n    return node\r\n  }\r\n  \r\n  publish(event, data) {\r\n    for (const peer of this.peers) {\r\n      peer.write()\r\n    }\r\n  }\r\n  \r\n  subscribe(event, cb) {\r\n    // this.peers.\r\n  }\r\n  // async block(index) {\r\n  //   const _values = []\r\n  //   for (const peer of this.peers) {\r\n  //     const value = await peer.request({type: 'block', index})\r\n  //     console.log(value);\r\n  //   }\r\n  // \r\n  // }\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/peernet.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 230,
+    "kind": "variable",
+    "name": "hasDaemon",
+    "memberof": "src/peernet.js",
+    "static": true,
+    "longname": "src/peernet.js~hasDaemon",
+    "access": "public",
+    "export": false,
+    "importPath": "@leofcoin/peernet/src/peernet.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 22,
+    "undocument": true,
+    "type": {
+      "types": [
+        "boolean"
+      ]
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 231,
+    "kind": "variable",
+    "name": "https",
+    "memberof": "src/peernet.js",
+    "static": true,
+    "longname": "src/peernet.js~https",
+    "access": "public",
+    "export": false,
+    "importPath": "@leofcoin/peernet/src/peernet.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 23,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 232,
+    "kind": "class",
+    "name": "Peernet",
+    "memberof": "src/peernet.js",
+    "static": true,
+    "longname": "src/peernet.js~Peernet",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/peernet.js",
+    "importStyle": "Peernet",
+    "description": "",
+    "examples": [
+      "const peernet = new Peernet();"
+    ],
+    "lineNumber": 33,
+    "interface": false
+  },
+  {
+    "__docId__": 233,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#constructor",
+    "access": "public",
+    "description": "",
+    "examples": [
+      "const peernet = new Peernet({network: 'leofcoin', root: '.leofcoin'});\n// testnet\nconst peernet = new Peernet({network: 'leofcoin:olivia', root: '.leofcoin'});"
+    ],
+    "lineNumber": 47,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options",
+        "description": ""
+      },
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options.network",
+        "description": "desired network"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options.root",
+        "description": "path to root directory"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise"
+      ],
+      "spread": false,
+      "description": "instance of Peernet"
+    }
+  },
+  {
+    "__docId__": 234,
+    "kind": "member",
+    "name": "network",
+    "memberof": "src/peernet.js~Peernet",
+    "static": false,
+    "longname": "src/peernet.js~Peernet#network",
+    "access": "public",
+    "description": "",
+    "lineNumber": 51,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "network",
+        "description": "current network"
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 235,
+    "kind": "member",
+    "name": "dht",
+    "memberof": "src/peernet.js~Peernet",
+    "static": false,
+    "longname": "src/peernet.js~Peernet#dht",
+    "access": "public",
+    "description": "",
+    "lineNumber": 64,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "peer",
+        "description": "Instance of Peer"
+      }
+    ],
+    "type": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 236,
+    "kind": "member",
+    "name": "peers",
+    "memberof": "src/peernet.js~Peernet",
+    "static": false,
+    "longname": "src/peernet.js~Peernet#peers",
+    "access": "public",
+    "description": "Array of peers ",
+    "lineNumber": 71,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "peer",
+        "description": "Instance of Peer"
+      }
+    ],
+    "type": {
+      "nullable": null,
+      "types": [
+        "Array"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 237,
+    "kind": "member",
+    "name": "protos",
+    "memberof": "src/peernet.js~Peernet",
+    "static": false,
+    "longname": "src/peernet.js~Peernet#protos",
+    "access": "public",
+    "description": "proto Object containing proto",
+    "lineNumber": 82,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "PeernetMessage"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "protos[peernet-message]",
+        "description": "messageNode"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "DHTMessage"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "protos[peernet-dht]",
+        "description": "messageNode"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "DHTMessageResponse"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "protos[peernet-dht-response]",
+        "description": "messageNode"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "DataMessage"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "protos[peernet-data]",
+        "description": "messageNode"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "DataMessageResponse"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "protos[peernet-data-response]",
+        "description": "messageNode"
+      }
+    ],
+    "type": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 238,
+    "kind": "method",
+    "name": "hasDaemon",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#hasDaemon",
+    "access": "public",
+    "description": null,
+    "lineNumber": 92,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "boolean"
+      ]
+    }
+  },
+  {
+    "__docId__": 239,
+    "kind": "method",
+    "name": "environment",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#environment",
+    "access": "public",
+    "description": "Get current environment",
+    "lineNumber": 106,
+    "return": {
+      "nullable": null,
+      "types": [
+        "String"
+      ],
+      "spread": false,
+      "description": "current environment [node, electron, browser]"
+    },
+    "params": []
+  },
+  {
+    "__docId__": 240,
+    "kind": "method",
+    "name": "target",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#target",
+    "access": "public",
+    "description": "* Get current environment",
+    "lineNumber": 123,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "Boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "reult.daemon",
+        "description": "whether or not daemon is running"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "reult.environment",
+        "description": "Current environment"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": "result"
+    },
+    "params": []
+  },
+  {
+    "__docId__": 241,
+    "kind": "method",
+    "name": "_init",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#_init",
+    "access": "private",
+    "description": "",
+    "lineNumber": 134,
+    "params": [
+      {
+        "name": "options",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 242,
+    "kind": "member",
+    "name": "id",
+    "memberof": "src/peernet.js~Peernet",
+    "static": false,
+    "longname": "src/peernet.js~Peernet#id",
+    "access": "public",
+    "description": null,
+    "lineNumber": 152,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 243,
+    "kind": "member",
+    "name": "peerId",
+    "memberof": "src/peernet.js~Peernet",
+    "static": false,
+    "longname": "src/peernet.js~Peernet#peerId",
+    "access": "public",
+    "description": null,
+    "lineNumber": 153,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 244,
+    "kind": "member",
+    "name": "client",
+    "memberof": "src/peernet.js~Peernet",
+    "static": false,
+    "longname": "src/peernet.js~Peernet#client",
+    "access": "public",
+    "description": null,
+    "lineNumber": 159,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 245,
+    "kind": "method",
+    "name": "protoFor",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#protoFor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 162,
+    "undocument": true,
+    "params": [
+      {
+        "name": "data",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 246,
+    "kind": "method",
+    "name": "_protoHandler",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#_protoHandler",
+    "access": "private",
+    "description": "",
+    "lineNumber": 173,
+    "params": [
+      {
+        "name": "message",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "peer",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 247,
+    "kind": "method",
+    "name": "walk",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#walk",
+    "access": "public",
+    "description": "performs a walk and resolves first encounter",
+    "lineNumber": 221,
+    "params": [
+      {
+        "name": "hash",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 248,
+    "kind": "method",
+    "name": "providersFor",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#providersFor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 249,
+    "undocument": true,
+    "params": [
+      {
+        "name": "hash",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 249,
+    "kind": "method",
+    "name": "get",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#get",
+    "access": "public",
+    "description": null,
+    "lineNumber": 265,
+    "undocument": true,
+    "params": [
+      {
+        "name": "hash",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 250,
+    "kind": "method",
+    "name": "put",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#put",
+    "access": "public",
+    "description": null,
+    "lineNumber": 304,
+    "undocument": true,
+    "params": [
+      {
+        "name": "hash",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "data",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 251,
+    "kind": "method",
+    "name": "has",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#has",
+    "access": "public",
+    "description": null,
+    "lineNumber": 308,
+    "undocument": true,
+    "params": [
+      {
+        "name": "hash",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 252,
+    "kind": "method",
+    "name": "hashAndSignMessage",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#hashAndSignMessage",
+    "access": "public",
+    "description": null,
+    "lineNumber": 312,
+    "undocument": true,
+    "params": [
+      {
+        "name": "message",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 253,
+    "kind": "method",
+    "name": "prepareMessage",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#prepareMessage",
+    "access": "public",
+    "description": "",
+    "lineNumber": 326,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "from",
+        "description": "peer id"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "to",
+        "description": "peer id"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "String",
+          "PeernetMessage"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "data",
+        "description": "data encoded message string or the messageNode itself"
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 254,
+    "kind": "method",
+    "name": "publish",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#publish",
+    "access": "public",
+    "description": null,
+    "lineNumber": 345,
+    "undocument": true,
+    "params": [
+      {
+        "name": "event",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "data",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 255,
+    "kind": "method",
+    "name": "subscribe",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#subscribe",
+    "access": "public",
+    "description": null,
+    "lineNumber": 351,
+    "undocument": true,
+    "params": [
+      {
+        "name": "event",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "cb",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 256,
+    "kind": "file",
+    "name": "src/proto/data-response.proto.js",
+    "content": "export default `\r\n// PeernetDataMessageResponse\r\nmessage PeernetDataMessageResponse {\r\n  required string hash = 1;\r\n  required bytes data = 2;\r\n}\r\n`",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/proto/data-response.proto.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 257,
+    "kind": "file",
+    "name": "src/proto/data.proto.js",
+    "content": "export default `\r\n// PeernetDataMessage\r\nmessage PeernetDataMessage {\r\n  required string hash = 1;\r\n}\r\n`",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/proto/data.proto.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 258,
+    "kind": "file",
+    "name": "src/proto/dht-response.proto.js",
+    "content": "export default `\r\n// PeernetDHTMessageResponse\r\nmessage PeernetDHTMessageResponse {\r\n  required string hash = 1;\r\n  required bool has = 2;\r\n}\r\n`",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/proto/dht-response.proto.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 259,
+    "kind": "file",
+    "name": "src/proto/dht.proto.js",
+    "content": "export default `\r\n// PeernetDHTMessage\r\nmessage PeernetDHTMessage {\r\n  required string hash = 1;\r\n}\r\n`",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/proto/dht.proto.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 260,
+    "kind": "file",
+    "name": "src/proto/peernet.proto.js",
+    "content": "export default `\r\n// PeernetMessage\r\nmessage PeernetMessage {\r\n  required bytes data = 1;\r\n  required bytes signature = 2;\r\n  optional bytes from = 3;\r\n  optional bytes to = 4;\r\n  optional string id = 5;\r\n}`",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/proto/peernet.proto.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 261,
+    "kind": "file",
+    "name": "src/server.js",
+    "content": "import Server from './../node_modules/socket-request-server/src/index.js';\r\nimport socketResponse from './../node_modules/socket-request-server/src/socket-response.js';\r\n\r\nglobalThis.peerMap = new Map()\r\n\r\nServer({\r\n  peernet: (params, response) => {\r\n    if (params.join) {\r\n      peerMap.set(params.peerId, params.address)\r\n      response.send([...peerMap.values()])\r\n      for (const connection of connections) {\r\n        console.log(connection);\r\n        socketResponse(connection, 'peernet', 'peernet').send({discovered: params.address})\r\n      }\r\n      return\r\n    }\r\n    if (!params.join) {\r\n      peerMap.delete(params.peerId)\r\n      return response.send()\r\n    }\r\n  }\r\n})",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/server.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 262,
+    "kind": "file",
+    "name": "src/utils.js",
+    "content": "export const expected = (expected, actual) => {\r\n  const entries = Object.entries(actual)\r\n    .map(entry => entry.join(!entry[1] ? `: undefined - ${entry[1]} ` : `: ${typeof entry[1]} - `));\r\n\r\n  return `\\nExpected:\\n\\t${expected.join('\\n\\t')}\\n\\nactual:\\n\\t${entries.join('\\n\\t')}`;\r\n}\r\n\r\nexport const debug = log => {\r\n  if (globalThis.DEBUG) console.log(`%c ${log}`, 'color: #0080ff;')\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/utils.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 263,
+    "kind": "function",
+    "name": "expected",
+    "memberof": "src/utils.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/utils.js~expected",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/utils.js",
+    "importStyle": "{expected}",
+    "description": null,
+    "lineNumber": 1,
+    "undocument": true,
+    "params": [
+      {
+        "name": "expected",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "actual",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "string"
+      ]
+    }
+  },
+  {
+    "__docId__": 264,
+    "kind": "function",
+    "name": "debug",
+    "memberof": "src/utils.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/utils.js~debug",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/utils.js",
+    "importStyle": "{debug}",
+    "description": null,
+    "lineNumber": 8,
+    "undocument": true,
+    "params": [
+      {
+        "name": "log",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "kind": "index",
+    "content": "# socket-discovery\n\n## Usage\n```js\nimport discovery from 'socket-discovery'\n```\n\n## Development\n### watch\n```sh\nnpm run w\n```\n### compile\n```sh\nnpm run c\n```\n### serve html\n```sh\nnpm run demo\n```\n\n`note: you need to install jsproject` \n```sh\nnpm i -g @vandeurenglenn/project\n```",
+    "longname": "D:\\Workspace\\socket-discovery\\README.md",
+    "name": "./README.md",
+    "static": true,
+    "access": "public"
+  },
+  {
+    "kind": "packageJSON",
+    "content": "{\n  \"name\": \"@leofcoin/peernet\",\n  \"version\": \"0.1.2\",\n  \"description\": \"\",\n  \"main\": \"dist/commonjs/peernet.js\",\n  \"module\": \"dist/module/peernet.js\",\n  \"browser\": \"dist/browser/peernet.js\",\n  \"scripts\": {\n    \"test\": \"echo \\\"Error: no test specified\\\" && exit 1\",\n    \"server\": \"discovery-swarm-webrtc --port=4000\",\n    \"demo\": \"jsproject --serve ./ --port 6868\",\n    \"docs\": \"./node_modules/.bin/esdoc\",\n    \"c\": \"rollup -c\",\n    \"w\": \"rollup -c -w\",\n    \"b\": \"browserify browser.js -o dist/browser/peernet.js --standalone Peernet && rm browser.js\"\n  },\n  \"keywords\": [],\n  \"author\": \"\",\n  \"license\": \"MIT\",\n  \"dependencies\": {\n    \"@geut/discovery-swarm-webrtc\": \"^4.0.1\",\n    \"@leofcoin/multi-wallet\": \"^2.0.0\",\n    \"@leofcoin/storage\": \"^2.0.3\",\n    \"bs32\": \"^0.1.6\",\n    \"bs58\": \"^4.0.1\",\n    \"bs58check\": \"^2.1.2\",\n    \"is-hex\": \"^1.1.3\",\n    \"keccak\": \"^3.0.1\",\n    \"koa\": \"^2.13.0\",\n    \"node-fetch\": \"^2.6.1\",\n    \"protons\": \"^2.0.0\",\n    \"socket-request-client\": \"^1.5.0\",\n    \"socket-request-server\": \"^1.5.0\",\n    \"varint\": \"^6.0.0\",\n    \"wrtc\": \"^0.4.6\"\n  },\n  \"devDependencies\": {\n    \"@rollup/plugin-json\": \"^4.1.0\",\n    \"browserify\": \"^16.5.2\",\n    \"esdoc\": \"^1.1.0\",\n    \"esdoc-ecmascript-proposal-plugin\": \"^1.0.0\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"rollup\": \"^2.33.1\",\n    \"tape\": \"^5.0.1\"\n  }\n}\n",
+    "longname": "D:\\Workspace\\socket-discovery\\package.json",
+    "name": "package.json",
+    "static": true,
+    "access": "public"
+  }
+]

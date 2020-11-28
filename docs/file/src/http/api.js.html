@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/http/api.js | @leofcoin/peernet</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client.js~PeernetClient.html">PeernetClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/disco-peer.js~DiscoPeer.html">DiscoPeer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/peer-info.js~PeerInfo.html">PeerInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/peernet.js~Peernet.html">Peernet</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-debug">debug</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-expected">expected</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#codec">codec</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec-format-interface.js~FormatInterface.html">FormatInterface</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec.js~PeernetCodec.html">PeernetCodec</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#dht">dht</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/dht/dht.js~DhtEarth.html">DhtEarth</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#hash">hash</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/hash/hash.js~DiscoHash.html">DiscoHash</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#http">http</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-http">http</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#http-client">http/client</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/api.js~api.html">api</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/http-client.js~HttpClientApi.html">HttpClientApi</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/storage.js~LeofcoinStorageClient.html">LeofcoinStorageClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-client">client</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#messages">messages</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data-response.js~DataMessageResponse.html">DataMessageResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data.js~DataMessage.html">DataMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht-response.js~DHTMessageResponse.html">DHTMessageResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht.js~DHTMessage.html">DHTMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/peernet.js~PeernetMessage.html">PeernetMessage</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/http/api.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import {version} from &apos;./../../package.json&apos;
+
+export default {
+  version: ({send}) =&gt; send({client: &apos;@peernet/api/http&apos;, version}),
+  ready: ({send}) =&gt; {
+    if (globalThis.states.ready) send(true)
+    else pubsub.subscribe(&apos;ready&apos;, () =&gt; send(true))
+  },
+  storage: async (params, {send, error}) =&gt; {
+    console.log(params);
+    const { name, root, key, value, method } = params
+    try {
+      if (name &amp;&amp; root) {
+        globalThis[name] = globalThis[name] || await new LeofcoinStorage(name, root)
+      } else {
+        return error(&apos;Expected name &amp; root&apos;)
+      }
+      if (method === &apos;put&apos;) {
+        await globalThis[name].put(key, value)
+        return send(&apos;ok&apos;)
+      } 
+      if (method === &apos;remove&apos;) {
+        await globalThis[name].remove(key, value)
+        return send(&apos;ok&apos;)
+      }
+      value = await globalThis[name].get(key)
+      return send(value)
+    } catch (e) {
+      return error(e)
+    }
+  },
+  getConfig: async (params, {send, error}) =&gt; {
+    try {
+      const config = await api.getConfig(params)
+      send(config)
+    } catch (e) {
+      error(e)
+    }
+  },
+  setMinerConfig: async (params, {send, error}) =&gt; {
+    try {
+      await api.setMinerConfig(params)
+      send(&apos;ok&apos;)
+    } catch (e) {
+      error(e)
+    }
+  },
+  getMinerConfig: async ({send, error}) =&gt; {
+    try {
+      const config = await api.getMinerConfig()
+      send(config)
+    } catch (e) {
+      error(e)
+    }
+  },
+  wallet: async ({send}) =&gt; {
+    const wallet = await walletStore.get()
+    send(wallet)
+  },
+  addresses: async ({send, error}) =&gt; {
+    try {
+      const adresses = await api.addresses()
+      send(adresses)
+    } catch (e) {
+      error(e)
+    }
+  },
+  accountNames: async (params, {send, error}) =&gt; {
+    try {
+      const adresses = await api.accountNames(params.index)
+      send(adresses)
+    } catch (e) {
+      error(e)
+    }
+  },
+  accounts: async ({send}) =&gt; {
+    const accounts = await accountStore.get()
+    send(accounts)
+  },
+  account: async (params, {send}) =&gt; {
+    const account = await accountStore.get(params)
+    send(account)
+  },
+  balance: async (params, {send, error}) =&gt; {
+    console.log(&apos;balance&apos;);
+    try {
+      console.log(await api.getBalanceForAddress(params.address));
+      const value = await api.getBalanceForAddress(params.address)
+      send(value)
+    } catch (e) {
+      console.log(e);
+      error(e)
+    }
+  },  
+  balanceAfter: async (params, {send, error}) =&gt; {
+    try {
+      const value = await api.getBalanceForAddressAfter(params.address, params.index)
+      send(value)
+    } catch (e) {
+      error(e)
+    }
+  },
+  mine: async (params, {send, error}) =&gt; {
+    api.mine(params)
+    send(&apos;ok&apos;)
+  },
+  lastBlock: async ({send, error}) =&gt; {
+    try {
+      const value = await api.lastBlock()
+      send(value)
+    } catch (e) {
+      error(e)
+    }
+  }
+}</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

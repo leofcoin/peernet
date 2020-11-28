@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/hash/hash.js | @leofcoin/peernet</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client.js~PeernetClient.html">PeernetClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/disco-peer.js~DiscoPeer.html">DiscoPeer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/peer-info.js~PeerInfo.html">PeerInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/peernet.js~Peernet.html">Peernet</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-debug">debug</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-expected">expected</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#codec">codec</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec-format-interface.js~FormatInterface.html">FormatInterface</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec.js~PeernetCodec.html">PeernetCodec</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#dht">dht</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/dht/dht.js~DhtEarth.html">DhtEarth</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#hash">hash</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/hash/hash.js~DiscoHash.html">DiscoHash</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#http">http</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-http">http</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#http-client">http/client</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/api.js~api.html">api</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/http-client.js~HttpClientApi.html">HttpClientApi</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/storage.js~LeofcoinStorageClient.html">LeofcoinStorageClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-client">client</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#messages">messages</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data-response.js~DataMessageResponse.html">DataMessageResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data.js~DataMessage.html">DataMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht-response.js~DHTMessageResponse.html">DHTMessageResponse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht.js~DHTMessage.html">DHTMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/peernet.js~PeernetMessage.html">PeernetMessage</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/hash/hash.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import createKeccakHash from &apos;keccak&apos;;
+import varint from &apos;varint&apos;;
+import bs32 from &apos;bs32&apos;;
+import bs58 from &apos;bs58&apos;;
+import isHex from &apos;is-hex&apos;;
+import DiscoCodec from &apos;./../codec/codec&apos;;
+
+export default class DiscoHash {
+  constructor(buffer, options = {}) {
+    if (options.name) this.name = options.name
+    else this.name = &apos;disco-hash&apos;
+    if (options.codecs) this.codecs = options.codecs
+    if (buffer) {
+      
+      if (Buffer.isBuffer(buffer)) {
+        this.discoCodec = new DiscoCodec(buffer, this.codecs)
+        const name = this.discoCodec.name
+        
+        if (name) {
+          this.name = name
+          this.decode(buffer)
+        } else {
+          this.encode(buffer)
+        }
+      }
+      
+      if (typeof buffer === &apos;string&apos;) {
+        if (isHex(buffer)) this.fromHex(buffer)
+        if (bs32.test(buffer)) this.fromBs32(buffer)
+        else this.fromBs58(buffer)
+      } else if (typeof buffer === &apos;object&apos;) this.fromJSON(buffer)
+    }
+    
+  }
+  
+  get prefix() {
+    return Buffer.concat([this.discoCodec.codecBuffer, this.length])
+  }
+  
+  get length() {
+    return Buffer.from(varint.encode(this.size))
+  }
+  
+  get buffer() {
+    return this.hash
+  }
+  
+  toHex() {
+    return this.hash.toString(&apos;hex&apos;)
+  }
+  
+  fromHex(hex) {
+    return this.decode(Buffer.from(hex, &apos;hex&apos;))
+  }
+  
+  fromJSON(json) {
+    return this.encode(Buffer.from(JSON.stringify(json)))
+  }
+  
+  toBs32() {
+    return bs32.encode(this.hash)
+  }
+  
+  fromBs32(bs) {
+    return this.decode(bs32.decode(bs))
+  }
+  
+  toBs58() {
+    return bs58.encode(this.hash)
+  }
+  
+  fromBs58(bs) {
+    return this.decode(bs58.decode(bs))
+  }
+  
+  toString(encoding = &apos;utf8&apos;) {
+    return this.hash.toString(encoding)
+  }
+  
+  encode(buffer, name) {
+    if (!this.name &amp;&amp; name) this.name = name;
+    if (!buffer) buffer = this.buffer;
+    this.discoCodec = new DiscoCodec(this.name, this.codecs)
+    this.discoCodec.fromName(this.name)
+    let hashAlg = this.discoCodec.hashAlg
+    if (hashAlg.includes(&apos;dbl&apos;)) {
+      hashAlg = hashAlg.replace(&apos;dbl-&apos;, &apos;&apos;)
+      buffer = createKeccakHash(hashAlg.replace(&apos;-&apos;, &apos;&apos;)).update(buffer).digest()          
+    }    
+    this.digest = createKeccakHash(hashAlg.replace(&apos;-&apos;, &apos;&apos;)).update(buffer).digest()   
+    this.size = this.digest.length
+    
+    this.codec = this.discoCodec.encode();
+    this.codec = this.discoCodec.codecBuffer
+    this.hash = Buffer.concat([
+      this.prefix,
+      this.digest
+    ])
+    
+    return this.hash
+  }
+  
+  validate(buffer) {
+    if (Buffer.isBuffer(buffer)) {
+      const codec = varint.decode(buffer);              
+      if (this.codecs[codec]) {
+        this.decode(buffer)
+      } else {
+        this.encode(buffer)
+      }      
+    }
+    if (typeof buffer === &apos;string&apos;) {
+      if (isHex(buffer)) this.fromHex(buffer)
+      if (bs32.test(buffer)) this.fromBs32(buffer)
+    }
+    if (typeof buffer === &apos;object&apos;) this.fromJSON(buffer)
+  }
+  
+  decode(buffer) {
+    this.hash = buffer
+    const codec = varint.decode(buffer);
+    
+    this.discoCodec = new DiscoCodec(codec, this.codecs)
+    // TODO: validate codec
+    buffer = buffer.slice(varint.decode.bytes);        
+    this.size = varint.decode(buffer);
+    this.digest = buffer.slice(varint.decode.bytes);        
+    if (this.digest.length !== this.size) {
+      throw new Error(`hash length inconsistent: 0x${this.hash.toString(&apos;hex&apos;)}`)
+    }
+    
+    // const discoCodec = new DiscoCodec(codec, this.codecs)
+    
+    this.name = this.discoCodec.name
+    
+    
+    this.size = this.digest.length
+    
+    return {
+      codec: this.codec,
+      name: this.name,
+      size: this.size,
+      length: this.length,
+      digest: this.digest
+    }
+  }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
