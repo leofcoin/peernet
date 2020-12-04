@@ -5,6 +5,6 @@ export default (config = {}) => {
   if (!config.protocol) config.protocol = 'peernet-v0.1.0'
   if (!config.port) config.port = 1000
   if (!config.host) config.host = '127.0.0.1'
-    
+
   return new HttpClientApi(config)
 }

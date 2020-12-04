@@ -1,7 +1,9 @@
-const Client = require('./dist/commonjs/peernet.js')
+const Client = require('./dist/commonjs/peernet.js');
 
-const client = new Client({id: Buffer.from('testtesttesttesttesttesttesttes2')})
-
-pubsub.subscribe('peer:connected', async peer => setInterval(async () => {
-    console.log(await peer.request('hello'));
-  }, 1000))
+(async () => {
+  const client = await new Client({root: '.peernet/test2', network: 'leofcoin'})
+  const job = () => client.publish('socket-data', 'hello')
+  setTimeout(async () => {
+    job()
+  }, 10000)
+})()

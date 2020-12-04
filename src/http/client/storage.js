@@ -3,13 +3,13 @@ export default class LeofcoinStorageClient {
     this.name = name
     this.root = root
   }
-  
+
   async get(key) {
     try {
       const result = await globalThis.peernet.client.request('storage', {
         name: this.name,
         root: this.root,
-        key
+        key,
       })
       return result
     } catch (e) {
@@ -17,7 +17,7 @@ export default class LeofcoinStorageClient {
       return undefined
     }
   }
-  
+
   async put(key, value) {
     try {
       const result = await globalThis.peernet.client.request('storage', {
@@ -25,7 +25,7 @@ export default class LeofcoinStorageClient {
         root: this.root,
         key,
         value,
-        method: 'put'
+        method: 'put',
       })
       return result
     } catch (e) {

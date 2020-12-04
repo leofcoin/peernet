@@ -8,7 +8,7 @@ export default {
   },
   storage: async (params, {send, error}) => {
     console.log(params);
-    const { name, root, key, value, method } = params
+    const {name, root, key, value, method} = params
     try {
       if (name && root) {
         globalThis[name] = globalThis[name] || await new LeofcoinStorage(name, root)
@@ -18,7 +18,7 @@ export default {
       if (method === 'put') {
         await globalThis[name].put(key, value)
         return send('ok')
-      } 
+      }
       if (method === 'remove') {
         await globalThis[name].remove(key, value)
         return send('ok')
@@ -91,7 +91,7 @@ export default {
       console.log(e);
       error(e)
     }
-  },  
+  },
   balanceAfter: async (params, {send, error}) => {
     try {
       const value = await api.getBalanceForAddressAfter(params.address, params.index)
@@ -111,5 +111,5 @@ export default {
     } catch (e) {
       error(e)
     }
-  }
+  },
 }

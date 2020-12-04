@@ -3,7 +3,7 @@ const PeernetMessage = require('./dist/messages/peernet.js');
 const DHTMessage = require('./dist/messages/dht.js');
 
 globalThis.DEBUG = true;
-const client = new Client({id: Buffer.from('testtesttesttesttesttesttesttes3')})
+const client = new Client({root: '.peernet/test3'})
 
 pubsub.subscribe('peer:connected', async peer => setInterval(async () => {
   // const dhtMessage = new DHTMessage({hash: 'hello'})

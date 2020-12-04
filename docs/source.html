@@ -30,11 +30,9 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client.js~PeernetClient.html">PeernetClient</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/disco-peer.js~DiscoPeer.html">DiscoPeer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/disco-peer.js~PeernetPeer.html">PeernetPeer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/peer-info.js~PeerInfo.html">PeerInfo</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/peernet.js~Peernet.html">Peernet</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-debug">debug</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-expected">expected</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#codec">codec</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec-format-interface.js~FormatInterface.html">FormatInterface</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec.js~PeernetCodec.html">PeernetCodec</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#dht">dht</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/dht/dht.js~DhtEarth.html">DhtEarth</a></span></span></li>
@@ -49,11 +47,21 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht-response.js~DHTMessageResponse.html">DHTMessageResponse</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht.js~DHTMessage.html">DHTMessage</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/peernet.js~PeernetMessage.html">PeernetMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/ps.js~PsMessage.html">PsMessage</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#utils">utils</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-debug">debug</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-environment">environment</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-expected">expected</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-hasDaemon">hasDaemon</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-hashAndSignMessage">hashAndSignMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-https">https</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareMessage">prepareMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-protoFor">protoFor</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-target">target</a></span></span></li>
 </ul>
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1>Source <img data-ice="coverageBadge" src="./badge.svg"><span data-ice="totalCoverageCount" class="total-coverage-count">18/159</span></h1>
+<div class="content" data-ice="content"><h1>Source <img data-ice="coverageBadge" src="./badge.svg"><span data-ice="totalCoverageCount" class="total-coverage-count">22/161</span></h1>
 
 <table class="files-summary" data-ice="files" data-use-coverage="true">
   <thead>
@@ -72,9 +80,9 @@
       <td data-ice="filePath"><span><a href="file/src/client.js.html#errorLines=11,12,15,17,25,90">src/client.js</a></span></td>
       <td data-ice="identifier" class="identifiers"><span><a href="class/src/client.js~PeernetClient.html">PeernetClient</a></span></td>
       <td class="coverage"><span data-ice="coverage">0 %</span><span data-ice="coverageCount" class="coverage-count">0/6</span></td>
-      <td style="display: none;" data-ice="size">2888 byte</td>
+      <td style="display: none;" data-ice="size">2894 byte</td>
       <td style="display: none;" data-ice="lines">92</td>
-      <td style="display: none;" data-ice="updated">2020-11-01 19:04:51 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2020-11-07 12:17:11 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/codec/codec-format-interface.js.html#errorLines=10,11,12,31,35,41,46,50,53,57,64,69,7,74,79,8,84,89,9,94">src/codec/codec-format-interface.js</a></span></td>
@@ -96,9 +104,9 @@
       <td data-ice="filePath"><span><a href="file/src/codec/codecs.js.html">src/codec/codecs.js</a></span></td>
       <td data-ice="identifier" class="identifiers">-</td>
       <td class="coverage"><span data-ice="coverage">-</span></td>
-      <td style="display: none;" data-ice="size">934 byte</td>
-      <td style="display: none;" data-ice="lines">48</td>
-      <td style="display: none;" data-ice="updated">2020-11-02 23:44:18 (UTC)</td>
+      <td style="display: none;" data-ice="size">1021 byte</td>
+      <td style="display: none;" data-ice="lines">53</td>
+      <td style="display: none;" data-ice="updated">2020-11-02 19:01:10 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/dht/dht.js.html#errorLines=14,27,3,31,45,50">src/dht/dht.js</a></span></td>
@@ -110,11 +118,11 @@
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/disco-peer.js.html#errorLines=1,2,3,32,36,4,41,9">src/disco-peer.js</a></span></td>
-      <td data-ice="identifier" class="identifiers"><span><a href="class/src/disco-peer.js~DiscoPeer.html">DiscoPeer</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/disco-peer.js~PeernetPeer.html">PeernetPeer</a></span></td>
       <td class="coverage"><span data-ice="coverage">0 %</span><span data-ice="coverageCount" class="coverage-count">0/8</span></td>
-      <td style="display: none;" data-ice="size">1053 byte</td>
+      <td style="display: none;" data-ice="size">1055 byte</td>
       <td style="display: none;" data-ice="lines">43</td>
-      <td style="display: none;" data-ice="updated">2020-11-01 18:23:09 (UTC)</td>
+      <td style="display: none;" data-ice="updated">2020-11-07 12:17:00 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/hash/hash.js.html#errorLines=10,103,119,12,16,36,40,44,48,52,56,60,64,68,72,76,8,80,9,90,91,93,95">src/hash/hash.js</a></span></td>
@@ -213,6 +221,14 @@
       <td style="display: none;" data-ice="updated">2020-11-07 18:31:48 (UTC)</td>
     </tr>
 <tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/messages/ps.js.html#errorLines=11,5,7">src/messages/ps.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/messages/ps.js~PsMessage.html">PsMessage</a></span></td>
+      <td class="coverage"><span data-ice="coverage">0 %</span><span data-ice="coverageCount" class="coverage-count">0/3</span></td>
+      <td style="display: none;" data-ice="size">371 byte</td>
+      <td style="display: none;" data-ice="lines">14</td>
+      <td style="display: none;" data-ice="updated">2020-11-06 12:04:50 (UTC)</td>
+    </tr>
+<tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/peer-info.js.html#errorLines=3,4,5">src/peer-info.js</a></span></td>
       <td data-ice="identifier" class="identifiers"><span><a href="class/src/peer-info.js~PeerInfo.html">PeerInfo</a></span></td>
       <td class="coverage"><span data-ice="coverage">0 %</span><span data-ice="coverageCount" class="coverage-count">0/3</span></td>
@@ -221,12 +237,12 @@
       <td style="display: none;" data-ice="updated">2020-11-01 18:42:45 (UTC)</td>
     </tr>
 <tr data-ice="file">
-      <td data-ice="filePath"><span><a href="file/src/peernet.js.html#errorLines=152,153,159,162,22,23,249,265,304,308,312,345,351,92">src/peernet.js</a></span></td>
+      <td data-ice="filePath"><span><a href="file/src/peernet.js.html#errorLines=109,110,213,241,245,249,261">src/peernet.js</a></span></td>
       <td data-ice="identifier" class="identifiers"><span><a href="class/src/peernet.js~Peernet.html">Peernet</a></span></td>
-      <td class="coverage"><span data-ice="coverage">46 %</span><span data-ice="coverageCount" class="coverage-count">12/26</span></td>
-      <td style="display: none;" data-ice="size">11558 byte</td>
-      <td style="display: none;" data-ice="lines">361</td>
-      <td style="display: none;" data-ice="updated">2020-11-01 19:41:44 (UTC)</td>
+      <td class="coverage"><span data-ice="coverage">61 %</span><span data-ice="coverageCount" class="coverage-count">11/18</span></td>
+      <td style="display: none;" data-ice="size">9562 byte</td>
+      <td style="display: none;" data-ice="lines">277</td>
+      <td style="display: none;" data-ice="updated">2020-11-07 12:18:13 (UTC)</td>
     </tr>
 <tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/proto/data-response.proto.js.html">src/proto/data-response.proto.js</a></span></td>
@@ -269,6 +285,14 @@
       <td style="display: none;" data-ice="updated">2020-11-01 16:24:01 (UTC)</td>
     </tr>
 <tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/proto/ps.proto.js.html">src/proto/ps.proto.js</a></span></td>
+      <td data-ice="identifier" class="identifiers">-</td>
+      <td class="coverage"><span data-ice="coverage">-</span></td>
+      <td style="display: none;" data-ice="size">112 byte</td>
+      <td style="display: none;" data-ice="lines">5</td>
+      <td style="display: none;" data-ice="updated">2020-11-06 12:04:43 (UTC)</td>
+    </tr>
+<tr data-ice="file">
       <td data-ice="filePath"><span><a href="file/src/server.js.html">src/server.js</a></span></td>
       <td data-ice="identifier" class="identifiers">-</td>
       <td class="coverage"><span data-ice="coverage">-</span></td>
@@ -277,13 +301,20 @@
       <td style="display: none;" data-ice="updated">2020-09-07 18:53:07 (UTC)</td>
     </tr>
 <tr data-ice="file">
-      <td data-ice="filePath"><span><a href="file/src/utils.js.html#errorLines=1,8">src/utils.js</a></span></td>
+      <td data-ice="filePath"><span><a href="file/src/utils/utils.js.html#errorLines=14,18,7,82">src/utils/utils.js</a></span></td>
       <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-debug">debug</a></span>
-<span><a href="function/index.html#static-function-expected">expected</a></span></td>
-      <td class="coverage"><span data-ice="coverage">0 %</span><span data-ice="coverageCount" class="coverage-count">0/2</span></td>
-      <td style="display: none;" data-ice="size">392 byte</td>
-      <td style="display: none;" data-ice="lines">9</td>
-      <td style="display: none;" data-ice="updated">2020-11-04 17:55:11 (UTC)</td>
+<span><a href="function/index.html#static-function-environment">environment</a></span>
+<span><a href="function/index.html#static-function-expected">expected</a></span>
+<span><a href="function/index.html#static-function-hasDaemon">hasDaemon</a></span>
+<span><a href="function/index.html#static-function-hashAndSignMessage">hashAndSignMessage</a></span>
+<span><a href="function/index.html#static-function-https">https</a></span>
+<span><a href="function/index.html#static-function-prepareMessage">prepareMessage</a></span>
+<span><a href="function/index.html#static-function-protoFor">protoFor</a></span>
+<span><a href="function/index.html#static-function-target">target</a></span></td>
+      <td class="coverage"><span data-ice="coverage">55 %</span><span data-ice="coverageCount" class="coverage-count">5/9</span></td>
+      <td style="display: none;" data-ice="size">3280 byte</td>
+      <td style="display: none;" data-ice="lines">113</td>
+      <td style="display: none;" data-ice="updated">2020-11-07 12:17:56 (UTC)</td>
     </tr>
 </tbody>
 </table>

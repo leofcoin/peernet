@@ -1,4 +1,6 @@
 import { execSync } from 'child_process';
+import lint from '@rollup/plugin-eslint'
+import cjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 
 export default [{
@@ -17,7 +19,12 @@ export default [{
 		format: 'cjs'
 	},
 	plugins: [
-		json()
+		json(),
+		lint({
+		  fix: true,
+			exclude: ['package.json', "package-lock.json"]
+		})
+		
 	]
 }, {
 	input: 'src/peernet.js',

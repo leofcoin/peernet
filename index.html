@@ -5,15 +5,17 @@
     <title></title>
   </head>
   <body>
-    <script src="./browser.js">
+    <script src="./dist/browser/peernet.js">
     </script>
     
     <script>
     
-      const peernet = new Peernet()
-      pubsub.subscribe('socket-data', data => {
-        console.log(data)
-      })
+      (async () => {
+        const peernet = await new Peernet()
+        peernet.subscribe('socket-data', data => {
+          console.log(data)
+        })
+      })()
     </script>
   </body>
 </html>

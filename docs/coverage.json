@@ -1,7 +1,7 @@
 {
-  "coverage": "11.32%",
-  "expectCount": 159,
-  "actualCount": 18,
+  "coverage": "13.66%",
+  "expectCount": 161,
+  "actualCount": 22,
   "files": {
     "src/client.js": {
       "expectCount": 6,
@@ -221,6 +221,15 @@
         11
       ]
     },
+    "src/messages/ps.js": {
+      "expectCount": 3,
+      "actualCount": 0,
+      "undocumentLines": [
+        5,
+        7,
+        11
+      ]
+    },
     "src/peer-info.js": {
       "expectCount": 3,
       "actualCount": 0,
@@ -231,31 +240,26 @@
       ]
     },
     "src/peernet.js": {
-      "expectCount": 26,
-      "actualCount": 12,
+      "expectCount": 18,
+      "actualCount": 11,
       "undocumentLines": [
-        22,
-        23,
-        92,
-        152,
-        153,
-        159,
-        162,
+        109,
+        110,
+        213,
+        241,
+        245,
         249,
-        265,
-        304,
-        308,
-        312,
-        345,
-        351
+        261
       ]
     },
-    "src/utils.js": {
-      "expectCount": 2,
-      "actualCount": 0,
+    "src/utils/utils.js": {
+      "expectCount": 9,
+      "actualCount": 5,
       "undocumentLines": [
-        1,
-        8
+        7,
+        14,
+        18,
+        82
       ]
     }
   }

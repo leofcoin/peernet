@@ -567,7 +567,7 @@
     "__docId__": 48,
     "kind": "file",
     "name": "src/client.js",
-    "content": "import crypto from 'crypto'\r\nimport swarm from '@geut/discovery-swarm-webrtc'\r\nimport wrtc from 'wrtc'\r\nimport Pubsub from '@vandeurenglenn/little-pubsub'\r\nimport DiscoPeer from './disco-peer.js'\r\nimport sha256 from 'crypto-js/sha256'\r\n\r\nglobalThis.connections = new Map()\r\nglobalThis.pubsub = globalThis.pubsub || new Pubsub()\r\n\r\nexport default class PeernetClient {\r\n  constructor(options = {}) {\r\n    if (!options.id) options.id = Buffer.from('00000000000000000000000000000000')\r\n    \r\n    this.id = options.id\r\n    \r\n    this.sw = swarm({\r\n      id: options.id,\r\n      bootstrap: ['wss://discovery-swarm.herokuapp.com', 'ws://localhost:4000'],\r\n      simplePeer: {\r\n        wrtc\r\n      }\r\n    })\r\n     \r\n    this.topic = Buffer.from(sha256('peernet-v0.1.0').toString())\r\n     \r\n    this.sw.join(this.topic.slice(0, 32))\r\n     \r\n    const arrayOfPeers = this.sw.getPeers()\r\n    \r\n    this.sw.on('connection', async (connection, info) => {\r\n      // connected\r\n      const id = info.id.toString()\r\n      if (id === this.id.toString()) return\r\n      \r\n      const channel = connection.channelName\r\n      let channels = [channel]\r\n      let peer\r\n      if (connections.has(id)) {\r\n        const value = connections.get(id)\r\n        const _channels = value.channels\r\n        channels = [ ...channels, ..._channels ]\r\n        peer = value.peer\r\n      } else {\r\n        peer = new DiscoPeer(id, connection)\r\n        pubsub.publish('peer:connected', peer)\r\n      }\r\n      connections.set(id, {channels, peer})\r\n      // connection.on('data', (data) => console.log({data}))\r\n      // connection.write('peerId')\r\n    });\r\n    \r\n    this.sw.on('candidates-updated', async (channel, candidates) => {\r\n      // TODO: Channels ...\r\n      for (const candidate of candidates) {\r\n        const id = candidate.toString()\r\n        let channels = [channel]\r\n        if (id === this.id.toString()) return\r\n        console.log({id});\r\n        \r\n        if (!connections.has(id)) {\r\n          const connection = await this.sw.connect(channel, candidate)\r\n          const peer = new DiscoPeer(id, connection)\r\n          connections.set(id, {channels, peer})\r\n          pubsub.publish('peer:connected', peer)\r\n        } else {\r\n          const value = connections.get(id)\r\n          const _channels = value.channels\r\n          channels = [ ...channels, ..._channels ]\r\n          connections.set(id, {channels, peer: value.peer})\r\n        }\r\n      \r\n      }\r\n    })\r\n    \r\n    this.sw.on('connection-closed', (connection, info) => {\r\n      setTimeout(() => {\r\n        if (connections.has(info.id.toString())) connections.delete(info.id.toString())\r\n      }, 500);\r\n    })\r\n    \r\n    if (globalThis.onbeforeunload) globalThis.onbeforeunload = () => {\r\n      this.sw.leave(this.topic)\r\n      return setTimeout(() => {\r\n        \r\n      }, 1000)\r\n    }\r\n  }\r\n  \r\n  _peers() {\r\n    return this.sw.getPeers()\r\n  }\r\n}",
+    "content": "import crypto from 'crypto'\r\nimport swarm from '@geut/discovery-swarm-webrtc'\r\nimport wrtc from 'wrtc'\r\nimport Pubsub from '@vandeurenglenn/little-pubsub'\r\nimport PeernetPeer from './disco-peer.js'\r\nimport sha256 from 'crypto-js/sha256'\r\n\r\nglobalThis.connections = new Map()\r\nglobalThis.pubsub = globalThis.pubsub || new Pubsub()\r\n\r\nexport default class PeernetClient {\r\n  constructor(options = {}) {\r\n    if (!options.id) options.id = Buffer.from('00000000000000000000000000000000')\r\n    \r\n    this.id = options.id\r\n    \r\n    this.sw = swarm({\r\n      id: options.id,\r\n      bootstrap: ['wss://discovery-swarm.herokuapp.com', 'ws://localhost:4000'],\r\n      simplePeer: {\r\n        wrtc\r\n      }\r\n    })\r\n     \r\n    this.topic = Buffer.from(sha256('peernet-v0.1.0').toString())\r\n     \r\n    this.sw.join(this.topic.slice(0, 32))\r\n     \r\n    const arrayOfPeers = this.sw.getPeers()\r\n    \r\n    this.sw.on('connection', async (connection, info) => {\r\n      // connected\r\n      const id = info.id.toString()\r\n      if (id === this.id.toString()) return\r\n      \r\n      const channel = connection.channelName\r\n      let channels = [channel]\r\n      let peer\r\n      if (connections.has(id)) {\r\n        const value = connections.get(id)\r\n        const _channels = value.channels\r\n        channels = [ ...channels, ..._channels ]\r\n        peer = value.peer\r\n      } else {\r\n        peer = new PeernetPeer(id, connection)\r\n        pubsub.publish('peer:connected', peer)\r\n      }\r\n      connections.set(id, {channels, peer})\r\n      // connection.on('data', (data) => console.log({data}))\r\n      // connection.write('peerId')\r\n    });\r\n    \r\n    this.sw.on('candidates-updated', async (channel, candidates) => {\r\n      // TODO: Channels ...\r\n      for (const candidate of candidates) {\r\n        const id = candidate.toString()\r\n        let channels = [channel]\r\n        if (id === this.id.toString()) return\r\n        console.log({id});\r\n        \r\n        if (!connections.has(id)) {\r\n          const connection = await this.sw.connect(channel, candidate)\r\n          const peer = new PeernetPeer(id, connection)\r\n          connections.set(id, {channels, peer})\r\n          pubsub.publish('peer:connected', peer)\r\n        } else {\r\n          const value = connections.get(id)\r\n          const _channels = value.channels\r\n          channels = [ ...channels, ..._channels ]\r\n          connections.set(id, {channels, peer: value.peer})\r\n        }\r\n      \r\n      }\r\n    })\r\n    \r\n    this.sw.on('connection-closed', (connection, info) => {\r\n      setTimeout(() => {\r\n        if (connections.has(info.id.toString())) connections.delete(info.id.toString())\r\n      }, 500);\r\n    })\r\n    \r\n    if (globalThis.onbeforeunload) globalThis.onbeforeunload = () => {\r\n      this.sw.leave(this.topic)\r\n      return setTimeout(() => {\r\n        \r\n      }, 1000)\r\n    }\r\n  }\r\n  \r\n  _peers() {\r\n    return this.sw.getPeers()\r\n  }\r\n}",
     "static": true,
     "longname": "D:/Workspace/socket-discovery/src/client.js",
     "access": "public",
@@ -1540,7 +1540,7 @@
     "__docId__": 119,
     "kind": "file",
     "name": "src/codec/codecs.js",
-    "content": "export default {  \r\n  // just a hash\r\n  'disco-hash': {\r\n    codec: '30',\r\n    hashAlg: 'dbl-keccak-512'//,\r\n    // testnet: 'olivia'\r\n  },\r\n  'peernet-dht': {\r\n    codec: '706468',\r\n    hashAlg: 'keccak-256'\r\n  },\r\n  'peernet-dht-response': {\r\n    codec: '706472',\r\n    hashAlg: 'keccak-256'\r\n  },\r\n  // data\r\n  'peernet-data': {\r\n    codec: '706461',\r\n    hashAlg: 'keccak-256'\r\n  },\r\n  'peernet-data-response': {\r\n    codec: '70646172',\r\n    hashAlg: 'keccak-256'\r\n  },\r\n  // message\r\n  'peernet-message': {\r\n    codec: '706d65',\r\n    hashAlg: 'keccak-512'\r\n  },\r\n  // normal block\r\n  'leofcoin-block': {\r\n    codec: '6c62',\r\n    hashAlg: 'dbl-keccak-512'//,\r\n    // testnet: 'olivia'\r\n  },\r\n  // itx\r\n  'leofcoin-itx': {\r\n    codec: '6c69',\r\n    hashAlg: 'keccak-512'//,\r\n    // testnet: 'olivia'\r\n  },\r\n  // peer reputation\r\n  'leofcoin-pr': {\r\n    codec: '6c70',\r\n    hashAlg: 'keccak-256'//,\r\n    // testnet: 'olivia'\r\n  }\r\n}\r\n",
+    "content": "export default {  \r\n  // just a hash\r\n  'disco-hash': {\r\n    codec: '30',\r\n    hashAlg: 'dbl-keccak-512'//,\r\n    // testnet: 'olivia'\r\n  },\r\n  'peernet-dht': {\r\n    codec: '706468',\r\n    hashAlg: 'keccak-256'\r\n  },\r\n  'peernet-dht-response': {\r\n    codec: '706472',\r\n    hashAlg: 'keccak-256'\r\n  },\r\n  // data\r\n  'peernet-data': {\r\n    codec: '706461',\r\n    hashAlg: 'keccak-256'\r\n  },\r\n  'peernet-data-response': {\r\n    codec: '70646172',\r\n    hashAlg: 'keccak-256'\r\n  },\r\n  // message\r\n  'peernet-message': {\r\n    codec: '706d65',\r\n    hashAlg: 'keccak-512'\r\n  },\r\n  // pubsub\r\n  'peernet-ps': {\r\n    codec: '707073',\r\n    hashAlg: 'keccak-256'\r\n  },\r\n  // normal block\r\n  'leofcoin-block': {\r\n    codec: '6c62',\r\n    hashAlg: 'dbl-keccak-512'//,\r\n    // testnet: 'olivia'\r\n  },\r\n  // itx\r\n  'leofcoin-itx': {\r\n    codec: '6c69',\r\n    hashAlg: 'keccak-512'//,\r\n    // testnet: 'olivia'\r\n  },\r\n  // peer reputation\r\n  'leofcoin-pr': {\r\n    codec: '6c70',\r\n    hashAlg: 'keccak-256'//,\r\n    // testnet: 'olivia'\r\n  }\r\n}\r\n",
     "static": true,
     "longname": "D:/Workspace/socket-discovery/src/codec/codecs.js",
     "access": "public",
@@ -1875,7 +1875,7 @@
     "__docId__": 133,
     "kind": "file",
     "name": "src/disco-peer.js",
-    "content": "export default class DiscoPeer {\r\n  constructor(id, connection) {\r\n    this.id = id\r\n    this.connection = connection\r\n    \r\n    this.connection.on('data', message => pubsub.publish('data', message))\r\n  }\r\n  \r\n  request(data) {\r\n    return new Promise((resolve, reject) => {\r\n      const id = Math.random().toString(36).slice(-12)\r\n      data = Buffer.from(JSON.stringify({id, data}))\r\n      const _onData = message => {\r\n        message = JSON.parse(message.toString())\r\n        if (message.id !== id) return\r\n        \r\n        resolve(message.data)        \r\n      }\r\n      \r\n      pubsub.subscribe('data', _onData)\r\n      \r\n      // cleanup subscriptions\r\n      setTimeout(() => {\r\n        pubsub.unsubscribe('data', _onData)\r\n      }, 5000);\r\n      \r\n      this.write(data)\r\n    });\r\n    \r\n  }\r\n  \r\n  write(data) {\r\n    this.connection.send(data)\r\n  }\r\n  \r\n  on(event = 'data', cb) {\r\n    pubsub.subscribe(event, cb)\r\n    // this.connection.on(event, cb)\r\n  }\r\n  \r\n  removeListener(event = 'data', cb) {\r\n    pubsub.unsubscribe(event, cb)    \r\n  }\r\n}",
+    "content": "export default class PeernetPeer {\r\n  constructor(id, connection) {\r\n    this.id = id\r\n    this.connection = connection\r\n    \r\n    this.connection.on('data', message => pubsub.publish('data', message))\r\n  }\r\n  \r\n  request(data) {\r\n    return new Promise((resolve, reject) => {\r\n      const id = Math.random().toString(36).slice(-12)\r\n      data = Buffer.from(JSON.stringify({id, data}))\r\n      const _onData = message => {\r\n        message = JSON.parse(message.toString())\r\n        if (message.id !== id) return\r\n        \r\n        resolve(message.data)        \r\n      }\r\n      \r\n      pubsub.subscribe('data', _onData)\r\n      \r\n      // cleanup subscriptions\r\n      setTimeout(() => {\r\n        pubsub.unsubscribe('data', _onData)\r\n      }, 5000);\r\n      \r\n      this.write(data)\r\n    });\r\n    \r\n  }\r\n  \r\n  write(data) {\r\n    this.connection.send(data)\r\n  }\r\n  \r\n  on(event = 'data', cb) {\r\n    pubsub.subscribe(event, cb)\r\n    // this.connection.on(event, cb)\r\n  }\r\n  \r\n  removeListener(event = 'data', cb) {\r\n    pubsub.unsubscribe(event, cb)    \r\n  }\r\n}",
     "static": true,
     "longname": "D:/Workspace/socket-discovery/src/disco-peer.js",
     "access": "public",
@@ -1885,14 +1885,14 @@
   {
     "__docId__": 134,
     "kind": "class",
-    "name": "DiscoPeer",
+    "name": "PeernetPeer",
     "memberof": "src/disco-peer.js",
     "static": true,
-    "longname": "src/disco-peer.js~DiscoPeer",
+    "longname": "src/disco-peer.js~PeernetPeer",
     "access": "public",
     "export": true,
     "importPath": "@leofcoin/peernet/src/disco-peer.js",
-    "importStyle": "DiscoPeer",
+    "importStyle": "PeernetPeer",
     "description": null,
     "lineNumber": 1,
     "undocument": true,
@@ -1902,11 +1902,11 @@
     "__docId__": 135,
     "kind": "constructor",
     "name": "constructor",
-    "memberof": "src/disco-peer.js~DiscoPeer",
+    "memberof": "src/disco-peer.js~PeernetPeer",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "src/disco-peer.js~DiscoPeer#constructor",
+    "longname": "src/disco-peer.js~PeernetPeer#constructor",
     "access": "public",
     "description": null,
     "lineNumber": 2,
@@ -1916,9 +1916,9 @@
     "__docId__": 136,
     "kind": "member",
     "name": "id",
-    "memberof": "src/disco-peer.js~DiscoPeer",
+    "memberof": "src/disco-peer.js~PeernetPeer",
     "static": false,
-    "longname": "src/disco-peer.js~DiscoPeer#id",
+    "longname": "src/disco-peer.js~PeernetPeer#id",
     "access": "public",
     "description": null,
     "lineNumber": 3,
@@ -1933,9 +1933,9 @@
     "__docId__": 137,
     "kind": "member",
     "name": "connection",
-    "memberof": "src/disco-peer.js~DiscoPeer",
+    "memberof": "src/disco-peer.js~PeernetPeer",
     "static": false,
-    "longname": "src/disco-peer.js~DiscoPeer#connection",
+    "longname": "src/disco-peer.js~PeernetPeer#connection",
     "access": "public",
     "description": null,
     "lineNumber": 4,
@@ -1950,11 +1950,11 @@
     "__docId__": 138,
     "kind": "method",
     "name": "request",
-    "memberof": "src/disco-peer.js~DiscoPeer",
+    "memberof": "src/disco-peer.js~PeernetPeer",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "src/disco-peer.js~DiscoPeer#request",
+    "longname": "src/disco-peer.js~PeernetPeer#request",
     "access": "public",
     "description": null,
     "lineNumber": 9,
@@ -1977,11 +1977,11 @@
     "__docId__": 139,
     "kind": "method",
     "name": "write",
-    "memberof": "src/disco-peer.js~DiscoPeer",
+    "memberof": "src/disco-peer.js~PeernetPeer",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "src/disco-peer.js~DiscoPeer#write",
+    "longname": "src/disco-peer.js~PeernetPeer#write",
     "access": "public",
     "description": null,
     "lineNumber": 32,
@@ -2000,11 +2000,11 @@
     "__docId__": 140,
     "kind": "method",
     "name": "on",
-    "memberof": "src/disco-peer.js~DiscoPeer",
+    "memberof": "src/disco-peer.js~PeernetPeer",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "src/disco-peer.js~DiscoPeer#on",
+    "longname": "src/disco-peer.js~PeernetPeer#on",
     "access": "public",
     "description": null,
     "lineNumber": 36,
@@ -2032,11 +2032,11 @@
     "__docId__": 141,
     "kind": "method",
     "name": "removeListener",
-    "memberof": "src/disco-peer.js~DiscoPeer",
+    "memberof": "src/disco-peer.js~PeernetPeer",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "src/disco-peer.js~DiscoPeer#removeListener",
+    "longname": "src/disco-peer.js~PeernetPeer#removeListener",
     "access": "public",
     "description": null,
     "lineNumber": 41,
@@ -3429,6 +3429,69 @@
   {
     "__docId__": 225,
     "kind": "file",
+    "name": "src/messages/ps.js",
+    "content": "import protons from 'protons'\r\nimport proto from './../proto/ps.proto.js'\r\nimport CodecFormat from './../codec/codec-format-interface.js'\r\n\r\nexport default class PsMessage extends CodecFormat {\r\n  \r\n  get keys() {\r\n    return [ 'data', 'topic' ]\r\n  }\r\n  \r\n  constructor(buffer) {\r\n    const name = 'peernet-ps'\r\n    super(buffer, protons(proto).PsMessage, {name})\r\n  }\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/messages/ps.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 226,
+    "kind": "class",
+    "name": "PsMessage",
+    "memberof": "src/messages/ps.js",
+    "static": true,
+    "longname": "src/messages/ps.js~PsMessage",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/messages/ps.js",
+    "importStyle": "PsMessage",
+    "description": null,
+    "lineNumber": 5,
+    "undocument": true,
+    "interface": false,
+    "extends": [
+      "src/codec/codec-format-interface.js~CodecFormat"
+    ]
+  },
+  {
+    "__docId__": 227,
+    "kind": "get",
+    "name": "keys",
+    "memberof": "src/messages/ps.js~PsMessage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/messages/ps.js~PsMessage#keys",
+    "access": "public",
+    "description": null,
+    "lineNumber": 7,
+    "undocument": true,
+    "type": {
+      "types": [
+        "string[]"
+      ]
+    }
+  },
+  {
+    "__docId__": 228,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/messages/ps.js~PsMessage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/messages/ps.js~PsMessage#constructor",
+    "access": "public",
+    "description": null,
+    "lineNumber": 11,
+    "undocument": true
+  },
+  {
+    "__docId__": 229,
+    "kind": "file",
     "name": "src/peer-info.js",
     "content": "import CodecFormat from './codec/codec-format-interface'\r\n\r\nexport default class PeerInfo extends CodecFormat {\r\n  constructor(data, options) {\r\n    this.keys = ['id', 'address', 'family']\r\n    super(data, options)  \r\n  }\r\n}",
     "static": true,
@@ -3438,7 +3501,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 226,
+    "__docId__": 230,
     "kind": "class",
     "name": "PeerInfo",
     "memberof": "src/peer-info.js",
@@ -3457,7 +3520,7 @@
     ]
   },
   {
-    "__docId__": 227,
+    "__docId__": 231,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/peer-info.js~PeerInfo",
@@ -3471,7 +3534,7 @@
     "undocument": true
   },
   {
-    "__docId__": 228,
+    "__docId__": 232,
     "kind": "member",
     "name": "keys",
     "memberof": "src/peer-info.js~PeerInfo",
@@ -3488,10 +3551,10 @@
     }
   },
   {
-    "__docId__": 229,
+    "__docId__": 233,
     "kind": "file",
     "name": "src/peernet.js",
-    "content": "import Client from './client'\r\nimport LeofcoinStorage from './../node_modules/@leofcoin/storage/src/level.js'\r\nimport {decode} from 'bs32'\r\nimport MultiWallet from '@leofcoin/multi-wallet'\r\nimport fetch from 'node-fetch'\r\nimport http from './http/http.js'\r\nimport httpClient from './http/client/client.js'\r\nimport LeofcoinStorageClient from './http/client/storage.js'\r\nimport PeernetMessage from './messages/peernet.js'\r\nimport DHTMessage from './messages/dht.js'\r\nimport DHTMessageResponse from './messages/dht-response.js'\r\nimport DataMessage from './messages/data.js'\r\nimport DataMessageResponse from './messages/data-response.js'\r\nimport Codec from './codec/codec.js'\r\nimport Hash from './hash/hash.js'\r\nimport DHT from './dht/dht.js'\r\nimport {debug} from './utils.js'\r\n\r\nglobalThis.leofcoin = globalThis.leofcoin || {}\r\nglobalThis.peernet = globalThis.peernet || {}\r\n\r\nlet hasDaemon = false;\r\nconst https = (() => {\r\n  if (!globalThis.location) return false;\r\n  return Boolean(globalThis.location.protocol === 'https:')\r\n})();\r\n\r\n/**\r\n * @access public\r\n * @example\r\n * const peernet = new Peernet();\r\n */\r\nexport default class Peernet {\r\n  /**\r\n   * @access public\r\n   * @param {Object} options\r\n   * @param {String} options.network - desired network\r\n   * @param {String} options.root - path to root directory\r\n   * \r\n   * @return {Promise} instance of Peernet\r\n   *\r\n   * @example\r\n   * const peernet = new Peernet({network: 'leofcoin', root: '.leofcoin'});\r\n   * // testnet\r\n   * const peernet = new Peernet({network: 'leofcoin:olivia', root: '.leofcoin'});\r\n   */\r\n  constructor(options = {}) {\r\n    /**\r\n     * @property {String} network - current network\r\n     */\r\n    this.network = options.network || 'leofcoin'\r\n    const parts = this.network.split(':')\r\n    \r\n    if (!options.root) {\r\n      if (parts[1])  options.root = `.${parts[0]}/peernet/${parts[1]}`\r\n      else options.root = `.${this.network}/peernet`\r\n    }\r\n    \r\n    // peernetDHT aka closesPeer by coordinates\r\n    /**\r\n     * @type {Object}\r\n     * @property {Object} peer Instance of Peer\r\n     */\r\n    this.dht = new DHT()\r\n    \r\n    /**\r\n     * Array of peers \r\n     * @type {Array}\r\n     * @property {Object} peer Instance of Peer\r\n     */\r\n    this.peers = []\r\n    \r\n    /**\r\n     * proto Object containing proto\r\n     * @type {Object}\r\n     * @property {PeernetMessage} protos[peernet-message] messageNode\r\n     * @property {DHTMessage} protos[peernet-dht] messageNode\r\n     * @property {DHTMessageResponse} protos[peernet-dht-response] messageNode\r\n     * @property {DataMessage} protos[peernet-data] messageNode\r\n     * @property {DataMessageResponse} protos[peernet-data-response] messageNode\r\n     */\r\n    this.protos = {\r\n      'peernet-message': PeernetMessage,\r\n      'peernet-dht': DHTMessage,\r\n      'peernet-dht-response': DHTMessageResponse,\r\n      'peernet-data': DataMessage,\r\n      'peernet-data-response': DataMessageResponse\r\n    }    \r\n    \r\n    this._init(options)\r\n  }\r\n  async hasDaemon() {\r\n    try {\r\n      let response = await fetch('http://127.0.0.1:1000/api/version')\r\n      response = await response.json()\r\n      return Boolean(response.client === '@peernet/api/http')\r\n    } catch (e) {\r\n      return false\r\n    }\r\n  }\r\n  \r\n  /**\r\n   * Get current environment\r\n   * @return {String} current environment [node, electron, browser]\r\n   */\r\n  async environment() {\r\n    const _navigator = globalThis.navigator\r\n    if (!_navigator) {\r\n      return 'node'\r\n    } else if (_navigator && /electron/i.test(_navigator.userAgent)) {\r\n      return 'electron'\r\n    } else {\r\n      return 'browser'\r\n    }\r\n  }\r\n  \r\n  /**\r\n   * * Get current environment\r\n   * @return {Object} result\r\n   * @property {Boolean} reult.daemon whether or not daemon is running\r\n   * @property {Boolean} reult.environment Current environment\r\n   */\r\n  async target() {\r\n    let daemon = false\r\n    const environment = await this.environment()\r\n    if (!https) daemon = await this.hasDaemon()\r\n\r\n    return { daemon, environment }\r\n  }\r\n  \r\n  /**\r\n   * @private\r\n   */\r\n  async _init(options) {\r\n    const { daemon, environment } = await this.target()\r\n    if (daemon) {\r\n      globalThis.peernet.client = await httpClient({protocol: 'peernet-v0.1.0', host: '127.0.0.1', port: 1000})\r\n      globalThis.accountStore = globalThis.accountStore || await new LeofcoinStorageClient('lfc-account', options.root)\r\n      globalThis.walletStore = globalThis.walletStore || await new LeofcoinStorageClient('lfc-wallet', options.root)\r\n      globalThis.blockStore = globalThis.blockStore || await new LeofcoinStorageClient('lfc-block', options.root)\r\n    } else {\r\n      globalThis.accountStore = globalThis.accountStore || new LeofcoinStorage('lfc-account', options.root)\r\n      globalThis.walletStore = globalThis.walletStore || new LeofcoinStorage('lfc-wallet', options.root)\r\n      globalThis.blockStore = globalThis.blockStore || new LeofcoinStorage('lfc-block', options.root)\r\n      \r\n      if (environment !== 'browser') http()\r\n    }\r\n    \r\n    const { walletId } = await accountStore.get('public')\r\n    // peernet id\r\n    options.id = Buffer.from(walletId.slice(0, 32))\r\n    this.id = walletId\r\n    this.peerId = options.id\r\n    \r\n    pubsub.subscribe('peer:connected', peer => {\r\n      peer.on('data', message => this._protoHandler(message, peer))\r\n      this.peers.push(peer)\r\n    })\r\n    this.client = new Client(options)\r\n  }\r\n  \r\n  protoFor(data) {\r\n    if (!Buffer.isBuffer(data)) data = Buffer.from(data)\r\n    const codec = new Codec(data)\r\n    if (!codec.name) throw new Error('proto not found')\r\n    const Proto = this.protos[codec.name]\r\n    return new Proto(data)\r\n  }\r\n  \r\n  /**\r\n   * @private\r\n   */\r\n  async _protoHandler(message, peer) {\r\n    message = JSON.parse(message.toString())\r\n    const id = message.id\r\n    message = new PeernetMessage(Buffer.from(message.data))\r\n    \r\n    const codec = new Codec(message.decoded.data)\r\n    let Proto = this.protos[codec.name]\r\n    \r\n    let proto = new Proto(message.decoded.data)\r\n    if (proto.name === 'peernet-dht') {\r\n      const hash = proto.decoded.hash\r\n      const has = await this.has(hash)      \r\n      const data = new DHTMessageResponse({hash, has})\r\n      \r\n      const message = {\r\n        from: this.client.id,\r\n        to: Buffer.from(peer.id),\r\n        data: data.encoded\r\n      }\r\n      \r\n      const signature = await this.hashAndSignMessage(message)\r\n      \r\n      const node = new PeernetMessage({\r\n        ...message,\r\n        signature\r\n      })\r\n      \r\n      peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))\r\n    } else if (proto.name === 'peernet-data') {\r\n      const hash = proto.decoded.hash\r\n      const has = await blockStore.has(hash)\r\n      if (has) {\r\n        let data = await blockStore.get(hash)\r\n        data = new DataMessageResponse({hash, data: Buffer.from(data)})\r\n        \r\n        const node = await this.prepareMessage(this.client.id, peer.id, data.encoded)\r\n        \r\n        peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))\r\n      }\r\n    }\r\n    // PeernetDHTMessage()\r\n    // PeernetDHTMessageResponse\r\n    // pubsub.publish('socket-data', { message, peer })\r\n  }\r\n  \r\n  /**\r\n   * performs a walk and resolves first encounter\r\n   */\r\n  async walk(hash) {\r\n    if (!hash) throw 'hash expected, received undefined'\r\n    const data = new DHTMessage({hash})\r\n    for (const peer of this.peers) {\r\n      const node = await this.prepareMessage(this.client.id, peer.id, data.encoded)\r\n      \r\n      const result = await peer.request(node.encoded)\r\n      \r\n      let proto = this.protoFor(result.data)\r\n      \r\n      if (proto.name !== 'peernet-message') throw new Error('Nodes/Data should be send encapsulated by peernet-message')\r\n      const from = proto.decoded.from\r\n      proto = this.protoFor(proto.decoded.data)\r\n      \r\n      if (proto.name !== 'peernet-dht-response') throw new Error(`Routing error: Received proto ${proto.name} expected peernet-dht-response`)\r\n\r\n      const peerInfo = {\r\n        family: peer.connection.remoteFamily || peer.connection.localFamily,\r\n        address: peer.connection.remoteAddress || peer.connection.localAddress,\r\n        port: peer.connection.remotePort || peer.connection.localPort,\r\n        id: from\r\n      }\r\n      \r\n      if (proto.decoded.has) this.dht.addProvider(peerInfo, proto.decoded.hash)\r\n    }\r\n  }\r\n  \r\n  \r\n  async providersFor(hash) {\r\n    let providers = await this.dht.providersFor(hash)\r\n    // walk the network to find a provider\r\n    if (!providers || providers.length === 0) {\r\n      await this.walk(hash)\r\n      providers = await this.dht.providersFor(hash)\r\n      // second walk the network to find a provider\r\n      if (!providers || providers.length === 0) {\r\n        await this.walk(hash)\r\n        providers = await this.dht.providersFor(hash)\r\n      }\r\n    }\r\n    // undefined if no providers given\r\n    return providers\r\n  }\r\n  \r\n  async get(hash) {\r\n    debug(`get ${hash}`)\r\n    let data = await blockStore.has(hash)\r\n    if (data) return await blockStore.get(hash)\r\n    let providers = await this.providersFor(hash)\r\n    if (!providers || providers.size === 0) throw `nothing found for ${hash}`\r\n    debug(`found ${providers.size} for ${hash}`)\r\n    \r\n    // get closest peer on earth\r\n    const closestPeer = await this.dht.closestPeer(providers)\r\n    \r\n    // get peer instance by id\r\n    const id = closestPeer.id.toString()\r\n    const closest = this.peers.filter((peer) => {\r\n      if (peer.id.toString() === id) return peer\r\n    })\r\n    \r\n    data = new DataMessage({hash})\r\n    \r\n    const message = {\r\n      from: this.client.id,\r\n      to: Buffer.from(id),\r\n      data: data.encoded\r\n    }\r\n    \r\n    const signature = await this.hashAndSignMessage(message)\r\n    \r\n    const node = new PeernetMessage({\r\n      ...message,\r\n      signature\r\n    })\r\n        \r\n    data = await closest[0].request(node.encoded)\r\n    let proto = this.protoFor(Buffer.from(data.data))\r\n    proto = this.protoFor(proto.decoded.data)\r\n    this.put(hash, proto.decoded.data)\r\n    return proto.decoded.data\r\n  }\r\n  \r\n  async put(hash, data) {\r\n    return await blockStore.put(hash, data)\r\n  }\r\n  \r\n  async has(hash) {\r\n    return await blockStore.has(hash)\r\n  }\r\n  \r\n  async hashAndSignMessage(message) {\r\n    const hasher = new Hash(message, { name: 'peernet-message' })\r\n    const identity = await walletStore.get('identity')\r\n    \r\n    const wallet = new MultiWallet(this.network)\r\n    wallet.import(identity.multiWIF)\r\n    return wallet.sign(hasher.hash.slice(0, 32))\r\n  }\r\n  \r\n  /**\r\n   * @param {String} from - peer id\r\n   * @param {String} to - peer id\r\n   * @param {String|PeernetMessage} data - data encoded message string or the messageNode itself\r\n   */\r\n  async prepareMessage(from, to, data) {\r\n    if (!Buffer.isBuffer(from)) from = new Buffer.from(from)\r\n    if (!Buffer.isBuffer(to)) to = new Buffer.from(to)\r\n    if (data.encoded) data = data.encoded\r\n    \r\n    const message = {\r\n      from,\r\n      to,\r\n      data\r\n    }    \r\n    const signature = await his.hashAndSignMessage(message)  \r\n    const node = new PeernetMessage({\r\n      ...message,\r\n      signature\r\n    })\r\n    \r\n    return node\r\n  }\r\n  \r\n  publish(event, data) {\r\n    for (const peer of this.peers) {\r\n      peer.write()\r\n    }\r\n  }\r\n  \r\n  subscribe(event, cb) {\r\n    // this.peers.\r\n  }\r\n  // async block(index) {\r\n  //   const _values = []\r\n  //   for (const peer of this.peers) {\r\n  //     const value = await peer.request({type: 'block', index})\r\n  //     console.log(value);\r\n  //   }\r\n  // \r\n  // }\r\n}",
+    "content": "import Client from './client'\r\nimport LeofcoinStorage from './../node_modules/@leofcoin/storage/src/level.js'\r\nimport http from './http/http.js'\r\nimport httpClient from './http/client/client.js'\r\nimport LeofcoinStorageClient from './http/client/storage.js'\r\nimport PeernetMessage from './messages/peernet.js'\r\nimport DHTMessage from './messages/dht.js'\r\nimport DHTMessageResponse from './messages/dht-response.js'\r\nimport DataMessage from './messages/data.js'\r\nimport PsMessage from './messages/ps.js'\r\nimport DataMessageResponse from './messages/data-response.js'\r\nimport DHT from './dht/dht.js'\r\nimport { debug, protoFor, target, prepareMessage } from './utils/utils.js'\r\n\r\nglobalThis.leofcoin = globalThis.leofcoin || {}\r\nglobalThis.peernet = globalThis.peernet || {}\r\n\r\n\r\n/**\r\n * @access public\r\n * @example\r\n * const peernet = new Peernet();\r\n */\r\nexport default class Peernet {\r\n  /**\r\n   * @access public\r\n   * @param {Object} options\r\n   * @param {String} options.network - desired network\r\n   * @param {String} options.root - path to root directory\r\n   * \r\n   * @return {Promise} instance of Peernet\r\n   *\r\n   * @example\r\n   * const peernet = new Peernet({network: 'leofcoin', root: '.leofcoin'});\r\n   * // testnet\r\n   * const peernet = new Peernet({network: 'leofcoin:olivia', root: '.leofcoin'});\r\n   */\r\n  constructor(options = {}) {\r\n    /**\r\n     * @property {String} network - current network\r\n     */\r\n    this.network = options.network || 'leofcoin'\r\n    const parts = this.network.split(':')\r\n    \r\n    if (!options.root) {\r\n      if (parts[1])  options.root = `.${parts[0]}/peernet/${parts[1]}`\r\n      else options.root = `.${this.network}/peernet`\r\n    }\r\n    \r\n    // peernetDHT aka closesPeer by coordinates\r\n    /**\r\n     * @type {Object}\r\n     * @property {Object} peer Instance of Peer\r\n     */\r\n    this.dht = new DHT()\r\n    \r\n    /**\r\n     * Array of peers \r\n     * @type {Array}\r\n     * @property {DiscoPeer} peer Instance of Peer\r\n     */\r\n    this.peers = []\r\n    \r\n    globalThis.peernet.protos = {\r\n      'peernet-message': PeernetMessage,\r\n      'peernet-dht': DHTMessage,\r\n      'peernet-dht-response': DHTMessageResponse,\r\n      'peernet-data': DataMessage,\r\n      'peernet-data-response': DataMessageResponse\r\n    }\r\n    \r\n    this._init(options)\r\n  }  \r\n  \r\n  /**\r\n   * proto Object containing protos\r\n   * @type {Object}\r\n   * @property {PeernetMessage} protos[peernet-message] messageNode\r\n   * @property {DHTMessage} protos[peernet-dht] messageNode\r\n   * @property {DHTMessageResponse} protos[peernet-dht-response] messageNode\r\n   * @property {DataMessage} protos[peernet-data] messageNode\r\n   * @property {DataMessageResponse} protos[peernet-data-response] messageNode\r\n   */\r\n  get protos() {\r\n    return globalThis.peernet.protos\r\n  }\r\n  \r\n  /**\r\n   * @private\r\n   */\r\n  async _init(options) {\r\n    const { daemon, environment } = await target()\r\n    if (daemon) {\r\n      globalThis.peernet.client = await httpClient({protocol: 'peernet-v0.1.0', host: '127.0.0.1', port: 1000})\r\n      globalThis.accountStore = globalThis.accountStore || await new LeofcoinStorageClient('lfc-account', options.root)\r\n      globalThis.walletStore = globalThis.walletStore || await new LeofcoinStorageClient('lfc-wallet', options.root)\r\n      globalThis.blockStore = globalThis.blockStore || await new LeofcoinStorageClient('lfc-block', options.root)\r\n    } else {\r\n      globalThis.accountStore = globalThis.accountStore || new LeofcoinStorage('lfc-account', options.root)\r\n      globalThis.walletStore = globalThis.walletStore || new LeofcoinStorage('lfc-wallet', options.root)\r\n      globalThis.blockStore = globalThis.blockStore || new LeofcoinStorage('lfc-block', options.root)\r\n      \r\n      if (environment !== 'browser') http()\r\n    }\r\n    \r\n    const { walletId } = await accountStore.get('public')\r\n    // peernet id\r\n    options.id = Buffer.from(walletId.slice(0, 32))\r\n    this.id = walletId\r\n    this.peerId = options.id\r\n    \r\n    pubsub.subscribe('peer:connected', peer => {\r\n      peer.on('data', message => this._protoHandler(message, peer))\r\n      this.peers.push(peer)\r\n    })\r\n    /**\r\n     * @access public\r\n     * @type {PeernetClient}\r\n     */\r\n    this.client = new Client(options)\r\n  }\r\n  \r\n  /**\r\n   * @private\r\n   */\r\n  async _protoHandler(message, peer) {\r\n    message = JSON.parse(message.toString())\r\n    const id = message.id\r\n    message = new PeernetMessage(Buffer.from(message.data))\r\n    \r\n    let proto = protoFor(message.decoded.data)\r\n    if (proto.name === 'peernet-dht') {\r\n      const hash = proto.decoded.hash\r\n      const has = await this.has(hash)     \r\n       \r\n      const data = new DHTMessageResponse({hash, has})\r\n      const node = await prepareMessage(this.client.id, peer.id, data.encoded)\r\n      \r\n      peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))\r\n    } else if (proto.name === 'peernet-data') {\r\n      const hash = proto.decoded.hash\r\n      const has = await blockStore.has(hash)\r\n      if (has) {\r\n        let data = await blockStore.get(hash)\r\n        data = new DataMessageResponse({hash, data: Buffer.from(data)})\r\n        \r\n        const node = await prepareMessage(this.client.id, peer.id, data.encoded)\r\n        \r\n        peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))\r\n      }\r\n    } else if (proto.name === 'peernet-ps') {\r\n      if (proto.decoded.data && proto.decoded.data.toString() === 'subscribe') pubsub.subscribe(proto.decoded.topic, data => {\r\n        peer.write(Buffer.from(JSON.stringify({id, data})))\r\n      })\r\n      else pubsub.publish(proto.decoded.topic, proto.decoded.data)\r\n     // TODO: is it needed? test when many peers...\r\n      for (const peer of this.peers) {\r\n        if (peer.id !== message.decoded.from) peer.write(Buffer.from(JSON.stringify({id, data: message.encoded})))\r\n      }\r\n      \r\n    }\r\n  }\r\n  \r\n  /**\r\n   * performs a walk and resolves first encounter\r\n   */\r\n  async walk(hash) {\r\n    if (!hash) throw 'hash expected, received undefined'\r\n    const data = new DHTMessage({hash})\r\n    for (const peer of this.peers) {\r\n      const node = await prepareMessage(this.client.id, peer.id, data.encoded)\r\n      \r\n      const result = await peer.request(node.encoded)\r\n      \r\n      let proto = protoFor(result.data)\r\n      \r\n      if (proto.name !== 'peernet-message') throw new Error('Nodes/Data should be send encapsulated by peernet-message')\r\n      const from = proto.decoded.from\r\n      proto = rotoFor(proto.decoded.data)\r\n      \r\n      if (proto.name !== 'peernet-dht-response') throw new Error(`Routing error: Received proto ${proto.name} expected peernet-dht-response`)\r\n\r\n      const peerInfo = {\r\n        family: peer.connection.remoteFamily || peer.connection.localFamily,\r\n        address: peer.connection.remoteAddress || peer.connection.localAddress,\r\n        port: peer.connection.remotePort || peer.connection.localPort,\r\n        id: from\r\n      }\r\n      \r\n      if (proto.decoded.has) this.dht.addProvider(peerInfo, proto.decoded.hash)\r\n    }\r\n  }\r\n  \r\n  /**\r\n   * Override DHT behavior, try's finding the content three times\r\n   */\r\n  async providersFor(hash) {\r\n    let providers = await this.dht.providersFor(hash)\r\n    // walk the network to find a provider\r\n    if (!providers || providers.length === 0) {\r\n      await this.walk(hash)\r\n      providers = await this.dht.providersFor(hash)\r\n      // second walk the network to find a provider\r\n      if (!providers || providers.length === 0) {\r\n        await this.walk(hash)\r\n        providers = await this.dht.providersFor(hash)\r\n      }\r\n    }\r\n    // undefined if no providers given\r\n    return providers\r\n  }\r\n  \r\n  async get(hash) {\r\n    debug(`get ${hash}`)\r\n    let data = await blockStore.has(hash)\r\n    if (data) return await blockStore.get(hash)\r\n    let providers = await this.providersFor(hash)\r\n    if (!providers || providers.size === 0) throw `nothing found for ${hash}`\r\n    debug(`found ${providers.size} for ${hash}`)\r\n    \r\n    // get closest peer on earth\r\n    const closestPeer = await this.dht.closestPeer(providers)\r\n    \r\n    // get peer instance by id\r\n    const id = closestPeer.id.toString()\r\n    const closest = this.peers.filter((peer) => {\r\n      if (peer.id.toString() === id) return peer\r\n    })\r\n    \r\n    data = new DataMessage({hash})\r\n    \r\n    const node = prepareMessage(this.client.id, id, data.encoded)\r\n        \r\n    data = await closest[0].request(node.encoded)\r\n    let proto = protoFor(Buffer.from(data.data))\r\n    proto = protoFor(proto.decoded.data)\r\n    this.put(hash, proto.decoded.data)\r\n    return proto.decoded.data\r\n  }\r\n  \r\n  async put(hash, data) {\r\n    return await blockStore.put(hash, data)\r\n  }\r\n  \r\n  async has(hash) {\r\n    return await blockStore.has(hash)\r\n  }\r\n  \r\n  publish(topic, data) {\r\n    \r\n    for (const peer of this.peers) {\r\n      // TODO: if peer subscribed\r\n      data = new PsMessage({data, topic})\r\n      \r\n      const node = prepareMessage(this.client.id, id, data.encoded)\r\n      peer.write(node.encoded)\r\n    }\r\n    // pubsub.publish(topic, data)\r\n  }\r\n  \r\n  subscribe(topic, cb) {\r\n    for (const peer of this.peers) {\r\n      // TODO: if peer subscribed\r\n      data = new PsMessage({data: 'subscribe', topic})\r\n      \r\n      const node = prepareMessage(this.client.id, id, data.encoded)\r\n      peer.write(node.encoded)\r\n    }\r\n  }\r\n  // async block(index) {\r\n  //   const _values = []\r\n  //   for (const peer of this.peers) {\r\n  //     const value = await peer.request({type: 'block', index})\r\n  //     console.log(value);\r\n  //   }\r\n  // \r\n  // }\r\n}",
     "static": true,
     "longname": "D:/Workspace/socket-discovery/src/peernet.js",
     "access": "public",
@@ -3499,49 +3562,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 230,
-    "kind": "variable",
-    "name": "hasDaemon",
-    "memberof": "src/peernet.js",
-    "static": true,
-    "longname": "src/peernet.js~hasDaemon",
-    "access": "public",
-    "export": false,
-    "importPath": "@leofcoin/peernet/src/peernet.js",
-    "importStyle": null,
-    "description": null,
-    "lineNumber": 22,
-    "undocument": true,
-    "type": {
-      "types": [
-        "boolean"
-      ]
-    },
-    "ignore": true
-  },
-  {
-    "__docId__": 231,
-    "kind": "variable",
-    "name": "https",
-    "memberof": "src/peernet.js",
-    "static": true,
-    "longname": "src/peernet.js~https",
-    "access": "public",
-    "export": false,
-    "importPath": "@leofcoin/peernet/src/peernet.js",
-    "importStyle": null,
-    "description": null,
-    "lineNumber": 23,
-    "undocument": true,
-    "type": {
-      "types": [
-        "*"
-      ]
-    },
-    "ignore": true
-  },
-  {
-    "__docId__": 232,
+    "__docId__": 234,
     "kind": "class",
     "name": "Peernet",
     "memberof": "src/peernet.js",
@@ -3555,11 +3576,11 @@
     "examples": [
       "const peernet = new Peernet();"
     ],
-    "lineNumber": 33,
+    "lineNumber": 24,
     "interface": false
   },
   {
-    "__docId__": 233,
+    "__docId__": 235,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/peernet.js~Peernet",
@@ -3572,7 +3593,7 @@
     "examples": [
       "const peernet = new Peernet({network: 'leofcoin', root: '.leofcoin'});\n// testnet\nconst peernet = new Peernet({network: 'leofcoin:olivia', root: '.leofcoin'});"
     ],
-    "lineNumber": 47,
+    "lineNumber": 38,
     "params": [
       {
         "nullable": null,
@@ -3615,7 +3636,7 @@
     }
   },
   {
-    "__docId__": 234,
+    "__docId__": 236,
     "kind": "member",
     "name": "network",
     "memberof": "src/peernet.js~Peernet",
@@ -3623,7 +3644,7 @@
     "longname": "src/peernet.js~Peernet#network",
     "access": "public",
     "description": "",
-    "lineNumber": 51,
+    "lineNumber": 42,
     "properties": [
       {
         "nullable": null,
@@ -3643,7 +3664,7 @@
     }
   },
   {
-    "__docId__": 235,
+    "__docId__": 237,
     "kind": "member",
     "name": "dht",
     "memberof": "src/peernet.js~Peernet",
@@ -3651,7 +3672,7 @@
     "longname": "src/peernet.js~Peernet#dht",
     "access": "public",
     "description": "",
-    "lineNumber": 64,
+    "lineNumber": 55,
     "properties": [
       {
         "nullable": null,
@@ -3674,7 +3695,7 @@
     }
   },
   {
-    "__docId__": 236,
+    "__docId__": 238,
     "kind": "member",
     "name": "peers",
     "memberof": "src/peernet.js~Peernet",
@@ -3682,12 +3703,12 @@
     "longname": "src/peernet.js~Peernet#peers",
     "access": "public",
     "description": "Array of peers ",
-    "lineNumber": 71,
+    "lineNumber": 62,
     "properties": [
       {
         "nullable": null,
         "types": [
-          "Object"
+          "DiscoPeer"
         ],
         "spread": false,
         "optional": false,
@@ -3705,15 +3726,17 @@
     }
   },
   {
-    "__docId__": 237,
-    "kind": "member",
+    "__docId__": 239,
+    "kind": "get",
     "name": "protos",
     "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": false,
     "static": false,
     "longname": "src/peernet.js~Peernet#protos",
     "access": "public",
-    "description": "proto Object containing proto",
-    "lineNumber": 82,
+    "description": "proto Object containing protos",
+    "lineNumber": 84,
     "properties": [
       {
         "nullable": null,
@@ -3776,93 +3799,7 @@
     }
   },
   {
-    "__docId__": 238,
-    "kind": "method",
-    "name": "hasDaemon",
-    "memberof": "src/peernet.js~Peernet",
-    "generator": false,
-    "async": true,
-    "static": false,
-    "longname": "src/peernet.js~Peernet#hasDaemon",
-    "access": "public",
-    "description": null,
-    "lineNumber": 92,
-    "undocument": true,
-    "params": [],
-    "return": {
-      "types": [
-        "boolean"
-      ]
-    }
-  },
-  {
-    "__docId__": 239,
-    "kind": "method",
-    "name": "environment",
-    "memberof": "src/peernet.js~Peernet",
-    "generator": false,
-    "async": true,
-    "static": false,
-    "longname": "src/peernet.js~Peernet#environment",
-    "access": "public",
-    "description": "Get current environment",
-    "lineNumber": 106,
-    "return": {
-      "nullable": null,
-      "types": [
-        "String"
-      ],
-      "spread": false,
-      "description": "current environment [node, electron, browser]"
-    },
-    "params": []
-  },
-  {
     "__docId__": 240,
-    "kind": "method",
-    "name": "target",
-    "memberof": "src/peernet.js~Peernet",
-    "generator": false,
-    "async": true,
-    "static": false,
-    "longname": "src/peernet.js~Peernet#target",
-    "access": "public",
-    "description": "* Get current environment",
-    "lineNumber": 123,
-    "properties": [
-      {
-        "nullable": null,
-        "types": [
-          "Boolean"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "reult.daemon",
-        "description": "whether or not daemon is running"
-      },
-      {
-        "nullable": null,
-        "types": [
-          "Boolean"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "reult.environment",
-        "description": "Current environment"
-      }
-    ],
-    "return": {
-      "nullable": null,
-      "types": [
-        "Object"
-      ],
-      "spread": false,
-      "description": "result"
-    },
-    "params": []
-  },
-  {
-    "__docId__": 241,
     "kind": "method",
     "name": "_init",
     "memberof": "src/peernet.js~Peernet",
@@ -3872,7 +3809,7 @@
     "longname": "src/peernet.js~Peernet#_init",
     "access": "private",
     "description": "",
-    "lineNumber": 134,
+    "lineNumber": 91,
     "params": [
       {
         "name": "options",
@@ -3884,7 +3821,7 @@
     "return": null
   },
   {
-    "__docId__": 242,
+    "__docId__": 241,
     "kind": "member",
     "name": "id",
     "memberof": "src/peernet.js~Peernet",
@@ -3892,7 +3829,24 @@
     "longname": "src/peernet.js~Peernet#id",
     "access": "public",
     "description": null,
-    "lineNumber": 152,
+    "lineNumber": 109,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 242,
+    "kind": "member",
+    "name": "peerId",
+    "memberof": "src/peernet.js~Peernet",
+    "static": false,
+    "longname": "src/peernet.js~Peernet#peerId",
+    "access": "public",
+    "description": null,
+    "lineNumber": 110,
     "undocument": true,
     "type": {
       "types": [
@@ -3903,66 +3857,24 @@
   {
     "__docId__": 243,
     "kind": "member",
-    "name": "peerId",
-    "memberof": "src/peernet.js~Peernet",
-    "static": false,
-    "longname": "src/peernet.js~Peernet#peerId",
-    "access": "public",
-    "description": null,
-    "lineNumber": 153,
-    "undocument": true,
-    "type": {
-      "types": [
-        "*"
-      ]
-    }
-  },
-  {
-    "__docId__": 244,
-    "kind": "member",
     "name": "client",
     "memberof": "src/peernet.js~Peernet",
     "static": false,
     "longname": "src/peernet.js~Peernet#client",
     "access": "public",
-    "description": null,
-    "lineNumber": 159,
-    "undocument": true,
+    "description": "",
+    "lineNumber": 120,
     "type": {
+      "nullable": null,
       "types": [
-        "*"
-      ]
+        "PeernetClient"
+      ],
+      "spread": false,
+      "description": null
     }
   },
   {
-    "__docId__": 245,
-    "kind": "method",
-    "name": "protoFor",
-    "memberof": "src/peernet.js~Peernet",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/peernet.js~Peernet#protoFor",
-    "access": "public",
-    "description": null,
-    "lineNumber": 162,
-    "undocument": true,
-    "params": [
-      {
-        "name": "data",
-        "types": [
-          "*"
-        ]
-      }
-    ],
-    "return": {
-      "types": [
-        "*"
-      ]
-    }
-  },
-  {
-    "__docId__": 246,
+    "__docId__": 244,
     "kind": "method",
     "name": "_protoHandler",
     "memberof": "src/peernet.js~Peernet",
@@ -3972,7 +3884,7 @@
     "longname": "src/peernet.js~Peernet#_protoHandler",
     "access": "private",
     "description": "",
-    "lineNumber": 173,
+    "lineNumber": 126,
     "params": [
       {
         "name": "message",
@@ -3990,7 +3902,7 @@
     "return": null
   },
   {
-    "__docId__": 247,
+    "__docId__": 245,
     "kind": "method",
     "name": "walk",
     "memberof": "src/peernet.js~Peernet",
@@ -4000,7 +3912,7 @@
     "longname": "src/peernet.js~Peernet#walk",
     "access": "public",
     "description": "performs a walk and resolves first encounter",
-    "lineNumber": 221,
+    "lineNumber": 167,
     "params": [
       {
         "name": "hash",
@@ -4012,7 +3924,7 @@
     "return": null
   },
   {
-    "__docId__": 248,
+    "__docId__": 246,
     "kind": "method",
     "name": "providersFor",
     "memberof": "src/peernet.js~Peernet",
@@ -4021,8 +3933,34 @@
     "static": false,
     "longname": "src/peernet.js~Peernet#providersFor",
     "access": "public",
+    "description": "Override DHT behavior, try's finding the content three times",
+    "lineNumber": 197,
+    "params": [
+      {
+        "name": "hash",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 247,
+    "kind": "method",
+    "name": "get",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#get",
+    "access": "public",
     "description": null,
-    "lineNumber": 249,
+    "lineNumber": 213,
     "undocument": true,
     "params": [
       {
@@ -4039,17 +3977,50 @@
     }
   },
   {
-    "__docId__": 249,
+    "__docId__": 248,
     "kind": "method",
-    "name": "get",
+    "name": "put",
     "memberof": "src/peernet.js~Peernet",
     "generator": false,
     "async": true,
     "static": false,
-    "longname": "src/peernet.js~Peernet#get",
+    "longname": "src/peernet.js~Peernet#put",
     "access": "public",
     "description": null,
-    "lineNumber": 265,
+    "lineNumber": 241,
+    "undocument": true,
+    "params": [
+      {
+        "name": "hash",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "data",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 249,
+    "kind": "method",
+    "name": "has",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#has",
+    "access": "public",
+    "description": null,
+    "lineNumber": 245,
     "undocument": true,
     "params": [
       {
@@ -4068,23 +4039,228 @@
   {
     "__docId__": 250,
     "kind": "method",
-    "name": "put",
+    "name": "publish",
     "memberof": "src/peernet.js~Peernet",
     "generator": false,
-    "async": true,
+    "async": false,
     "static": false,
-    "longname": "src/peernet.js~Peernet#put",
+    "longname": "src/peernet.js~Peernet#publish",
     "access": "public",
     "description": null,
-    "lineNumber": 304,
+    "lineNumber": 249,
     "undocument": true,
     "params": [
       {
-        "name": "hash",
+        "name": "topic",
         "types": [
           "*"
         ]
       },
+      {
+        "name": "data",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 251,
+    "kind": "method",
+    "name": "subscribe",
+    "memberof": "src/peernet.js~Peernet",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/peernet.js~Peernet#subscribe",
+    "access": "public",
+    "description": null,
+    "lineNumber": 261,
+    "undocument": true,
+    "params": [
+      {
+        "name": "topic",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "cb",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 252,
+    "kind": "file",
+    "name": "src/proto/data-response.proto.js",
+    "content": "export default `\r\n// PeernetDataMessageResponse\r\nmessage PeernetDataMessageResponse {\r\n  required string hash = 1;\r\n  required bytes data = 2;\r\n}\r\n`",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/proto/data-response.proto.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 253,
+    "kind": "file",
+    "name": "src/proto/data.proto.js",
+    "content": "export default `\r\n// PeernetDataMessage\r\nmessage PeernetDataMessage {\r\n  required string hash = 1;\r\n}\r\n`",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/proto/data.proto.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 254,
+    "kind": "file",
+    "name": "src/proto/dht-response.proto.js",
+    "content": "export default `\r\n// PeernetDHTMessageResponse\r\nmessage PeernetDHTMessageResponse {\r\n  required string hash = 1;\r\n  required bool has = 2;\r\n}\r\n`",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/proto/dht-response.proto.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 255,
+    "kind": "file",
+    "name": "src/proto/dht.proto.js",
+    "content": "export default `\r\n// PeernetDHTMessage\r\nmessage PeernetDHTMessage {\r\n  required string hash = 1;\r\n}\r\n`",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/proto/dht.proto.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 256,
+    "kind": "file",
+    "name": "src/proto/peernet.proto.js",
+    "content": "export default `\r\n// PeernetMessage\r\nmessage PeernetMessage {\r\n  required bytes data = 1;\r\n  required bytes signature = 2;\r\n  optional bytes from = 3;\r\n  optional bytes to = 4;\r\n  optional string id = 5;\r\n}`",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/proto/peernet.proto.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 257,
+    "kind": "file",
+    "name": "src/proto/ps.proto.js",
+    "content": "export default `\r\n// PsMessage\r\nmessage PsMessage {\r\n  required bytes data = 1;\r\n  required bytes topic = 2;\r\n}`",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/proto/ps.proto.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 258,
+    "kind": "file",
+    "name": "src/server.js",
+    "content": "import Server from './../node_modules/socket-request-server/src/index.js';\r\nimport socketResponse from './../node_modules/socket-request-server/src/socket-response.js';\r\n\r\nglobalThis.peerMap = new Map()\r\n\r\nServer({\r\n  peernet: (params, response) => {\r\n    if (params.join) {\r\n      peerMap.set(params.peerId, params.address)\r\n      response.send([...peerMap.values()])\r\n      for (const connection of connections) {\r\n        console.log(connection);\r\n        socketResponse(connection, 'peernet', 'peernet').send({discovered: params.address})\r\n      }\r\n      return\r\n    }\r\n    if (!params.join) {\r\n      peerMap.delete(params.peerId)\r\n      return response.send()\r\n    }\r\n  }\r\n})",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/server.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 259,
+    "kind": "file",
+    "name": "src/utils/utils.js",
+    "content": "import fetch from 'node-fetch'\r\nimport MultiWallet from '@leofcoin/multi-wallet'\r\nimport Codec from './codec/codec.js'\r\nimport Hash from './hash/hash.js'\r\nimport PeernetMessage from './messages/peernet.js'\r\n\r\nexport const expected = (expected, actual) => {\r\n  const entries = Object.entries(actual)\r\n    .map(entry => entry.join(!entry[1] ? `: undefined - ${entry[1]} ` : `: ${typeof entry[1]} - `));\r\n\r\n  return `\\nExpected:\\n\\t${expected.join('\\n\\t')}\\n\\nactual:\\n\\t${entries.join('\\n\\t')}`;\r\n}\r\n\r\nexport const debug = log => {\r\n  if (globalThis.DEBUG) console.log(`%c ${log}`, 'color: #0080ff;')\r\n}\r\n\r\nexport const protoFor = data => {\r\n  if (!Buffer.isBuffer(data)) data = Buffer.from(data)\r\n  const codec = new Codec(data)\r\n  if (!codec.name) throw new Error('proto not found')\r\n  const Proto = globalThis.peernet.protos[codec.name]\r\n  return new Proto(data)\r\n}\r\n\r\n/**\r\n * hash and sign message\r\n *\r\n * @param {object} message\r\n * @param {Buffer} message.from peer id\r\n * @param {Buffer} message.to peer id\r\n * @param {string} message.data Peernet message (PeernetMessage excluded) encoded as a string\r\n * @return signature\r\n */\r\nexport const hashAndSignMessage = async message => {\r\n  const hasher = new Hash(message, { name: 'peernet-message' })\r\n  const identity = await walletStore.get('identity')\r\n  \r\n  const wallet = new MultiWallet(this.network)\r\n  wallet.import(identity.multiWIF)\r\n  return wallet.sign(hasher.hash.slice(0, 32))\r\n}\r\n\r\n/**\r\n * @param {String} from - peer id\r\n * @param {String} to - peer id\r\n * @param {String|PeernetMessage} data - data encoded message string or the messageNode itself\r\n */\r\nexport const prepareMessage = async (from, to, data) => {\r\n  if (!Buffer.isBuffer(from)) from = new Buffer.from(from)\r\n  if (!Buffer.isBuffer(to)) to = new Buffer.from(to)\r\n  if (data.encoded) data = data.encoded\r\n  \r\n  const message = {\r\n    from,\r\n    to,\r\n    data\r\n  }    \r\n  const signature = await hashAndSignMessage(message)  \r\n  const node = new PeernetMessage({\r\n    ...message,\r\n    signature\r\n  })\r\n  \r\n  return node\r\n}\r\n\r\n/**\r\n * wether or not a peernet daemon is active\r\n * @return {Boolean}\r\n */\r\nexport const hasDaemon = async () => {\r\n  try {\r\n    let response = await fetch('http://127.0.0.1:1000/api/version')\r\n    response = await response.json()\r\n    return Boolean(response.client === '@peernet/api/http')\r\n  } catch (e) {\r\n    return false\r\n  }\r\n}\r\n\r\nexport const https = () => {\r\n  if (!globalThis.location) return false;\r\n  return Boolean(globalThis.location.protocol === 'https:')\r\n}\r\n\r\n/**\r\n * Get current environment\r\n * @return {String} current environment [node, electron, browser]\r\n */\r\nexport const environment = () => {\r\n  const _navigator = globalThis.navigator\r\n  if (!_navigator) {\r\n    return 'node'\r\n  } else if (_navigator && /electron/i.test(_navigator.userAgent)) {\r\n    return 'electron'\r\n  } else {\r\n    return 'browser'\r\n  }\r\n}\r\n\r\n/**\r\n * * Get current environment\r\n * @return {Object} result\r\n * @property {Boolean} reult.daemon whether or not daemon is running\r\n * @property {Boolean} reult.environment Current environment\r\n */\r\nexport const target = async () => {\r\n  let daemon = false\r\n  const environment = await environment()\r\n  if (!https()) daemon = await hasDaemon()\r\n\r\n  return { daemon, environment }\r\n}",
+    "static": true,
+    "longname": "D:/Workspace/socket-discovery/src/utils/utils.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 260,
+    "kind": "function",
+    "name": "expected",
+    "memberof": "src/utils/utils.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/utils/utils.js~expected",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/utils/utils.js",
+    "importStyle": "{expected}",
+    "description": null,
+    "lineNumber": 7,
+    "undocument": true,
+    "params": [
+      {
+        "name": "expected",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "actual",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "string"
+      ]
+    }
+  },
+  {
+    "__docId__": 261,
+    "kind": "function",
+    "name": "debug",
+    "memberof": "src/utils/utils.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/utils/utils.js~debug",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/utils/utils.js",
+    "importStyle": "{debug}",
+    "description": null,
+    "lineNumber": 14,
+    "undocument": true,
+    "params": [
+      {
+        "name": "log",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 262,
+    "kind": "function",
+    "name": "protoFor",
+    "memberof": "src/utils/utils.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/utils/utils.js~protoFor",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/utils/utils.js",
+    "importStyle": "{protoFor}",
+    "description": null,
+    "lineNumber": 18,
+    "undocument": true,
+    "params": [
       {
         "name": "data",
         "types": [
@@ -4099,71 +4275,86 @@
     }
   },
   {
-    "__docId__": 251,
-    "kind": "method",
-    "name": "has",
-    "memberof": "src/peernet.js~Peernet",
-    "generator": false,
-    "async": true,
-    "static": false,
-    "longname": "src/peernet.js~Peernet#has",
-    "access": "public",
-    "description": null,
-    "lineNumber": 308,
-    "undocument": true,
-    "params": [
-      {
-        "name": "hash",
-        "types": [
-          "*"
-        ]
-      }
-    ],
-    "return": {
-      "types": [
-        "*"
-      ]
-    }
-  },
-  {
-    "__docId__": 252,
-    "kind": "method",
+    "__docId__": 263,
+    "kind": "function",
     "name": "hashAndSignMessage",
-    "memberof": "src/peernet.js~Peernet",
+    "memberof": "src/utils/utils.js",
     "generator": false,
     "async": true,
-    "static": false,
-    "longname": "src/peernet.js~Peernet#hashAndSignMessage",
+    "static": true,
+    "longname": "src/utils/utils.js~hashAndSignMessage",
     "access": "public",
-    "description": null,
-    "lineNumber": 312,
-    "undocument": true,
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/utils/utils.js",
+    "importStyle": "{hashAndSignMessage}",
+    "description": "hash and sign message",
+    "lineNumber": 35,
     "params": [
       {
-        "name": "message",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "message",
+        "description": ""
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Buffer"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "message.from",
+        "description": "peer id"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Buffer"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "message.to",
+        "description": "peer id"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "message.data",
+        "description": "Peernet message (PeernetMessage excluded) encoded as a string"
       }
     ],
     "return": {
+      "nullable": null,
       "types": [
         "*"
-      ]
+      ],
+      "spread": false,
+      "description": "signature"
     }
   },
   {
-    "__docId__": 253,
-    "kind": "method",
+    "__docId__": 264,
+    "kind": "function",
     "name": "prepareMessage",
-    "memberof": "src/peernet.js~Peernet",
+    "memberof": "src/utils/utils.js",
     "generator": false,
     "async": true,
-    "static": false,
-    "longname": "src/peernet.js~Peernet#prepareMessage",
+    "static": true,
+    "longname": "src/utils/utils.js~prepareMessage",
     "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/utils/utils.js",
+    "importStyle": "{prepareMessage}",
     "description": "",
-    "lineNumber": 326,
+    "lineNumber": 49,
     "params": [
       {
         "nullable": null,
@@ -4204,201 +4395,124 @@
     }
   },
   {
-    "__docId__": 254,
-    "kind": "method",
-    "name": "publish",
-    "memberof": "src/peernet.js~Peernet",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/peernet.js~Peernet#publish",
-    "access": "public",
-    "description": null,
-    "lineNumber": 345,
-    "undocument": true,
-    "params": [
-      {
-        "name": "event",
-        "types": [
-          "*"
-        ]
-      },
-      {
-        "name": "data",
-        "types": [
-          "*"
-        ]
-      }
-    ],
-    "return": null
-  },
-  {
-    "__docId__": 255,
-    "kind": "method",
-    "name": "subscribe",
-    "memberof": "src/peernet.js~Peernet",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/peernet.js~Peernet#subscribe",
-    "access": "public",
-    "description": null,
-    "lineNumber": 351,
-    "undocument": true,
-    "params": [
-      {
-        "name": "event",
-        "types": [
-          "*"
-        ]
-      },
-      {
-        "name": "cb",
-        "types": [
-          "*"
-        ]
-      }
-    ],
-    "return": null
-  },
-  {
-    "__docId__": 256,
-    "kind": "file",
-    "name": "src/proto/data-response.proto.js",
-    "content": "export default `\r\n// PeernetDataMessageResponse\r\nmessage PeernetDataMessageResponse {\r\n  required string hash = 1;\r\n  required bytes data = 2;\r\n}\r\n`",
-    "static": true,
-    "longname": "D:/Workspace/socket-discovery/src/proto/data-response.proto.js",
-    "access": "public",
-    "description": null,
-    "lineNumber": 1
-  },
-  {
-    "__docId__": 257,
-    "kind": "file",
-    "name": "src/proto/data.proto.js",
-    "content": "export default `\r\n// PeernetDataMessage\r\nmessage PeernetDataMessage {\r\n  required string hash = 1;\r\n}\r\n`",
-    "static": true,
-    "longname": "D:/Workspace/socket-discovery/src/proto/data.proto.js",
-    "access": "public",
-    "description": null,
-    "lineNumber": 1
-  },
-  {
-    "__docId__": 258,
-    "kind": "file",
-    "name": "src/proto/dht-response.proto.js",
-    "content": "export default `\r\n// PeernetDHTMessageResponse\r\nmessage PeernetDHTMessageResponse {\r\n  required string hash = 1;\r\n  required bool has = 2;\r\n}\r\n`",
-    "static": true,
-    "longname": "D:/Workspace/socket-discovery/src/proto/dht-response.proto.js",
-    "access": "public",
-    "description": null,
-    "lineNumber": 1
-  },
-  {
-    "__docId__": 259,
-    "kind": "file",
-    "name": "src/proto/dht.proto.js",
-    "content": "export default `\r\n// PeernetDHTMessage\r\nmessage PeernetDHTMessage {\r\n  required string hash = 1;\r\n}\r\n`",
-    "static": true,
-    "longname": "D:/Workspace/socket-discovery/src/proto/dht.proto.js",
-    "access": "public",
-    "description": null,
-    "lineNumber": 1
-  },
-  {
-    "__docId__": 260,
-    "kind": "file",
-    "name": "src/proto/peernet.proto.js",
-    "content": "export default `\r\n// PeernetMessage\r\nmessage PeernetMessage {\r\n  required bytes data = 1;\r\n  required bytes signature = 2;\r\n  optional bytes from = 3;\r\n  optional bytes to = 4;\r\n  optional string id = 5;\r\n}`",
-    "static": true,
-    "longname": "D:/Workspace/socket-discovery/src/proto/peernet.proto.js",
-    "access": "public",
-    "description": null,
-    "lineNumber": 1
-  },
-  {
-    "__docId__": 261,
-    "kind": "file",
-    "name": "src/server.js",
-    "content": "import Server from './../node_modules/socket-request-server/src/index.js';\r\nimport socketResponse from './../node_modules/socket-request-server/src/socket-response.js';\r\n\r\nglobalThis.peerMap = new Map()\r\n\r\nServer({\r\n  peernet: (params, response) => {\r\n    if (params.join) {\r\n      peerMap.set(params.peerId, params.address)\r\n      response.send([...peerMap.values()])\r\n      for (const connection of connections) {\r\n        console.log(connection);\r\n        socketResponse(connection, 'peernet', 'peernet').send({discovered: params.address})\r\n      }\r\n      return\r\n    }\r\n    if (!params.join) {\r\n      peerMap.delete(params.peerId)\r\n      return response.send()\r\n    }\r\n  }\r\n})",
-    "static": true,
-    "longname": "D:/Workspace/socket-discovery/src/server.js",
-    "access": "public",
-    "description": null,
-    "lineNumber": 1
-  },
-  {
-    "__docId__": 262,
-    "kind": "file",
-    "name": "src/utils.js",
-    "content": "export const expected = (expected, actual) => {\r\n  const entries = Object.entries(actual)\r\n    .map(entry => entry.join(!entry[1] ? `: undefined - ${entry[1]} ` : `: ${typeof entry[1]} - `));\r\n\r\n  return `\\nExpected:\\n\\t${expected.join('\\n\\t')}\\n\\nactual:\\n\\t${entries.join('\\n\\t')}`;\r\n}\r\n\r\nexport const debug = log => {\r\n  if (globalThis.DEBUG) console.log(`%c ${log}`, 'color: #0080ff;')\r\n}",
-    "static": true,
-    "longname": "D:/Workspace/socket-discovery/src/utils.js",
-    "access": "public",
-    "description": null,
-    "lineNumber": 1
-  },
-  {
-    "__docId__": 263,
+    "__docId__": 265,
     "kind": "function",
-    "name": "expected",
-    "memberof": "src/utils.js",
+    "name": "hasDaemon",
+    "memberof": "src/utils/utils.js",
     "generator": false,
-    "async": false,
+    "async": true,
     "static": true,
-    "longname": "src/utils.js~expected",
+    "longname": "src/utils/utils.js~hasDaemon",
     "access": "public",
     "export": true,
-    "importPath": "@leofcoin/peernet/src/utils.js",
-    "importStyle": "{expected}",
+    "importPath": "@leofcoin/peernet/src/utils/utils.js",
+    "importStyle": "{hasDaemon}",
+    "description": "wether or not a peernet daemon is active",
+    "lineNumber": 72,
+    "return": {
+      "nullable": null,
+      "types": [
+        "Boolean"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 266,
+    "kind": "function",
+    "name": "https",
+    "memberof": "src/utils/utils.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/utils/utils.js~https",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/utils/utils.js",
+    "importStyle": "{https}",
     "description": null,
-    "lineNumber": 1,
+    "lineNumber": 82,
     "undocument": true,
-    "params": [
-      {
-        "name": "expected",
-        "types": [
-          "*"
-        ]
-      },
-      {
-        "name": "actual",
-        "types": [
-          "*"
-        ]
-      }
-    ],
+    "params": [],
     "return": {
       "types": [
-        "string"
+        "*"
       ]
     }
   },
   {
-    "__docId__": 264,
+    "__docId__": 267,
     "kind": "function",
-    "name": "debug",
-    "memberof": "src/utils.js",
+    "name": "environment",
+    "memberof": "src/utils/utils.js",
     "generator": false,
     "async": false,
     "static": true,
-    "longname": "src/utils.js~debug",
+    "longname": "src/utils/utils.js~environment",
     "access": "public",
     "export": true,
-    "importPath": "@leofcoin/peernet/src/utils.js",
-    "importStyle": "{debug}",
-    "description": null,
-    "lineNumber": 8,
-    "undocument": true,
-    "params": [
+    "importPath": "@leofcoin/peernet/src/utils/utils.js",
+    "importStyle": "{environment}",
+    "description": "Get current environment",
+    "lineNumber": 91,
+    "return": {
+      "nullable": null,
+      "types": [
+        "String"
+      ],
+      "spread": false,
+      "description": "current environment [node, electron, browser]"
+    },
+    "params": []
+  },
+  {
+    "__docId__": 268,
+    "kind": "function",
+    "name": "target",
+    "memberof": "src/utils/utils.js",
+    "generator": false,
+    "async": true,
+    "static": true,
+    "longname": "src/utils/utils.js~target",
+    "access": "public",
+    "export": true,
+    "importPath": "@leofcoin/peernet/src/utils/utils.js",
+    "importStyle": "{target}",
+    "description": "* Get current environment",
+    "lineNumber": 108,
+    "properties": [
       {
-        "name": "log",
+        "nullable": null,
         "types": [
-          "*"
-        ]
+          "Boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "reult.daemon",
+        "description": "whether or not daemon is running"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "reult.environment",
+        "description": "Current environment"
       }
     ],
-    "return": null
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": "result"
+    },
+    "params": []
   },
   {
     "kind": "index",

@@ -5,7 +5,7 @@ export default class extends HttpClientApi {
     config.apiPath = 'api';
     return (async () => {
       await super(config)
-      
+
       this.properties = {
         wallet: 'get',
         version: 'get',
@@ -16,26 +16,25 @@ export default class extends HttpClientApi {
         transaction: 'any',
         transactions: 'get',
         block: 'get',
-        blocks: 'get'   
+        blocks: 'get',
       }
       this.keys = Object.keys(this.properties)
       return this
     })()
-    
   }
-  
+
   async request(url, data) {
     return await this.client.request({url, params: data})
-  }  
-  
+  }
+
   async ready() {
     return await this.request('ready')
   }
-  
+
   async version() {
     return await this.request('version')
   }
-  
+
   async account(index) {
     return await this.request('account', {index})
   }
