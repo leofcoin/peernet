@@ -3,7 +3,7 @@ export default class PeernetPeer {
     this.id = id
     this.connection = connection
 
-    this.connection.on('data', (message) => pubsub.publish('data', message))
+    this.connection.on('data', (message) => pubsub.publish('peernet.data', message))
   }
 
   request(data) {
@@ -17,11 +17,11 @@ export default class PeernetPeer {
         resolve(message.data)
       }
 
-      pubsub.subscribe('data', _onData)
+      pubsub.subscribe('peernet.data.request', _onData)
 
       // cleanup subscriptions
       setTimeout(() => {
-        pubsub.unsubscribe('data', _onData)
+        pubsub.unsubscribe('peernet.data.request', _onData)
       }, 5000);
 
       this.write(data)
@@ -32,7 +32,7 @@ export default class PeernetPeer {
     this.connection.write(data)
   }
 
-  on(event = 'data', cb) {
+  on(event = 'peernet.data', cb) {
     pubsub.subscribe(event, cb)
     // this.connection.on(event, cb)
   }

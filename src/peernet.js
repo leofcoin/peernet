@@ -157,7 +157,7 @@ export default class Peernet {
 
     pubsub.subscribe('peer:connected', (peer) => {
       console.log(peer.id);
-      peer.on('data', (message) => this._protoHandler(message, peer))
+      peer.on('peernet.data', (message) => this._protoHandler(message, peer))
       this.peers.push(peer)
     })
     /**
