@@ -29,6 +29,7 @@ export default class PeernetPeer {
   }
 
   write(data) {
+    if (!Buffer.isBuffer(data)) data = Buffer.from(data)
     this.connection.write(data)
   }
 
