@@ -46,6 +46,7 @@ export default class Peernet {
     this.network = options.network || 'leofcoin'
     const parts = this.network.split(':')
 
+    if (!options.port) options.port = 2000
     if (!options.root) {
       if (parts[1]) options.root = `.${parts[0]}/peernet/${parts[1]}`
       else options.root = `.${this.network}/peernet`
@@ -114,7 +115,7 @@ export default class Peernet {
     const {daemon, environment} = await target()
     if (daemon) {
       globalThis.peernet.client = await httpClient({
-        protocol: 'peernet-v0.1.0', host: '127.0.0.1', port: 1000,
+        protocol: 'peernet-v0.1.0', host: '127.0.0.1', port: options.port,
       })
       globalThis.accountStore = globalThis.accountStore ||
         await new LeofcoinStorageClient('lfc-account', options.root)
@@ -130,7 +131,7 @@ export default class Peernet {
       globalThis.blockStore = globalThis.blockStore ||
         new LeofcoinStorage('lfc-block', options.root)
 
-      if (environment !== 'browser') http()
+      if (environment !== 'browser') http(options)
     }
     try {
       const pub = await accountStore.get('public')
