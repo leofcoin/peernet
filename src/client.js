@@ -56,7 +56,6 @@ export default class PeernetClient {
         const id = candidate.toString()
         let channels = [channel]
         if (id === this.id.toString()) return
-        console.log({id});
 
         if (!connections.has(id)) {
           const connection = await this.sw.connect(channel, candidate)
@@ -64,10 +63,10 @@ export default class PeernetClient {
           connections.set(id, {channels, peer})
           if (recentConnections.has(id)) {
             setTimeout(() => {
-              pubsub.publish('peer:connected', peer)
-            }, 10000)
+              pubsub.publish('peer:updated', peer)
+            }, 1000)
           } else {
-            pubsub.publish('peer:connected', peer)
+            pubsub.publish('peer:updated', peer)
           }
         } else {
           const value = connections.get(id)
@@ -82,19 +81,17 @@ export default class PeernetClient {
       if (!recentConnections.has(info.id.toString())) {
         recentConnections.set(info.id.toString(), new Date().getTime())
       }
-      setTimeout(() => {
-        if (connections.has(info.id.toString())) connections.delete(info.id.toString())
-      }, 1000);
+      if (connections.has(info.id.toString())) connections.delete(info.id.toString())
     })
 
-    if (globalThis.onbeforeunload) {
-      globalThis.onbeforeunload = () => {
-        this.sw.leave(this.topic)
-        return setTimeout(() => {
 
-        }, 1000)
-      }
+    globalThis.onbeforeunload = () => {
+      this.sw.leave(this.topic.slice(0, 32))
     }
+
+
+    this.sw.on('close', () => {
+    })
   }
 
   _peers() {
