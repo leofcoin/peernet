@@ -84,14 +84,26 @@ export default class PeernetClient {
       if (connections.has(info.id.toString())) connections.delete(info.id.toString())
     })
 
-
-    globalThis.onbeforeunload = () => {
-      this.sw.leave(this.topic.slice(0, 32))
+    if (globalThis.process) {
+      process.on('SIGINT', async () => {
+        console.log('Caught interrupt signal')
+        this.close()
+        setTimeout(async () => {
+          process.exit();
+        }, 100);
+      })
+    } else {
+      globalThis.onbeforeunload = () => {
+        this.close()
+      }
     }
-
 
     this.sw.on('close', () => {
     })
+  }
+
+  close() {
+    return this.sw.leave(this.topic.slice(0, 32))
   }
 
   _peers() {

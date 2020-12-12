@@ -19,7 +19,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@geut/discovery-swarm-webrtc": "^4.0.1",
+    "@geut/discovery-swarm-webrtc": "^4.0.2",
     "@leofcoin/generate-account": "^1.0.2",
     "@leofcoin/multi-wallet": "^2.0.0",
     "@leofcoin/storage": "^2.0.3",
@@ -38,16 +38,16 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^16.0.0",
-    "@rollup/plugin-eslint": "^8.0.0",
+    "@rollup/plugin-eslint": "^8.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^10.0.0",
     "browserify": "^16.5.2",
     "esdoc": "^1.1.0",
     "esdoc-ecmascript-proposal-plugin": "^1.0.0",
     "esdoc-standard-plugin": "^1.0.0",
-    "eslint": "^7.14.0",
+    "eslint": "^7.15.0",
     "eslint-config-google": "^0.14.0",
-    "rollup": "^2.33.1",
+    "rollup": "^2.34.2",
     "rollup-plugin-node-globals": "^1.4.0",
     "tape": "^5.0.1"
   }
