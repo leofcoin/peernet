@@ -14,13 +14,17 @@ export default class PeernetClient {
 
     this.id = options.id
 
-    this.sw = swarm({
-      id: options.id,
-      bootstrap: ['wss://discovery-swarm.herokuapp.com', 'ws://localhost:4000'],
-      simplePeer: {
-        wrtc,
-      },
-    })
+    try {
+      this.sw = swarm({
+        id: options.id,
+        bootstrap: ['wss://discovery-swarm.herokuapp.com', 'ws://localhost:4000'],
+        simplePeer: {
+          wrtc,
+        },
+      })
+    } catch (e) {
+      console.warn(e);
+    }
 
     this.topic = Buffer.from(sha256('peernet-v0.1.0').toString())
 
@@ -58,15 +62,19 @@ export default class PeernetClient {
         if (id === this.id.toString()) return
 
         if (!connections.has(id)) {
-          const connection = await this.sw.connect(channel, candidate)
-          const peer = new PeernetPeer(id, connection)
-          connections.set(id, {channels, peer})
-          if (recentConnections.has(id)) {
-            setTimeout(() => {
-              pubsub.publish('peer:updated', peer)
-            }, 1000)
-          } else {
-            pubsub.publish('peer:updated', peer)
+          try {
+            const connection = await this.sw.connect(channel, candidate)
+            const peer = new PeernetPeer(id, connection)
+            connections.set(id, {channels, peer})
+            if (recentConnections.has(id)) {
+              setTimeout(() => {
+                pubsub.publish('peer:connected', peer)
+              }, 1000)
+            } else {
+              pubsub.publish('peer:connected', peer)
+            }
+          } catch (e) {
+            console.warn(e);
           }
         } else {
           const value = connections.get(id)
