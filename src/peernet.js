@@ -58,13 +58,6 @@ export default class Peernet {
      * @property {Object} peer Instance of Peer
      */
     this.dht = new DHT()
-
-    /**
-     * Array of peers
-     * @type {Array}
-     * @property {DiscoPeer} peer Instance of Peer
-     */
-    this.peers = []
     globalThis.peernet = globalThis.peernet || this
 
     /**
@@ -103,6 +96,10 @@ export default class Peernet {
     return this._messageHandler.prepareMessage(from, to, data)
   }
 
+  get peers() {
+    return connections.values()
+  }
+
   /**
    * @private
    *
@@ -135,6 +132,7 @@ export default class Peernet {
     }
     try {
       const pub = await accountStore.get('public')
+
       this.id = pub.walletId
     } catch (e) {
       if (e.code === 'ERR_NOT_FOUND') {
@@ -159,7 +157,7 @@ export default class Peernet {
     pubsub.subscribe('peer:connected', (peer) => {
       console.log(peer.id);
       peer.on('peernet.data', (message) => this._protoHandler(message, peer))
-      this.peers.push(peer)
+      // this.peers.push(peer)
     })
     /**
      * @access public
@@ -347,8 +345,7 @@ export default class Peernet {
   }
 
   async removePeer(peer) {
-    const index = this.peers.indexOf(peer)
-    this.peers.splice(index, 1)
+    connections.delete(peer.id)
   }
   // async block(index) {
   //   const _values = []
