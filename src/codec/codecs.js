@@ -5,6 +5,14 @@ export default {
     hashAlg: 'dbl-keccak-512', // ,
     // testnet: 'olivia'
   },
+  'peernet-peer-response': {
+    codec: '707072',
+    hashAlg: 'keccak-256',
+  },
+  'peernet-peer': {
+    codec: '7070',
+    hashAlg: 'keccak-256',
+  },
   'peernet-dht': {
     codec: '706468',
     hashAlg: 'keccak-256',

@@ -3,7 +3,7 @@ export default class PeernetPeer {
     this.id = id
     this.connection = connection
 
-    this.connection.on('data', (message) => pubsub.publish('peernet.data', message))
+    this.connection.on('data', (message) => pubsub.publish('peernet.data', JSON.parse(message.toString())))
   }
 
   request(data) {
@@ -11,17 +11,16 @@ export default class PeernetPeer {
       const id = Math.random().toString(36).slice(-12)
       data = Buffer.from(JSON.stringify({id, data}))
       const _onData = (message) => {
-        message = JSON.parse(message.toString())
         if (message.id !== id) return
 
         resolve(message.data)
       }
 
-      pubsub.subscribe('peernet.data.request', _onData)
+      pubsub.subscribe('peernet.data', _onData)
 
       // cleanup subscriptions
       setTimeout(() => {
-        pubsub.unsubscribe('peernet.data.request', _onData)
+        pubsub.unsubscribe('peernet.data', _onData)
       }, 5000);
 
       this.write(data)

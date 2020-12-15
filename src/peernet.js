@@ -9,6 +9,8 @@ import DHTMessage from './messages/dht.js'
 import DHTMessageResponse from './messages/dht-response.js'
 import DataMessage from './messages/data.js'
 import PsMessage from './messages/ps.js'
+import PeerMessage from './messages/peer.js'
+import PeerMessageResponse from './messages/peer-response.js'
 import DataMessageResponse from './messages/data-response.js'
 import DHT from './dht/dht.js'
 import { debug, protoFor, target } from './utils/utils.js'
@@ -58,6 +60,7 @@ export default class Peernet {
      * @property {Object} peer Instance of Peer
      */
     this.dht = new DHT()
+    this.peerMap = new Map()
     globalThis.peernet = globalThis.peernet || this
 
     /**
@@ -70,6 +73,8 @@ export default class Peernet {
      * @property {DataMessageResponse} protos[peernet-data-response] messageNode
      */
     globalThis.peernet.protos = {
+      'peernet-peer': PeerMessage,
+      'peernet-peer-response': PeerMessageResponse,
       'peernet-message': PeernetMessage,
       'peernet-dht': DHTMessage,
       'peernet-dht-response': DHTMessageResponse,
@@ -92,8 +97,8 @@ export default class Peernet {
   /**
    * @see MessageHandler
    */
-  prepareMessage(from, to, data) {
-    return this._messageHandler.prepareMessage(from, to, data)
+  prepareMessage(to, data) {
+    return this._messageHandler.prepareMessage(this.id, to, data)
   }
 
   get peers() {
@@ -132,7 +137,6 @@ export default class Peernet {
     }
     try {
       const pub = await accountStore.get('public')
-
       this.id = pub.walletId
     } catch (e) {
       if (e.code === 'ERR_NOT_FOUND') {
@@ -154,8 +158,11 @@ export default class Peernet {
     const id = Buffer.from(this.id.slice(0, 32))
     this.peerId = id
 
-    pubsub.subscribe('peer:connected', (peer) => {
+    pubsub.subscribe('peer:connected', async (peer) => {
       console.log(peer.id);
+      // const message = new PeerMessage({id: this.id})
+      // const response = await peer.request(message.encoded)
+      // console.log(response);
       peer.on('peernet.data', (message) => this._protoHandler(message, peer))
       // this.peers.push(peer)
     })
@@ -167,6 +174,15 @@ export default class Peernet {
     return this
   }
 
+  _getPeerId(id) {
+    console.log({get: id});
+    return [...this.peerMap.entries()].forEach((entry, i) => {
+      return entry[1].forEach((_id, i) => {
+        if (_id === id) return entry[0]
+      })
+    })
+  }
+
   /**
    * @private
    *
@@ -174,34 +190,84 @@ export default class Peernet {
    * @param {PeernetPeer} peer - peernet peer
    */
   async _protoHandler(message, peer) {
-    message = JSON.parse(message.toString())
     const id = message.id
     message = new PeernetMessage(Buffer.from(message.data))
     const clientId = this.client.id
     const proto = protoFor(message.decoded.data)
-    if (proto.name === 'peernet-dht') {
-      const hash = proto.decoded.hash
-      const has = await this.has(hash)
-
-      const data = new DHTMessageResponse({hash, has})
-      const node = await this.prepareMessage(clientId, peer.id, data.encoded)
+    if (proto.name === 'peernet-peer') {
+      const from = proto.decoded.id
+      if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
+      else {
+        const connections = this.peerMap.get(from)
+        connections.push(peer.id)
+        this.peerMap.set(from, connections)
+      }
+      const data = new PeerMessageResponse({id: this.id})
+      const node = await this.prepareMessage(from, data.encoded)
 
       peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
-    } else if (proto.name === 'peernet-data') {
-      const hash = proto.decoded.hash
-      const has = await blockStore.has(hash)
-      if (has) {
-        let data = await blockStore.get(hash)
-        data = new DataMessageResponse({hash, data: Buffer.from(data)})
+    } else if (proto.name === 'peernet-peer-response') {
+      const from = proto.decoded.id
+      if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
+      else {
+        const connections = this.peerMap.get(from)
+        connections.push(peer.id)
+        this.peerMap.set(from, connections)
+      }
+    } else {
+      let from = this._getPeerId(peer.id)
+      if (!from) {
+        const data = new PeerMessage({id: this.id})
+        const node = await this.prepareMessage(peer.id, data.encoded)
 
-        const node = await this.prepareMessage(clientId, peer.id, data.encoded)
+        let response = await peer.request(node.encoded)
+        response = protoFor(response)
+        response = new PeerMessageResponse(response.decoded.data)
+
+        from = response.decoded.id
+        if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
+        else {
+          const connections = this.peerMap.get(from)
+          connections.push(peer.id)
+          this.peerMap.set(from, connections)
+        }
+      }
+      if (proto.name === 'peernet-dht') {
+        const hash = proto.decoded.hash
+        const has = await this.has(hash)
+
+        const data = new DHTMessageResponse({hash, has})
+        const node = await this.prepareMessage(from, data.encoded)
 
         peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+      } else if (proto.name === 'peernet-data') {
+        const hash = proto.decoded.hash
+        const has = await blockStore.has(hash)
+        if (has) {
+          let data = await blockStore.get(hash)
+          data = new DataMessageResponse({hash, data: Buffer.from(data)})
+
+          const node = await this.prepareMessage(from, data.encoded)
+
+          peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+        }
+      } else if (proto.name === 'peernet-peer') {
+        const from = proto.decoded.id
+        if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
+        else {
+          const connections = this.peerMap.get(from)
+          connections.push(peer.id)
+          this.peerMap.set(from, connections)
+        }
+        const data = new PeerMessage({id: this.id})
+        const node = await this.prepareMessage(from, data.encoded)
+
+        peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+      } else if (proto.name === 'peernet-ps' &&
+                 message.decoded.from.toString() !== this.id.toString()) {
+        console.log(message.decoded.from.toString(), this.id.toString());
+        globalSub.publish(proto.decoded.topic.toString(), proto.decoded.data.toString())
       }
-    } else if (proto.name === 'peernet-ps' &&
-               message.decoded.from.toString() !== this.peerId.toString()) {
-      console.log(message.decoded.from.toString() !== this.peerId, message.decoded.from.toString(), this.peerId.toString());
-      globalSub.publish(proto.decoded.topic.toString(), proto.decoded.data.toString())
     }
   }
 
@@ -215,7 +281,7 @@ export default class Peernet {
     const data = new DHTMessage({hash})
     const clientId = this.client.id
     for (const peer of this.peers) {
-      const node = await this.prepareMessage(clientId, peer.id, data.encoded)
+      const node = await this.prepareMessage(peer.id, data.encoded)
 
       const result = await peer.request(node.encoded)
 
@@ -283,7 +349,7 @@ export default class Peernet {
 
     data = new DataMessage({hash})
 
-    const node = await this.prepareMessage(this.client.id, id, data.encoded)
+    const node = await this.prepareMessage(id, data.encoded)
 
     data = await closest[0].request(node.encoded)
     let proto = protoFor(Buffer.from(data.data))
@@ -325,7 +391,7 @@ export default class Peernet {
     data = new PsMessage({data, topic})
     for (const peer of this.peers) {
       if (peer.connection._connected && peer.id.toString() !== this.peerId.toString()) {
-        const node = await this.prepareMessage(this.client.id, peer.id, data.encoded)
+        const node = await this.prepareMessage(peer.id, data.encoded)
         peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
       } else {
         this.removePeer(peer)
