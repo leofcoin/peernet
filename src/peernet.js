@@ -357,7 +357,7 @@ export default class Peernet {
     data = await closest[0].request(node.encoded)
     let proto = protoFor(Buffer.from(data.data))
     proto = protoFor(proto.decoded.data)
-    this.put(hash, proto.decoded.data)
+    // this.put(hash, proto.decoded.data)
     return proto.decoded.data
   }
 
