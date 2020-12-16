@@ -40,6 +40,14 @@ export default {
     codec: '707073',
     hashAlg: 'keccak-256',
   },
+  'peernet-response': {
+    codec: '7072',
+    hashAlg: 'keccak-256',
+  },
+  'peernet-request': {
+    codec: '707271',
+    hashAlg: 'keccak-256',
+  },
   // normal block
   'leofcoin-block': {
     codec: '6c62',

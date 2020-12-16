@@ -4,9 +4,11 @@ import cjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 
 export default [{
-	input: 'src/peernet.js',
+	input: ['src/peernet.js', 'src/codec/codec.js', 'src/hash/hash.js', 'src/messages/dht.js',
+'src/messages/peernet-message.js', 'src/messages/dht-response.js', 'src/messages/request.js',
+'src/messages/response.js', 'src/codec/codec-format-interface.js'],
 	output: {
-		file: 'dist/commonjs/peernet.js',
+		dir: 'dist/commonjs',
 		format: 'cjs'
 	},
 	plugins: [
@@ -31,60 +33,6 @@ export default [{
 	output: {
 		file: 'dist/module/peernet.js',
 		format: 'es'
-	},
-	plugins: [
-		json()
-	]
-}, {
-	input: 'src/codec/codec.js',
-	output: {
-		file: 'dist/codec/codec.js',
-		format: 'cjs'
-	},
-	plugins: [
-		json()
-	]
-}, {
-	input: 'src/hash/hash.js',
-	output: {
-		file: 'dist/hash/hash.js',
-		format: 'cjs'
-	},
-	plugins: [
-		json()
-	]
-}, {
-	input: 'src/messages/dht.js',
-	output: {
-		file: 'dist/messages/dht.js',
-		format: 'cjs'
-	},
-	plugins: [
-		json()
-	]
-}, {
-	input: 'src/messages/peernet.js',
-	output: {
-		file: 'dist/messages/peernet.js',
-		format: 'cjs'
-	},
-	plugins: [
-		json()
-	]
-}, {
-	input: 'src/messages/dht-response.js',
-	output: {
-		file: 'dist/messages/dht-response.js',
-		format: 'cjs'
-	},
-	plugins: [
-		json()
-	]
-}, {
-	input: 'src/codec/codec-format-interface.js',
-	output: {
-		file: 'dist/codec/codec-format-interface.js',
-		format: 'cjs'
 	},
 	plugins: [
 		json()

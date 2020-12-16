@@ -4,12 +4,14 @@ import LeofcoinStorage from './../node_modules/@leofcoin/storage/src/level.js'
 import http from './http/http.js'
 import httpClient from './http/client/client.js'
 import LeofcoinStorageClient from './http/client/storage.js'
-import PeernetMessage from './messages/peernet.js'
+import PeernetMessage from './messages/peernet-message.js'
 import DHTMessage from './messages/dht.js'
 import DHTMessageResponse from './messages/dht-response.js'
 import DataMessage from './messages/data.js'
 import PsMessage from './messages/ps.js'
 import PeerMessage from './messages/peer.js'
+import RequestMessage from './messages/request.js'
+import ResponseMessage from './messages/response.js'
 import PeerMessageResponse from './messages/peer-response.js'
 import DataMessageResponse from './messages/data-response.js'
 import DHT from './dht/dht.js'
@@ -72,6 +74,8 @@ export default class Peernet {
      * @property {DataMessageResponse} protos[peernet-data-response] messageNode
      */
     globalThis.peernet.protos = {
+      'peernet-request': RequestMessage,
+      'peernet-response': ResponseMessage,
       'peernet-peer': PeerMessage,
       'peernet-peer-response': PeerMessageResponse,
       'peernet-message': PeernetMessage,
@@ -263,6 +267,14 @@ export default class Peernet {
           this.peerMap.set(from, connections)
         }
         const data = new PeerMessage({id: this.id})
+        const node = await this.prepareMessage(from, data.encoded)
+
+        peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+      } else if (proto.name === 'peernet-request') {
+        if (proto.decoded.request === 'height') {
+          response = await chainStore.get('localIndex')
+        }
+        const data = new ResponseMessage({response})
         const node = await this.prepareMessage(from, data.encoded)
 
         peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))

@@ -3,16 +3,16 @@ import varint from 'varint';
 import bs32 from 'bs32';
 import bs58 from 'bs58';
 import isHex from 'is-hex';
-import DiscoCodec from './../codec/codec';
+import Codec from './../codec/codec';
 
-export default class DiscoHash {
+export default class PeernetHash {
   constructor(buffer, options = {}) {
     if (options.name) this.name = options.name
     else this.name = 'disco-hash'
     if (options.codecs) this.codecs = options.codecs
     if (buffer) {
       if (Buffer.isBuffer(buffer)) {
-        this.discoCodec = new DiscoCodec(buffer, this.codecs)
+        this.discoCodec = new Codec(buffer, this.codecs)
         const name = this.discoCodec.name
 
         if (name) {
@@ -78,7 +78,7 @@ export default class DiscoHash {
   encode(buffer, name) {
     if (!this.name && name) this.name = name;
     if (!buffer) buffer = this.buffer;
-    this.discoCodec = new DiscoCodec(this.name, this.codecs)
+    this.discoCodec = new Codec(this.name, this.codecs)
     this.discoCodec.fromName(this.name)
     let hashAlg = this.discoCodec.hashAlg
     if (hashAlg.includes('dbl')) {
@@ -118,7 +118,7 @@ export default class DiscoHash {
     this.hash = buffer
     const codec = varint.decode(buffer);
 
-    this.discoCodec = new DiscoCodec(codec, this.codecs)
+    this.discoCodec = new Codec(codec, this.codecs)
     // TODO: validate codec
     buffer = buffer.slice(varint.decode.bytes);
     this.size = varint.decode(buffer);
@@ -127,7 +127,7 @@ export default class DiscoHash {
       throw new Error(`hash length inconsistent: 0x${this.hash.toString('hex')}`)
     }
 
-    // const discoCodec = new DiscoCodec(codec, this.codecs)
+    // const discoCodec = new Codec(codec, this.codecs)
 
     this.name = this.discoCodec.name
 

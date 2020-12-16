@@ -1,6 +1,6 @@
 import MultiWallet from '@leofcoin/multi-wallet'
 import Hash from './../hash/hash.js'
-import PeernetMessage from './../messages/peernet.js'
+import PeernetMessage from './../messages/peernet-message.js'
 
 export default class MessageHandler {
   constructor(network) {
