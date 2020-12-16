@@ -23,7 +23,6 @@ import { encapsulatedError, dhtError,
 globalThis.leofcoin = globalThis.leofcoin || {}
 globalThis.globalSub = globalThis.globalSub || new Pubsub({verbose: true})
 
-
 /**
  * @access public
  * @example
@@ -42,6 +41,7 @@ export default class Peernet {
    * const peernet = new Peernet({network: 'leofcoin', root: '.leofcoin'});
    */
   constructor(options = {}) {
+    globalThis.peernet = globalThis.peernet || this
     /**
      * @property {String} network - current network
      */
@@ -61,7 +61,6 @@ export default class Peernet {
      */
     this.dht = new DHT()
     this.peerMap = new Map()
-    globalThis.peernet = globalThis.peernet || this
 
     /**
      * proto Object containing protos
@@ -91,6 +90,10 @@ export default class Peernet {
 
   addProto(name, proto) {
     if (!globalThis.peernet.protos[name]) globalThis.peernet.protos[name] = proto
+  }
+
+  addCodec(name, proto) {
+    if (!globalThis.peernet.codecs[name]) globalThis.peernet.codecs[name] = proto
   }
 
 

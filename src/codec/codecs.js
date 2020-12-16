@@ -46,6 +46,11 @@ export default {
     hashAlg: 'dbl-keccak-512', // ,
     // testnet: 'olivia'
   },
+  'leofcoin-tx': {
+    codec: '6c74',
+    hashAlg: 'dbl-keccak-512', // ,
+    // testnet: 'olivia'
+  },
   // itx
   'leofcoin-itx': {
     codec: '6c69',

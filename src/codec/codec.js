@@ -5,9 +5,10 @@ import isHex from 'is-hex';
 import codecs from './codecs'
 
 export default class PeernetCodec {
-  constructor(buffer, _codecs) {
-    if (_codecs) this.codecs = {...codecs, ..._codecs}
-    else this.codecs = codecs
+  get codecs() {
+    return {...globalThis.peernet.codecs, ...codecs}
+  }
+  constructor(buffer) {
     if (buffer) {
       if (Buffer.isBuffer(buffer)) {
         const codec = varint.decode(buffer);
