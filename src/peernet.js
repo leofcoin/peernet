@@ -271,8 +271,11 @@ export default class Peernet {
 
         peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
       } else if (proto.name === 'peernet-request') {
-        if (proto.decoded.request === 'height') {
-          response = await chainStore.get('localIndex')
+        // TODO: make dynamic
+        if (proto.decoded.request === 'lastBlock') {
+          const height = await chainStore.get('localIndex')
+          const hash = await chainStore.get('localBlock')
+          response = { height, hash }
         }
         const data = new ResponseMessage({response})
         const node = await this.prepareMessage(from, data.encoded)
