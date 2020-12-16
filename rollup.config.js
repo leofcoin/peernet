@@ -24,7 +24,7 @@ export default [{
 		  fix: true,
 			exclude: ['package.json', "package-lock.json"]
 		})
-		
+
 	]
 }, {
 	input: 'src/peernet.js',
@@ -75,6 +75,15 @@ export default [{
 	input: 'src/messages/dht-response.js',
 	output: {
 		file: 'dist/messages/dht-response.js',
+		format: 'cjs'
+	},
+	plugins: [
+		json()
+	]
+}, {
+	input: 'src/codec/codec-format-interface.js',
+	output: {
+		file: 'dist/codec/codec-format-interface.js',
 		format: 'cjs'
 	},
 	plugins: [
