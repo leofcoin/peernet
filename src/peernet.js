@@ -132,6 +132,8 @@ export default class Peernet {
         await new LeofcoinStorageClient('lfc-wallet', options.root)
       globalThis.blockStore = globalThis.blockStore ||
         await new LeofcoinStorageClient('lfc-block', options.root)
+      globalThis.chainStore = globalThis.chainStore ||
+        await new LeofcoinStorageClient('lfc-chain', options.root)
     } else {
       globalThis.accountStore = globalThis.accountStore ||
         new LeofcoinStorage('lfc-account', options.root)
@@ -139,6 +141,8 @@ export default class Peernet {
         new LeofcoinStorage('lfc-wallet', options.root)
       globalThis.blockStore = globalThis.blockStore ||
         new LeofcoinStorage('lfc-block', options.root)
+      globalThis.chainStore = globalThis.chainStore ||
+        new LeofcoinStorage('lfc-chain', options.root)
 
       if (environment !== 'browser') http(options)
     }
