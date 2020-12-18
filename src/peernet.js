@@ -134,6 +134,8 @@ export default class Peernet {
         await new LeofcoinStorageClient('lfc-block', options.root)
       globalThis.chainStore = globalThis.chainStore ||
         await new LeofcoinStorageClient('lfc-chain', options.root)
+      globalThis.dataStore = globalThis.dataStore ||
+        await new LeofcoinStorageClient('lfc-data', options.root)
     } else {
       globalThis.accountStore = globalThis.accountStore ||
         new LeofcoinStorage('lfc-account', options.root)
@@ -143,6 +145,8 @@ export default class Peernet {
         new LeofcoinStorage('lfc-block', options.root)
       globalThis.chainStore = globalThis.chainStore ||
         new LeofcoinStorage('lfc-chain', options.root)
+      globalThis.dataStore = globalThis.dataStore ||
+        new LeofcoinStorage('lfc-data', options.root)
 
       if (environment !== 'browser') http(options)
     }
@@ -245,7 +249,9 @@ export default class Peernet {
       }
       if (proto.name === 'peernet-dht') {
         const hash = proto.decoded.hash
-        const has = await this.has(hash)
+        const has = await this.block.has(hash)
+        // if not in blockStore look for it in the dataStore
+        if (!has) await this.has(hash)
 
         const data = new DHTMessageResponse({hash, has})
         const node = await this.prepareMessage(from, data.encoded)
@@ -254,14 +260,21 @@ export default class Peernet {
       } else if (proto.name === 'peernet-data') {
         const hash = proto.decoded.hash
         const has = await blockStore.has(hash)
+        let data
         if (has) {
-          let data = await blockStore.get(hash)
+          data = await blockStore.get(hash)
+        } else {
+          const has = await dataStore.has(hash)
+          if (has) data = await datatore.get(hash)
+        }
+
+        if (data) {
           data = new DataMessageResponse({hash, data: Buffer.from(data)})
 
           const node = await this.prepareMessage(from, data.encoded)
-
-          peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
         }
+
+        peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
       } else if (proto.name === 'peernet-peer') {
         const from = proto.decoded.id
         if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
@@ -347,15 +360,23 @@ export default class Peernet {
     return providers
   }
 
-  /**
-   * Get content for given hash
-   *
-   * @param {String} hash
-   */
-  async get(hash) {
-    debug(`get ${hash}`)
-    let data = await blockStore.has(hash)
-    if (data) return await blockStore.get(hash)
+  get block() {
+    return {
+      get: async (hash) => {
+        const data = await blockStore.has(hash)
+        if (data) return await blockStore.get(hash)
+        return this.requestData(hash)
+      },
+      put: async (node) => {
+        const data = await blockStore.has(hash)
+        if (data) return await blockStore.get(hash)
+        return await blockStore.put(hash, data)
+      },
+      has: async (hash) => await blockStore.has(hash),
+    }
+  }
+
+  async requestData(hash) {
     const providers = await this.providersFor(hash)
     if (!providers || providers.size === 0) throw nothingFoundError(hash)
     debug(`found ${providers.size} for ${hash}`)
@@ -381,13 +402,25 @@ export default class Peernet {
   }
 
   /**
+   * Get content for given hash
+   *
+   * @param {String} hash
+   */
+  async get(hash) {
+    debug(`get ${hash}`)
+    const data = await dataStore.has(hash)
+    if (data) return await dataStore.get(hash)
+    return this.requestData(hash)
+  }
+
+  /**
    * put content
    *
    * @param {String} hash
    * @param {string} data encoded message
    */
   async put(hash, data) {
-    return await blockStore.put(hash, data)
+    return await dataStore.put(hash, data)
   }
 
   /**
@@ -395,7 +428,7 @@ export default class Peernet {
    * @return {Boolean}
    */
   async has(hash) {
-    return await blockStore.has(hash)
+    return await dataStore.has(hash)
   }
 
   /**
