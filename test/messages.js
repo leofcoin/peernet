@@ -1,5 +1,5 @@
 const test = require('tape')
-const Node = require('./../dist/messages/dht-response.js')
+const Node = require('./../dist/commonjs/dht-response.js')
 
 const response = '6lemcaykavugk3dmn4iac'
 const responseHash = '6lemcazaudes2wowemufpvcn27f4dxadsbielcitgv5rmjqis6qr5ikyajca'
