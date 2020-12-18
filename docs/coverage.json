@@ -1,44 +1,32 @@
 {
-  "coverage": "13.66%",
-  "expectCount": 161,
-  "actualCount": 22,
+  "coverage": "21.39%",
+  "expectCount": 187,
+  "actualCount": 40,
   "files": {
     "src/client.js": {
-      "expectCount": 6,
+      "expectCount": 7,
       "actualCount": 0,
       "undocumentLines": [
-        11,
-        12,
-        15,
-        17,
-        25,
-        90
+        19,
+        20,
+        23,
+        37,
+        42,
+        139,
+        143
       ]
     },
     "src/codec/codec-format-interface.js": {
       "expectCount": 20,
-      "actualCount": 0,
+      "actualCount": 13,
       "undocumentLines": [
         7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        31,
-        35,
-        41,
-        46,
-        50,
-        53,
-        57,
-        64,
-        69,
-        74,
-        79,
-        84,
-        89,
-        94
+        14,
+        15,
+        16,
+        17,
+        60,
+        70
       ]
     },
     "src/codec/codec.js": {
@@ -47,52 +35,55 @@
       "undocumentLines": [
         7,
         8,
-        9,
-        17,
+        11,
         18,
-        36,
-        44,
-        49,
-        54,
-        59,
-        63,
-        70,
-        74,
-        76,
+        19,
+        35,
+        43,
+        48,
+        53,
+        58,
+        62,
+        69,
+        73,
+        75,
+        77,
         78,
-        79,
-        82,
-        90,
-        95,
-        100,
-        104,
-        110
+        81,
+        89,
+        94,
+        99,
+        103,
+        109
       ]
     },
     "src/dht/dht.js": {
       "expectCount": 12,
-      "actualCount": 6,
+      "actualCount": 7,
       "undocumentLines": [
-        3,
-        14,
-        27,
-        31,
-        45,
-        50
+        19,
+        32,
+        36,
+        50,
+        55
       ]
     },
-    "src/disco-peer.js": {
-      "expectCount": 8,
+    "src/errors/errors.js": {
+      "expectCount": 3,
       "actualCount": 0,
       "undocumentLines": [
         1,
-        2,
-        3,
-        4,
-        9,
-        32,
-        36,
-        41
+        5,
+        10
+      ]
+    },
+    "src/handlers/message.js": {
+      "expectCount": 5,
+      "actualCount": 2,
+      "undocumentLines": [
+        5,
+        6,
+        7
       ]
     },
     "src/hash/hash.js": {
@@ -103,25 +94,25 @@
         9,
         10,
         12,
-        16,
-        36,
-        40,
-        44,
-        48,
-        52,
-        56,
-        60,
-        64,
-        68,
-        72,
-        76,
-        80,
-        90,
+        15,
+        34,
+        38,
+        42,
+        46,
+        50,
+        54,
+        58,
+        62,
+        66,
+        70,
+        74,
+        78,
+        88,
+        89,
         91,
         93,
-        95,
-        103,
-        119
+        101,
+        117
       ]
     },
     "src/http/client/api.js": {
@@ -132,10 +123,10 @@
         4,
         9,
         21,
-        27,
-        31,
-        35,
-        39
+        26,
+        30,
+        34,
+        38
       ]
     },
     "src/http/client/client.js": {
@@ -181,8 +172,8 @@
       "actualCount": 0,
       "undocumentLines": [
         5,
-        7,
-        11
+        6,
+        10
       ]
     },
     "src/messages/data.js": {
@@ -190,8 +181,8 @@
       "actualCount": 0,
       "undocumentLines": [
         5,
-        7,
-        11
+        6,
+        10
       ]
     },
     "src/messages/dht-response.js": {
@@ -199,8 +190,8 @@
       "actualCount": 0,
       "undocumentLines": [
         6,
-        8,
-        12
+        7,
+        11
       ]
     },
     "src/messages/dht.js": {
@@ -208,17 +199,35 @@
       "actualCount": 0,
       "undocumentLines": [
         5,
-        7,
-        11
+        6,
+        10
       ]
     },
-    "src/messages/peernet.js": {
+    "src/messages/peer-response.js": {
       "expectCount": 3,
       "actualCount": 0,
       "undocumentLines": [
         5,
-        7,
-        11
+        6,
+        10
+      ]
+    },
+    "src/messages/peer.js": {
+      "expectCount": 3,
+      "actualCount": 0,
+      "undocumentLines": [
+        5,
+        6,
+        10
+      ]
+    },
+    "src/messages/peernet-message.js": {
+      "expectCount": 3,
+      "actualCount": 0,
+      "undocumentLines": [
+        5,
+        6,
+        10
       ]
     },
     "src/messages/ps.js": {
@@ -226,8 +235,26 @@
       "actualCount": 0,
       "undocumentLines": [
         5,
-        7,
-        11
+        6,
+        10
+      ]
+    },
+    "src/messages/request.js": {
+      "expectCount": 3,
+      "actualCount": 0,
+      "undocumentLines": [
+        5,
+        6,
+        10
+      ]
+    },
+    "src/messages/response.js": {
+      "expectCount": 3,
+      "actualCount": 0,
+      "undocumentLines": [
+        5,
+        6,
+        10
       ]
     },
     "src/peer-info.js": {
@@ -236,30 +263,47 @@
       "undocumentLines": [
         3,
         4,
-        5
+        7
+      ]
+    },
+    "src/peer.js": {
+      "expectCount": 8,
+      "actualCount": 0,
+      "undocumentLines": [
+        1,
+        2,
+        3,
+        4,
+        9,
+        30,
+        35,
+        40
       ]
     },
     "src/peernet.js": {
-      "expectCount": 18,
-      "actualCount": 11,
+      "expectCount": 25,
+      "actualCount": 15,
       "undocumentLines": [
-        109,
-        110,
-        213,
-        241,
-        245,
-        249,
-        261
+        65,
+        89,
+        91,
+        95,
+        99,
+        111,
+        151,
+        170,
+        188,
+        435
       ]
     },
     "src/utils/utils.js": {
-      "expectCount": 9,
-      "actualCount": 5,
+      "expectCount": 7,
+      "actualCount": 3,
       "undocumentLines": [
-        7,
-        14,
-        18,
-        82
+        4,
+        19,
+        23,
+        46
       ]
     }
   }

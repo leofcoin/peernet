@@ -30,12 +30,6 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "@leofcoin/peernet/src/hash/hash.js~discohash",
-    "class/src/hash/hash.js~DiscoHash.html",
-    "<span>DiscoHash</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/hash/hash.js</span>",
-    "class"
-  ],
-  [
     "@leofcoin/peernet/src/codec/codec-format-interface.js~formatinterface",
     "class/src/codec/codec-format-interface.js~FormatInterface.html",
     "<span>FormatInterface</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/codec/codec-format-interface.js</span>",
@@ -54,9 +48,27 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "@leofcoin/peernet/src/handlers/message.js~messagehandler",
+    "class/src/handlers/message.js~MessageHandler.html",
+    "<span>MessageHandler</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/handlers/message.js</span>",
+    "class"
+  ],
+  [
     "@leofcoin/peernet/src/peer-info.js~peerinfo",
     "class/src/peer-info.js~PeerInfo.html",
     "<span>PeerInfo</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/peer-info.js</span>",
+    "class"
+  ],
+  [
+    "@leofcoin/peernet/src/messages/peer.js~peermessage",
+    "class/src/messages/peer.js~PeerMessage.html",
+    "<span>PeerMessage</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/messages/peer.js</span>",
+    "class"
+  ],
+  [
+    "@leofcoin/peernet/src/messages/peer-response.js~peermessageresponse",
+    "class/src/messages/peer-response.js~PeerMessageResponse.html",
+    "<span>PeerMessageResponse</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/messages/peer-response.js</span>",
     "class"
   ],
   [
@@ -78,21 +90,39 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "@leofcoin/peernet/src/messages/peernet.js~peernetmessage",
-    "class/src/messages/peernet.js~PeernetMessage.html",
-    "<span>PeernetMessage</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/messages/peernet.js</span>",
+    "@leofcoin/peernet/src/hash/hash.js~peernethash",
+    "class/src/hash/hash.js~PeernetHash.html",
+    "<span>PeernetHash</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/hash/hash.js</span>",
     "class"
   ],
   [
-    "@leofcoin/peernet/src/disco-peer.js~peernetpeer",
-    "class/src/disco-peer.js~PeernetPeer.html",
-    "<span>PeernetPeer</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/disco-peer.js</span>",
+    "@leofcoin/peernet/src/messages/peernet-message.js~peernetmessage",
+    "class/src/messages/peernet-message.js~PeernetMessage.html",
+    "<span>PeernetMessage</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/messages/peernet-message.js</span>",
+    "class"
+  ],
+  [
+    "@leofcoin/peernet/src/peer.js~peernetpeer",
+    "class/src/peer.js~PeernetPeer.html",
+    "<span>PeernetPeer</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/peer.js</span>",
     "class"
   ],
   [
     "@leofcoin/peernet/src/messages/ps.js~psmessage",
     "class/src/messages/ps.js~PsMessage.html",
     "<span>PsMessage</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/messages/ps.js</span>",
+    "class"
+  ],
+  [
+    "@leofcoin/peernet/src/messages/request.js~requestmessage",
+    "class/src/messages/request.js~RequestMessage.html",
+    "<span>RequestMessage</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/messages/request.js</span>",
+    "class"
+  ],
+  [
+    "@leofcoin/peernet/src/messages/response.js~responsemessage",
+    "class/src/messages/response.js~ResponseMessage.html",
+    "<span>ResponseMessage</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/messages/response.js</span>",
     "class"
   ],
   [
@@ -114,6 +144,18 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "@leofcoin/peernet/src/errors/errors.js~dhterror",
+    "function/index.html#static-function-dhtError",
+    "<span>dhtError</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/errors/errors.js</span>",
+    "function"
+  ],
+  [
+    "@leofcoin/peernet/src/errors/errors.js~encapsulatederror",
+    "function/index.html#static-function-encapsulatedError",
+    "<span>encapsulatedError</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/errors/errors.js</span>",
+    "function"
+  ],
+  [
     "@leofcoin/peernet/src/utils/utils.js~environment",
     "function/index.html#static-function-environment",
     "<span>environment</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/utils/utils.js</span>",
@@ -132,12 +174,6 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "@leofcoin/peernet/src/utils/utils.js~hashandsignmessage",
-    "function/index.html#static-function-hashAndSignMessage",
-    "<span>hashAndSignMessage</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/utils/utils.js</span>",
-    "function"
-  ],
-  [
     "@leofcoin/peernet/src/http/http.js~http",
     "function/index.html#static-function-http",
     "<span>http</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/http/http.js</span>",
@@ -150,9 +186,9 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "@leofcoin/peernet/src/utils/utils.js~preparemessage",
-    "function/index.html#static-function-prepareMessage",
-    "<span>prepareMessage</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/utils/utils.js</span>",
+    "@leofcoin/peernet/src/errors/errors.js~nothingfounderror",
+    "function/index.html#static-function-nothingFoundError",
+    "<span>nothingFoundError</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/errors/errors.js</span>",
     "function"
   ],
   [
@@ -462,6 +498,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/client.js~peernetclient#close",
+    "class/src/client.js~PeernetClient.html#instance-method-close",
+    "src/client.js~PeernetClient#close",
+    "method"
+  ],
+  [
     "src/client.js~peernetclient#constructor",
     "class/src/client.js~PeernetClient.html#instance-constructor-constructor",
     "src/client.js~PeernetClient#constructor",
@@ -474,9 +516,9 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/client.js~peernetclient#sw",
-    "class/src/client.js~PeernetClient.html#instance-member-sw",
-    "src/client.js~PeernetClient#sw",
+    "src/client.js~peernetclient#p2p",
+    "class/src/client.js~PeernetClient.html#instance-member-p2p",
+    "src/client.js~PeernetClient#p2p",
     "member"
   ],
   [
@@ -625,7 +667,7 @@ window.esdocSearchIndex = [
   ],
   [
     "src/codec/codec.js~peernetcodec#codecs",
-    "class/src/codec/codec.js~PeernetCodec.html#instance-member-codecs",
+    "class/src/codec/codec.js~PeernetCodec.html#instance-get-codecs",
     "src/codec/codec.js~PeernetCodec#codecs",
     "member"
   ],
@@ -792,51 +834,39 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/disco-peer.js",
-    "file/src/disco-peer.js.html",
-    "src/disco-peer.js",
+    "src/errors/errors.js",
+    "file/src/errors/errors.js.html",
+    "src/errors/errors.js",
     "file"
   ],
   [
-    "src/disco-peer.js~peernetpeer#connection",
-    "class/src/disco-peer.js~PeernetPeer.html#instance-member-connection",
-    "src/disco-peer.js~PeernetPeer#connection",
+    "src/handlers/message.js",
+    "file/src/handlers/message.js.html",
+    "src/handlers/message.js",
+    "file"
+  ],
+  [
+    "src/handlers/message.js~messagehandler#constructor",
+    "class/src/handlers/message.js~MessageHandler.html#instance-constructor-constructor",
+    "src/handlers/message.js~MessageHandler#constructor",
+    "method"
+  ],
+  [
+    "src/handlers/message.js~messagehandler#hashandsignmessage",
+    "class/src/handlers/message.js~MessageHandler.html#instance-method-hashAndSignMessage",
+    "src/handlers/message.js~MessageHandler#hashAndSignMessage",
+    "method"
+  ],
+  [
+    "src/handlers/message.js~messagehandler#network",
+    "class/src/handlers/message.js~MessageHandler.html#instance-member-network",
+    "src/handlers/message.js~MessageHandler#network",
     "member"
   ],
   [
-    "src/disco-peer.js~peernetpeer#constructor",
-    "class/src/disco-peer.js~PeernetPeer.html#instance-constructor-constructor",
-    "src/disco-peer.js~PeernetPeer#constructor",
-    "method"
-  ],
-  [
-    "src/disco-peer.js~peernetpeer#id",
-    "class/src/disco-peer.js~PeernetPeer.html#instance-member-id",
-    "src/disco-peer.js~PeernetPeer#id",
-    "member"
-  ],
-  [
-    "src/disco-peer.js~peernetpeer#on",
-    "class/src/disco-peer.js~PeernetPeer.html#instance-method-on",
-    "src/disco-peer.js~PeernetPeer#on",
-    "method"
-  ],
-  [
-    "src/disco-peer.js~peernetpeer#removelistener",
-    "class/src/disco-peer.js~PeernetPeer.html#instance-method-removeListener",
-    "src/disco-peer.js~PeernetPeer#removeListener",
-    "method"
-  ],
-  [
-    "src/disco-peer.js~peernetpeer#request",
-    "class/src/disco-peer.js~PeernetPeer.html#instance-method-request",
-    "src/disco-peer.js~PeernetPeer#request",
-    "method"
-  ],
-  [
-    "src/disco-peer.js~peernetpeer#write",
-    "class/src/disco-peer.js~PeernetPeer.html#instance-method-write",
-    "src/disco-peer.js~PeernetPeer#write",
+    "src/handlers/message.js~messagehandler#preparemessage",
+    "class/src/handlers/message.js~MessageHandler.html#instance-method-prepareMessage",
+    "src/handlers/message.js~MessageHandler#prepareMessage",
     "method"
   ],
   [
@@ -846,135 +876,135 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/hash/hash.js~discohash#buffer",
-    "class/src/hash/hash.js~DiscoHash.html#instance-get-buffer",
-    "src/hash/hash.js~DiscoHash#buffer",
+    "src/hash/hash.js~peernethash#buffer",
+    "class/src/hash/hash.js~PeernetHash.html#instance-get-buffer",
+    "src/hash/hash.js~PeernetHash#buffer",
     "member"
   ],
   [
-    "src/hash/hash.js~discohash#codec",
-    "class/src/hash/hash.js~DiscoHash.html#instance-member-codec",
-    "src/hash/hash.js~DiscoHash#codec",
+    "src/hash/hash.js~peernethash#codec",
+    "class/src/hash/hash.js~PeernetHash.html#instance-member-codec",
+    "src/hash/hash.js~PeernetHash#codec",
     "member"
   ],
   [
-    "src/hash/hash.js~discohash#codecs",
-    "class/src/hash/hash.js~DiscoHash.html#instance-member-codecs",
-    "src/hash/hash.js~DiscoHash#codecs",
+    "src/hash/hash.js~peernethash#codecs",
+    "class/src/hash/hash.js~PeernetHash.html#instance-member-codecs",
+    "src/hash/hash.js~PeernetHash#codecs",
     "member"
   ],
   [
-    "src/hash/hash.js~discohash#constructor",
-    "class/src/hash/hash.js~DiscoHash.html#instance-constructor-constructor",
-    "src/hash/hash.js~DiscoHash#constructor",
+    "src/hash/hash.js~peernethash#constructor",
+    "class/src/hash/hash.js~PeernetHash.html#instance-constructor-constructor",
+    "src/hash/hash.js~PeernetHash#constructor",
     "method"
   ],
   [
-    "src/hash/hash.js~discohash#decode",
-    "class/src/hash/hash.js~DiscoHash.html#instance-method-decode",
-    "src/hash/hash.js~DiscoHash#decode",
+    "src/hash/hash.js~peernethash#decode",
+    "class/src/hash/hash.js~PeernetHash.html#instance-method-decode",
+    "src/hash/hash.js~PeernetHash#decode",
     "method"
   ],
   [
-    "src/hash/hash.js~discohash#digest",
-    "class/src/hash/hash.js~DiscoHash.html#instance-member-digest",
-    "src/hash/hash.js~DiscoHash#digest",
+    "src/hash/hash.js~peernethash#digest",
+    "class/src/hash/hash.js~PeernetHash.html#instance-member-digest",
+    "src/hash/hash.js~PeernetHash#digest",
     "member"
   ],
   [
-    "src/hash/hash.js~discohash#discocodec",
-    "class/src/hash/hash.js~DiscoHash.html#instance-member-discoCodec",
-    "src/hash/hash.js~DiscoHash#discoCodec",
+    "src/hash/hash.js~peernethash#discocodec",
+    "class/src/hash/hash.js~PeernetHash.html#instance-member-discoCodec",
+    "src/hash/hash.js~PeernetHash#discoCodec",
     "member"
   ],
   [
-    "src/hash/hash.js~discohash#encode",
-    "class/src/hash/hash.js~DiscoHash.html#instance-method-encode",
-    "src/hash/hash.js~DiscoHash#encode",
+    "src/hash/hash.js~peernethash#encode",
+    "class/src/hash/hash.js~PeernetHash.html#instance-method-encode",
+    "src/hash/hash.js~PeernetHash#encode",
     "method"
   ],
   [
-    "src/hash/hash.js~discohash#frombs32",
-    "class/src/hash/hash.js~DiscoHash.html#instance-method-fromBs32",
-    "src/hash/hash.js~DiscoHash#fromBs32",
+    "src/hash/hash.js~peernethash#frombs32",
+    "class/src/hash/hash.js~PeernetHash.html#instance-method-fromBs32",
+    "src/hash/hash.js~PeernetHash#fromBs32",
     "method"
   ],
   [
-    "src/hash/hash.js~discohash#frombs58",
-    "class/src/hash/hash.js~DiscoHash.html#instance-method-fromBs58",
-    "src/hash/hash.js~DiscoHash#fromBs58",
+    "src/hash/hash.js~peernethash#frombs58",
+    "class/src/hash/hash.js~PeernetHash.html#instance-method-fromBs58",
+    "src/hash/hash.js~PeernetHash#fromBs58",
     "method"
   ],
   [
-    "src/hash/hash.js~discohash#fromhex",
-    "class/src/hash/hash.js~DiscoHash.html#instance-method-fromHex",
-    "src/hash/hash.js~DiscoHash#fromHex",
+    "src/hash/hash.js~peernethash#fromhex",
+    "class/src/hash/hash.js~PeernetHash.html#instance-method-fromHex",
+    "src/hash/hash.js~PeernetHash#fromHex",
     "method"
   ],
   [
-    "src/hash/hash.js~discohash#fromjson",
-    "class/src/hash/hash.js~DiscoHash.html#instance-method-fromJSON",
-    "src/hash/hash.js~DiscoHash#fromJSON",
+    "src/hash/hash.js~peernethash#fromjson",
+    "class/src/hash/hash.js~PeernetHash.html#instance-method-fromJSON",
+    "src/hash/hash.js~PeernetHash#fromJSON",
     "method"
   ],
   [
-    "src/hash/hash.js~discohash#hash",
-    "class/src/hash/hash.js~DiscoHash.html#instance-member-hash",
-    "src/hash/hash.js~DiscoHash#hash",
+    "src/hash/hash.js~peernethash#hash",
+    "class/src/hash/hash.js~PeernetHash.html#instance-member-hash",
+    "src/hash/hash.js~PeernetHash#hash",
     "member"
   ],
   [
-    "src/hash/hash.js~discohash#length",
-    "class/src/hash/hash.js~DiscoHash.html#instance-get-length",
-    "src/hash/hash.js~DiscoHash#length",
+    "src/hash/hash.js~peernethash#length",
+    "class/src/hash/hash.js~PeernetHash.html#instance-get-length",
+    "src/hash/hash.js~PeernetHash#length",
     "member"
   ],
   [
-    "src/hash/hash.js~discohash#name",
-    "class/src/hash/hash.js~DiscoHash.html#instance-member-name",
-    "src/hash/hash.js~DiscoHash#name",
+    "src/hash/hash.js~peernethash#name",
+    "class/src/hash/hash.js~PeernetHash.html#instance-member-name",
+    "src/hash/hash.js~PeernetHash#name",
     "member"
   ],
   [
-    "src/hash/hash.js~discohash#prefix",
-    "class/src/hash/hash.js~DiscoHash.html#instance-get-prefix",
-    "src/hash/hash.js~DiscoHash#prefix",
+    "src/hash/hash.js~peernethash#prefix",
+    "class/src/hash/hash.js~PeernetHash.html#instance-get-prefix",
+    "src/hash/hash.js~PeernetHash#prefix",
     "member"
   ],
   [
-    "src/hash/hash.js~discohash#size",
-    "class/src/hash/hash.js~DiscoHash.html#instance-member-size",
-    "src/hash/hash.js~DiscoHash#size",
+    "src/hash/hash.js~peernethash#size",
+    "class/src/hash/hash.js~PeernetHash.html#instance-member-size",
+    "src/hash/hash.js~PeernetHash#size",
     "member"
   ],
   [
-    "src/hash/hash.js~discohash#tobs32",
-    "class/src/hash/hash.js~DiscoHash.html#instance-method-toBs32",
-    "src/hash/hash.js~DiscoHash#toBs32",
+    "src/hash/hash.js~peernethash#tobs32",
+    "class/src/hash/hash.js~PeernetHash.html#instance-method-toBs32",
+    "src/hash/hash.js~PeernetHash#toBs32",
     "method"
   ],
   [
-    "src/hash/hash.js~discohash#tobs58",
-    "class/src/hash/hash.js~DiscoHash.html#instance-method-toBs58",
-    "src/hash/hash.js~DiscoHash#toBs58",
+    "src/hash/hash.js~peernethash#tobs58",
+    "class/src/hash/hash.js~PeernetHash.html#instance-method-toBs58",
+    "src/hash/hash.js~PeernetHash#toBs58",
     "method"
   ],
   [
-    "src/hash/hash.js~discohash#tohex",
-    "class/src/hash/hash.js~DiscoHash.html#instance-method-toHex",
-    "src/hash/hash.js~DiscoHash#toHex",
+    "src/hash/hash.js~peernethash#tohex",
+    "class/src/hash/hash.js~PeernetHash.html#instance-method-toHex",
+    "src/hash/hash.js~PeernetHash#toHex",
     "method"
   ],
   [
-    "src/hash/hash.js~discohash#tostring",
-    "class/src/hash/hash.js~DiscoHash.html#instance-method-toString",
-    "src/hash/hash.js~DiscoHash#toString",
+    "src/hash/hash.js~peernethash#tostring",
+    "class/src/hash/hash.js~PeernetHash.html#instance-method-toString",
+    "src/hash/hash.js~PeernetHash#toString",
     "method"
   ],
   [
-    "src/hash/hash.js~discohash#validate",
-    "class/src/hash/hash.js~DiscoHash.html#instance-method-validate",
-    "src/hash/hash.js~DiscoHash#validate",
+    "src/hash/hash.js~peernethash#validate",
+    "class/src/hash/hash.js~PeernetHash.html#instance-method-validate",
+    "src/hash/hash.js~PeernetHash#validate",
     "method"
   ],
   [
@@ -1188,21 +1218,57 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/messages/peernet.js",
-    "file/src/messages/peernet.js.html",
-    "src/messages/peernet.js",
+    "src/messages/peer-response.js",
+    "file/src/messages/peer-response.js.html",
+    "src/messages/peer-response.js",
     "file"
   ],
   [
-    "src/messages/peernet.js~peernetmessage#constructor",
-    "class/src/messages/peernet.js~PeernetMessage.html#instance-constructor-constructor",
-    "src/messages/peernet.js~PeernetMessage#constructor",
+    "src/messages/peer-response.js~peermessageresponse#constructor",
+    "class/src/messages/peer-response.js~PeerMessageResponse.html#instance-constructor-constructor",
+    "src/messages/peer-response.js~PeerMessageResponse#constructor",
     "method"
   ],
   [
-    "src/messages/peernet.js~peernetmessage#keys",
-    "class/src/messages/peernet.js~PeernetMessage.html#instance-get-keys",
-    "src/messages/peernet.js~PeernetMessage#keys",
+    "src/messages/peer-response.js~peermessageresponse#keys",
+    "class/src/messages/peer-response.js~PeerMessageResponse.html#instance-get-keys",
+    "src/messages/peer-response.js~PeerMessageResponse#keys",
+    "member"
+  ],
+  [
+    "src/messages/peer.js",
+    "file/src/messages/peer.js.html",
+    "src/messages/peer.js",
+    "file"
+  ],
+  [
+    "src/messages/peer.js~peermessage#constructor",
+    "class/src/messages/peer.js~PeerMessage.html#instance-constructor-constructor",
+    "src/messages/peer.js~PeerMessage#constructor",
+    "method"
+  ],
+  [
+    "src/messages/peer.js~peermessage#keys",
+    "class/src/messages/peer.js~PeerMessage.html#instance-get-keys",
+    "src/messages/peer.js~PeerMessage#keys",
+    "member"
+  ],
+  [
+    "src/messages/peernet-message.js",
+    "file/src/messages/peernet-message.js.html",
+    "src/messages/peernet-message.js",
+    "file"
+  ],
+  [
+    "src/messages/peernet-message.js~peernetmessage#constructor",
+    "class/src/messages/peernet-message.js~PeernetMessage.html#instance-constructor-constructor",
+    "src/messages/peernet-message.js~PeernetMessage#constructor",
+    "method"
+  ],
+  [
+    "src/messages/peernet-message.js~peernetmessage#keys",
+    "class/src/messages/peernet-message.js~PeernetMessage.html#instance-get-keys",
+    "src/messages/peernet-message.js~PeernetMessage#keys",
     "member"
   ],
   [
@@ -1224,6 +1290,42 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/messages/request.js",
+    "file/src/messages/request.js.html",
+    "src/messages/request.js",
+    "file"
+  ],
+  [
+    "src/messages/request.js~requestmessage#constructor",
+    "class/src/messages/request.js~RequestMessage.html#instance-constructor-constructor",
+    "src/messages/request.js~RequestMessage#constructor",
+    "method"
+  ],
+  [
+    "src/messages/request.js~requestmessage#keys",
+    "class/src/messages/request.js~RequestMessage.html#instance-get-keys",
+    "src/messages/request.js~RequestMessage#keys",
+    "member"
+  ],
+  [
+    "src/messages/response.js",
+    "file/src/messages/response.js.html",
+    "src/messages/response.js",
+    "file"
+  ],
+  [
+    "src/messages/response.js~responsemessage#constructor",
+    "class/src/messages/response.js~ResponseMessage.html#instance-constructor-constructor",
+    "src/messages/response.js~ResponseMessage#constructor",
+    "method"
+  ],
+  [
+    "src/messages/response.js~responsemessage#keys",
+    "class/src/messages/response.js~ResponseMessage.html#instance-get-keys",
+    "src/messages/response.js~ResponseMessage#keys",
+    "member"
+  ],
+  [
     "src/peer-info.js",
     "file/src/peer-info.js.html",
     "src/peer-info.js",
@@ -1242,10 +1344,64 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/peer.js",
+    "file/src/peer.js.html",
+    "src/peer.js",
+    "file"
+  ],
+  [
+    "src/peer.js~peernetpeer#connection",
+    "class/src/peer.js~PeernetPeer.html#instance-member-connection",
+    "src/peer.js~PeernetPeer#connection",
+    "member"
+  ],
+  [
+    "src/peer.js~peernetpeer#constructor",
+    "class/src/peer.js~PeernetPeer.html#instance-constructor-constructor",
+    "src/peer.js~PeernetPeer#constructor",
+    "method"
+  ],
+  [
+    "src/peer.js~peernetpeer#id",
+    "class/src/peer.js~PeernetPeer.html#instance-member-id",
+    "src/peer.js~PeernetPeer#id",
+    "member"
+  ],
+  [
+    "src/peer.js~peernetpeer#on",
+    "class/src/peer.js~PeernetPeer.html#instance-method-on",
+    "src/peer.js~PeernetPeer#on",
+    "method"
+  ],
+  [
+    "src/peer.js~peernetpeer#removelistener",
+    "class/src/peer.js~PeernetPeer.html#instance-method-removeListener",
+    "src/peer.js~PeernetPeer#removeListener",
+    "method"
+  ],
+  [
+    "src/peer.js~peernetpeer#request",
+    "class/src/peer.js~PeernetPeer.html#instance-method-request",
+    "src/peer.js~PeernetPeer#request",
+    "method"
+  ],
+  [
+    "src/peer.js~peernetpeer#write",
+    "class/src/peer.js~PeernetPeer.html#instance-method-write",
+    "src/peer.js~PeernetPeer#write",
+    "method"
+  ],
+  [
     "src/peernet.js",
     "file/src/peernet.js.html",
     "src/peernet.js",
     "file"
+  ],
+  [
+    "src/peernet.js~peernet#_getpeerid",
+    "class/src/peernet.js~Peernet.html#instance-method-_getPeerId",
+    "src/peernet.js~Peernet#_getPeerId",
+    "method"
   ],
   [
     "src/peernet.js~peernet#_init",
@@ -1254,9 +1410,27 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/peernet.js~peernet#_messagehandler",
+    "class/src/peernet.js~Peernet.html#instance-member-_messageHandler",
+    "src/peernet.js~Peernet#_messageHandler",
+    "member"
+  ],
+  [
     "src/peernet.js~peernet#_protohandler",
     "class/src/peernet.js~Peernet.html#instance-method-_protoHandler",
     "src/peernet.js~Peernet#_protoHandler",
+    "method"
+  ],
+  [
+    "src/peernet.js~peernet#addcodec",
+    "class/src/peernet.js~Peernet.html#instance-method-addCodec",
+    "src/peernet.js~Peernet#addCodec",
+    "method"
+  ],
+  [
+    "src/peernet.js~peernet#addproto",
+    "class/src/peernet.js~Peernet.html#instance-method-addProto",
+    "src/peernet.js~Peernet#addProto",
     "method"
   ],
   [
@@ -1308,14 +1482,26 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/peernet.js~peernet#peermap",
+    "class/src/peernet.js~Peernet.html#instance-member-peerMap",
+    "src/peernet.js~Peernet#peerMap",
+    "member"
+  ],
+  [
     "src/peernet.js~peernet#peers",
-    "class/src/peernet.js~Peernet.html#instance-member-peers",
+    "class/src/peernet.js~Peernet.html#instance-get-peers",
     "src/peernet.js~Peernet#peers",
     "member"
   ],
   [
+    "src/peernet.js~peernet#preparemessage",
+    "class/src/peernet.js~Peernet.html#instance-method-prepareMessage",
+    "src/peernet.js~Peernet#prepareMessage",
+    "method"
+  ],
+  [
     "src/peernet.js~peernet#protos",
-    "class/src/peernet.js~Peernet.html#instance-get-protos",
+    "class/src/peernet.js~Peernet.html#instance-member-protos",
     "src/peernet.js~Peernet#protos",
     "member"
   ],
@@ -1335,6 +1521,12 @@ window.esdocSearchIndex = [
     "src/peernet.js~peernet#put",
     "class/src/peernet.js~Peernet.html#instance-method-put",
     "src/peernet.js~Peernet#put",
+    "method"
+  ],
+  [
+    "src/peernet.js~peernet#removepeer",
+    "class/src/peernet.js~Peernet.html#instance-method-removePeer",
+    "src/peernet.js~Peernet#removePeer",
     "method"
   ],
   [
@@ -1374,6 +1566,18 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/proto/peer-response.proto.js",
+    "file/src/proto/peer-response.proto.js.html",
+    "src/proto/peer-response.proto.js",
+    "file"
+  ],
+  [
+    "src/proto/peer.proto.js",
+    "file/src/proto/peer.proto.js.html",
+    "src/proto/peer.proto.js",
+    "file"
+  ],
+  [
     "src/proto/peernet.proto.js",
     "file/src/proto/peernet.proto.js.html",
     "src/proto/peernet.proto.js",
@@ -1383,6 +1587,18 @@ window.esdocSearchIndex = [
     "src/proto/ps.proto.js",
     "file/src/proto/ps.proto.js.html",
     "src/proto/ps.proto.js",
+    "file"
+  ],
+  [
+    "src/proto/request.proto.js",
+    "file/src/proto/request.proto.js.html",
+    "src/proto/request.proto.js",
+    "file"
+  ],
+  [
+    "src/proto/response.proto.js",
+    "file/src/proto/response.proto.js.html",
+    "src/proto/response.proto.js",
     "file"
   ],
   [

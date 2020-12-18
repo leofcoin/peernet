@@ -1,29 +1,29 @@
 {
   "type": "File",
   "start": 0,
-  "end": 144,
+  "end": 139,
   "loc": {
     "start": {
       "line": 1,
       "column": 0
     },
     "end": {
-      "line": 7,
-      "column": 1
+      "line": 8,
+      "column": 0
     }
   },
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 144,
+    "end": 139,
     "loc": {
       "start": {
         "line": 1,
         "column": 0
       },
       "end": {
-        "line": 7,
-        "column": 1
+        "line": 8,
+        "column": 0
       }
     },
     "sourceType": "module",
@@ -31,7 +31,7 @@
       {
         "type": "ExportDefaultDeclaration",
         "start": 0,
-        "end": 144,
+        "end": 138,
         "loc": {
           "start": {
             "line": 1,
@@ -45,7 +45,7 @@
         "declaration": {
           "type": "TemplateLiteral",
           "start": 15,
-          "end": 144,
+          "end": 138,
           "loc": {
             "start": {
               "line": 1,
@@ -61,7 +61,7 @@
             {
               "type": "TemplateElement",
               "start": 16,
-              "end": 143,
+              "end": 137,
               "loc": {
                 "start": {
                   "line": 1,
@@ -184,7 +184,7 @@
       },
       "value": "\n// PeernetDHTMessageResponse\nmessage PeernetDHTMessageResponse {\n  required string hash = 1;\n  required bool has = 2;\n}\n",
       "start": 16,
-      "end": 143,
+      "end": 137,
       "loc": {
         "start": {
           "line": 1,
@@ -208,8 +208,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 143,
-      "end": 144,
+      "start": 137,
+      "end": 138,
       "loc": {
         "start": {
           "line": 7,
@@ -234,16 +234,16 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 144,
-      "end": 144,
+      "start": 139,
+      "end": 139,
       "loc": {
         "start": {
-          "line": 7,
-          "column": 1
+          "line": 8,
+          "column": 0
         },
         "end": {
-          "line": 7,
-          "column": 1
+          "line": 8,
+          "column": 0
         }
       }
     }

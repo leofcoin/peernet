@@ -1,5 +1,10 @@
 import fetch from 'node-fetch';
 
+/**
+ * Keep history of fetched address and ptr
+ * @property {Object} address
+ * @property {Object} ptr
+ */
 const lastFetched = {
   address: {
     value: undefined,
@@ -51,7 +56,8 @@ export default class DhtEarth {
   }
 
   /**
-   *
+   * @param {Object} provider
+   * @return {Object} {latitude: lat, longitude: lon}
    */
   async getCoordinates(provider) {
     const {address} = provider
@@ -64,7 +70,9 @@ export default class DhtEarth {
   }
 
   /**
-   *
+   * @param {Object} peer
+   * @param {Object} provider
+   * @return {Object} {provider, distance}
    */
   async getDistance(peer, provider) {
     const {latitude, longitude} = await this.getCoordinates(provider.address)
@@ -72,7 +80,8 @@ export default class DhtEarth {
   }
 
   /**
-   *
+   * @param {Array} providers
+   * @return {Object} closestPeer
    */
   async closestPeer(providers) {
     let all = []
@@ -94,14 +103,17 @@ export default class DhtEarth {
   }
 
   /**
-   *
+   * @param {String} hash
+   * @return {Array} providers
    */
   async providersFor(hash) {
     return this.providerMap.get(hash);
   }
 
   /**
-   *
+   * @param {String} address
+   * @param {String} hash
+   * @return {Array} providers
    */
   async addProvider(address, hash) {
     let providers = [];

@@ -5,6 +5,11 @@ import Codec from './codec';
 import Hash from './../hash/hash'
 
 export default class FormatInterface {
+  /**
+   * @param {Buffer|String|Object} buffer -
+   * @param {Object} proto - {encode, decode}
+   * @param {Object} options - {hashFormat, name}
+   */
   constructor(buffer, proto, options = {}) {
     this.protoEncode = proto.encode
     this.protoDecode = proto.decode
@@ -28,16 +33,25 @@ export default class FormatInterface {
     }
   }
 
+  /**
+   * @return {PeernetHash}
+   */
   get peernetHash() {
     return new Hash(this.decoded, {name: this.name})
   }
 
+  /**
+   * @return {peernetHash}
+   */
   get hash() {
     const upper = this.hashFormat.charAt(0).toUpperCase()
     const format = `${upper}${this.hashFormat.substring(1, this.hashFormat.length)}`
     return this.peernetHash[`to${format}`]()
   }
 
+  /**
+   * @return {Object}
+   */
   decode() {
     let encoded = this.encoded;
     const discoCodec = new Codec(this.encoded.toString('hex'))
@@ -47,6 +61,9 @@ export default class FormatInterface {
     return this.decoded
   }
 
+  /**
+   * @return {Buffer}
+   */
   encode(decoded) {
     if (!decoded) decoded = this.decoded;
     const codec = new Codec(this.name)
@@ -54,6 +71,9 @@ export default class FormatInterface {
     return this.encoded
   }
 
+  /**
+   * @param {Buffer} encoded
+   */
   fromEncoded(encoded) {
     const codec = new Codec(encoded)
     this.name = codec.name
@@ -61,36 +81,57 @@ export default class FormatInterface {
     this.decode()
   }
 
-  fromHex(hex) {
-    this.encoded = Buffer.from(hex, 'hex')
+  /**
+   * @param {String} encoded
+   */
+  fromHex(encoded) {
+    this.encoded = Buffer.from(encoded, 'hex')
     this.decode()
   }
 
-  fromBs32(input) {
-    this.encoded = bs32.decode(input)
+  /**
+   * @param {String} encoded
+   */
+  fromBs32(encoded) {
+    this.encoded = bs32.decode(encoded)
     this.decode()
   }
 
-  fromBs58(input) {
-    this.encoded = bs58.decode(input)
+  /**
+   * @param {String} encoded
+   */
+  fromBs58(encoded) {
+    this.encoded = bs58.decode(encoded)
     this.decode()
   }
 
+  /**
+   * @return {String} encoded
+   */
   toHex() {
     if (!this.encoded) this.encode()
     return this.encoded.toString('hex')
   }
 
+  /**
+   * @return {String} encoded
+   */
   toBs32() {
     if (!this.encoded) this.encode()
     return bs32.encode(this.encoded)
   }
 
+  /**
+   * @return {String} encoded
+   */
   toBs58() {
     if (!this.encoded) this.encode()
     return bs58.encode(this.encoded)
   }
 
+  /**
+   * @param {Object} data
+   */
   create(data) {
     this.decoded = data
     this.encode(data)
