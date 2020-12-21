@@ -24,7 +24,7 @@
     "@geut/discovery-swarm-webrtc": "^4.0.2",
     "@leofcoin/generate-account": "^1.0.2",
     "@leofcoin/multi-wallet": "^2.0.0",
-    "@leofcoin/storage": "^2.0.3",
+    "@leofcoin/storage": "^2.1.0",
     "bs32": "^0.1.6",
     "bs58": "^4.0.1",
     "bs58check": "^2.1.2",
