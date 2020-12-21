@@ -367,9 +367,8 @@ export default class Peernet {
         if (data) return await blockStore.get(hash)
         return this.requestData(hash)
       },
-      put: async (node) => {
-        const data = await blockStore.has(hash)
-        if (data) return await blockStore.get(hash)
+      put: async (hash, data) => {
+        if (await blockStore.has(hash)) return
         return await blockStore.put(hash, data)
       },
       has: async (hash) => await blockStore.has(hash),
