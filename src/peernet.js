@@ -491,7 +491,7 @@ export default class Peernet {
     debug(`get ${hash}`)
     let data
     if (store) store = globalThis[`${store}Store`]
-    if (!store) store = await this.whichStore(this.stores, hash)
+    if (!store) store = await this.whichStore([...this.stores], hash)
     if (store) data = await store.get(hash)
     if (data) return data
 
@@ -514,7 +514,7 @@ export default class Peernet {
    * @return {Boolean}
    */
   async has(hash) {
-    const store = await this.whichStore(this.stores, hash)
+    const store = await this.whichStore([...this.stores], hash)
     if (store) {
       if (store.private) return false
       else return true
