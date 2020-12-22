@@ -45,7 +45,7 @@ export default class Peernet {
    * const peernet = new Peernet({network: 'leofcoin', root: '.leofcoin'});
    */
   constructor(options = {}) {
-    globalThis.peernet = globalThis.peernet || this
+    this._discovered = []
     /**
      * @property {String} network - current network
      */
@@ -58,6 +58,7 @@ export default class Peernet {
       if (parts[1]) options.root = `.${parts[0]}/peernet/${parts[1]}`
       else options.root = `.${this.network}/peernet`
     }
+    globalThis.peernet = this
     return this._init(options)
   }
 
@@ -185,15 +186,31 @@ export default class Peernet {
     const id = Buffer.from(this.id.slice(0, 32))
     this.peerId = id
 
-    pubsub.subscribe('peer:connected', async (peer) => {
-      console.log({discovered: peer.id});
+    pubsub.subscribe('peer:discovered', async (peer) => {
+      this._peerHandler.discover(peer)
       peer.on('peernet.data', async (message) => {
         const id = message.id
         message = new PeernetMessage(Buffer.from(message.data.data))
         const proto = protoFor(message.decoded.data)
-        this._protoHandler({id, proto}, peer)
+        await this._protoHandler({id, proto}, peer)
+        const fulldId = this._getPeerId(peer.id)
+        if (fulldId && this._discovered.indexOf(peer.id) === -1) {
+          this._discovered.push(peer.id)
+          pubsub.publish('peer:connected', peer)
+        }
       })
     })
+
+    pubsub.subscribe('peer:connected', async (peer) => {
+      console.log({connected: peer.id, as: this._getPeerId(peer.id) });
+      // peer.on('peernet.data', async (message) => {
+      //   const id = message.id
+      //   message = new PeernetMessage(Buffer.from(message.data.data))
+      //   const proto = protoFor(message.decoded.data)
+      //   this._protoHandler({id, proto}, peer)
+      // })
+    })
+
     /**
      * @access public
      * @type {PeernetClient}
@@ -203,12 +220,11 @@ export default class Peernet {
   }
 
   _getPeerId(id) {
-    console.log({get: id});
-    return [...this.peerMap.entries()].forEach((entry, i) => {
-      return entry[1].forEach((_id, i) => {
+    for (const entry of [...this.peerMap.entries()]) {
+      for (const _id of entry[1]) {
         if (_id === id) return entry[0]
-      })
-    })
+      }
+    }
   }
 
   /**
@@ -225,8 +241,10 @@ export default class Peernet {
       if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
       else {
         const connections = this.peerMap.get(from)
-        connections.push(peer.id)
-        this.peerMap.set(from, connections)
+        if (connections.indexOf(peer.id) === -1) {
+          connections.push(peer.id)
+          this.peerMap.set(from, connections)
+        }
       }
       const data = new PeerMessageResponse({id: this.id})
       const node = await this.prepareMessage(from, data.encoded)
@@ -237,8 +255,10 @@ export default class Peernet {
       if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
       else {
         const connections = this.peerMap.get(from)
-        connections.push(peer.id)
-        this.peerMap.set(from, connections)
+        if (connections.indexOf(peer.id) === -1) {
+          connections.push(peer.id)
+          this.peerMap.set(from, connections)
+        }
       }
     } else {
       let from = this._getPeerId(peer.id)
@@ -254,8 +274,10 @@ export default class Peernet {
         if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
         else {
           const connections = this.peerMap.get(from)
-          connections.push(peer.id)
-          this.peerMap.set(from, connections)
+          if (connections.indexOf(peer.id) === -1) {
+            connections.push(peer.id)
+            this.peerMap.set(from, connections)
+          }
         }
       }
       if (proto.name === 'peernet-dht') {
@@ -411,22 +433,20 @@ export default class Peernet {
   async requestData(hash, store) {
     const providers = await this.providersFor(hash)
     if (!providers || providers.size === 0) throw nothingFoundError(hash)
-    debug(`found ${providers.size} for ${hash}`)
+    debug(`found ${providers.size} provider(s) for ${hash}`)
 
     // get closest peer on earth
     const closestPeer = await this.dht.closestPeer(providers)
-
     // get peer instance by id
     const id = closestPeer.id.toString()
     if (this.peers) {
       let closest = this.peers.filter((peer) => {
-        if (peer.id.toString() === id) return peer
+        if (this._getPeerId(peer.id) === id) return peer
       })
 
       let data = new DataMessage({hash, store})
 
       const node = await this.prepareMessage(id, data.encoded)
-
       if (closest[0]) data = await closest[0].request(node.encoded)
       else {
         closest = this.peers.filter((peer) => {
@@ -434,10 +454,13 @@ export default class Peernet {
         })
         if (closest[0]) data = await closest[0].request(node.encoded)
       }
-      let proto = protoFor(Buffer.from(data.data))
-      proto = protoFor(proto.decoded.data)
+      if (data.data) {
+        let proto = protoFor(Buffer.from(data.data))
+        proto = protoFor(proto.decoded.data)
+        return proto.decoded.data
+      }
+
       // this.put(hash, proto.decoded.data)
-      return proto.decoded.data
     }
     return null
   }
@@ -470,10 +493,14 @@ export default class Peernet {
     }
   }
 
+  /**
+   * goes trough given stores and tries to find data for given hash
+   * @param {Array} stores
+   * @param {string} hash
+   */
   async whichStore(stores, hash) {
     let store = stores.pop()
     const name = store
-    console.log(store, stores);
     store = globalThis[`${store}Store`]
     if (store) {
       const has = await store.has(hash)

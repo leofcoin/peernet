@@ -6,14 +6,13 @@ export default class PeerDiscovery {
   }
 
   _getPeerId(id) {
-    console.log({get: id});
-    if (peernet.peerMap.size === 0) return false
+    if (!peernet.peerMap || peernet.peerMap && peernet.peerMap.size === 0) return false
 
-    return [...peernet.peerMap.entries()].forEach((entry, i) => {
-      return entry[1].forEach((_id, i) => {
+    for (const entry of [...peernet.peerMap.entries()]) {
+      for (const _id of entry[1]) {
         if (_id === id) return entry[0]
-      })
-    })
+      }
+    }
   }
 
   async discover(peer) {
@@ -30,8 +29,10 @@ export default class PeerDiscovery {
     if (!peernet.peerMap.has(id)) peernet.peerMap.set(id, [peer.id])
     else {
       const connections = peernet.peerMap.get(id)
-      connections.push(peer.id)
-      peernet.peerMap.set(id, connections)
+      if (connections.indexOf(peer.id) === -1) {
+        connections.push(peer.id)
+        peernet.peerMap.set(from, connections)
+      }
     }
     return id
   }
@@ -44,8 +45,10 @@ export default class PeerDiscovery {
       if (!peernet.peerMap.has(from)) peernet.peerMap.set(from, [peer.id])
       else {
         const connections = peernet.peerMap.get(from)
-        connections.push(peer.id)
-        peernet.peerMap.set(from, connections)
+        if (connections.indexOf(peer.id) === -1) {
+          connections.push(peer.id)
+          peernet.peerMap.set(from, connections)
+        }
       }
       const data = new peernet.protos['peernet-peer-response']({id: this.id})
       const node = await peernet.prepareMessage(from, data.encoded)
@@ -56,8 +59,10 @@ export default class PeerDiscovery {
       if (!peernet.peerMap.has(from)) peernet.peerMap.set(from, [peer.id])
       else {
         const connections = peernet.peerMap.get(from)
-        connections.push(peer.id)
-        peernet.peerMap.peerMap.set(from, connections)
+        if (connections.indexOf(peer.id) === -1) {
+          connections.push(peer.id)
+          peernet.peerMap.set(from, connections)
+        }
       }
     }
   }

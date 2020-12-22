@@ -42,13 +42,13 @@ export default class PeernetClient {
     this.p2p = new P2P(trackers, this.topic.slice(0, 20))
     this.p2p.on('peerconnect', (peer) => {
       peer = new PeernetPeer(peer.id, peer)
-      pubsub.publish('peer:connected', peer)
       connections.set(peer.id, peer)
+      pubsub.publish('peer:discovered', peer)
     })
 
     this.p2p.on('peerclose', (peer) => {
-      pubsub.publish('peer:disconnected', peer)
       connections.delete(peer.id)
+      pubsub.publish('peer:disconnected', peer)
     })
 
     this.p2p.start()
