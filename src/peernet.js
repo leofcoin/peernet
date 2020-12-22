@@ -309,7 +309,7 @@ export default class Peernet {
         if (proto.decoded.request === 'lastBlock') {
           const height = await chainStore.get('localIndex')
           const hash = await chainStore.get('localBlock')
-          response = { height, hash }
+          response = { height, hash: hash.toString() }
         }
         const data = new ResponseMessage({response})
         const node = await this.prepareMessage(from, data.encoded)
