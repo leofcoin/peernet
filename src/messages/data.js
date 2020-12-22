@@ -4,7 +4,7 @@ import CodecFormat from './../codec/codec-format-interface.js'
 
 export default class DataMessage extends CodecFormat {
   get keys() {
-    return ['hash']
+    return ['hash', 'store']
   }
 
   constructor(data) {

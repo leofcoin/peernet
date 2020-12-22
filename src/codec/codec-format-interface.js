@@ -15,21 +15,21 @@ export default class FormatInterface {
     this.protoDecode = proto.decode
     if (options.name) this.name = options.name
     this.hashFormat = options.hashFormat || 'bs32'
-
     if (Buffer.isBuffer(buffer)) {
       const codec = new Codec(buffer)
-
       if (codec.name) {
         this.fromEncoded(buffer)
       } else {
         this.create(buffer)
       }
-    } else if (typeof buffer === 'string') {
-      if (isHex(buffer)) this.fromHex(buffer)
-      else if (bs32.test(buffer)) this.fromBs32(buffer)
-      else this.fromBs58(buffer)
-    } else if (typeof buffer === 'object' && !Array.isArray(buffer)) {
-      this.create(buffer)
+    } else {
+      if (typeof buffer === 'string') {
+        if (isHex(buffer)) this.fromHex(buffer)
+        else if (bs32.test(buffer)) this.fromBs32(buffer)
+        else this.fromBs58(buffer)
+      } else if (typeof buffer === 'object' && !Array.isArray(buffer)) {
+        this.create(buffer)
+      }
     }
   }
 

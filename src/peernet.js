@@ -36,6 +36,7 @@ export default class Peernet {
    * @param {Object} options
    * @param {String} options.network - desired network
    * @param {String} options.root - path to root directory
+   * @param {String} options.storePrefix - prefix for datatores (lfc)
    *
    * @return {Promise} instance of Peernet
    *
@@ -50,12 +51,65 @@ export default class Peernet {
     this.network = options.network || 'leofcoin'
     const parts = this.network.split(':')
 
+    if (!options.storePrefix) options.storePrefix = 'lfc'
     if (!options.port) options.port = 2000
     if (!options.root) {
       if (parts[1]) options.root = `.${parts[0]}/peernet/${parts[1]}`
       else options.root = `.${this.network}/peernet`
     }
+    return this._init(options)
+  }
 
+  get defaultStores() {
+    return ['account', 'wallet', 'block', 'transaction', 'chain', 'data']
+  }
+
+  addProto(name, proto) {
+    if (!globalThis.peernet.protos[name]) globalThis.peernet.protos[name] = proto
+  }
+
+  addCodec(name, proto) {
+    if (!globalThis.peernet.codecs[name]) globalThis.peernet.codecs[name] = proto
+  }
+
+  async addStore(name, prefix, root, isPrivate = true) {
+    if (name === 'block' || name === 'transaction' || name === 'chain' ||
+        name === 'data') isPrivate = false
+
+    let Storage
+    if (this.hasDaemon) {
+      Storage = LeofcoinStorageClient
+    } else {
+      Storage = LeofcoinStorage
+    }
+    globalThis[`${name}Store`] = globalThis[`${name}Store`] ||
+      await new Storage(`${prefix}-${name}`, root)
+
+    globalThis[`${name}Store`].private = isPrivate
+    if (!isPrivate) this.stores.push(name)
+  }
+
+
+  /**
+   * @see MessageHandler
+   */
+  prepareMessage(to, data) {
+    return this._messageHandler.prepareMessage(this.id, to, data)
+  }
+
+  get peers() {
+    return [...connections.values()]
+  }
+
+  /**
+   * @private
+   *
+   * @param {Object} options
+   * @param {String} options.root - path to root directory
+   *
+   * @return {Promise} instance of Peernet
+   */
+  async _init(options) {
     // peernetDHT aka closesPeer by coordinates
     /**
      * @type {Object}
@@ -63,6 +117,7 @@ export default class Peernet {
      */
     this.dht = new DHT()
     this.peerMap = new Map()
+    this.stores = []
 
     /**
      * proto Object containing protos
@@ -85,71 +140,25 @@ export default class Peernet {
       'peernet-data-response': DataMessageResponse,
       'peernet-ps': PsMessage,
     }
-
     this.protos = globalThis.peernet.protos
 
     this._messageHandler = new MessageHandler(this.network)
-    return this._init(options)
-  }
 
-  addProto(name, proto) {
-    if (!globalThis.peernet.protos[name]) globalThis.peernet.protos[name] = proto
-  }
-
-  addCodec(name, proto) {
-    if (!globalThis.peernet.codecs[name]) globalThis.peernet.codecs[name] = proto
-  }
-
-
-  /**
-   * @see MessageHandler
-   */
-  prepareMessage(to, data) {
-    return this._messageHandler.prepareMessage(this.id, to, data)
-  }
-
-  get peers() {
-    return connections.values()
-  }
-
-  /**
-   * @private
-   *
-   * @param {Object} options
-   * @param {String} options.root - path to root directory
-   *
-   * @return {Promise} instance of Peernet
-   */
-  async _init(options) {
     const {daemon, environment} = await target()
-    if (daemon) {
+    this.hasDaemon = daemon
+
+    if (this.hasDaemon) {
       globalThis.peernet.client = await httpClient({
         protocol: 'peernet-v0.1.0', host: '127.0.0.1', port: options.port,
       })
-      globalThis.accountStore = globalThis.accountStore ||
-        await new LeofcoinStorageClient('lfc-account', options.root)
-      globalThis.walletStore = globalThis.walletStore ||
-        await new LeofcoinStorageClient('lfc-wallet', options.root)
-      globalThis.blockStore = globalThis.blockStore ||
-        await new LeofcoinStorageClient('lfc-block', options.root)
-      globalThis.chainStore = globalThis.chainStore ||
-        await new LeofcoinStorageClient('lfc-chain', options.root)
-      globalThis.dataStore = globalThis.dataStore ||
-        await new LeofcoinStorageClient('lfc-data', options.root)
     } else {
-      globalThis.accountStore = globalThis.accountStore ||
-        new LeofcoinStorage('lfc-account', options.root)
-      globalThis.walletStore = globalThis.walletStore ||
-        new LeofcoinStorage('lfc-wallet', options.root)
-      globalThis.blockStore = globalThis.blockStore ||
-        new LeofcoinStorage('lfc-block', options.root)
-      globalThis.chainStore = globalThis.chainStore ||
-        new LeofcoinStorage('lfc-chain', options.root)
-      globalThis.dataStore = globalThis.dataStore ||
-        new LeofcoinStorage('lfc-data', options.root)
-
       if (environment !== 'browser') http(options)
     }
+
+    for (const store of this.defaultStores) {
+      await this.addStore(store, options.storePrefix, options.root)
+    }
+
     try {
       const pub = await accountStore.get('public')
       this.id = pub.walletId
@@ -206,7 +215,8 @@ export default class Peernet {
    */
   async _protoHandler(message, peer) {
     const id = message.id
-    message = new PeernetMessage(Buffer.from(message.data))
+    // if (typeof message.data === 'string') message.data = Buffer.from(message.data)
+    message = new PeernetMessage(Buffer.from(message.data.data))
     const clientId = this.client.id
     const proto = protoFor(message.decoded.data)
     if (proto.name === 'peernet-peer') {
@@ -248,33 +258,40 @@ export default class Peernet {
         }
       }
       if (proto.name === 'peernet-dht') {
-        const hash = proto.decoded.hash
-        const has = await this.block.has(hash)
-        // if not in blockStore look for it in the dataStore
-        if (!has) await this.has(hash)
+        let { hash, store } = proto.decoded
+        let has;
 
+        if (!store) {
+          has = await this.has(hash)
+        } else {
+          store = globalThis[`${store}Store`]
+          if (store.private) has = false
+          else has = await store.has(hash)
+        }
         const data = new DHTMessageResponse({hash, has})
         const node = await this.prepareMessage(from, data.encoded)
 
         peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
       } else if (proto.name === 'peernet-data') {
-        const hash = proto.decoded.hash
-        const has = await blockStore.has(hash)
+        let { hash, store } = proto.decoded
         let data
-        if (has) {
-          data = await blockStore.get(hash)
+
+        if (!store) {
+          data = await this.get(hash)
         } else {
-          const has = await dataStore.has(hash)
-          if (has) data = await datatore.get(hash)
+          store = globalThis[`${store}Store`]
+          if (store.private) {
+            // TODO: ban
+            return
+          } else data = await store.get(hash)
         }
 
         if (data) {
           data = new DataMessageResponse({hash, data: Buffer.from(data)})
 
           const node = await this.prepareMessage(from, data.encoded)
+          peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
         }
-
-        peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
       } else if (proto.name === 'peernet-peer') {
         const from = proto.decoded.id
         if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
@@ -371,11 +388,26 @@ export default class Peernet {
         if (await blockStore.has(hash)) return
         return await blockStore.put(hash, data)
       },
-      has: async (hash) => await blockStore.has(hash),
+      has: async (hash) => await blockStore.has(hash, 'block'),
     }
   }
 
-  async requestData(hash) {
+  get transaction() {
+    return {
+      get: async (hash) => {
+        const data = await transactionStore.has(hash)
+        if (data) return await transactionStore.get(hash)
+        return this.requestData(hash, 'transaction')
+      },
+      put: async (hash, data) => {
+        if (await transactionStore.has(hash)) return
+        return await transactionStore.put(hash, data)
+      },
+      has: async (hash) => await transactionStore.has(hash),
+    }
+  }
+
+  async requestData(hash, store) {
     const providers = await this.providersFor(hash)
     if (!providers || providers.size === 0) throw nothingFoundError(hash)
     debug(`found ${providers.size} for ${hash}`)
@@ -385,19 +417,68 @@ export default class Peernet {
 
     // get peer instance by id
     const id = closestPeer.id.toString()
-    const closest = this.peers.filter((peer) => {
-      if (peer.id.toString() === id) return peer
-    })
+    if (this.peers) {
+      let closest = this.peers.filter((peer) => {
+        if (peer.id.toString() === id) return peer
+      })
 
-    data = new DataMessage({hash})
+      let data = new DataMessage({hash, store})
 
-    const node = await this.prepareMessage(id, data.encoded)
+      const node = await this.prepareMessage(id, data.encoded)
 
-    data = await closest[0].request(node.encoded)
-    let proto = protoFor(Buffer.from(data.data))
-    proto = protoFor(proto.decoded.data)
-    // this.put(hash, proto.decoded.data)
-    return proto.decoded.data
+      if (closest[0]) data = await closest[0].request(node.encoded)
+      else {
+        closest = this.peers.filter((peer) => {
+          if (peer.id.toString() === id) return peer
+        })
+        if (closest[0]) data = await closest[0].request(node.encoded)
+      }
+      let proto = protoFor(Buffer.from(data.data))
+      proto = protoFor(proto.decoded.data)
+      // this.put(hash, proto.decoded.data)
+      return proto.decoded.data
+    }
+    return null
+  }
+
+  get data() {
+    return {
+      /**
+       * Get content for given data hash
+       *
+       * @param {String} hash
+       */
+      get: async (hash) => {
+        debug(`get data ${hash}`)
+        const data = await dataStore.has(hash)
+        if (data) return await dataStore.get(hash)
+        return this.requestData(hash, 'data')
+      },
+      /**
+       * put data content
+       *
+       * @param {String} hash
+       * @param {Buffer} data
+       */
+      put: async (hash, data) => await dataStore.put(hash, data),
+      /**
+       * @param {String} hash
+       * @return {Boolean}
+       */
+      has: async (hash) => await dataStore.has(hash),
+    }
+  }
+
+  async whichStore(stores, hash) {
+    let store = stores.pop()
+    const name = store
+    console.log(store, stores);
+    store = globalThis[`${store}Store`]
+    if (store) {
+      const has = await store.has(hash)
+      if (has) return store
+      if (stores.length > 0) return this.whichStore(stores, hash)
+    } else return null
   }
 
   /**
@@ -405,21 +486,26 @@ export default class Peernet {
    *
    * @param {String} hash
    */
-  async get(hash) {
+  async get(hash, store) {
     debug(`get ${hash}`)
-    const data = await dataStore.has(hash)
-    if (data) return await dataStore.get(hash)
-    return this.requestData(hash)
+    let data
+    if (store) store = globalThis[`${store}Store`]
+    if (!store) store = await this.whichStore(this.stores, hash)
+    if (store) data = await store.get(hash)
+    if (data) return data
+
+    return this.requestData(hash, 'data')
   }
 
   /**
    * put content
    *
    * @param {String} hash
-   * @param {string} data encoded message
+   * @param {Buffer} data
    */
-  async put(hash, data) {
-    return await dataStore.put(hash, data)
+  async put(hash, data, store = 'data') {
+    store = globalThis[`${store}Store`]
+    return await store.put(hash, data)
   }
 
   /**
@@ -427,7 +513,12 @@ export default class Peernet {
    * @return {Boolean}
    */
   async has(hash) {
-    return await dataStore.has(hash)
+    const store = await this.whichStore(this.stores, hash)
+    if (store) {
+      if (store.private) return false
+      else return true
+    }
+    return false
   }
 
   /**
