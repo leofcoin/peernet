@@ -14,6 +14,7 @@ import RequestMessage from './messages/request.js'
 import ResponseMessage from './messages/response.js'
 import PeerMessageResponse from './messages/peer-response.js'
 import DataMessageResponse from './messages/data-response.js'
+import PeerDiscovery from './discovery/peer-discovery'
 import DHT from './dht/dht.js'
 import { debug, protoFor, target } from './utils/utils.js'
 import generateAccount from
@@ -144,6 +145,7 @@ export default class Peernet {
 
     this._messageHandler = new MessageHandler(this.network)
 
+
     const {daemon, environment} = await target()
     this.hasDaemon = daemon
 
@@ -178,16 +180,19 @@ export default class Peernet {
         throw e
       }
     }
+    this._peerHandler = new PeerDiscovery(this.id)
     // peernet id
     const id = Buffer.from(this.id.slice(0, 32))
     this.peerId = id
 
     pubsub.subscribe('peer:connected', async (peer) => {
+      const id = await this._peerHandler.discover(peer)
+      if (this._getPeerId(id)) peer.on('peernet.data', (message) => this._protoHandler(message, peer))
       console.log(peer.id);
       // const message = new PeerMessage({id: this.id})
       // const response = await peer.request(message.encoded)
       // console.log(response);
-      peer.on('peernet.data', (message) => this._protoHandler(message, peer))
+
       // this.peers.push(peer)
     })
     /**
