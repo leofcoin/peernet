@@ -35,4 +35,30 @@ export default class PeerDiscovery {
     }
     return id
   }
+
+  async discoverHandler(message, peer) {
+    const {id, proto} = message
+    // if (typeof message.data === 'string') message.data = Buffer.from(message.data)
+    if (proto.name === 'peernet-peer') {
+      const from = proto.decoded.id
+      if (!peernet.peerMap.has(from)) peernet.peerMap.set(from, [peer.id])
+      else {
+        const connections = peernet.peerMap.get(from)
+        connections.push(peer.id)
+        peernet.peerMap.set(from, connections)
+      }
+      const data = new peernet.protos['peernet-peer-response']({id: this.id})
+      const node = await peernet.prepareMessage(from, data.encoded)
+
+      peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+    } else if (proto.name === 'peernet-peer-response') {
+      const from = proto.decoded.id
+      if (!peernet.peerMap.has(from)) peernet.peerMap.set(from, [peer.id])
+      else {
+        const connections = peernet.peerMap.get(from)
+        connections.push(peer.id)
+        peernet.peerMap.peerMap.set(from, connections)
+      }
+    }
+  }
 }

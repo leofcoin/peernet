@@ -186,14 +186,13 @@ export default class Peernet {
     this.peerId = id
 
     pubsub.subscribe('peer:connected', async (peer) => {
-      const id = await this._peerHandler.discover(peer)
-      if (this._getPeerId(id)) peer.on('peernet.data', (message) => this._protoHandler(message, peer))
-      console.log(peer.id);
-      // const message = new PeerMessage({id: this.id})
-      // const response = await peer.request(message.encoded)
-      // console.log(response);
-
-      // this.peers.push(peer)
+      console.log({discovered: peer.id});
+      peer.on('peernet.data', async (message) => {
+        const id = message.id
+        message = new PeernetMessage(Buffer.from(message.data.data))
+        const proto = protoFor(message.decoded.data)
+        this._protoHandler({id, proto}, peer)
+      })
     })
     /**
      * @access public
@@ -219,11 +218,8 @@ export default class Peernet {
    * @param {PeernetPeer} peer - peernet peer
    */
   async _protoHandler(message, peer) {
-    const id = message.id
-    // if (typeof message.data === 'string') message.data = Buffer.from(message.data)
-    message = new PeernetMessage(Buffer.from(message.data.data))
-    const clientId = this.client.id
-    const proto = protoFor(message.decoded.data)
+    const {id, proto} = message
+
     if (proto.name === 'peernet-peer') {
       const from = proto.decoded.id
       if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
