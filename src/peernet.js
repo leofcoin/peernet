@@ -334,7 +334,7 @@ export default class Peernet {
           const hash = await chainStore.get('localBlock')
           response = { height, hash: hash.toString() }
         }
-        const data = new ResponseMessage({response: JSON.stringify(response)})
+        const data = new ResponseMessage({response: Buffer.from(JSON.stringify(response))})
         const node = await this.prepareMessage(from, data.encoded)
 
         peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
