@@ -235,7 +235,6 @@ export default class Peernet {
    */
   async _protoHandler(message, peer) {
     const {id, proto} = message
-
     if (proto.name === 'peernet-peer') {
       const from = proto.decoded.id
       if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
@@ -329,6 +328,7 @@ export default class Peernet {
         peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
       } else if (proto.name === 'peernet-request') {
         // TODO: make dynamic
+        let response;
         if (proto.decoded.request === 'lastBlock') {
           const height = await chainStore.get('localIndex')
           const hash = await chainStore.get('localBlock')
@@ -339,8 +339,7 @@ export default class Peernet {
 
         peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
       } else if (proto.name === 'peernet-ps' &&
-                 message.decoded.from.toString() !== this.id.toString()) {
-        console.log(message.decoded.from.toString(), this.id.toString());
+                 this._getPeerId(peer.id) !== this.id.toString()) {
         globalSub.publish(proto.decoded.topic.toString(), proto.decoded.data.toString())
       }
     }
