@@ -329,15 +329,16 @@ export default class Peernet {
       } else if (proto.name === 'peernet-request') {
         // TODO: make dynamic
         let response;
-        if (proto.decoded.request === 'lastBlock') {
+        if (proto.decoded.request.toString() === 'lastBlock') {
           const height = await chainStore.get('localIndex')
           const hash = await chainStore.get('localBlock')
           response = { height, hash: hash.toString() }
-        }
-        const data = new ResponseMessage({response: Buffer.from(JSON.stringify(response))})
-        const node = await this.prepareMessage(from, data.encoded)
 
-        peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+          const data = new ResponseMessage({response: Buffer.from(JSON.stringify(response))})
+          const node = await this.prepareMessage(from, data.encoded)
+
+          peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+        }
       } else if (proto.name === 'peernet-ps' &&
                  this._getPeerId(peer.id) !== this.id.toString()) {
         globalSub.publish(proto.decoded.topic.toString(), proto.decoded.data.toString())
