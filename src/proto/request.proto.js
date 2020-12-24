@@ -1,6 +1,6 @@
 export default `
 // PeernetRequestMessage
 message PeernetRequestMessage {
-  required bytes request = 1;
+  required string request = 1;
 }
 `

@@ -328,13 +328,13 @@ export default class Peernet {
         peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
       } else if (proto.name === 'peernet-request') {
         // TODO: make dynamic
+        // exposeddevapi[proto.decoded.request](proto.decoded.params)
         let response;
-        if (proto.decoded.request.toString() === 'lastBlock') {
+        if (proto.decoded.request === 'lastBlock') {
           const height = await chainStore.get('localIndex')
           const hash = await chainStore.get('localBlock')
-          response = { height: height.toString(), hash: hash.toString() }
-
-          const data = new ResponseMessage({response: Buffer.from(JSON.stringify(response))})
+          response = JSON.stringify({ height: height.toString(), hash: hash.toString() })
+          const data = new ResponseMessage({ response })
           const node = await this.prepareMessage(from, data.encoded)
 
           peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
