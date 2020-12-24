@@ -19,7 +19,7 @@ const lastFetched = {
 const getAddress = async () => {
   const {address} = lastFetched
   const now = Math.round(new Date().getTime() / 1000);
-  if (now - address.timestamp > 300) {
+  if (now - address.timestamp > 1200000) {
     address.value = await fetch('https://ipv6.icanhazip.com/')
     address.value = await address.value.text()
     address.timestamp = Math.round(new Date().getTime() / 1000);
