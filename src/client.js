@@ -1,5 +1,3 @@
-import swarm from '@geut/discovery-swarm-webrtc'
-import wrtc from 'wrtc'
 import Pubsub from '@vandeurenglenn/little-pubsub'
 import PeernetPeer from './peer.js'
 import sha256 from 'crypto-js/sha256'
@@ -21,18 +19,6 @@ export default class PeernetClient {
     if (!options.id) options.id = Buffer.from('00000000000000000000000000000000')
 
     this.id = options.id
-
-    // try {
-    //   this.sw = swarm({
-    //     id: options.id,
-    //     bootstrap: ['wss://discovery-swarm.herokuapp.com', 'ws://localhost:4000'],
-    //     simplePeer: {
-    //       wrtc,
-    //     },
-    //   })
-    // } catch (e) {
-    //   console.warn(e);
-    // }
 
     this.topic = Buffer.from(sha256('peernet-v0.1.0').toString())
     const trackers = [
