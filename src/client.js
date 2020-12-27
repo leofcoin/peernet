@@ -21,7 +21,9 @@ export default class PeernetClient {
     this.id = options.id
 
     this.topic = Buffer.from(sha256('peernet-v0.1.0').toString())
+    
     const trackers = [
+      'wss://star.leofcoin.org:7575',
       'wss://tracker.openwebtorrent.com',
       'wss://tracker.sloppyta.co:443/announce',
     ]
