@@ -519,7 +519,7 @@ export default class Peernet {
     let data
     if (store) store = globalThis[`${store}Store`]
     if (!store) store = await this.whichStore([...this.stores], hash)
-    if (store) data = await store.get(hash)
+    if (store && await store.has(hash)) data = await store.get(hash)
     if (data) return data
 
     return this.requestData(hash, 'data')
