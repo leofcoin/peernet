@@ -1,7 +1,6 @@
 import Pubsub from '@vandeurenglenn/little-pubsub'
 import Client from './client'
 import LeofcoinStorage from './../node_modules/@leofcoin/storage/src/level.js'
-import http from './http/http.js'
 import httpClient from './http/client/client.js'
 import LeofcoinStorageClient from './http/client/storage.js'
 import PeernetMessage from './messages/peernet-message.js'
@@ -75,8 +74,14 @@ export default class Peernet {
   }
 
   async addStore(name, prefix, root, isPrivate = true) {
-    if (name === 'block' || name === 'transaction' || name === 'chain' ||
-        name === 'data') isPrivate = false
+    switch (name) {
+      case 'block':
+      case 'transaction':
+      case 'chain':
+      case 'data':
+        isPrivate: false
+        break;
+    }
 
     let Storage
     if (this.hasDaemon) {
@@ -155,7 +160,10 @@ export default class Peernet {
         protocol: 'peernet-v0.1.0', host: '127.0.0.1', port: options.port,
       })
     } else {
-      if (environment !== 'browser') http(options)
+      if (environment !== 'browser') {
+        const http = await import('./http/http.js')
+        http.default(options)
+      }
     }
 
     for (const store of this.defaultStores) {
