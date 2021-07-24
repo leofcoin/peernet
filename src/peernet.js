@@ -23,7 +23,7 @@ import { encapsulatedError, dhtError,
   nothingFoundError } from './errors/errors.js'
 
 globalThis.leofcoin = globalThis.leofcoin || {}
-globalThis.globalSub = globalThis.globalSub || new Pubsub({verbose: true})
+globalThis.globalSub = globalThis.globalSub || new Pubsub({verbose: false})
 
 /**
  * @access public
