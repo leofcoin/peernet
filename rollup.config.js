@@ -2,6 +2,7 @@ import { execSync } from 'child_process';
 import lint from '@rollup/plugin-eslint'
 import cjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
+import modify from 'rollup-plugin-modify';
 
 export default [{
 	input: ['src/peernet.js', 'src/codec/codec.js', 'src/hash/hash.js', 'src/messages/dht.js',
@@ -12,7 +13,10 @@ export default [{
 		format: 'cjs'
 	},
 	plugins: [
-		json()
+		json(),
+		modify({
+			FETCH_IMPORT: `const fetch = require('node-fetch');`
+		})
 	]
 }, {
 	input: 'src/peernet.js',
@@ -22,6 +26,9 @@ export default [{
 	},
 	plugins: [
 		json(),
+		modify({
+			FETCH_IMPORT: ``
+		}),
 		lint({
 		  fix: true,
 			exclude: ['package.json', "package-lock.json"]
@@ -35,6 +42,9 @@ export default [{
 		format: 'es'
 	},
 	plugins: [
-		json()
+		json(),
+		modify({
+			FETCH_IMPORT: ''
+		})
 	]
 }]

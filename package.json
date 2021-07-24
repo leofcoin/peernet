@@ -33,6 +33,7 @@
     "node-fetch": "^2.6.1",
     "p2pt": "^1.5.0",
     "protons": "^2.0.0",
+    "rollup-plugin-modify": "^3.0.0",
     "socket-request-client": "^1.5.0",
     "socket-request-server": "^1.5.0",
     "varint": "^6.0.0"
