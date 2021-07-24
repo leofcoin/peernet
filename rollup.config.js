@@ -17,7 +17,7 @@ export default [{
 }, {
 	input: 'src/peernet.js',
 	output: {
-		file: 'browser.js',
+		dir: 'browser',
 		format: 'cjs'
 	},
 	plugins: [
@@ -31,7 +31,7 @@ export default [{
 }, {
 	input: 'src/peernet.js',
 	output: {
-		file: 'dist/module/peernet.js',
+		dir: 'dist/module/',
 		format: 'es'
 	},
 	plugins: [

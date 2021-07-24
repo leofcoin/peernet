@@ -15,7 +15,7 @@
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "c": "rollup -c",
     "w": "rollup -c -w",
-    "b": "browserify browser.js -o dist/browser/peernet.js --standalone Peernet && rm browser.js"
+    "b": "browserify browser/peernet.js -o dist/browser/peernet.js --standalone Peernet && rm -r ./browser"
   },
   "keywords": [],
   "author": "",
