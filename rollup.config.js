@@ -1,7 +1,9 @@
 import { execSync } from 'child_process';
 import lint from '@rollup/plugin-eslint'
+import resolve from '@rollup/plugin-node-resolve'
 import cjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
+import modify from 'rollup-plugin-modify'
 
 export default [{
 	input: ['src/peernet.js', 'src/codec/codec.js', 'src/hash/hash.js', 'src/messages/dht.js',
@@ -22,6 +24,9 @@ export default [{
 	},
 	plugins: [
 		json(),
+		modify({
+			"import fetch from 'node-fetch'": ''
+		}),
 		lint({
 		  fix: true,
 			exclude: ['package.json', "package-lock.json"]
