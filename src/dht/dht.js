@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+
 
 /**
  * Keep history of fetched address and ptr
@@ -20,7 +20,7 @@ const getAddress = async () => {
   const {address} = lastFetched
   const now = Math.round(new Date().getTime() / 1000);
   if (now - address.timestamp > 1200000) {
-    address.value = await fetch('https://ipv6.icanhazip.com/')
+    address.value = await fetch('https://icanhazip.com/')
     address.value = await address.value.text()
     address.timestamp = Math.round(new Date().getTime() / 1000);
     lastFetched.address = address;
@@ -56,13 +56,12 @@ export default class DhtEarth {
   }
 
   /**
-   * @param {Object} provider
+   * @param {Object} address
    * @return {Object} {latitude: lat, longitude: lon}
    */
-  async getCoordinates(provider) {
-    const {address} = provider
+  async getCoordinates(address) {
     // const {address} = parseAddress(provider)
-    const request = `http://ip-api.com/json/${address}`
+    const request = `https://whereis.leofcoin.org/?ip=${address}`
     let response = await fetch(request)
     response = await response.json()
     const {lat, lon} = response;
@@ -106,7 +105,7 @@ export default class DhtEarth {
    * @param {String} hash
    * @return {Array} providers
    */
-  async providersFor(hash) {
+  providersFor(hash) {
     return this.providerMap.get(hash);
   }
 
