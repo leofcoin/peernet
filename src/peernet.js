@@ -391,6 +391,7 @@ export default class Peernet {
 
       if (proto.decoded.has) this.dht.addProvider(peerInfo, proto.decoded.hash)
     }
+    return
   }
 
   /**
@@ -405,6 +406,11 @@ export default class Peernet {
       await this.walk(hash)
       providers = await this.dht.providersFor(hash)
       // second walk the network to find a provider
+      if (!providers || providers.length === 0) {
+        await this.walk(hash)
+        providers = await this.dht.providersFor(hash)
+      }
+      // last walk
       if (!providers || providers.length === 0) {
         await this.walk(hash)
         providers = await this.dht.providersFor(hash)
