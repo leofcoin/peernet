@@ -200,7 +200,18 @@ export default class Peernet {
         }
       })
     })
+    pubsub.subscribe('peer:disconnected', async (peer) => {
+      let index = this._discovered.indexOf(peer.id)
+      if (index !== -1) this._discovered.splice(index, 1)
+      const id = this._getPeerId(peer.id)
+      const peerIds = this.peerMap.get(id)
 
+      index = peerIds.indexOf(peer.id)
+      if (index !== -1) peerIds.splice(index, 1)
+
+      if (peerIds.length === 0) this.peerMap.delete(id)
+      else this.peerMap.set(id, peerIds)
+    })
     pubsub.subscribe('peer:connected', async (peer) => {
       console.log({connected: peer.id, as: this._getPeerId(peer.id) });
       // peer.on('peernet.data', async (message) => {
@@ -367,6 +378,9 @@ export default class Peernet {
       proto = protoFor(proto.decoded.data)
 
       if (proto.name !== 'peernet-dht-response') throw dhtError(proto.name)
+
+      // TODO: give ip and port (just used for location)
+      if (!peer.connection.remoteAddress || !peer.connection.localAddress) return;
 
       const peerInfo = {
         family: peer.connection.remoteFamily || peer.connection.localFamily,
