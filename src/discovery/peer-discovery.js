@@ -26,6 +26,8 @@ export default class PeerDiscovery {
     response = new peernet.protos['peernet-peer-response'](response.decoded.data)
 
     id = response.decoded.id
+    if (id === this.id) return;
+
     if (!peernet.peerMap.has(id)) peernet.peerMap.set(id, [peer.id])
     else {
       const connections = peernet.peerMap.get(id)
@@ -42,6 +44,8 @@ export default class PeerDiscovery {
     // if (typeof message.data === 'string') message.data = Buffer.from(message.data)
     if (proto.name === 'peernet-peer') {
       const from = proto.decoded.id
+      if (from === this.id) return;
+
       if (!peernet.peerMap.has(from)) peernet.peerMap.set(from, [peer.id])
       else {
         const connections = peernet.peerMap.get(from)
@@ -56,6 +60,8 @@ export default class PeerDiscovery {
       peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
     } else if (proto.name === 'peernet-peer-response') {
       const from = proto.decoded.id
+      if (from === this.id) return;
+
       if (!peernet.peerMap.has(from)) peernet.peerMap.set(from, [peer.id])
       else {
         const connections = peernet.peerMap.get(from)
