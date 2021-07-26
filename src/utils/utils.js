@@ -11,13 +11,13 @@ export const expected = (expected, actual) => {
 
   return `\nExpected:
     ${expected.join('\n\t')}
-    
+
     actual:
       ${entries.join('\n\t')}`;
 }
 
 export const debug = (log) => {
-  if (globalThis.DEBUG) console.log(`%c ${log}`, 'color: #0080ff;')
+  if (globalThis.DEBUG || globalThis.debug) console.log(`%c ${log}`, 'color: #0080ff;')
 }
 
 export const protoFor = (data) => {
