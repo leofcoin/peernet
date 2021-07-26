@@ -434,7 +434,6 @@ export default class Peernet {
     const providers = await this.providersFor(hash)
     if (!providers || providers.size === 0) throw nothingFoundError(hash)
     debug(`found ${providers.size} provider(s) for ${hash}`)
-
     // get closest peer on earth
     const closestPeer = await this.dht.closestPeer(providers)
     // get peer instance by id
