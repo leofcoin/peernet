@@ -465,8 +465,8 @@ export default class Peernet {
     // get closest peer on earth
     const closestPeer = await this.dht.closestPeer(providers)
     // get peer instance by id
-    if (!closestPeer || !closestPeer.id) return requestData(hash, store)
-    
+    if (!closestPeer || !closestPeer.id) return this.requestData(hash, store)
+
     const id = closestPeer.id.toString()
     if (this.peers) {
       let closest = this.peers.filter((peer) => {
