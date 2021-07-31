@@ -204,10 +204,14 @@ export default class Peernet {
       let index = this._discovered.indexOf(peer.id)
       if (index !== -1) this._discovered.splice(index, 1)
       const id = this._getPeerId(peer.id)
-      const peerIds = this.peerMap.get(id)
+      let peerIds = this.peerMap.get(id)
 
-      index = peerIds.indexOf(peer.id)
-      if (index !== -1) peerIds.splice(index, 1)
+      if (peerIds) {
+        index = peerIds.indexOf(peer.id)
+        if (index !== -1) peerIds.splice(index, 1)
+      } else {
+        peerIds = []
+      }
 
       if (peerIds.length === 0) this.peerMap.delete(id)
       else this.peerMap.set(id, peerIds)
