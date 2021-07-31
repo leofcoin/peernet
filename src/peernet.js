@@ -384,7 +384,11 @@ export default class Peernet {
       if (proto.name !== 'peernet-dht-response') throw dhtError(proto.name)
 
       // TODO: give ip and port (just used for location)
-      if (!peer.connection.remoteAddress || !peer.connection.localAddress) return;
+      if (!peer.connection.remoteAddress || !peer.connection.localAddress) {
+        peer.connection.remoteFamily = 'ipv4'
+        peer.connection.remoteAddress = '127.0.0.1'
+        peer.connection.remotePort = '0000'
+      }
 
       const peerInfo = {
         family: peer.connection.remoteFamily || peer.connection.localFamily,
@@ -461,6 +465,8 @@ export default class Peernet {
     // get closest peer on earth
     const closestPeer = await this.dht.closestPeer(providers)
     // get peer instance by id
+    if (!closestPeer || !closestPeer.id) return requestData(hash, store)
+    
     const id = closestPeer.id.toString()
     if (this.peers) {
       let closest = this.peers.filter((peer) => {

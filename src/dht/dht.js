@@ -94,7 +94,7 @@ export default class DhtEarth {
     all = await Promise.all(all)
 
     const closestPeer = all.reduce((p, c) => {
-      if (c.distance === NaN) c.distance = 0
+      if (!c.distance || c.distance === NaN) c.distance = 0
       if (c.distance < p || p === 0) return c.provider;
     }, 0)
 
