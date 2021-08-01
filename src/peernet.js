@@ -187,14 +187,8 @@ export default class Peernet {
     this.peerId = id
 
     pubsub.subscribe('peer:discovered', async (peer) => {
-      const discovery = await this._peerHandler.discover(peer)
-      console.log({discovery});
+      this._peerHandler.discover(peer)
 
-      const fulldId = this._getPeerId(peer.id)
-      if (fulldId && this._discovered.indexOf(peer.id) === -1) {
-        this._discovered.push(peer.id)
-        pubsub.publish('peer:connected', peer)
-      }
       peer.on('peernet.data', async (message) => {
         const id = message.id
         message = new peernet.protos['peernet-message'](Buffer.from(message.data.data))
@@ -202,6 +196,12 @@ export default class Peernet {
         // message = new PeernetMessage(Buffer.from(message.data.data))
         const proto = protoFor(message.decoded.data)
         await this._protoHandler({id, proto}, peer)
+
+        const fulldId = this._getPeerId(peer.id)
+        if (fulldId && this._discovered.indexOf(peer.id) === -1) {
+          this._discovered.push(peer.id)
+          pubsub.publish('peer:connected', peer)
+        }
       })
     })
 
@@ -269,16 +269,16 @@ export default class Peernet {
       const node = await this.prepareMessage(peer.id, data.encoded)
 
       peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
-    } else if (proto.name === 'peernet-peer-response') {
-      const from = proto.decoded.id
-      if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
-      else {
-        const connections = this.peerMap.get(from)
-        if (connections.indexOf(peer.id) === -1) {
-          connections.push(peer.id)
-          this.peerMap.set(from, connections)
-        }
-      }
+    // } else if (proto.name === 'peernet-peer-response') {
+    //   const from = proto.decoded.id
+    //   if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
+    //   else {
+    //     const connections = this.peerMap.get(from)
+    //     if (connections.indexOf(peer.id) === -1) {
+    //       connections.push(peer.id)
+    //       this.peerMap.set(from, connections)
+    //     }
+    //   }
     } else {
       const from = this._getPeerId(peer.id)
       // if (!from) {
