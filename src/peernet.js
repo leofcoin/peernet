@@ -187,19 +187,24 @@ export default class Peernet {
     this.peerId = id
 
     pubsub.subscribe('peer:discovered', async (peer) => {
-      this._peerHandler.discover(peer)
+      const discovery = await this._peerHandler.discover(peer)
+      console.log({discovery});
+
+      const fulldId = this._getPeerId(peer.id)
+      if (fulldId && this._discovered.indexOf(peer.id) === -1) {
+        this._discovered.push(peer.id)
+        pubsub.publish('peer:connected', peer)
+      }
       peer.on('peernet.data', async (message) => {
         const id = message.id
-        message = new PeernetMessage(Buffer.from(message.data.data))
+        message = new peernet.protos['peernet-message'](Buffer.from(message.data.data))
+        console.log(message);
+        // message = new PeernetMessage(Buffer.from(message.data.data))
         const proto = protoFor(message.decoded.data)
         await this._protoHandler({id, proto}, peer)
-        const fulldId = this._getPeerId(peer.id)
-        if (fulldId && this._discovered.indexOf(peer.id) === -1) {
-          this._discovered.push(peer.id)
-          pubsub.publish('peer:connected', peer)
-        }
       })
     })
+
     pubsub.subscribe('peer:disconnected', async (peer) => {
       let index = this._discovered.indexOf(peer.id)
       if (index !== -1) this._discovered.splice(index, 1)
@@ -260,8 +265,8 @@ export default class Peernet {
           this.peerMap.set(from, connections)
         }
       }
-      const data = new PeerMessageResponse({id: this.id})
-      const node = await this.prepareMessage(from, data.encoded)
+      const data = new peernet.protos['peernet-peer-response']({id: this.id})
+      const node = await this.prepareMessage(peer.id, data.encoded)
 
       peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
     } else if (proto.name === 'peernet-peer-response') {
@@ -275,25 +280,25 @@ export default class Peernet {
         }
       }
     } else {
-      let from = this._getPeerId(peer.id)
-      if (!from) {
-        const data = new PeerMessage({id: this.id})
-        const node = await this.prepareMessage(peer.id, data.encoded)
-
-        let response = await peer.request(node.encoded)
-        response = protoFor(response)
-        response = new PeerMessageResponse(response.decoded.data)
-
-        from = response.decoded.id
-        if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
-        else {
-          const connections = this.peerMap.get(from)
-          if (connections.indexOf(peer.id) === -1) {
-            connections.push(peer.id)
-            this.peerMap.set(from, connections)
-          }
-        }
-      }
+      const from = this._getPeerId(peer.id)
+      // if (!from) {
+      //   const data = new PeerMessage({id: this.id})
+      //   const node = await this.prepareMessage(peer.id, data.encoded)
+      //
+      //   let response = await peer.request(node.encoded)
+      //   response = protoFor(response)
+      //   response = new PeerMessageResponse(response.decoded.data)
+      //
+      //   from = response.decoded.id
+      //   if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
+      //   else {
+      //     const connections = this.peerMap.get(from)
+      //     if (connections.indexOf(peer.id) === -1) {
+      //       connections.push(peer.id)
+      //       this.peerMap.set(from, connections)
+      //     }
+      //   }
+      // }
       if (proto.name === 'peernet-dht') {
         let { hash, store } = proto.decoded
         let has;
@@ -329,18 +334,6 @@ export default class Peernet {
           const node = await this.prepareMessage(from, data.encoded)
           peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
         }
-      } else if (proto.name === 'peernet-peer') {
-        const from = proto.decoded.id
-        if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
-        else {
-          const connections = this.peerMap.get(from)
-          connections.push(peer.id)
-          this.peerMap.set(from, connections)
-        }
-        const data = new PeerMessage({id: this.id})
-        const node = await this.prepareMessage(from, data.encoded)
-
-        peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
       } else if (proto.name === 'peernet-request') {
         // TODO: make dynamic
         // exposeddevapi[proto.decoded.request](proto.decoded.params)

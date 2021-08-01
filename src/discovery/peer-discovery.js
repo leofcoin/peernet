@@ -33,10 +33,14 @@ export default class PeerDiscovery {
       const connections = peernet.peerMap.get(id)
       if (connections.indexOf(peer.id) === -1) {
         connections.push(peer.id)
-        peernet.peerMap.set(from, connections)
+        peernet.peerMap.set(id, connections)
       }
     }
-    return id
+    return {peer, id}
+  }
+
+  async _cleanedUpIfNeeded() {
+
   }
 
   async discoverHandler(message, peer) {
