@@ -25,7 +25,7 @@ export default class PeernetClient {
     const trackers = [
       'wss://star.leofcoin.org:7575',
       'wss://tracker.openwebtorrent.com',
-      'wss://tracker.sloppyta.co:443/announce',
+      // 'wss://tracker.sloppyta.co:443/announce',
     ]
     this.p2p = new P2P(trackers, this.topic.slice(0, 20))
     this.p2p.on('peerconnect', (peer) => {
@@ -35,6 +35,7 @@ export default class PeernetClient {
     })
 
     this.p2p.on('peerclose', (peer) => {
+      // TODO: close peernetPeer
       connections.delete(peer.id)
       pubsub.publish('peer:disconnected', peer)
     })
