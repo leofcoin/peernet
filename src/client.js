@@ -21,7 +21,7 @@ export default class PeernetClient {
     if (!options.networkName) options.networkName = 'peernet'
     this.id = options.id
 
-    this.topic = Buffer.from(sha256(`${option.networkName}-${options.networkVersion}`).toString())
+    this.topic = Buffer.from(sha256(`${options.networkName}-${options.networkVersion}`).toString())
 
     const trackers = [
       'wss://star.leofcoin.org:7575',
