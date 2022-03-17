@@ -118,8 +118,14 @@ export default class Peernet {
      * @property {Object} peer Instance of Peer
      */
     this.dht = new DHT()
+    /**
+     * @type {Map}
+     * @property {Object} peer Instance of Peer
+     */
     this.peerMap = new Map()
     this.stores = []
+    this.storePrefix = options.storePrefix
+    this.root = options.root
 
     /**
      * proto Object containing protos
@@ -145,7 +151,6 @@ export default class Peernet {
     this.protos = globalThis.peernet.protos
 
     this._messageHandler = new MessageHandler(this.network)
-
 
     const {daemon, environment} = await target()
     this.hasDaemon = daemon
