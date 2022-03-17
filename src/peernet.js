@@ -16,6 +16,7 @@ import PeerMessageResponse from './messages/peer-response.js'
 import DataMessageResponse from './messages/data-response.js'
 import PeerDiscovery from './discovery/peer-discovery'
 import DHT from './dht/dht.js'
+import Hash from './hash/hash'
 import { debug, protoFor, target } from './utils/utils.js'
 import generateAccount from
   './../node_modules/@leofcoin/generate-account/dist/module/generate-account.js'
@@ -99,6 +100,11 @@ export default class Peernet {
     return this._messageHandler.prepareMessage(this.id, to, data)
   }
 
+  /**
+   * @access public
+   *
+   * @return {Array} peerId
+   */
   get peers() {
     return [...connections.values()]
   }
@@ -605,6 +611,10 @@ export default class Peernet {
       }
       // TODO: if peer subscribed
     }
+  }
+
+  createHash(data, name) {
+    return new Hash(data, {name})
   }
 
   /**
