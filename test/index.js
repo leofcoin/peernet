@@ -1,4 +1,4 @@
 require('./messages')
 require('./codec')
-require('./peernet')
+// require('./peernet')
 // require('./hash')
