@@ -131,6 +131,7 @@ export default class Peernet {
      */
     this.peerMap = new Map()
     this.stores = []
+    this.requestProtos = {}
     this.storePrefix = options.storePrefix
     this.root = options.root
 
@@ -255,6 +256,10 @@ export default class Peernet {
     }
   }
 
+  addRequestHandler(name, method) {
+    this.requestProtos[name] = method
+  }
+
   /**
    * @private
    *
@@ -357,14 +362,10 @@ export default class Peernet {
       } else if (proto.name === 'peernet-request') {
         // TODO: make dynamic
         // exposeddevapi[proto.decoded.request](proto.decoded.params)
-        let response;
-        if (proto.decoded.request === 'lastBlock') {
-          const height = await chainStore.get('localIndex')
-          const hash = await chainStore.get('localBlock')
-          response = JSON.stringify({ height: height.toString(), hash: hash.toString() })
-          const data = new ResponseMessage({ response })
+        const method = this.requestProtos[proto.decoded.request]
+        if (method) {
+          const data = await method()
           const node = await this.prepareMessage(from, data.encoded)
-
           peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
         }
       } else if (proto.name === 'peernet-ps' &&
