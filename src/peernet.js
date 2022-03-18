@@ -662,6 +662,10 @@ export default class Peernet {
   async removePeer(peer) {
     connections.delete(peer.id)
   }
+
+  get Buffer() {
+    return Buffer
+  }
   // async block(index) {
   //   const _values = []
   //   for (const peer of this.peers) {
