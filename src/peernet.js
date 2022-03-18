@@ -14,6 +14,7 @@ import RequestMessage from './messages/request.js'
 import ResponseMessage from './messages/response.js'
 import PeerMessageResponse from './messages/peer-response.js'
 import DataMessageResponse from './messages/data-response.js'
+import ChatMessage from './messages/chat-message.js'
 import PeerDiscovery from './discovery/peer-discovery'
 import DHT from './dht/dht.js'
 import Hash from './hash/hash'
@@ -64,7 +65,7 @@ export default class Peernet {
   }
 
   get defaultStores() {
-    return ['account', 'wallet', 'block', 'transaction', 'chain', 'data']
+    return ['account', 'wallet', 'block', 'transaction', 'chain', 'data', 'message']
   }
 
   addProto(name, proto) {
@@ -77,7 +78,7 @@ export default class Peernet {
 
   async addStore(name, prefix, root, isPrivate = true) {
     if (name === 'block' || name === 'transaction' || name === 'chain' ||
-        name === 'data') isPrivate = false
+        name === 'data' || name === 'message') isPrivate = false
 
     let Storage
     if (this.hasDaemon) {
@@ -153,6 +154,7 @@ export default class Peernet {
       'peernet-data': DataMessage,
       'peernet-data-response': DataMessageResponse,
       'peernet-ps': PsMessage,
+      'chat-message': ChatMessage
     }
     this.protos = globalThis.peernet.protos
 
@@ -503,6 +505,36 @@ export default class Peernet {
       // this.put(hash, proto.decoded.data)
     }
     return null
+  }
+
+
+
+  get message() {
+    return {
+      /**
+       * Get content for given message hash
+       *
+       * @param {String} hash
+       */
+      get: async (hash) => {
+        debug(`get message ${hash}`)
+        const message = await messageStore.has(hash)
+        if (message) return await messageStore.get(hash)
+        return this.requestData(hash, 'message')
+      },
+      /**
+       * put message content
+       *
+       * @param {String} hash
+       * @param {Buffer} message
+       */
+      put: async (hash, message) => await messageStore.put(hash, message),
+      /**
+       * @param {String} hash
+       * @return {Boolean}
+       */
+      has: async (hash) => await messageStore.has(hash),
+    }
   }
 
   get data() {
