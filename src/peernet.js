@@ -596,16 +596,16 @@ export default class Peernet {
    */
   async publish(topic, data) {
     // globalSub.publish(topic, data)
-
-
     if (!Buffer.isBuffer(topic)) topic = Buffer.from(topic)
     if (!Buffer.isBuffer(data)) data = Buffer.from(data)
     const id = Math.random().toString(36).slice(-12)
     data = new PsMessage({data, topic})
     for (const peer of this.peers) {
-      if (peer.connection._connected && peer.id.toString() !== this.peerId.toString()) {
-        const node = await this.prepareMessage(peer.id, data.encoded)
-        peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+      if (peer.connection._connected) {
+        if (peer.id.toString() !== this.peerId.toString()) {
+          const node = await this.prepareMessage(peer.id, data.encoded)
+          peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+        }
       } else {
         this.removePeer(peer)
       }
