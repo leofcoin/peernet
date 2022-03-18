@@ -71,4 +71,9 @@ export default {
     hashAlg: 'keccak-256', // ,
     // testnet: 'olivia'
   },
+  // chat message
+  'chat-message': {
+    codec: '636d',
+    hashAlg: 'dbl-keccak-512',
+  },
 }
