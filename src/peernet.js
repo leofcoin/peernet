@@ -154,7 +154,7 @@ export default class Peernet {
       'peernet-data': DataMessage,
       'peernet-data-response': DataMessageResponse,
       'peernet-ps': PsMessage,
-      'chat-message': ChatMessage
+      'chat-message': ChatMessage,
     }
     this.protos = globalThis.peernet.protos
 
@@ -506,7 +506,6 @@ export default class Peernet {
     }
     return null
   }
-
 
 
   get message() {
