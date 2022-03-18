@@ -1,5 +1,5 @@
 import protons from 'protons'
-import proto from './../proto/peernet.proto.js'
+import proto from './../proto/chat-message.proto.js'
 import CodecFormat from './../codec/codec-format-interface.js'
 
 export default class ChatMessage extends CodecFormat {
