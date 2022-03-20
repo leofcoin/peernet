@@ -18,6 +18,7 @@ import ChatMessage from './messages/chat-message.js'
 import PeerDiscovery from './discovery/peer-discovery'
 import DHT from './dht/dht.js'
 import Hash from './hash/hash'
+import codecs from './codec/codecs'
 import { debug, protoFor, target } from './utils/utils.js'
 import generateAccount from
   './../node_modules/@leofcoin/generate-account/dist/module/generate-account.js'
@@ -69,11 +70,11 @@ export default class Peernet {
   }
 
   addProto(name, proto) {
-    if (!globalThis.peernet.protos[name]) globalThis.peernet.protos[name] = proto
+    if (!this.protos[name]) this.protos[name] = proto
   }
 
-  addCodec(name, proto) {
-    if (!globalThis.peernet.codecs[name]) globalThis.peernet.codecs[name] = proto
+  addCodec(name, codec) {
+    if (!this.codecs[name]) this.codecs[name] = codec
   }
 
   async addStore(name, prefix, root, isPrivate = true) {
@@ -157,7 +158,9 @@ export default class Peernet {
       'peernet-ps': PsMessage,
       'chat-message': ChatMessage,
     }
+
     this.protos = globalThis.peernet.protos
+    this.codecs = codecs
 
     this._messageHandler = new MessageHandler(this.network)
 
