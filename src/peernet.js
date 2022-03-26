@@ -345,7 +345,7 @@ export default class Peernet {
         }
 
         if (data) {
-          data = new DataMessageResponse({hash, data: Buffer.from(data)})
+          data = new DataMessageResponse({hash, data: data.decoded ? Buffer.from(JSON.stringify(data)) : Buffer.from(data)});
 
           const node = await this.prepareMessage(from, data.encoded)
           peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
