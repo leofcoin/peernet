@@ -1,5 +1,6 @@
 export default class PeernetPeer {
   constructor(id, connection) {
+    this._events = {}
     this.id = id
     this.connection = connection
 
@@ -33,11 +34,25 @@ export default class PeernetPeer {
   }
 
   on(event = 'peernet.data', cb) {
+    this._events[event] = cb
     pubsub.subscribe(event, cb)
     // this.connection.on(event, cb)
   }
 
   removeListener(event = 'data', cb) {
+    delete this._events[event]
     pubsub.unsubscribe(event, cb)
+  }
+
+  close() {
+    for (const event of Object.keys(this._events)) {
+      pubsub.unsubscribe(event, this._events[event])
+    }
+    this._events = []
+
+    for (const event of this.connection._events.data) {
+      this.connection.removeListener('data', event)
+    }
+    this.connection.destroy()
   }
 }

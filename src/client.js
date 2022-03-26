@@ -37,6 +37,10 @@ export default class PeernetClient {
 
     this.p2p.on('peerclose', (peer) => {
       // TODO: close peernetPeer
+      const peernetPeer = connections.get(peer.id)
+      if (peernetPeer) {
+        peernetPeer.close()
+      }
       connections.delete(peer.id)
       pubsub.publish('peer:disconnected', peer)
     })
