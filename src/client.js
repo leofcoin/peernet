@@ -24,7 +24,7 @@ export default class PeernetClient {
     this.topic = Buffer.from(sha256(`${options.networkName}-${options.networkVersion}`).toString())
 
     const trackers = [
-      'wss://star.leofcoin.org:7575',
+      'wss://star.leofcoin.org',
       'wss://tracker.openwebtorrent.com',
       // 'wss://tracker.sloppyta.co:443/announce',
     ]
