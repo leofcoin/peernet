@@ -249,7 +249,7 @@ export default class Peernet {
      */
     this.client = new Client({...options, id})
     if (globalThis.onbeforeunload) {
-      globalThisaddEventListener("beforeunload", async () => this.client.close());
+      globalThisaddEventListener('beforeunload', async () => this.client.close());
     }
     return this
   }
