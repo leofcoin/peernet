@@ -204,19 +204,19 @@ export default class Peernet {
     this.peerId = id
 
     pubsub.subscribe('peer:discovered', async (peer) => {
-      this._peerHandler.discover(peer)
       peer.on('peernet.data', async (message) => {
-        const id = message.id
-        message = new PeernetMessage(Buffer.from(message.data.data))
-        const proto = protoFor(message.decoded.data)
-        await this._protoHandler({id, proto}, peer)
-        const fulldId = this._getPeerId(peer.id)
-        if (fulldId && this._discovered.indexOf(peer.id) === -1) {
-          this._discovered.push(peer.id)
-          pubsub.publish('peer:connected', peer)
-        }
-      })
-    })
+        const id = message.id;
+        message = new PeernetMessage(Buffer.from(message.data.data));
+        const proto = protoFor(message.decoded.data);
+        await this._protoHandler({id, proto}, peer);
+      });
+      await this._peerHandler.discover(peer);
+      const fulldId = this._getPeerId(peer.id);
+      if (fulldId && this._discovered.indexOf(peer.id) === -1) {
+        this._discovered.push(peer.id);
+        pubsub.publish('peer:connected', peer);
+      }
+    });
     pubsub.subscribe('peer:disconnected', async (peer) => {
       let index = this._discovered.indexOf(peer.id)
       if (index !== -1) this._discovered.splice(index, 1)
@@ -248,6 +248,9 @@ export default class Peernet {
      * @type {PeernetClient}
      */
     this.client = new Client({...options, id})
+    if (globalThis.onbeforeunload) {
+      globalThisaddEventListener("beforeunload", async () => this.client.close());
+    }
     return this
   }
 
