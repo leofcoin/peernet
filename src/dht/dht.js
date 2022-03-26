@@ -88,17 +88,13 @@ export default class DhtEarth {
     const peerLoc = await this.getCoordinates(address)
 
     for (const provider of providers) {
-      all.push(this.getDistance(peerLoc, provider))
+      if (provider.address === '127.0.0.1') all.push({provider, distance: 0})
+      else all.push(this.getDistance(peerLoc, provider))
     }
 
-    all = await Promise.all(all)
-
-    const closestPeer = all.reduce((p, c) => {
-      if (!c.distance || c.distance === NaN) c.distance = 0
-      if (c.distance < p || p === 0) return c.provider;
-    }, 0)
-
-    return closestPeer;
+    all = await Promise.all(all);
+    all = all.sort((previous, current) => previous.distance - current.distance)
+    return all[0].provider;
   }
 
   /**
