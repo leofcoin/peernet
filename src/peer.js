@@ -9,7 +9,7 @@ export default class PeernetPeer {
     this.connection = connection
 
     this.connection.on('data', (message) => {
-      this.bw.down += data.length
+      this.bw.down += message.length
       pubsub.publish('peernet.data', JSON.parse(message.toString()))
     })
   }
