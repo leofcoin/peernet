@@ -62,6 +62,10 @@ export default class Peernet {
       else options.root = `.${this.network}/peernet`
     }
     globalThis.peernet = this
+    this.bw = {
+      up: 0,
+      down: 0,
+    }
     return this._init(options)
   }
 
@@ -274,6 +278,7 @@ export default class Peernet {
    */
   async _protoHandler(message, peer) {
     const {id, proto} = message
+    this.bw.down += message.encoded.length
     if (proto.name === 'peernet-peer') {
       const from = proto.decoded.id
       if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
@@ -288,6 +293,7 @@ export default class Peernet {
       const node = await this.prepareMessage(from, data.encoded)
 
       peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+      this.bw.up += node.encoded.length
     } else if (proto.name === 'peernet-peer-response') {
       const from = proto.decoded.id
       if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
@@ -303,9 +309,10 @@ export default class Peernet {
       if (!from) {
         const data = new PeerMessage({id: this.id})
         const node = await this.prepareMessage(peer.id, data.encoded)
-
+        this.bw.up += node.encoded.length
         let response = await peer.request(node.encoded)
         response = protoFor(response)
+
         response = new PeerMessageResponse(response.decoded.data)
 
         from = response.decoded.id
@@ -333,6 +340,7 @@ export default class Peernet {
         const node = await this.prepareMessage(from, data.encoded)
 
         peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+        this.bw.up += node.encoded.length
       } else if (proto.name === 'peernet-data') {
         let { hash, store } = proto.decoded
         let data
@@ -352,6 +360,7 @@ export default class Peernet {
 
           const node = await this.prepareMessage(from, data.encoded)
           peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+          this.bw.up += node.encoded.length
         }
       } else if (proto.name === 'peernet-peer') {
         const from = proto.decoded.id
@@ -365,6 +374,7 @@ export default class Peernet {
         const node = await this.prepareMessage(from, data.encoded)
 
         peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+        this.bw.up += node.encoded.length
       } else if (proto.name === 'peernet-request') {
         // TODO: make dynamic
         // exposeddevapi[proto.decoded.request](proto.decoded.params)
@@ -373,6 +383,7 @@ export default class Peernet {
           const data = await method()
           const node = await this.prepareMessage(from, data.encoded)
           peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+          this.bw.up += node.encoded.length
         }
       } else if (proto.name === 'peernet-ps' &&
                  this._getPeerId(peer.id) !== this.id.toString()) {
