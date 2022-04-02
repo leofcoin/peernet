@@ -278,7 +278,7 @@ export default class Peernet {
    */
   async _protoHandler(message, peer) {
     const {id, proto} = message
-    this.bw.down += message.encoded.length
+    this.bw.down += proto.encoded.length
     if (proto.name === 'peernet-peer') {
       const from = proto.decoded.id
       if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
