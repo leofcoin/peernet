@@ -1,10 +1,17 @@
 export default class PeernetPeer {
   constructor(id, connection) {
     this._events = {}
+    this.bw = {
+      up: 0,
+      down: 0,
+    }
     this.id = id
     this.connection = connection
 
-    this.connection.on('data', (message) => pubsub.publish('peernet.data', JSON.parse(message.toString())))
+    this.connection.on('data', (message) => {
+      this.bw.down += data.length
+      pubsub.publish('peernet.data', JSON.parse(message.toString()))
+    })
   }
 
   request(data) {
@@ -30,6 +37,8 @@ export default class PeernetPeer {
 
   write(data) {
     if (!Buffer.isBuffer(data)) data = Buffer.from(data)
+
+    this.bw.up += data.length
     this.connection.write(data)
   }
 
