@@ -36,12 +36,6 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "@leofcoin/peernet/src/codec/codec-format-interface.js~formatinterface",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html",
-    "<span>FormatInterface</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/codec/codec-format-interface.js</span>",
-    "class"
-  ],
-  [
     "@leofcoin/peernet/src/http/client/http-client.js~httpclientapi",
     "class/src/http/client/http-client.js~HttpClientApi.html",
     "<span>HttpClientApi</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/http/client/http-client.js</span>",
@@ -538,126 +532,6 @@ window.esdocSearchIndex = [
     "class/src/client.js~PeernetClient.html#instance-member-topic",
     "src/client.js~PeernetClient#topic",
     "member"
-  ],
-  [
-    "src/codec/codec-format-interface.js",
-    "file/src/codec/codec-format-interface.js.html",
-    "src/codec/codec-format-interface.js",
-    "file"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#constructor",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-constructor-constructor",
-    "src/codec/codec-format-interface.js~FormatInterface#constructor",
-    "method"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#create",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-method-create",
-    "src/codec/codec-format-interface.js~FormatInterface#create",
-    "method"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#decode",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-method-decode",
-    "src/codec/codec-format-interface.js~FormatInterface#decode",
-    "method"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#decoded",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-member-decoded",
-    "src/codec/codec-format-interface.js~FormatInterface#decoded",
-    "member"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#encode",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-method-encode",
-    "src/codec/codec-format-interface.js~FormatInterface#encode",
-    "method"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#encoded",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-member-encoded",
-    "src/codec/codec-format-interface.js~FormatInterface#encoded",
-    "member"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#frombs32",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-method-fromBs32",
-    "src/codec/codec-format-interface.js~FormatInterface#fromBs32",
-    "method"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#frombs58",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-method-fromBs58",
-    "src/codec/codec-format-interface.js~FormatInterface#fromBs58",
-    "method"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#fromencoded",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-method-fromEncoded",
-    "src/codec/codec-format-interface.js~FormatInterface#fromEncoded",
-    "method"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#fromhex",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-method-fromHex",
-    "src/codec/codec-format-interface.js~FormatInterface#fromHex",
-    "method"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#hash",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-get-hash",
-    "src/codec/codec-format-interface.js~FormatInterface#hash",
-    "member"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#hashformat",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-member-hashFormat",
-    "src/codec/codec-format-interface.js~FormatInterface#hashFormat",
-    "member"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#name",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-member-name",
-    "src/codec/codec-format-interface.js~FormatInterface#name",
-    "member"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#peernethash",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-get-peernetHash",
-    "src/codec/codec-format-interface.js~FormatInterface#peernetHash",
-    "member"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#protodecode",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-member-protoDecode",
-    "src/codec/codec-format-interface.js~FormatInterface#protoDecode",
-    "member"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#protoencode",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-member-protoEncode",
-    "src/codec/codec-format-interface.js~FormatInterface#protoEncode",
-    "member"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#tobs32",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-method-toBs32",
-    "src/codec/codec-format-interface.js~FormatInterface#toBs32",
-    "method"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#tobs58",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-method-toBs58",
-    "src/codec/codec-format-interface.js~FormatInterface#toBs58",
-    "method"
-  ],
-  [
-    "src/codec/codec-format-interface.js~formatinterface#tohex",
-    "class/src/codec/codec-format-interface.js~FormatInterface.html#instance-method-toHex",
-    "src/codec/codec-format-interface.js~FormatInterface#toHex",
-    "method"
   ],
   [
     "src/codec/codec.js",

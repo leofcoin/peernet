@@ -6,7 +6,7 @@ import Hash from './../hash/hash'
 
 export default class FormatInterface {
   /**
-   * @param {Buffer|String|Object} buffer -
+   * @param {Buffer|String|Object} buffer - data - The data needed to create the desired message
    * @param {Object} proto - {encode, decode}
    * @param {Object} options - {hashFormat, name}
    */

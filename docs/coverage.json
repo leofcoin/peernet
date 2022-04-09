@@ -1,7 +1,7 @@
 {
-  "coverage": "20.54%",
-  "expectCount": 219,
-  "actualCount": 45,
+  "coverage": "17.08%",
+  "expectCount": 199,
+  "actualCount": 34,
   "files": {
     "src/client.js": {
       "expectCount": 7,
@@ -14,19 +14,6 @@
         31,
         68,
         72
-      ]
-    },
-    "src/codec/codec-format-interface.js": {
-      "expectCount": 20,
-      "actualCount": 13,
-      "undocumentLines": [
-        7,
-        14,
-        15,
-        16,
-        17,
-        60,
-        70
       ]
     },
     "src/codec/codec.js": {
@@ -199,11 +186,9 @@
     },
     "src/messages/data.js": {
       "expectCount": 3,
-      "actualCount": 0,
+      "actualCount": 2,
       "undocumentLines": [
-        5,
-        6,
-        10
+        9
       ]
     },
     "src/messages/dht-response.js": {
