@@ -36,6 +36,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#codec">codec</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec-format-interface.js~FormatInterface.html">FormatInterface</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec.js~PeernetCodec.html">PeernetCodec</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#dht">dht</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/dht/dht.js~DhtEarth.html">DhtEarth</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#discovery">discovery</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/discovery/peer-discovery.js~PeerDiscovery.html">PeerDiscovery</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#errors">errors</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dhtError">dhtError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encapsulatedError">encapsulatedError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-nothingFoundError">nothingFoundError</a></span></span></li>
@@ -46,7 +47,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/http-client.js~HttpClientApi.html">HttpClientApi</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/storage.js~LeofcoinStorageClient.html">LeofcoinStorageClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-client">client</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#messages">messages</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data-response.js~DataMessageResponse.html">DataMessageResponse</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#messages">messages</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/chat-message.js~ChatMessage.html">ChatMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data-response.js~DataMessageResponse.html">DataMessageResponse</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data.js~DataMessage.html">DataMessage</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht-response.js~DHTMessageResponse.html">DHTMessageResponse</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht.js~DHTMessage.html">DHTMessage</a></span></span></li>
@@ -68,9 +70,7 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/client.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import swarm from &apos;@geut/discovery-swarm-webrtc&apos;
-import wrtc from &apos;wrtc&apos;
-import Pubsub from &apos;@vandeurenglenn/little-pubsub&apos;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Pubsub from &apos;@vandeurenglenn/little-pubsub&apos;
 import PeernetPeer from &apos;./peer.js&apos;
 import sha256 from &apos;crypto-js/sha256&apos;
 
@@ -89,105 +89,36 @@ globalThis.pubsub = globalThis.pubsub || new Pubsub({verbose: false})
 export default class PeernetClient {
   constructor(options = {}) {
     if (!options.id) options.id = Buffer.from(&apos;00000000000000000000000000000000&apos;)
-
+    if (!options.networkVersion) options.networkVersion = &apos;v0.1.0&apos;
+    if (!options.networkName) options.networkName = &apos;peernet&apos;
     this.id = options.id
 
-    // try {
-    //   this.sw = swarm({
-    //     id: options.id,
-    //     bootstrap: [&apos;wss://discovery-swarm.herokuapp.com&apos;, &apos;ws://localhost:4000&apos;],
-    //     simplePeer: {
-    //       wrtc,
-    //     },
-    //   })
-    // } catch (e) {
-    //   console.warn(e);
-    // }
+    this.topic = Buffer.from(sha256(`${options.networkName}-${options.networkVersion}`).toString())
 
-    this.topic = Buffer.from(sha256(&apos;peernet-v0.1.0&apos;).toString())
     const trackers = [
+      &apos;wss://star.leofcoin.org&apos;,
       &apos;wss://tracker.openwebtorrent.com&apos;,
-      &apos;wss://tracker.sloppyta.co:443/announce&apos;,
+      // &apos;wss://tracker.sloppyta.co:443/announce&apos;,
     ]
     this.p2p = new P2P(trackers, this.topic.slice(0, 20))
     this.p2p.on(&apos;peerconnect&apos;, (peer) =&gt; {
       peer = new PeernetPeer(peer.id, peer)
-      pubsub.publish(&apos;peer:connected&apos;, peer)
       connections.set(peer.id, peer)
+      pubsub.publish(&apos;peer:discovered&apos;, peer)
     })
 
     this.p2p.on(&apos;peerclose&apos;, (peer) =&gt; {
-      pubsub.publish(&apos;peer:disconnected&apos;, peer)
+      // TODO: close peernetPeer
+      const peernetPeer = connections.get(peer.id)
+      if (peernetPeer) {
+        peernetPeer.close()
+      }
       connections.delete(peer.id)
+      pubsub.publish(&apos;peer:disconnected&apos;, peer)
     })
 
     this.p2p.start()
 
-
-    // this.sw.join(this.topic.slice(0, 32))
-    //
-    // const arrayOfPeers = this.sw.getPeers()
-    //
-    // this.sw.on(&apos;connection&apos;, async (connection, info) =&gt; {
-    //   // connected
-    //   const id = info.id.toString()
-    //   if (id === this.id.toString()) return
-    //
-    //   const channel = connection.channelName
-    //   let channels = [channel]
-    //   let peer
-    //   if (connections.has(id)) {
-    //     const value = connections.get(id)
-    //     const _channels = value.channels
-    //     channels = [...channels, ..._channels]
-    //     peer = value.peer
-    //   } else {
-    //     peer = new PeernetPeer(id, connection)
-    //     pubsub.publish(&apos;peer:connected&apos;, peer)
-    //   }
-    //   connections.set(id, {channels, peer})
-    //   // connection.on(&apos;data&apos;, (data) =&gt; console.log({data}))
-    //   // connection.write(&apos;peerId&apos;)
-    // });
-    //
-    // this.sw.on(&apos;candidates-updated&apos;, async (channel, candidates) =&gt; {
-    //   // TODO: Channels ...
-    //   for (const candidate of candidates) {
-    //     const id = candidate.toString()
-    //     let channels = [channel]
-    //     if (id === this.id.toString()) return
-    //
-    //     if (!connections.has(id)) {
-    //       try {
-    //         const connection = await this.sw.connect(channel, candidate)
-    //         const peer = new PeernetPeer(id, connection)
-    //         connections.set(id, {channels, peer})
-    //         if (recentConnections.has(id)) {
-    //           setTimeout(() =&gt; {
-    //             pubsub.publish(&apos;peer:connected&apos;, peer)
-    //           }, 1000)
-    //         } else {
-    //           pubsub.publish(&apos;peer:connected&apos;, peer)
-    //         }
-    //       } catch (e) {
-    //         console.warn(e);
-    //       }
-    //     } else {
-    //       const value = connections.get(id)
-    //       const _channels = value.channels
-    //       channels = [...channels, ..._channels]
-    //       connections.set(id, {channels, peer: value.peer})
-    //     }
-    //   }
-    // })
-    //
-    // this.sw.on(&apos;connection-closed&apos;, (connection, info) =&gt; {
-    //   if (!recentConnections.has(info.id.toString())) {
-    //     recentConnections.set(info.id.toString(), new Date().getTime())
-    //   }
-    //   if (connections.has(info.id.toString())) connections.delete(info.id.toString())
-    // })
-    //
     if (globalThis.process) {
       process.on(&apos;SIGINT&apos;, async () =&gt; {
         console.log(&apos;Caught interrupt signal&apos;)

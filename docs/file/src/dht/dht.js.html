@@ -36,6 +36,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#codec">codec</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec-format-interface.js~FormatInterface.html">FormatInterface</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec.js~PeernetCodec.html">PeernetCodec</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#dht">dht</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/dht/dht.js~DhtEarth.html">DhtEarth</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#discovery">discovery</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/discovery/peer-discovery.js~PeerDiscovery.html">PeerDiscovery</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#errors">errors</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dhtError">dhtError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encapsulatedError">encapsulatedError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-nothingFoundError">nothingFoundError</a></span></span></li>
@@ -46,7 +47,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/http-client.js~HttpClientApi.html">HttpClientApi</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/storage.js~LeofcoinStorageClient.html">LeofcoinStorageClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-client">client</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#messages">messages</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data-response.js~DataMessageResponse.html">DataMessageResponse</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#messages">messages</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/chat-message.js~ChatMessage.html">ChatMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data-response.js~DataMessageResponse.html">DataMessageResponse</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data.js~DataMessage.html">DataMessage</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht-response.js~DHTMessageResponse.html">DHTMessageResponse</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht.js~DHTMessage.html">DHTMessage</a></span></span></li>
@@ -68,7 +70,7 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/dht/dht.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import fetch from &apos;node-fetch&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import fetch from &apos;node-fetch&apos;
 
 /**
  * Keep history of fetched address and ptr
@@ -89,8 +91,8 @@ const lastFetched = {
 const getAddress = async () =&gt; {
   const {address} = lastFetched
   const now = Math.round(new Date().getTime() / 1000);
-  if (now - address.timestamp &gt; 300) {
-    address.value = await fetch(&apos;https://ipv6.icanhazip.com/&apos;)
+  if (now - address.timestamp &gt; 1200000) {
+    address.value = await fetch(&apos;https://icanhazip.com/&apos;)
     address.value = await address.value.text()
     address.timestamp = Math.round(new Date().getTime() / 1000);
     lastFetched.address = address;
@@ -126,13 +128,12 @@ export default class DhtEarth {
   }
 
   /**
-   * @param {Object} provider
+   * @param {Object} address
    * @return {Object} {latitude: lat, longitude: lon}
    */
-  async getCoordinates(provider) {
-    const {address} = provider
+  async getCoordinates(address) {
     // const {address} = parseAddress(provider)
-    const request = `http://ip-api.com/json/${address}`
+    const request = `https://whereis.leofcoin.org/?ip=${address}`
     let response = await fetch(request)
     response = await response.json()
     const {lat, lon} = response;
@@ -159,24 +160,20 @@ export default class DhtEarth {
     const peerLoc = await this.getCoordinates(address)
 
     for (const provider of providers) {
-      all.push(this.getDistance(peerLoc, provider))
+      if (provider.address === &apos;127.0.0.1&apos;) all.push({provider, distance: 0})
+      else all.push(this.getDistance(peerLoc, provider))
     }
 
-    all = await Promise.all(all)
-
-    const closestPeer = all.reduce((p, c) =&gt; {
-      if (c.distance === NaN) c.distance = 0
-      if (c.distance &lt; p || p === 0) return c.provider;
-    }, 0)
-
-    return closestPeer;
+    all = await Promise.all(all);
+    all = all.sort((previous, current) =&gt; previous.distance - current.distance)
+    return all[0].provider;
   }
 
   /**
    * @param {String} hash
    * @return {Array} providers
    */
-  async providersFor(hash) {
+  providersFor(hash) {
     return this.providerMap.get(hash);
   }
 

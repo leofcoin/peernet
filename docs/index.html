@@ -36,6 +36,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#codec">codec</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec-format-interface.js~FormatInterface.html">FormatInterface</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec.js~PeernetCodec.html">PeernetCodec</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#dht">dht</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/dht/dht.js~DhtEarth.html">DhtEarth</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#discovery">discovery</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/discovery/peer-discovery.js~PeerDiscovery.html">PeerDiscovery</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#errors">errors</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dhtError">dhtError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encapsulatedError">encapsulatedError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-nothingFoundError">nothingFoundError</a></span></span></li>
@@ -46,7 +47,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/http-client.js~HttpClientApi.html">HttpClientApi</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/storage.js~LeofcoinStorageClient.html">LeofcoinStorageClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-client">client</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#messages">messages</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data-response.js~DataMessageResponse.html">DataMessageResponse</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#messages">messages</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/chat-message.js~ChatMessage.html">ChatMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data-response.js~DataMessageResponse.html">DataMessageResponse</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data.js~DataMessage.html">DataMessage</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht-response.js~DHTMessageResponse.html">DHTMessageResponse</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht.js~DHTMessage.html">DHTMessage</a></span></span></li>
@@ -69,13 +71,30 @@
 
 <div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="socket-discovery">socket-discovery</h1><h2 id="usage">Usage</h2><pre><code class="lang-js"><code class="source-code prettyprint">import discovery from &apos;socket-discovery&apos;</code>
 </code></pre>
+<h2 id="api">API</h2><h4 id="addrequesthandler">addRequestHandler</h4><p>examples</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">peernet.addRequestHandler(&apos;lastBlock&apos;, () =&gt; {
+  let response;
+  const height = await chainStore.get(&apos;localIndex&apos;)
+  const hash = await chainStore.get(&apos;localBlock&apos;)
+  response = JSON.stringify({ height: height.toString(), hash: hash.toString() })
+  return new ResponseMessage({ response })
+  // or
+  return new peernet.protos[&apos;peernet-response&apos;]({ response })
+})</code>
+</code></pre>
+<pre><code class="lang-js"><code class="source-code prettyprint">peernet.addRequestHandler(&apos;hello&apos;, () =&gt; {
+  return new ResponseMessage({ response: &apos;hi&apos; })
+  // or
+  return new peernet.protos[&apos;peernet-response&apos;]({ response: &apos;hi&apos; })
+})</code>
+</code></pre>
 <h2 id="development">Development</h2><h3 id="watch">watch</h3><pre><code class="lang-sh"><code class="source-code prettyprint">npm run w</code>
 </code></pre>
 <h3 id="compile">compile</h3><pre><code class="lang-sh"><code class="source-code prettyprint">npm run c</code>
 </code></pre>
 <h3 id="serve-html">serve html</h3><pre><code class="lang-sh"><code class="source-code prettyprint">npm run demo</code>
 </code></pre>
-<p><code>note: you need to install jsproject</code> </p>
+<p><code>note: you need to install jsproject</code></p>
 <pre><code class="lang-sh"><code class="source-code prettyprint">npm i -g @vandeurenglenn/project</code>
 </code></pre>
 </div>

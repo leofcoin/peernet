@@ -1,28 +1,28 @@
 {
   "type": "File",
   "start": 0,
-  "end": 98,
+  "end": 127,
   "loc": {
     "start": {
       "line": 1,
       "column": 0
     },
     "end": {
-      "line": 7,
+      "line": 8,
       "column": 0
     }
   },
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 98,
+    "end": 127,
     "loc": {
       "start": {
         "line": 1,
         "column": 0
       },
       "end": {
-        "line": 7,
+        "line": 8,
         "column": 0
       }
     },
@@ -31,28 +31,28 @@
       {
         "type": "ExportDefaultDeclaration",
         "start": 0,
-        "end": 97,
+        "end": 126,
         "loc": {
           "start": {
             "line": 1,
             "column": 0
           },
           "end": {
-            "line": 6,
+            "line": 7,
             "column": 1
           }
         },
         "declaration": {
           "type": "TemplateLiteral",
           "start": 15,
-          "end": 97,
+          "end": 126,
           "loc": {
             "start": {
               "line": 1,
               "column": 15
             },
             "end": {
-              "line": 6,
+              "line": 7,
               "column": 1
             }
           },
@@ -61,20 +61,20 @@
             {
               "type": "TemplateElement",
               "start": 16,
-              "end": 96,
+              "end": 125,
               "loc": {
                 "start": {
                   "line": 1,
                   "column": 16
                 },
                 "end": {
-                  "line": 6,
+                  "line": 7,
                   "column": 0
                 }
               },
               "value": {
-                "raw": "\n// PeernetDHTMessage\nmessage PeernetDHTMessage {\n  required string hash = 1;\n}\n",
-                "cooked": "\n// PeernetDHTMessage\nmessage PeernetDHTMessage {\n  required string hash = 1;\n}\n"
+                "raw": "\n// PeernetDHTMessage\nmessage PeernetDHTMessage {\n  required string hash = 1;\n  optional string store = 2;\n}\n",
+                "cooked": "\n// PeernetDHTMessage\nmessage PeernetDHTMessage {\n  required string hash = 1;\n  optional string store = 2;\n}\n"
               },
               "tail": true
             }
@@ -182,16 +182,16 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "\n// PeernetDHTMessage\nmessage PeernetDHTMessage {\n  required string hash = 1;\n}\n",
+      "value": "\n// PeernetDHTMessage\nmessage PeernetDHTMessage {\n  required string hash = 1;\n  optional string store = 2;\n}\n",
       "start": 16,
-      "end": 96,
+      "end": 125,
       "loc": {
         "start": {
           "line": 1,
           "column": 16
         },
         "end": {
-          "line": 6,
+          "line": 7,
           "column": 0
         }
       }
@@ -208,15 +208,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 96,
-      "end": 97,
+      "start": 125,
+      "end": 126,
       "loc": {
         "start": {
-          "line": 6,
+          "line": 7,
           "column": 0
         },
         "end": {
-          "line": 6,
+          "line": 7,
           "column": 1
         }
       }
@@ -234,15 +234,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 98,
-      "end": 98,
+      "start": 127,
+      "end": 127,
       "loc": {
         "start": {
-          "line": 7,
+          "line": 8,
           "column": 0
         },
         "end": {
-          "line": 7,
+          "line": 8,
           "column": 0
         }
       }

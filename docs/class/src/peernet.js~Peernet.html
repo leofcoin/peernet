@@ -36,6 +36,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#codec">codec</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec-format-interface.js~FormatInterface.html">FormatInterface</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec.js~PeernetCodec.html">PeernetCodec</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#dht">dht</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/dht/dht.js~DhtEarth.html">DhtEarth</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#discovery">discovery</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/discovery/peer-discovery.js~PeerDiscovery.html">PeerDiscovery</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#errors">errors</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dhtError">dhtError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encapsulatedError">encapsulatedError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-nothingFoundError">nothingFoundError</a></span></span></li>
@@ -46,7 +47,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/http-client.js~HttpClientApi.html">HttpClientApi</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/storage.js~LeofcoinStorageClient.html">LeofcoinStorageClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-client">client</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#messages">messages</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data-response.js~DataMessageResponse.html">DataMessageResponse</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#messages">messages</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/chat-message.js~ChatMessage.html">ChatMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data-response.js~DataMessageResponse.html">DataMessageResponse</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data.js~DataMessage.html">DataMessage</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht-response.js~DHTMessageResponse.html">DHTMessageResponse</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht.js~DHTMessage.html">DHTMessage</a></span></span></li>
@@ -68,13 +70,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Peernet from &apos;<span><a href="file/src/peernet.js.html#lineNumber33">@leofcoin/peernet/src/peernet.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Peernet from &apos;<span><a href="file/src/peernet.js.html#lineNumber37">@leofcoin/peernet/src/peernet.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/peernet.js.html#lineNumber33">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/peernet.js.html#lineNumber37">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -158,6 +160,90 @@
     <td>
       <span class="access" data-ice="access">public</span>
       
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-get-Buffer">Buffer</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-get-block">block</a></span></span><span class="code" data-ice="signature">: {&quot;get&quot;: <span>*</span>, &quot;put&quot;: <span>*</span>, &quot;has&quot;: <span>*</span>}</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-member-bw">bw</a></span></span><span class="code" data-ice="signature">: {&quot;up&quot;: <span>*</span>, &quot;down&quot;: <span>*</span>}</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
       
       
       <span class="override" data-ice="override"></span>
@@ -169,6 +255,90 @@
           
           
           <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-member-client">client</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/client.js~PeernetClient.html">PeernetClient</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-member-codecs">codecs</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-get-data">data</a></span></span><span class="code" data-ice="signature">: {&quot;get&quot;: <span>*</span>, &quot;put&quot;: <span>*</span>, &quot;has&quot;: <span>*</span>}</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-get-defaultStores">defaultStores</a></span></span><span class="code" data-ice="signature">: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span><span>[]</span></span></span>
         </p>
       </div>
       <div>
@@ -224,7 +394,63 @@
           
           
           
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-member-hasDaemon">hasDaemon</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
           <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-member-id">id</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-get-message">message</a></span></span><span class="code" data-ice="signature">: {&quot;get&quot;: <span>*</span>, &quot;put&quot;: <span>*</span>, &quot;has&quot;: <span>*</span>}</span>
         </p>
       </div>
       <div>
@@ -308,7 +534,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-member-peerMap">peerMap</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-member-peerMap">peerMap</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a></span></span>
         </p>
       </div>
       <div>
@@ -336,7 +562,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-get-peers">peers</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-get-peers">peers</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></span><span>[]</span></span></span>
         </p>
       </div>
       <div>
@@ -378,6 +604,146 @@
       
     </td>
   </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-member-requestProtos">requestProtos</a></span></span><span class="code" data-ice="signature">: {}</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-member-root">root</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-member-storePrefix">storePrefix</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-member-stores">stores</a></span></span><span class="code" data-ice="signature">: <span><span>*</span><span>[]</span></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-get-transaction">transaction</a></span></span><span class="code" data-ice="signature">: {&quot;get&quot;: <span>*</span>, &quot;put&quot;: <span>*</span>, &quot;has&quot;: <span>*</span>}</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
 </tbody>
 </table>
 <table class="summary" data-ice="summary">
@@ -398,7 +764,63 @@
           
           
           
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-member-_discovered">_discovered</a></span></span><span class="code" data-ice="signature">: <span><span>*</span><span>[]</span></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
           <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-member-_messageHandler">_messageHandler</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-member-_peerHandler">_peerHandler</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
         </p>
       </div>
       <div>
@@ -433,7 +855,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-method-addCodec">addCodec</a></span></span><span class="code" data-ice="signature">(name: <span>*</span>, proto: <span>*</span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-method-addCodec">addCodec</a></span></span><span class="code" data-ice="signature">(name: <span>*</span>, codec: <span>*</span>)</span>
         </p>
       </div>
       <div>
@@ -462,6 +884,90 @@
           
           
           <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-method-addProto">addProto</a></span></span><span class="code" data-ice="signature">(name: <span>*</span>, proto: <span>*</span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-method-addRequestHandler">addRequestHandler</a></span></span><span class="code" data-ice="signature">(name: <span>*</span>, method: <span>*</span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-method-addStore">addStore</a></span></span><span class="code" data-ice="signature">(name: <span>*</span>, prefix: <span>*</span>, root: <span>*</span>, isPrivate: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-method-createHash">createHash</a></span></span><span class="code" data-ice="signature">(data: <span>*</span>, name: <span>*</span>): <span>*</span></span>
         </p>
       </div>
       <div>
@@ -603,7 +1109,7 @@
           
           <span data-ice="async">async</span>
           
-          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-method-publish">publish</a></span></span><span class="code" data-ice="signature">(topic: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, data: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></span> | <span>Buffer</span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-method-publish">publish</a></span></span><span class="code" data-ice="signature">(topic: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, data: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></span> | <span><a href="class/src/peernet.js~Peernet.html#instance-get-Buffer">Buffer</a></span>)</span>
         </p>
       </div>
       <div>
@@ -631,7 +1137,7 @@
           
           <span data-ice="async">async</span>
           
-          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-method-put">put</a></span></span><span class="code" data-ice="signature">(hash: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, data: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span>*</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-method-put">put</a></span></span><span class="code" data-ice="signature">(hash: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, data: <span><a href="class/src/peernet.js~Peernet.html#instance-get-Buffer">Buffer</a></span>): <span>*</span></span>
         </p>
       </div>
       <div>
@@ -661,6 +1167,34 @@
           <span data-ice="async">async</span>
           
           <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-method-removePeer">removePeer</a></span></span><span class="code" data-ice="signature">(peer: <span>*</span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-method-requestData">requestData</a></span></span><span class="code" data-ice="signature">(hash: <span>*</span>, store: <span>*</span>): <span>*</span></span>
         </p>
       </div>
       <div>
@@ -723,6 +1257,35 @@
         
         
         <div data-ice="description"><p>performs a walk and resolves first encounter</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-method-whichStore">whichStore</a></span></span><span class="code" data-ice="signature">(stores: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>, hash: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>goes trough given stores and tries to find data for given hash</p>
 </div>
       </div>
     </td>
@@ -807,7 +1370,7 @@
           
           <span data-ice="async">async</span>
           
-          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-method-_protoHandler">_protoHandler</a></span></span><span class="code" data-ice="signature">(message: <span>Buffer</span>, peer: <span><a href="class/src/peer.js~PeernetPeer.html">PeernetPeer</a></span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/src/peernet.js~Peernet.html#instance-method-_protoHandler">_protoHandler</a></span></span><span class="code" data-ice="signature">(message: <span><a href="class/src/peernet.js~Peernet.html#instance-get-Buffer">Buffer</a></span>, peer: <span><a href="class/src/peer.js~PeernetPeer.html">PeernetPeer</a></span>)</span>
         </p>
       </div>
       <div>
@@ -843,7 +1406,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber45">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber50">source</a></span></span>
     </span>
   </h3>
 
@@ -880,6 +1443,13 @@
       <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>path to root directory</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="1">
+      <td data-ice="name" class="code" data-depth="1">options.storePrefix</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>prefix for datatores (lfc)</p>
 </td>
     </tr>
 </tbody>
@@ -928,6 +1498,135 @@
 <div data-ice="memberDetails"><h2 data-ice="title">Public Members</h2>
 
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-get-Buffer">
+    <span class="access" data-ice="access">public</span>
+    
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">Buffer</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber683">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-get-block">
+    <span class="access" data-ice="access">public</span>
+    
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">block</span><span class="code" data-ice="signature">: {&quot;get&quot;: <span>*</span>, &quot;put&quot;: <span>*</span>, &quot;has&quot;: <span>*</span>}</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber462">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-bw">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">bw</span><span class="code" data-ice="signature">: {&quot;up&quot;: <span>*</span>, &quot;down&quot;: <span>*</span>}</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber65">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-client">
     <span class="access" data-ice="access">public</span>
     
@@ -939,7 +1638,136 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber184">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber254">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-codecs">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">codecs</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber167">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-get-data">
+    <span class="access" data-ice="access">public</span>
+    
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">data</span><span class="code" data-ice="signature">: {&quot;get&quot;: <span>*</span>, &quot;put&quot;: <span>*</span>, &quot;has&quot;: <span>*</span>}</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber557">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-get-defaultStores">
+    <span class="access" data-ice="access">public</span>
+    
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">defaultStores</span><span class="code" data-ice="signature">: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span><span>[]</span></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber72">source</a></span></span>
     </span>
   </h3>
 
@@ -982,7 +1810,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber64">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber132">source</a></span></span>
     </span>
   </h3>
 
@@ -1031,6 +1859,49 @@
   
 </div>
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-hasDaemon">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">hasDaemon</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber172">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-id">
     <span class="access" data-ice="access">public</span>
     
@@ -1042,7 +1913,50 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber151">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber188">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-get-message">
+    <span class="access" data-ice="access">public</span>
+    
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">message</span><span class="code" data-ice="signature">: {&quot;get&quot;: <span>*</span>, &quot;put&quot;: <span>*</span>, &quot;has&quot;: <span>*</span>}</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber529">source</a></span></span>
     </span>
   </h3>
 
@@ -1085,7 +1999,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber50">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber55">source</a></span></span>
     </span>
   </h3>
 
@@ -1145,7 +2059,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber170">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber208">source</a></span></span>
     </span>
   </h3>
 
@@ -1184,11 +2098,11 @@
     
     
     
-    <span class="code" data-ice="name">peerMap</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="code" data-ice="name">peerMap</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber65">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber137">source</a></span></span>
     </span>
   </h3>
 
@@ -1199,7 +2113,24 @@
 
   
 
-  <div data-ice="properties">
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Properties:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">peer</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Instance of Peer</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
 </div>
 
   
@@ -1227,11 +2158,11 @@
     
     
     
-    <span class="code" data-ice="name">peers</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="code" data-ice="name">peers</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></span><span>[]</span></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber111">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber114">source</a></span></span>
     </span>
   </h3>
 
@@ -1245,7 +2176,20 @@
   <div data-ice="properties">
 </div>
 
-  
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>peerId</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
 
   
 
@@ -1274,7 +2218,222 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber89">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber166">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-requestProtos">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">requestProtos</span><span class="code" data-ice="signature">: {}</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber139">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-root">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">root</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber141">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-storePrefix">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">storePrefix</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber140">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-stores">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">stores</span><span class="code" data-ice="signature">: <span><span>*</span><span>[]</span></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber138">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-get-transaction">
+    <span class="access" data-ice="access">public</span>
+    
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">transaction</span><span class="code" data-ice="signature">: {&quot;get&quot;: <span>*</span>, &quot;put&quot;: <span>*</span>, &quot;has&quot;: <span>*</span>}</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber477">source</a></span></span>
     </span>
   </h3>
 
@@ -1308,6 +2467,49 @@
 <h2 data-ice="title">Private Members</h2>
 
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-_discovered">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">_discovered</span><span class="code" data-ice="signature">: <span><span>*</span><span>[]</span></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber51">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-_messageHandler">
     <span class="access" data-ice="access">private</span>
     
@@ -1319,7 +2521,50 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber91">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber169">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-_peerHandler">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">_peerHandler</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber205">source</a></span></span>
     </span>
   </h3>
 
@@ -1361,11 +2606,11 @@
     
     
     
-    <span class="code" data-ice="name">addCodec</span><span class="code" data-ice="signature">(name: <span>*</span>, proto: <span>*</span>)</span>
+    <span class="code" data-ice="name">addCodec</span><span class="code" data-ice="signature">(name: <span>*</span>, codec: <span>*</span>)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber99">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber80">source</a></span></span>
     </span>
   </h3>
 
@@ -1391,7 +2636,7 @@
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">proto</td>
+      <td data-ice="name" class="code" data-depth="0">codec</td>
       <td data-ice="type" class="code"><span>*</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
@@ -1430,7 +2675,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber95">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber76">source</a></span></span>
     </span>
   </h3>
 
@@ -1484,6 +2729,226 @@
   
 </div>
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-addRequestHandler">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">addRequestHandler</span><span class="code" data-ice="signature">(name: <span>*</span>, method: <span>*</span>)</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber269">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">name</td>
+      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">method</td>
+      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-addStore">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    
+    <span class="code" data-ice="name">addStore</span><span class="code" data-ice="signature">(name: <span>*</span>, prefix: <span>*</span>, root: <span>*</span>, isPrivate: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>)</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber84">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">name</td>
+      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">prefix</td>
+      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">root</td>
+      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">isPrivate</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: true</li></ul></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-createHash">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">createHash</span><span class="code" data-ice="signature">(data: <span>*</span>, name: <span>*</span>): <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber665">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">data</td>
+      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">name</td>
+      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>*</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-get">
     <span class="access" data-ice="access">public</span>
     
@@ -1495,7 +2960,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber355">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber606">source</a></span></span>
     </span>
   </h3>
 
@@ -1567,7 +3032,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber397">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber632">source</a></span></span>
     </span>
   </h3>
 
@@ -1638,7 +3103,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber107">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber105">source</a></span></span>
     </span>
   </h3>
 
@@ -1715,7 +3180,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber334">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber441">source</a></span></span>
     </span>
   </h3>
 
@@ -1783,11 +3248,11 @@
     
     <span data-ice="async">async</span>
     
-    <span class="code" data-ice="name">publish</span><span class="code" data-ice="signature">(topic: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, data: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></span> | <span>Buffer</span>)</span>
+    <span class="code" data-ice="name">publish</span><span class="code" data-ice="signature">(topic: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, data: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></span> | <span><a href="class/src/peernet.js~Peernet.html#instance-get-Buffer">Buffer</a></span>)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber406">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber646">source</a></span></span>
     </span>
   </h3>
 
@@ -1814,7 +3279,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">data</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></span> | <span>Buffer</span></td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></span> | <span><a href="class/src/peernet.js~Peernet.html#instance-get-Buffer">Buffer</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -1848,11 +3313,11 @@
     
     <span data-ice="async">async</span>
     
-    <span class="code" data-ice="name">put</span><span class="code" data-ice="signature">(hash: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, data: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span>*</span></span>
+    <span class="code" data-ice="name">put</span><span class="code" data-ice="signature">(hash: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, data: <span><a href="class/src/peernet.js~Peernet.html#instance-get-Buffer">Buffer</a></span>): <span>*</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber389">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber623">source</a></span></span>
     </span>
   </h3>
 
@@ -1880,10 +3345,9 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">data</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="type" class="code"><span><a href="class/src/peernet.js~Peernet.html#instance-get-Buffer">Buffer</a></span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>encoded message</p>
-</td>
+      <td data-ice="description"></td>
     </tr>
 </tbody>
   </table>
@@ -1931,7 +3395,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber435">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber679">source</a></span></span>
     </span>
   </h3>
 
@@ -1979,6 +3443,83 @@
   
 </div>
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-requestData">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    
+    <span class="code" data-ice="name">requestData</span><span class="code" data-ice="signature">(hash: <span>*</span>, store: <span>*</span>): <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber492">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">hash</td>
+      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">store</td>
+      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>*</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-subscribe">
     <span class="access" data-ice="access">public</span>
     
@@ -1990,7 +3531,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber430">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber674">source</a></span></span>
     </span>
   </h3>
 
@@ -2055,7 +3596,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber301">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber400">source</a></span></span>
     </span>
   </h3>
 
@@ -2103,6 +3644,84 @@
   
   
 </div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-whichStore">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    
+    <span class="code" data-ice="name">whichStore</span><span class="code" data-ice="signature">(stores: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>, hash: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber590">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>goes trough given stores and tries to find data for given hash</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">stores</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">hash</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>*</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
 <h2 data-ice="title">Private Methods</h2>
 
 <div class="detail" data-ice="detail">
@@ -2117,7 +3736,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber188">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber261">source</a></span></span>
     </span>
   </h3>
 
@@ -2188,7 +3807,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber123">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber126">source</a></span></span>
     </span>
   </h3>
 
@@ -2263,11 +3882,11 @@
     
     <span data-ice="async">async</span>
     
-    <span class="code" data-ice="name">_protoHandler</span><span class="code" data-ice="signature">(message: <span>Buffer</span>, peer: <span><a href="class/src/peer.js~PeernetPeer.html">PeernetPeer</a></span>)</span>
+    <span class="code" data-ice="name">_protoHandler</span><span class="code" data-ice="signature">(message: <span><a href="class/src/peernet.js~Peernet.html#instance-get-Buffer">Buffer</a></span>, peer: <span><a href="class/src/peer.js~PeernetPeer.html">PeernetPeer</a></span>)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber203">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/peernet.js.html#lineNumber279">source</a></span></span>
     </span>
   </h3>
 
@@ -2288,7 +3907,7 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">message</td>
-      <td data-ice="type" class="code"><span>Buffer</span></td>
+      <td data-ice="type" class="code"><span><a href="class/src/peernet.js~Peernet.html#instance-get-Buffer">Buffer</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>peernet message</p>
 </td>

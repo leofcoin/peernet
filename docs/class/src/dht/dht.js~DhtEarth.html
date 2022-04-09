@@ -36,6 +36,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#codec">codec</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec-format-interface.js~FormatInterface.html">FormatInterface</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec.js~PeernetCodec.html">PeernetCodec</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#dht">dht</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/dht/dht.js~DhtEarth.html">DhtEarth</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#discovery">discovery</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/discovery/peer-discovery.js~PeerDiscovery.html">PeerDiscovery</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#errors">errors</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dhtError">dhtError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encapsulatedError">encapsulatedError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-nothingFoundError">nothingFoundError</a></span></span></li>
@@ -46,7 +47,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/http-client.js~HttpClientApi.html">HttpClientApi</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/storage.js~LeofcoinStorageClient.html">LeofcoinStorageClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-client">client</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#messages">messages</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data-response.js~DataMessageResponse.html">DataMessageResponse</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#messages">messages</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/chat-message.js~ChatMessage.html">ChatMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data-response.js~DataMessageResponse.html">DataMessageResponse</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data.js~DataMessage.html">DataMessage</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht-response.js~DHTMessageResponse.html">DHTMessageResponse</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht.js~DHTMessage.html">DHTMessage</a></span></span></li>
@@ -252,7 +254,7 @@
           
           <span data-ice="async">async</span>
           
-          <span class="code" data-ice="name"><span><a href="class/src/dht/dht.js~DhtEarth.html#instance-method-getCoordinates">getCoordinates</a></span></span><span class="code" data-ice="signature">(provider: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/dht/dht.js~DhtEarth.html#instance-method-getCoordinates">getCoordinates</a></span></span><span class="code" data-ice="signature">(address: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
         </p>
       </div>
       <div>
@@ -306,7 +308,7 @@
       <div>
         <p>
           
-          <span data-ice="async">async</span>
+          
           
           <span class="code" data-ice="name"><span><a href="class/src/dht/dht.js~DhtEarth.html#instance-method-providersFor">providersFor</a></span></span><span class="code" data-ice="signature">(hash: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span></span>
         </p>
@@ -436,7 +438,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/dht/dht.js.html#lineNumber118">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/dht/dht.js.html#lineNumber113">source</a></span></span>
     </span>
   </h3>
 
@@ -514,7 +516,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/dht/dht.js.html#lineNumber86">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/dht/dht.js.html#lineNumber85">source</a></span></span>
     </span>
   </h3>
 
@@ -582,7 +584,7 @@
     
     <span data-ice="async">async</span>
     
-    <span class="code" data-ice="name">getCoordinates</span><span class="code" data-ice="signature">(provider: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
+    <span class="code" data-ice="name">getCoordinates</span><span class="code" data-ice="signature">(address: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
     <span class="right-info">
       
       
@@ -606,7 +608,7 @@
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">provider</td>
+      <td data-ice="name" class="code" data-depth="0">address</td>
       <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
@@ -658,7 +660,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/dht/dht.js.html#lineNumber77">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/dht/dht.js.html#lineNumber76">source</a></span></span>
     </span>
   </h3>
 
@@ -730,13 +732,13 @@
     
     
     
-    <span data-ice="async">async</span>
+    
     
     <span class="code" data-ice="name">providersFor</span><span class="code" data-ice="signature">(hash: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/dht/dht.js.html#lineNumber109">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/dht/dht.js.html#lineNumber104">source</a></span></span>
     </span>
   </h3>
 

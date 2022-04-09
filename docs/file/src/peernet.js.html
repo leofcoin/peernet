@@ -36,6 +36,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#codec">codec</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec-format-interface.js~FormatInterface.html">FormatInterface</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec.js~PeernetCodec.html">PeernetCodec</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#dht">dht</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/dht/dht.js~DhtEarth.html">DhtEarth</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#discovery">discovery</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/discovery/peer-discovery.js~PeerDiscovery.html">PeerDiscovery</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#errors">errors</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dhtError">dhtError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encapsulatedError">encapsulatedError</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-nothingFoundError">nothingFoundError</a></span></span></li>
@@ -46,7 +47,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/http-client.js~HttpClientApi.html">HttpClientApi</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/storage.js~LeofcoinStorageClient.html">LeofcoinStorageClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-client">client</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#messages">messages</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data-response.js~DataMessageResponse.html">DataMessageResponse</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#messages">messages</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/chat-message.js~ChatMessage.html">ChatMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data-response.js~DataMessageResponse.html">DataMessageResponse</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data.js~DataMessage.html">DataMessage</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht-response.js~DHTMessageResponse.html">DHTMessageResponse</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht.js~DHTMessage.html">DHTMessage</a></span></span></li>
@@ -70,7 +72,7 @@
 <div class="content" data-ice="content"><h1 data-ice="title">src/peernet.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Pubsub from &apos;@vandeurenglenn/little-pubsub&apos;
 import Client from &apos;./client&apos;
-import LeofcoinStorage from &apos;./../node_modules/@leofcoin/storage/src/level.js&apos;
+import LeofcoinStorage from &apos;@leofcoin/storage&apos;
 import http from &apos;./http/http.js&apos;
 import httpClient from &apos;./http/client/client.js&apos;
 import LeofcoinStorageClient from &apos;./http/client/storage.js&apos;
@@ -84,7 +86,11 @@ import RequestMessage from &apos;./messages/request.js&apos;
 import ResponseMessage from &apos;./messages/response.js&apos;
 import PeerMessageResponse from &apos;./messages/peer-response.js&apos;
 import DataMessageResponse from &apos;./messages/data-response.js&apos;
+import ChatMessage from &apos;./messages/chat-message.js&apos;
+import PeerDiscovery from &apos;./discovery/peer-discovery&apos;
 import DHT from &apos;./dht/dht.js&apos;
+import Hash from &apos;./hash/hash&apos;
+import codecs from &apos;./codec/codecs&apos;
 import { debug, protoFor, target } from &apos;./utils/utils.js&apos;
 import generateAccount from
   &apos;./../node_modules/@leofcoin/generate-account/dist/module/generate-account.js&apos;
@@ -106,6 +112,7 @@ export default class Peernet {
    * @param {Object} options
    * @param {String} options.network - desired network
    * @param {String} options.root - path to root directory
+   * @param {String} options.storePrefix - prefix for datatores (lfc)
    *
    * @return {Promise} instance of Peernet
    *
@@ -113,26 +120,97 @@ export default class Peernet {
    * const peernet = new Peernet({network: &apos;leofcoin&apos;, root: &apos;.leofcoin&apos;});
    */
   constructor(options = {}) {
-    globalThis.peernet = globalThis.peernet || this
+    this._discovered = []
     /**
      * @property {String} network - current network
      */
     this.network = options.network || &apos;leofcoin&apos;
     const parts = this.network.split(&apos;:&apos;)
 
+    if (!options.storePrefix) options.storePrefix = &apos;lfc&apos;
     if (!options.port) options.port = 2000
     if (!options.root) {
       if (parts[1]) options.root = `.${parts[0]}/peernet/${parts[1]}`
       else options.root = `.${this.network}/peernet`
     }
+    globalThis.peernet = this
+    this.bw = {
+      up: 0,
+      down: 0,
+    }
+    return this._init(options)
+  }
 
+  get defaultStores() {
+    return [&apos;account&apos;, &apos;wallet&apos;, &apos;block&apos;, &apos;transaction&apos;, &apos;chain&apos;, &apos;data&apos;, &apos;message&apos;]
+  }
+
+  addProto(name, proto) {
+    if (!this.protos[name]) this.protos[name] = proto
+  }
+
+  addCodec(name, codec) {
+    if (!this.codecs[name]) this.codecs[name] = codec
+  }
+
+  async addStore(name, prefix, root, isPrivate = true) {
+    if (name === &apos;block&apos; || name === &apos;transaction&apos; || name === &apos;chain&apos; ||
+        name === &apos;data&apos; || name === &apos;message&apos;) isPrivate = false
+
+    let Storage
+    if (this.hasDaemon) {
+      Storage = LeofcoinStorageClient
+    } else {
+      Storage = LeofcoinStorage
+    }
+    globalThis[`${name}Store`] = globalThis[`${name}Store`] ||
+      await new Storage(`${prefix}-${name}`, root)
+
+    globalThis[`${name}Store`].private = isPrivate
+    if (!isPrivate) this.stores.push(name)
+  }
+
+
+  /**
+   * @see MessageHandler
+   */
+  prepareMessage(to, data) {
+    return this._messageHandler.prepareMessage(this.id, to, data)
+  }
+
+  /**
+   * @access public
+   *
+   * @return {Array} peerId
+   */
+  get peers() {
+    return [...connections.values()]
+  }
+
+  /**
+   * @private
+   *
+   * @param {Object} options
+   * @param {String} options.root - path to root directory
+   *
+   * @return {Promise} instance of Peernet
+   */
+  async _init(options) {
     // peernetDHT aka closesPeer by coordinates
     /**
      * @type {Object}
      * @property {Object} peer Instance of Peer
      */
     this.dht = new DHT()
+    /**
+     * @type {Map}
+     * @property {Object} peer Instance of Peer
+     */
     this.peerMap = new Map()
+    this.stores = []
+    this.requestProtos = {}
+    this.storePrefix = options.storePrefix
+    this.root = options.root
 
     /**
      * proto Object containing protos
@@ -154,68 +232,29 @@ export default class Peernet {
       &apos;peernet-data&apos;: DataMessage,
       &apos;peernet-data-response&apos;: DataMessageResponse,
       &apos;peernet-ps&apos;: PsMessage,
+      &apos;chat-message&apos;: ChatMessage,
     }
 
     this.protos = globalThis.peernet.protos
+    this.codecs = codecs
 
     this._messageHandler = new MessageHandler(this.network)
-    return this._init(options)
-  }
 
-  addProto(name, proto) {
-    if (!globalThis.peernet.protos[name]) globalThis.peernet.protos[name] = proto
-  }
-
-  addCodec(name, proto) {
-    if (!globalThis.peernet.codecs[name]) globalThis.peernet.codecs[name] = proto
-  }
-
-
-  /**
-   * @see MessageHandler
-   */
-  prepareMessage(to, data) {
-    return this._messageHandler.prepareMessage(this.id, to, data)
-  }
-
-  get peers() {
-    return connections.values()
-  }
-
-  /**
-   * @private
-   *
-   * @param {Object} options
-   * @param {String} options.root - path to root directory
-   *
-   * @return {Promise} instance of Peernet
-   */
-  async _init(options) {
     const {daemon, environment} = await target()
-    if (daemon) {
+    this.hasDaemon = daemon
+
+    if (this.hasDaemon) {
       globalThis.peernet.client = await httpClient({
         protocol: &apos;peernet-v0.1.0&apos;, host: &apos;127.0.0.1&apos;, port: options.port,
       })
-      globalThis.accountStore = globalThis.accountStore ||
-        await new LeofcoinStorageClient(&apos;lfc-account&apos;, options.root)
-      globalThis.walletStore = globalThis.walletStore ||
-        await new LeofcoinStorageClient(&apos;lfc-wallet&apos;, options.root)
-      globalThis.blockStore = globalThis.blockStore ||
-        await new LeofcoinStorageClient(&apos;lfc-block&apos;, options.root)
-      globalThis.chainStore = globalThis.chainStore ||
-        await new LeofcoinStorageClient(&apos;lfc-chain&apos;, options.root)
     } else {
-      globalThis.accountStore = globalThis.accountStore ||
-        new LeofcoinStorage(&apos;lfc-account&apos;, options.root)
-      globalThis.walletStore = globalThis.walletStore ||
-        new LeofcoinStorage(&apos;lfc-wallet&apos;, options.root)
-      globalThis.blockStore = globalThis.blockStore ||
-        new LeofcoinStorage(&apos;lfc-block&apos;, options.root)
-      globalThis.chainStore = globalThis.chainStore ||
-        new LeofcoinStorage(&apos;lfc-chain&apos;, options.root)
-
       if (environment !== &apos;browser&apos;) http(options)
     }
+
+    for (const store of this.defaultStores) {
+      await this.addStore(store, options.storePrefix, options.root)
+    }
+
     try {
       const pub = await accountStore.get(&apos;public&apos;)
       this.id = pub.walletId
@@ -235,33 +274,72 @@ export default class Peernet {
         throw e
       }
     }
+    this._peerHandler = new PeerDiscovery(this.id)
     // peernet id
     const id = Buffer.from(this.id.slice(0, 32))
     this.peerId = id
 
-    pubsub.subscribe(&apos;peer:connected&apos;, async (peer) =&gt; {
-      console.log(peer.id);
-      // const message = new PeerMessage({id: this.id})
-      // const response = await peer.request(message.encoded)
-      // console.log(response);
-      peer.on(&apos;peernet.data&apos;, (message) =&gt; this._protoHandler(message, peer))
-      // this.peers.push(peer)
+    pubsub.subscribe(&apos;peer:discovered&apos;, async (peer) =&gt; {
+      peer.on(&apos;peernet.data&apos;, async (message) =&gt; {
+        const id = message.id;
+        message = new PeernetMessage(Buffer.from(message.data.data));
+        const proto = protoFor(message.decoded.data);
+        await this._protoHandler({id, proto}, peer);
+      });
+      await this._peerHandler.discover(peer);
+      const fulldId = this._getPeerId(peer.id);
+      if (fulldId &amp;&amp; this._discovered.indexOf(peer.id) === -1) {
+        this._discovered.push(peer.id);
+        pubsub.publish(&apos;peer:connected&apos;, peer);
+      }
+    });
+    pubsub.subscribe(&apos;peer:disconnected&apos;, async (peer) =&gt; {
+      let index = this._discovered.indexOf(peer.id)
+      if (index !== -1) this._discovered.splice(index, 1)
+      const id = this._getPeerId(peer.id)
+      let peerIds = this.peerMap.get(id)
+
+      if (peerIds) {
+        index = peerIds.indexOf(peer.id)
+        if (index !== -1) peerIds.splice(index, 1)
+      } else {
+        peerIds = []
+      }
+
+      if (peerIds.length === 0) this.peerMap.delete(id)
+      else this.peerMap.set(id, peerIds)
     })
+    pubsub.subscribe(&apos;peer:connected&apos;, async (peer) =&gt; {
+      console.log({connected: peer.id, as: this._getPeerId(peer.id) });
+      // peer.on(&apos;peernet.data&apos;, async (message) =&gt; {
+      //   const id = message.id
+      //   message = new PeernetMessage(Buffer.from(message.data.data))
+      //   const proto = protoFor(message.decoded.data)
+      //   this._protoHandler({id, proto}, peer)
+      // })
+    })
+
     /**
      * @access public
      * @type {PeernetClient}
      */
     this.client = new Client({...options, id})
+    if (globalThis.onbeforeunload) {
+      globalThis.addEventListener(&apos;beforeunload&apos;, async () =&gt; this.client.close());
+    }
     return this
   }
 
   _getPeerId(id) {
-    console.log({get: id});
-    return [...this.peerMap.entries()].forEach((entry, i) =&gt; {
-      return entry[1].forEach((_id, i) =&gt; {
+    for (const entry of [...this.peerMap.entries()]) {
+      for (const _id of entry[1]) {
         if (_id === id) return entry[0]
-      })
-    })
+      }
+    }
+  }
+
+  addRequestHandler(name, method) {
+    this.requestProtos[name] = method
   }
 
   /**
@@ -271,66 +349,90 @@ export default class Peernet {
    * @param {PeernetPeer} peer - peernet peer
    */
   async _protoHandler(message, peer) {
-    const id = message.id
-    message = new PeernetMessage(Buffer.from(message.data))
-    const clientId = this.client.id
-    const proto = protoFor(message.decoded.data)
+    const {id, proto} = message
+    this.bw.down += proto.encoded.length
     if (proto.name === &apos;peernet-peer&apos;) {
       const from = proto.decoded.id
       if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
       else {
         const connections = this.peerMap.get(from)
-        connections.push(peer.id)
-        this.peerMap.set(from, connections)
+        if (connections.indexOf(peer.id) === -1) {
+          connections.push(peer.id)
+          this.peerMap.set(from, connections)
+        }
       }
       const data = new PeerMessageResponse({id: this.id})
       const node = await this.prepareMessage(from, data.encoded)
 
       peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+      this.bw.up += node.encoded.length
     } else if (proto.name === &apos;peernet-peer-response&apos;) {
       const from = proto.decoded.id
       if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
       else {
         const connections = this.peerMap.get(from)
-        connections.push(peer.id)
-        this.peerMap.set(from, connections)
+        if (connections.indexOf(peer.id) === -1) {
+          connections.push(peer.id)
+          this.peerMap.set(from, connections)
+        }
       }
     } else {
       let from = this._getPeerId(peer.id)
       if (!from) {
         const data = new PeerMessage({id: this.id})
         const node = await this.prepareMessage(peer.id, data.encoded)
-
+        this.bw.up += node.encoded.length
         let response = await peer.request(node.encoded)
         response = protoFor(response)
+
         response = new PeerMessageResponse(response.decoded.data)
 
         from = response.decoded.id
         if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
         else {
           const connections = this.peerMap.get(from)
-          connections.push(peer.id)
-          this.peerMap.set(from, connections)
+          if (connections.indexOf(peer.id) === -1) {
+            connections.push(peer.id)
+            this.peerMap.set(from, connections)
+          }
         }
       }
       if (proto.name === &apos;peernet-dht&apos;) {
-        const hash = proto.decoded.hash
-        const has = await this.has(hash)
+        let { hash, store } = proto.decoded
+        let has;
 
+        if (!store) {
+          has = await this.has(hash)
+        } else {
+          store = globalThis[`${store}Store`]
+          if (store.private) has = false
+          else has = await store.has(hash)
+        }
         const data = new DHTMessageResponse({hash, has})
         const node = await this.prepareMessage(from, data.encoded)
 
         peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+        this.bw.up += node.encoded.length
       } else if (proto.name === &apos;peernet-data&apos;) {
-        const hash = proto.decoded.hash
-        const has = await blockStore.has(hash)
-        if (has) {
-          let data = await blockStore.get(hash)
-          data = new DataMessageResponse({hash, data: Buffer.from(data)})
+        let { hash, store } = proto.decoded
+        let data
+
+        if (!store) {
+          data = await this.get(hash)
+        } else {
+          store = globalThis[`${store}Store`]
+          if (store.private) {
+            // TODO: ban
+            return
+          } else data = await store.get(hash)
+        }
+
+        if (data) {
+          data = new DataMessageResponse({hash, data: data.decoded ? Buffer.from(JSON.stringify(data)) : Buffer.from(data)});
 
           const node = await this.prepareMessage(from, data.encoded)
-
           peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+          this.bw.up += node.encoded.length
         }
       } else if (proto.name === &apos;peernet-peer&apos;) {
         const from = proto.decoded.id
@@ -344,20 +446,19 @@ export default class Peernet {
         const node = await this.prepareMessage(from, data.encoded)
 
         peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+        this.bw.up += node.encoded.length
       } else if (proto.name === &apos;peernet-request&apos;) {
         // TODO: make dynamic
-        if (proto.decoded.request === &apos;lastBlock&apos;) {
-          const height = await chainStore.get(&apos;localIndex&apos;)
-          const hash = await chainStore.get(&apos;localBlock&apos;)
-          response = { height, hash }
+        // exposeddevapi[proto.decoded.request](proto.decoded.params)
+        const method = this.requestProtos[proto.decoded.request]
+        if (method) {
+          const data = await method()
+          const node = await this.prepareMessage(from, data.encoded)
+          peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+          this.bw.up += node.encoded.length
         }
-        const data = new ResponseMessage({response})
-        const node = await this.prepareMessage(from, data.encoded)
-
-        peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
       } else if (proto.name === &apos;peernet-ps&apos; &amp;&amp;
-                 message.decoded.from.toString() !== this.id.toString()) {
-        console.log(message.decoded.from.toString(), this.id.toString());
+                 this._getPeerId(peer.id) !== this.id.toString()) {
         globalSub.publish(proto.decoded.topic.toString(), proto.decoded.data.toString())
       }
     }
@@ -385,6 +486,13 @@ export default class Peernet {
 
       if (proto.name !== &apos;peernet-dht-response&apos;) throw dhtError(proto.name)
 
+      // TODO: give ip and port (just used for location)
+      if (!peer.connection.remoteAddress || !peer.connection.localAddress) {
+        peer.connection.remoteFamily = &apos;ipv4&apos;
+        peer.connection.remoteAddress = &apos;127.0.0.1&apos;
+        peer.connection.remotePort = &apos;0000&apos;
+      }
+
       const peerInfo = {
         family: peer.connection.remoteFamily || peer.connection.localFamily,
         address: peer.connection.remoteAddress || peer.connection.localAddress,
@@ -394,6 +502,7 @@ export default class Peernet {
 
       if (proto.decoded.has) this.dht.addProvider(peerInfo, proto.decoded.hash)
     }
+    return
   }
 
   /**
@@ -412,9 +521,153 @@ export default class Peernet {
         await this.walk(hash)
         providers = await this.dht.providersFor(hash)
       }
+      // last walk
+      if (!providers || providers.length === 0) {
+        await this.walk(hash)
+        providers = await this.dht.providersFor(hash)
+      }
     }
     // undefined if no providers given
     return providers
+  }
+
+  get block() {
+    return {
+      get: async (hash) =&gt; {
+        const data = await blockStore.has(hash)
+        if (data) return await blockStore.get(hash)
+        return this.requestData(hash)
+      },
+      put: async (hash, data) =&gt; {
+        if (await blockStore.has(hash)) return
+        return await blockStore.put(hash, data)
+      },
+      has: async (hash) =&gt; await blockStore.has(hash, &apos;block&apos;),
+    }
+  }
+
+  get transaction() {
+    return {
+      get: async (hash) =&gt; {
+        const data = await transactionStore.has(hash)
+        if (data) return await transactionStore.get(hash)
+        return this.requestData(hash, &apos;transaction&apos;)
+      },
+      put: async (hash, data) =&gt; {
+        if (await transactionStore.has(hash)) return
+        return await transactionStore.put(hash, data)
+      },
+      has: async (hash) =&gt; await transactionStore.has(hash),
+    }
+  }
+
+  async requestData(hash, store) {
+    const providers = await this.providersFor(hash)
+    if (!providers || providers.size === 0) throw nothingFoundError(hash)
+    debug(`found ${providers.size} provider(s) for ${hash}`)
+    // get closest peer on earth
+    const closestPeer = await this.dht.closestPeer(providers)
+    // get peer instance by id
+    if (!closestPeer || !closestPeer.id) return this.requestData(hash, store)
+
+    const id = closestPeer.id.toString()
+    if (this.peers) {
+      let closest = this.peers.filter((peer) =&gt; {
+        if (this._getPeerId(peer.id) === id) return peer
+      })
+
+      let data = new DataMessage({hash, store})
+
+      const node = await this.prepareMessage(id, data.encoded)
+      if (closest[0]) data = await closest[0].request(node.encoded)
+      else {
+        closest = this.peers.filter((peer) =&gt; {
+          if (peer.id.toString() === id) return peer
+        })
+        if (closest[0]) data = await closest[0].request(node.encoded)
+      }
+      if (data.data) {
+        let proto = protoFor(Buffer.from(data.data))
+        proto = protoFor(proto.decoded.data)
+        return proto.decoded.data
+      }
+
+      // this.put(hash, proto.decoded.data)
+    }
+    return null
+  }
+
+
+  get message() {
+    return {
+      /**
+       * Get content for given message hash
+       *
+       * @param {String} hash
+       */
+      get: async (hash) =&gt; {
+        debug(`get message ${hash}`)
+        const message = await messageStore.has(hash)
+        if (message) return await messageStore.get(hash)
+        return this.requestData(hash, &apos;message&apos;)
+      },
+      /**
+       * put message content
+       *
+       * @param {String} hash
+       * @param {Buffer} message
+       */
+      put: async (hash, message) =&gt; await messageStore.put(hash, message),
+      /**
+       * @param {String} hash
+       * @return {Boolean}
+       */
+      has: async (hash) =&gt; await messageStore.has(hash),
+    }
+  }
+
+  get data() {
+    return {
+      /**
+       * Get content for given data hash
+       *
+       * @param {String} hash
+       */
+      get: async (hash) =&gt; {
+        debug(`get data ${hash}`)
+        const data = await dataStore.has(hash)
+        if (data) return await dataStore.get(hash)
+        return this.requestData(hash, &apos;data&apos;)
+      },
+      /**
+       * put data content
+       *
+       * @param {String} hash
+       * @param {Buffer} data
+       */
+      put: async (hash, data) =&gt; await dataStore.put(hash, data),
+      /**
+       * @param {String} hash
+       * @return {Boolean}
+       */
+      has: async (hash) =&gt; await dataStore.has(hash),
+    }
+  }
+
+  /**
+   * goes trough given stores and tries to find data for given hash
+   * @param {Array} stores
+   * @param {string} hash
+   */
+  async whichStore(stores, hash) {
+    let store = stores.pop()
+    const name = store
+    store = globalThis[`${store}Store`]
+    if (store) {
+      const has = await store.has(hash)
+      if (has) return store
+      if (stores.length &gt; 0) return this.whichStore(stores, hash)
+    } else return null
   }
 
   /**
@@ -422,42 +675,26 @@ export default class Peernet {
    *
    * @param {String} hash
    */
-  async get(hash) {
+  async get(hash, store) {
     debug(`get ${hash}`)
-    let data = await blockStore.has(hash)
-    if (data) return await blockStore.get(hash)
-    const providers = await this.providersFor(hash)
-    if (!providers || providers.size === 0) throw nothingFoundError(hash)
-    debug(`found ${providers.size} for ${hash}`)
+    let data
+    if (store) store = globalThis[`${store}Store`]
+    if (!store) store = await this.whichStore([...this.stores], hash)
+    if (store &amp;&amp; await store.has(hash)) data = await store.get(hash)
+    if (data) return data
 
-    // get closest peer on earth
-    const closestPeer = await this.dht.closestPeer(providers)
-
-    // get peer instance by id
-    const id = closestPeer.id.toString()
-    const closest = this.peers.filter((peer) =&gt; {
-      if (peer.id.toString() === id) return peer
-    })
-
-    data = new DataMessage({hash})
-
-    const node = await this.prepareMessage(id, data.encoded)
-
-    data = await closest[0].request(node.encoded)
-    let proto = protoFor(Buffer.from(data.data))
-    proto = protoFor(proto.decoded.data)
-    // this.put(hash, proto.decoded.data)
-    return proto.decoded.data
+    return this.requestData(hash, &apos;data&apos;)
   }
 
   /**
    * put content
    *
    * @param {String} hash
-   * @param {string} data encoded message
+   * @param {Buffer} data
    */
-  async put(hash, data) {
-    return await blockStore.put(hash, data)
+  async put(hash, data, store = &apos;data&apos;) {
+    store = globalThis[`${store}Store`]
+    return await store.put(hash, data)
   }
 
   /**
@@ -465,7 +702,12 @@ export default class Peernet {
    * @return {Boolean}
    */
   async has(hash) {
-    return await blockStore.has(hash)
+    const store = await this.whichStore([...this.stores], hash)
+    if (store) {
+      if (store.private) return false
+      else return true
+    }
+    return false
   }
 
   /**
@@ -475,21 +717,25 @@ export default class Peernet {
    */
   async publish(topic, data) {
     // globalSub.publish(topic, data)
-
-
     if (!Buffer.isBuffer(topic)) topic = Buffer.from(topic)
     if (!Buffer.isBuffer(data)) data = Buffer.from(data)
     const id = Math.random().toString(36).slice(-12)
     data = new PsMessage({data, topic})
     for (const peer of this.peers) {
-      if (peer.connection._connected &amp;&amp; peer.id.toString() !== this.peerId.toString()) {
-        const node = await this.prepareMessage(peer.id, data.encoded)
-        peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+      if (peer.connection._connected) {
+        if (peer.id.toString() !== this.peerId.toString()) {
+          const node = await this.prepareMessage(peer.id, data.encoded)
+          peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+        }
       } else {
         this.removePeer(peer)
       }
       // TODO: if peer subscribed
     }
+  }
+
+  createHash(data, name) {
+    return new Hash(data, {name})
   }
 
   /**
@@ -504,6 +750,10 @@ export default class Peernet {
 
   async removePeer(peer) {
     connections.delete(peer.id)
+  }
+
+  get Buffer() {
+    return Buffer
   }
   // async block(index) {
   //   const _values = []

@@ -1,19 +1,19 @@
 {
-  "coverage": "21.39%",
-  "expectCount": 187,
-  "actualCount": 40,
+  "coverage": "20.54%",
+  "expectCount": 219,
+  "actualCount": 45,
   "files": {
     "src/client.js": {
       "expectCount": 7,
       "actualCount": 0,
       "undocumentLines": [
-        19,
-        20,
-        23,
-        37,
-        42,
-        139,
-        143
+        17,
+        18,
+        22,
+        24,
+        31,
+        68,
+        72
       ]
     },
     "src/codec/codec-format-interface.js": {
@@ -66,6 +66,18 @@
         36,
         50,
         55
+      ]
+    },
+    "src/discovery/peer-discovery.js": {
+      "expectCount": 6,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        4,
+        5,
+        8,
+        18,
+        42
       ]
     },
     "src/errors/errors.js": {
@@ -167,6 +179,15 @@
         6
       ]
     },
+    "src/messages/chat-message.js": {
+      "expectCount": 3,
+      "actualCount": 0,
+      "undocumentLines": [
+        5,
+        6,
+        10
+      ]
+    },
     "src/messages/data-response.js": {
       "expectCount": 3,
       "actualCount": 0,
@@ -196,11 +217,9 @@
     },
     "src/messages/dht.js": {
       "expectCount": 3,
-      "actualCount": 0,
+      "actualCount": 2,
       "undocumentLines": [
-        5,
-        6,
-        10
+        21
       ]
     },
     "src/messages/peer-response.js": {
@@ -267,33 +286,53 @@
       ]
     },
     "src/peer.js": {
-      "expectCount": 8,
+      "expectCount": 11,
       "actualCount": 0,
       "undocumentLines": [
         1,
         2,
         3,
         4,
+        8,
         9,
-        30,
-        35,
-        40
+        17,
+        38,
+        45,
+        51,
+        56
       ]
     },
     "src/peernet.js": {
-      "expectCount": 25,
-      "actualCount": 15,
+      "expectCount": 45,
+      "actualCount": 18,
       "undocumentLines": [
+        51,
         65,
-        89,
-        91,
-        95,
-        99,
-        111,
-        151,
-        170,
+        72,
+        76,
+        80,
+        84,
+        138,
+        139,
+        140,
+        141,
+        166,
+        167,
+        169,
+        172,
         188,
-        435
+        205,
+        208,
+        261,
+        269,
+        462,
+        477,
+        492,
+        529,
+        557,
+        665,
+        679,
+        683
       ]
     },
     "src/utils/utils.js": {

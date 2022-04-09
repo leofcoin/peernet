@@ -1,5 +1,11 @@
 window.esdocSearchIndex = [
   [
+    "@leofcoin/peernet/src/messages/chat-message.js~chatmessage",
+    "class/src/messages/chat-message.js~ChatMessage.html",
+    "<span>ChatMessage</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/messages/chat-message.js</span>",
+    "class"
+  ],
+  [
     "@leofcoin/peernet/src/messages/dht.js~dhtmessage",
     "class/src/messages/dht.js~DHTMessage.html",
     "<span>DHTMessage</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/messages/dht.js</span>",
@@ -51,6 +57,12 @@ window.esdocSearchIndex = [
     "@leofcoin/peernet/src/handlers/message.js~messagehandler",
     "class/src/handlers/message.js~MessageHandler.html",
     "<span>MessageHandler</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/handlers/message.js</span>",
+    "class"
+  ],
+  [
+    "@leofcoin/peernet/src/discovery/peer-discovery.js~peerdiscovery",
+    "class/src/discovery/peer-discovery.js~PeerDiscovery.html",
+    "<span>PeerDiscovery</span> <span class=\"search-result-import-path\">@leofcoin/peernet/src/discovery/peer-discovery.js</span>",
     "class"
   ],
   [
@@ -834,6 +846,42 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/discovery/peer-discovery.js",
+    "file/src/discovery/peer-discovery.js.html",
+    "src/discovery/peer-discovery.js",
+    "file"
+  ],
+  [
+    "src/discovery/peer-discovery.js~peerdiscovery#_getpeerid",
+    "class/src/discovery/peer-discovery.js~PeerDiscovery.html#instance-method-_getPeerId",
+    "src/discovery/peer-discovery.js~PeerDiscovery#_getPeerId",
+    "method"
+  ],
+  [
+    "src/discovery/peer-discovery.js~peerdiscovery#constructor",
+    "class/src/discovery/peer-discovery.js~PeerDiscovery.html#instance-constructor-constructor",
+    "src/discovery/peer-discovery.js~PeerDiscovery#constructor",
+    "method"
+  ],
+  [
+    "src/discovery/peer-discovery.js~peerdiscovery#discover",
+    "class/src/discovery/peer-discovery.js~PeerDiscovery.html#instance-method-discover",
+    "src/discovery/peer-discovery.js~PeerDiscovery#discover",
+    "method"
+  ],
+  [
+    "src/discovery/peer-discovery.js~peerdiscovery#discoverhandler",
+    "class/src/discovery/peer-discovery.js~PeerDiscovery.html#instance-method-discoverHandler",
+    "src/discovery/peer-discovery.js~PeerDiscovery#discoverHandler",
+    "method"
+  ],
+  [
+    "src/discovery/peer-discovery.js~peerdiscovery#id",
+    "class/src/discovery/peer-discovery.js~PeerDiscovery.html#instance-member-id",
+    "src/discovery/peer-discovery.js~PeerDiscovery#id",
+    "member"
+  ],
+  [
     "src/errors/errors.js",
     "file/src/errors/errors.js.html",
     "src/errors/errors.js",
@@ -1146,6 +1194,24 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/messages/chat-message.js",
+    "file/src/messages/chat-message.js.html",
+    "src/messages/chat-message.js",
+    "file"
+  ],
+  [
+    "src/messages/chat-message.js~chatmessage#constructor",
+    "class/src/messages/chat-message.js~ChatMessage.html#instance-constructor-constructor",
+    "src/messages/chat-message.js~ChatMessage#constructor",
+    "method"
+  ],
+  [
+    "src/messages/chat-message.js~chatmessage#keys",
+    "class/src/messages/chat-message.js~ChatMessage.html#instance-get-keys",
+    "src/messages/chat-message.js~ChatMessage#keys",
+    "member"
+  ],
+  [
     "src/messages/data-response.js",
     "file/src/messages/data-response.js.html",
     "src/messages/data-response.js",
@@ -1350,6 +1416,24 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/peer.js~peernetpeer#_events",
+    "class/src/peer.js~PeernetPeer.html#instance-member-_events",
+    "src/peer.js~PeernetPeer#_events",
+    "member"
+  ],
+  [
+    "src/peer.js~peernetpeer#bw",
+    "class/src/peer.js~PeernetPeer.html#instance-member-bw",
+    "src/peer.js~PeernetPeer#bw",
+    "member"
+  ],
+  [
+    "src/peer.js~peernetpeer#close",
+    "class/src/peer.js~PeernetPeer.html#instance-method-close",
+    "src/peer.js~PeernetPeer#close",
+    "method"
+  ],
+  [
     "src/peer.js~peernetpeer#connection",
     "class/src/peer.js~PeernetPeer.html#instance-member-connection",
     "src/peer.js~PeernetPeer#connection",
@@ -1398,6 +1482,18 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/peernet.js~peernet#buffer",
+    "class/src/peernet.js~Peernet.html#instance-get-Buffer",
+    "src/peernet.js~Peernet#Buffer",
+    "member"
+  ],
+  [
+    "src/peernet.js~peernet#_discovered",
+    "class/src/peernet.js~Peernet.html#instance-member-_discovered",
+    "src/peernet.js~Peernet#_discovered",
+    "member"
+  ],
+  [
     "src/peernet.js~peernet#_getpeerid",
     "class/src/peernet.js~Peernet.html#instance-method-_getPeerId",
     "src/peernet.js~Peernet#_getPeerId",
@@ -1413,6 +1509,12 @@ window.esdocSearchIndex = [
     "src/peernet.js~peernet#_messagehandler",
     "class/src/peernet.js~Peernet.html#instance-member-_messageHandler",
     "src/peernet.js~Peernet#_messageHandler",
+    "member"
+  ],
+  [
+    "src/peernet.js~peernet#_peerhandler",
+    "class/src/peernet.js~Peernet.html#instance-member-_peerHandler",
+    "src/peernet.js~Peernet#_peerHandler",
     "member"
   ],
   [
@@ -1434,9 +1536,39 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/peernet.js~peernet#addrequesthandler",
+    "class/src/peernet.js~Peernet.html#instance-method-addRequestHandler",
+    "src/peernet.js~Peernet#addRequestHandler",
+    "method"
+  ],
+  [
+    "src/peernet.js~peernet#addstore",
+    "class/src/peernet.js~Peernet.html#instance-method-addStore",
+    "src/peernet.js~Peernet#addStore",
+    "method"
+  ],
+  [
+    "src/peernet.js~peernet#block",
+    "class/src/peernet.js~Peernet.html#instance-get-block",
+    "src/peernet.js~Peernet#block",
+    "member"
+  ],
+  [
+    "src/peernet.js~peernet#bw",
+    "class/src/peernet.js~Peernet.html#instance-member-bw",
+    "src/peernet.js~Peernet#bw",
+    "member"
+  ],
+  [
     "src/peernet.js~peernet#client",
     "class/src/peernet.js~Peernet.html#instance-member-client",
     "src/peernet.js~Peernet#client",
+    "member"
+  ],
+  [
+    "src/peernet.js~peernet#codecs",
+    "class/src/peernet.js~Peernet.html#instance-member-codecs",
+    "src/peernet.js~Peernet#codecs",
     "member"
   ],
   [
@@ -1444,6 +1576,24 @@ window.esdocSearchIndex = [
     "class/src/peernet.js~Peernet.html#instance-constructor-constructor",
     "src/peernet.js~Peernet#constructor",
     "method"
+  ],
+  [
+    "src/peernet.js~peernet#createhash",
+    "class/src/peernet.js~Peernet.html#instance-method-createHash",
+    "src/peernet.js~Peernet#createHash",
+    "method"
+  ],
+  [
+    "src/peernet.js~peernet#data",
+    "class/src/peernet.js~Peernet.html#instance-get-data",
+    "src/peernet.js~Peernet#data",
+    "member"
+  ],
+  [
+    "src/peernet.js~peernet#defaultstores",
+    "class/src/peernet.js~Peernet.html#instance-get-defaultStores",
+    "src/peernet.js~Peernet#defaultStores",
+    "member"
   ],
   [
     "src/peernet.js~peernet#dht",
@@ -1464,9 +1614,21 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/peernet.js~peernet#hasdaemon",
+    "class/src/peernet.js~Peernet.html#instance-member-hasDaemon",
+    "src/peernet.js~Peernet#hasDaemon",
+    "member"
+  ],
+  [
     "src/peernet.js~peernet#id",
     "class/src/peernet.js~Peernet.html#instance-member-id",
     "src/peernet.js~Peernet#id",
+    "member"
+  ],
+  [
+    "src/peernet.js~peernet#message",
+    "class/src/peernet.js~Peernet.html#instance-get-message",
+    "src/peernet.js~Peernet#message",
     "member"
   ],
   [
@@ -1530,16 +1692,64 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/peernet.js~peernet#requestdata",
+    "class/src/peernet.js~Peernet.html#instance-method-requestData",
+    "src/peernet.js~Peernet#requestData",
+    "method"
+  ],
+  [
+    "src/peernet.js~peernet#requestprotos",
+    "class/src/peernet.js~Peernet.html#instance-member-requestProtos",
+    "src/peernet.js~Peernet#requestProtos",
+    "member"
+  ],
+  [
+    "src/peernet.js~peernet#root",
+    "class/src/peernet.js~Peernet.html#instance-member-root",
+    "src/peernet.js~Peernet#root",
+    "member"
+  ],
+  [
+    "src/peernet.js~peernet#storeprefix",
+    "class/src/peernet.js~Peernet.html#instance-member-storePrefix",
+    "src/peernet.js~Peernet#storePrefix",
+    "member"
+  ],
+  [
+    "src/peernet.js~peernet#stores",
+    "class/src/peernet.js~Peernet.html#instance-member-stores",
+    "src/peernet.js~Peernet#stores",
+    "member"
+  ],
+  [
     "src/peernet.js~peernet#subscribe",
     "class/src/peernet.js~Peernet.html#instance-method-subscribe",
     "src/peernet.js~Peernet#subscribe",
     "method"
   ],
   [
+    "src/peernet.js~peernet#transaction",
+    "class/src/peernet.js~Peernet.html#instance-get-transaction",
+    "src/peernet.js~Peernet#transaction",
+    "member"
+  ],
+  [
     "src/peernet.js~peernet#walk",
     "class/src/peernet.js~Peernet.html#instance-method-walk",
     "src/peernet.js~Peernet#walk",
     "method"
+  ],
+  [
+    "src/peernet.js~peernet#whichstore",
+    "class/src/peernet.js~Peernet.html#instance-method-whichStore",
+    "src/peernet.js~Peernet#whichStore",
+    "method"
+  ],
+  [
+    "src/proto/chat-message.proto.js",
+    "file/src/proto/chat-message.proto.js.html",
+    "src/proto/chat-message.proto.js",
+    "file"
   ],
   [
     "src/proto/data-response.proto.js",
