@@ -347,6 +347,8 @@ export default class Peernet {
 
         if (!store) {
           store = await this.whichStore([...this.stores], hash)
+        } else {
+          store = globalThis.stores[`${store}Store`]
         }
         if (store && !store.private) {
           data = await store.get(hash)
@@ -359,7 +361,7 @@ export default class Peernet {
             this.bw.up += node.encoded.length
           }
         } else {
-          // ban (trying to access private store)
+          // ban (trying to access private st)
         }
 
       } else if (proto.name === 'peernet-peer') {
