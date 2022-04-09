@@ -464,7 +464,7 @@ export default class Peernet {
       get: async (hash) => {
         const data = await blockStore.has(hash)
         if (data) return await blockStore.get(hash)
-        return this.requestData(hash)
+        return this.requestData(hash, 'block')
       },
       put: async (hash, data) => {
         if (await blockStore.has(hash)) return
@@ -601,7 +601,8 @@ export default class Peernet {
   /**
    * Get content for given hash
    *
-   * @param {String} hash
+   * @param {String} hash - the hash of the wanted data
+   * @param {String} store - storeName to access
    */
   async get(hash, store) {
     debug(`get ${hash}`)
@@ -611,7 +612,7 @@ export default class Peernet {
     if (store && await store.has(hash)) data = await store.get(hash)
     if (data) return data
 
-    return this.requestData(hash, 'data')
+    return this.requestData(hash, store)
   }
 
   /**
@@ -619,10 +620,11 @@ export default class Peernet {
    *
    * @param {String} hash
    * @param {Buffer} data
+   * @param {String} store - storeName to access
    */
   async put(hash, data, store = 'data') {
     store = globalThis[`${store}Store`]
-    return await store.put(hash, data)
+    return store.put(hash, data)
   }
 
   /**
