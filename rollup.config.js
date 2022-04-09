@@ -27,10 +27,13 @@ export default [{
 		modify({
 			"import fetch from 'node-fetch'": ''
 		}),
-		lint({
-		  fix: true,
-			exclude: ['package.json', "package-lock.json"]
-		})
+		cjs(),
+		// resolve(),
+		// lint({
+		//   fix: true,
+		// 	exclude: ['package.json', "package-lock.json"]
+		// })
+
 
 	]
 }, {
