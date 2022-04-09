@@ -133,7 +133,21 @@ export default class FormatInterface {
    * @param {Object} data
    */
   create(data) {
-    this.decoded = data
-    this.encode(data)
+    const decoded = {}
+    if (this.keys?.length > 0) {
+      for (const key of this.keys) {
+        Object.defineProperties(decoded, {
+          [key]: {
+            enumerable: true,
+            configurable: true,
+            set: (val) => value = data[key],
+            get: () => data[key]
+          }
+        })
+      }
+
+      this.decoded = decoded
+      this.encode()
+    }
   }
 }
