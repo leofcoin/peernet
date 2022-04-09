@@ -15,7 +15,9 @@ export default class FormatInterface {
     this.protoDecode = proto.decode
     if (options.name) this.name = options.name
     this.hashFormat = options.hashFormat || 'bs32'
-    if (Buffer.isBuffer(buffer)) {
+    if (buffer.name === options.name) {
+      return buffer
+    } else if (Buffer.isBuffer(buffer)) {
       const codec = new Codec(buffer)
       if (codec.name) {
         this.fromEncoded(buffer)
