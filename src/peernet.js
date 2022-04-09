@@ -346,22 +346,22 @@ export default class Peernet {
         let data
 
         if (!store) {
-          data = await this.get(hash)
+          store = await this.whichStore([...this.stores], hash)
+        }
+        if (store && !store.private) {
+          data = await store.get(hash)
+
+          if (data) {
+            data = new DataMessageResponse({hash, data: data.decoded ? Buffer.from(JSON.stringify(data)) : Buffer.from(data)});
+
+            const node = await this.prepareMessage(from, data.encoded)
+            peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
+            this.bw.up += node.encoded.length
+          }
         } else {
-          store = globalThis[`${store}Store`]
-          if (store.private) {
-            // TODO: ban
-            return
-          } else data = await store.get(hash)
+          // ban (trying to access private store)
         }
 
-        if (data) {
-          data = new DataMessageResponse({hash, data: data.decoded ? Buffer.from(JSON.stringify(data)) : Buffer.from(data)});
-
-          const node = await this.prepareMessage(from, data.encoded)
-          peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))
-          this.bw.up += node.encoded.length
-        }
       } else if (proto.name === 'peernet-peer') {
         const from = proto.decoded.id
         if (!this.peerMap.has(from)) this.peerMap.set(from, [peer.id])
