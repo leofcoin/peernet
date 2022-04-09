@@ -1,6 +1,6 @@
 import Pubsub from '@vandeurenglenn/little-pubsub'
 import Client from './client'
-import LeofcoinStorage from './../node_modules/@leofcoin/storage/src/level.js'
+import LeofcoinStorage from '@leofcoin/storage'
 import http from './http/http.js'
 import httpClient from './http/client/client.js'
 import LeofcoinStorageClient from './http/client/storage.js'
