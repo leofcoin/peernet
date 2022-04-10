@@ -505,7 +505,7 @@ export default class Peernet {
         if (this._getPeerId(peer.id) === id) return peer
       })
 
-      let data = new DataMessage({hash, store})
+      let data = new DataMessage({hash, store: store.name ? store.name : store});
 
       const node = await this.prepareMessage(id, data.encoded)
       if (closest[0]) data = await closest[0].request(node.encoded)
