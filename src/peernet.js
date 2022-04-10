@@ -344,7 +344,6 @@ export default class Peernet {
       } else if (proto.name === 'peernet-data') {
         let { hash, store } = proto.decoded
         let data
-
         if (!store) {
           store = await this.whichStore([...this.stores], hash)
         } else {
@@ -498,7 +497,7 @@ export default class Peernet {
     // get closest peer on earth
     const closestPeer = await this.dht.closestPeer(providers)
     // get peer instance by id
-    if (!closestPeer || !closestPeer.id) return this.requestData(hash, store)
+    if (!closestPeer || !closestPeer.id) return this.requestData(hash, store.name ? store.name : store)
 
     const id = closestPeer.id.toString()
     if (this.peers) {
@@ -614,7 +613,7 @@ export default class Peernet {
     if (store && await store.has(hash)) data = await store.get(hash)
     if (data) return data
 
-    return this.requestData(hash, store)
+    return this.requestData(hash, store.name ? store.name : store)
   }
 
   /**
