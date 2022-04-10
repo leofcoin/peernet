@@ -347,7 +347,7 @@ export default class Peernet {
         if (!store) {
           store = await this.whichStore([...this.stores], hash)
         } else {
-          store = globalThis.stores[`${store}Store`]
+          store = globalThis[`${store}Store`]
         }
         if (store && !store.private) {
           data = await store.get(hash)
