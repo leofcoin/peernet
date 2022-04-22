@@ -1,79 +1,79 @@
 export default {
   // just a hash
   'disco-hash': {
-    codec: '30',
+    codec: parseInt('30', 16),
     hashAlg: 'dbl-keccak-512', // ,
     // testnet: 'olivia'
   },
   'peernet-peer-response': {
-    codec: '707072',
+    codec: parseInt('707072', 16),
     hashAlg: 'keccak-256',
   },
   'peernet-peer': {
-    codec: '7070',
+    codec: parseInt('7070', 16),
     hashAlg: 'keccak-256',
   },
   'peernet-dht': {
-    codec: '706468',
+    codec: parseInt('706468', 16),
     hashAlg: 'keccak-256',
   },
   'peernet-dht-response': {
-    codec: '706472',
+    codec: parseInt('706472', 16),
     hashAlg: 'keccak-256',
   },
   // data
   'peernet-data': {
-    codec: '706461',
+    codec: parseInt('706461', 16),
     hashAlg: 'keccak-256',
   },
   'peernet-data-response': {
-    codec: '70646172',
+    codec: parseInt('70646172', 16),
     hashAlg: 'keccak-256',
   },
   // message
   'peernet-message': {
-    codec: '706d65',
+    codec: parseInt('706d65', 16),
     hashAlg: 'keccak-512',
   },
   // pubsub
   'peernet-ps': {
-    codec: '707073',
+    codec: parseInt('707073', 16),
     hashAlg: 'keccak-256',
   },
   'peernet-response': {
-    codec: '7072',
+    codec: parseInt('7072', 16),
     hashAlg: 'keccak-256',
   },
   'peernet-request': {
-    codec: '707271',
+    codec: parseInt('707271', 16),
     hashAlg: 'keccak-256',
   },
   // normal block
   'leofcoin-block': {
-    codec: '6c62',
+    codec: parseInt('6c62', 16),
     hashAlg: 'dbl-keccak-512', // ,
     // testnet: 'olivia'
   },
   'leofcoin-tx': {
-    codec: '6c74',
+    codec: parseInt('6c74', 16),
     hashAlg: 'dbl-keccak-512', // ,
     // testnet: 'olivia'
   },
   // itx
   'leofcoin-itx': {
-    codec: '6c69',
+    codec: parseInt('6c69', 16),
     hashAlg: 'keccak-512', // ,
     // testnet: 'olivia'
   },
   // peer reputation
   'leofcoin-pr': {
-    codec: '6c70',
+    codec: parseInt('6c70', 16),
     hashAlg: 'keccak-256', // ,
     // testnet: 'olivia'
   },
   // chat message
   'chat-message': {
-    codec: '636d',
+    codec: parseInt('636d', 16),
     hashAlg: 'dbl-keccak-512',
   },
 }

@@ -1,1 +1,45 @@
-[]
+[
+  {
+    "name": "Peernet#_protoHandler",
+    "filePath": "src/peernet.js",
+    "lines": [
+      {
+        "lineNumber": 273,
+        "line": "  /**"
+      },
+      {
+        "lineNumber": 274,
+        "line": "   * @private"
+      },
+      {
+        "lineNumber": 275,
+        "line": "   *"
+      },
+      {
+        "lineNumber": 276,
+        "line": "   * @param {Buffer} message - peernet message"
+      },
+      {
+        "lineNumber": 277,
+        "line": "   * @param {PeernetPeer} peer - peernet peer"
+      },
+      {
+        "lineNumber": 278,
+        "line": "   */"
+      },
+      {
+        "lineNumber": 279,
+        "line": "  async _protoHandler(message, peer, from) {"
+      }
+    ],
+    "codeParams": [
+      "message",
+      "peer",
+      "from"
+    ],
+    "docParams": [
+      "message",
+      "peer"
+    ]
+  }
+]

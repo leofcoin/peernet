@@ -3,17 +3,18 @@ const Codec = require('./../dist/commonjs/codec.js')
 
 const block = '4lmacqas6kpnmvehxpmlvsndgydw5i46mf2pgnaub72eug63dozkw4oqxhk3fazbhkguvlhslcaeqm5jtwghxdk5nvmuakrs7yi2gl6xqmmmw';
 const itx = '5hmacqb6ao252jmbhkhu5isr4yua3jnkhgb5ejjbiomrlzglwarlb777wq7aw5nfz5m4pubx5uffaxp2cqc4ckrh4xirss4nkujvcjbnmomtm';
-const dht = '5demcay'
+const dht = 'b4wiyebqbigjfvm5mizik7ke3v6lyhoahecqiwergnl3cytarf5bd2qvqase'
 const message = '4xnmcay'
 const data = '4hemcay'
 globalThis.peernet = {};
+console.log(parseInt('706468', 16));
 
 test('peernet dht codec', tape => {
   tape.plan(2)
 
   const codec = new Codec(dht)
   const codec2 = new Codec(codec.encoded)
-  tape.equal(codec.name, 'peernet-dht', `name from encoded is valid ${codec.name}`)
+  tape.equal(codec.name, 'peernet-dht-response', `name from encoded is valid ${codec.name}`)
   tape.equal(codec.name, codec2.name, `decoded name is valid ${codec.name}`)
 })
 

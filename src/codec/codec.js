@@ -1,6 +1,6 @@
 import varint from 'varint';
-import bs32 from 'bs32';
-import bs58 from 'bs58';
+import bs32 from '@vandeurenglenn/base32';
+import bs58 from '@vandeurenglenn/base58';
 import isHex from 'is-hex';
 import codecs from './codecs'
 
@@ -10,10 +10,9 @@ export default class PeernetCodec {
   }
   constructor(buffer) {
     if (buffer) {
-      if (Buffer.isBuffer(buffer)) {
+      if (buffer instanceof Uint8Array) {
         const codec = varint.decode(buffer);
         const name = this.getCodecName(codec)
-
         if (name) {
           this.name = name
           this.encoded = buffer
@@ -21,12 +20,23 @@ export default class PeernetCodec {
         } else {
           this.encode(buffer)
         }
+      } else if (buffer instanceof ArrayBuffer) {
+        const encoded = new Uint8Array(buffer.byteLength)
+
+        for (let i = 0; i < buffer.byteLength; i++) {
+          encoded[i] = buffer[i]
+        }
+        this.encoded = encoded
+        // this.encoded = new Uint8Array(buffer, buffer.byteOffset, buffer.byteLength)
+        this.decode(buffer)
+        return
       }
       if (typeof buffer === 'string') {
         if (this.codecs[buffer]) this.fromName(buffer)
         else if (isHex(buffer)) this.fromHex(buffer)
-        else if (bs32.test(buffer)) this.fromBs32(buffer)
-        else this.fromBs58(buffer)
+        else if (bs32.isBase32(buffer)) this.fromBs32(buffer)
+        else if (bs58.isBase58(buffer)) this.fromBs58(buffer)
+        else throw new Error(`unsupported string ${buffer}`)
       }
       if (!isNaN(buffer)) if (this.codecs[this.getCodecName(buffer)]) this.fromCodec(buffer)
     }
@@ -61,7 +71,8 @@ export default class PeernetCodec {
 
   getCodecName(codec) {
     return Object.keys(this.codecs).reduce((p, c) => {
-      if (parseInt(Buffer.from(`${this.getCodec(c)}`, 'hex').toString('hex'), 16) === codec) return c;
+      const item = this.codecs[c]
+      if (item.codec === codec) return c;
       else return p;
     }, undefined)
   }
@@ -75,7 +86,7 @@ export default class PeernetCodec {
     this.hashAlg = this.getHashAlg(this.name)
 
     this.codec = this.getCodec(this.name)
-    this.codecBuffer = Buffer.from(varint.encode(parseInt(Buffer.from(`${this.codec}`, 'hex').toString('hex'), 16)), 'hex');
+    this.codecBuffer = varint.encode(codec)
   }
 
   fromName(name) {
@@ -83,7 +94,7 @@ export default class PeernetCodec {
     this.name = name
     this.codec = codec
     this.hashAlg = this.getHashAlg(name)
-    this.codecBuffer = Buffer.from(varint.encode(parseInt(Buffer.from(`${codec}`, 'hex').toString('hex'), 16)), 'hex');
+    this.codecBuffer = varint.encode(codec)
   }
 
   toBs32() {
@@ -103,11 +114,10 @@ export default class PeernetCodec {
   decode() {
     const codec = varint.decode(this.encoded);
     this.fromCodec(codec)
-    this.name = this.getCodecName(codec)
   }
 
   encode() {
-    const codec = Buffer.from(varint.encode(parseInt(Buffer.from(`${this.codec}`, 'hex').toString('hex'), 16)), 'hex');
+    const codec = varint.encode(this.decoded)
     this.encoded = codec
     return this.encoded
   }

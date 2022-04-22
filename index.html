@@ -7,14 +7,12 @@
   <body>
     <script src="./dist/browser/peernet.js">
     </script>
-    
+
     <script>
-    
+
       (async () => {
         const peernet = await new Peernet()
-        peernet.subscribe('socket-data', data => {
-          console.log(data)
-        })
+        peernet.addRequestHandler('lastBlock', () => new peernet.protos['peernet-response']({response: 100}))
       })()
     </script>
   </body>

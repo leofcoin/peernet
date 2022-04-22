@@ -71,8 +71,8 @@
 <div class="content" data-ice="content"><h1 data-ice="title">src/hash/hash.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import createKeccakHash from &apos;keccak&apos;;
 import varint from &apos;varint&apos;;
-import bs32 from &apos;bs32&apos;;
-import bs58 from &apos;bs58&apos;;
+import bs32 from &apos;@vandeurenglenn/base32&apos;;
+import bs58 from &apos;@vandeurenglenn/base58&apos;;
 import isHex from &apos;is-hex&apos;;
 import Codec from &apos;./../codec/codec&apos;;
 
@@ -96,18 +96,28 @@ export default class PeernetHash {
 
       if (typeof buffer === &apos;string&apos;) {
         if (isHex(buffer)) this.fromHex(buffer)
-        if (bs32.test(buffer)) this.fromBs32(buffer)
-        else this.fromBs58(buffer)
+        if (bs32.isBase32(buffer)) this.fromBs32(buffer)
+        else if (bs58.isBase58(buffer)) this.fromBs58(buffer)
+        else throw new Error(`unsupported string ${buffer}`)
       } else if (typeof buffer === &apos;object&apos;) this.fromJSON(buffer)
     }
   }
 
   get prefix() {
-    return Buffer.concat([this.discoCodec.codecBuffer, this.length])
+    const length = this.length
+    const uint8Array = new Uint8Array(length.length + this.discoCodec.codecBuffer.length)
+    for (let i = 0; i &lt; this.discoCodec.codecBuffer.length; i++) {
+      uint8Array[i] = this.discoCodec.codecBuffer[i]
+    }
+
+    for (let i = uint8Array.length - 1; i &lt; length.length; i++) {
+      uint8Array[i] = length[i]
+    }
+    return uint8Array
   }
 
   get length() {
-    return Buffer.from(varint.encode(this.size))
+    return varint.encode(this.size)
   }
 
   get buffer() {

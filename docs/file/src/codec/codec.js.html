@@ -70,8 +70,8 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/codec/codec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import varint from &apos;varint&apos;;
-import bs32 from &apos;bs32&apos;;
-import bs58 from &apos;bs58&apos;;
+import bs32 from &apos;@vandeurenglenn/base32&apos;;
+import bs58 from &apos;@vandeurenglenn/base58&apos;;
 import isHex from &apos;is-hex&apos;;
 import codecs from &apos;./codecs&apos;
 
@@ -81,10 +81,16 @@ export default class PeernetCodec {
   }
   constructor(buffer) {
     if (buffer) {
-      if (Buffer.isBuffer(buffer)) {
+      console.log(buffer.byteLength);
+      console.log(buffer.Uint8Array);
+      console.log({buffer});
+
+      if (buffer instanceof Uint8Array) {
         const codec = varint.decode(buffer);
+        console.log({codec2: codec});
         const name = this.getCodecName(codec)
 
+console.log({name});
         if (name) {
           this.name = name
           this.encoded = buffer
@@ -92,18 +98,32 @@ export default class PeernetCodec {
         } else {
           this.encode(buffer)
         }
+      } else if (buffer instanceof ArrayBuffer) {
+        console.log(&apos;ab&apos;);
+        const encoded = new Uint8Array(buffer.byteLength)
+
+        for (let i = 0; i &lt; buffer.byteLength; i++) {
+          encoded[i] = buffer[i]
+        }
+        this.encoded = encoded
+        // this.encoded = new Uint8Array(buffer, buffer.byteOffset, buffer.byteLength)
+        this.decode(buffer)
+        console.log({decoded: this.decoded});
+        return
       }
       if (typeof buffer === &apos;string&apos;) {
         if (this.codecs[buffer]) this.fromName(buffer)
         else if (isHex(buffer)) this.fromHex(buffer)
-        else if (bs32.test(buffer)) this.fromBs32(buffer)
-        else this.fromBs58(buffer)
+        else if (bs32.isBase32(buffer)) this.fromBs32(buffer)
+        else if (bs58.isBase58(buffer)) this.fromBs58(buffer)
+        else throw new Error(`unsupported string ${buffer}`)
       }
       if (!isNaN(buffer)) if (this.codecs[this.getCodecName(buffer)]) this.fromCodec(buffer)
     }
   }
 
   fromEncoded(encoded) {
+    console.log(&apos;fromEncoded&apos;);
     const codec = varint.decode(encoded);
     const name = this.getCodecName(codec)
     this.name = name
@@ -112,6 +132,7 @@ export default class PeernetCodec {
   }
 
   fromHex(hex) {
+    console.log(&apos;fromHex&apos;);
     this.encoded = Buffer.from(hex, &apos;hex&apos;)
     this.decode()
   }
@@ -131,8 +152,12 @@ export default class PeernetCodec {
   }
 
   getCodecName(codec) {
+    console.log({codec});
+
+    console.log(&apos;getCodecName&apos;);
     return Object.keys(this.codecs).reduce((p, c) =&gt; {
-      if (parseInt(Buffer.from(`${this.getCodec(c)}`, &apos;hex&apos;).toString(&apos;hex&apos;), 16) === codec) return c;
+      const item = this.codecs[c]
+      if (item.codec === codec) return c;
       else return p;
     }, undefined)
   }
@@ -142,19 +167,23 @@ export default class PeernetCodec {
   }
 
   fromCodec(codec) {
+    console.log({codec});
+    console.log(&apos;fromCodec&apos;);
     this.name = this.getCodecName(codec)
+    console.log(this.name);
     this.hashAlg = this.getHashAlg(this.name)
 
     this.codec = this.getCodec(this.name)
-    this.codecBuffer = Buffer.from(varint.encode(parseInt(Buffer.from(`${this.codec}`, &apos;hex&apos;).toString(&apos;hex&apos;), 16)), &apos;hex&apos;);
+    this.codecBuffer = varint.encode(codec)
   }
 
   fromName(name) {
+    console.log(&apos;fromName&apos;);
     const codec = this.getCodec(name)
     this.name = name
     this.codec = codec
     this.hashAlg = this.getHashAlg(name)
-    this.codecBuffer = Buffer.from(varint.encode(parseInt(Buffer.from(`${codec}`, &apos;hex&apos;).toString(&apos;hex&apos;), 16)), &apos;hex&apos;);
+    this.codecBuffer = varint.encode(codec)
   }
 
   toBs32() {
@@ -172,13 +201,14 @@ export default class PeernetCodec {
   }
 
   decode() {
+    console.log(&apos;decode&apos;);
     const codec = varint.decode(this.encoded);
     this.fromCodec(codec)
-    this.name = this.getCodecName(codec)
   }
 
   encode() {
-    const codec = Buffer.from(varint.encode(parseInt(Buffer.from(`${this.codec}`, &apos;hex&apos;).toString(&apos;hex&apos;), 16)), &apos;hex&apos;);
+    console.log(&apos;encode codec&apos;);
+    const codec = varint.encode(this.decoded)
     this.encoded = codec
     return this.encoded
   }

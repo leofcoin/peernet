@@ -103,6 +103,7 @@ export default class MessageHandler {
    * or the messageNode itself
    */
   async prepareMessage(from, to, data) {
+    console.log(from, to, data);
     if (!Buffer.isBuffer(from)) from = new Buffer.from(from)
     if (!Buffer.isBuffer(to)) to = new Buffer.from(to)
     if (data.encoded) data = data.encoded
@@ -112,6 +113,7 @@ export default class MessageHandler {
       to,
       data,
     }
+    console.log(message);
     const signature = await this.hashAndSignMessage(message)
     const node = new PeernetMessage({
       ...message,

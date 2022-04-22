@@ -1,4 +1,4 @@
-import Client from './../../../node_modules/socket-request-client/src/index.js'
+import Client from './../../../node_modules/socket-request-client/dist/es/index'
 
 export default class HttpClientApi {
   constructor(config = {}) {

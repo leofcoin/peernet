@@ -1,4 +1,4 @@
-import MultiWallet from '@leofcoin/multi-wallet'
+import MultiWallet from './../../node_modules/@leofcoin/multi-wallet/src/index'
 import Hash from './../hash/hash.js'
 import PeernetMessage from './../messages/peernet-message.js'
 
@@ -31,7 +31,7 @@ export default class MessageHandler {
    * @param {String|PeernetMessage} data - data encoded message string
    * or the messageNode itself
    */
-  async prepareMessage(from, to, data) {
+  async prepareMessage(from, to, data, id) {
     if (!Buffer.isBuffer(from)) from = new Buffer.from(from)
     if (!Buffer.isBuffer(to)) to = new Buffer.from(to)
     if (data.encoded) data = data.encoded

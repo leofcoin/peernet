@@ -1,6 +1,5 @@
 import protons from 'protons'
 import proto from './../proto/dht-response.proto.js'
-import {encode, decode} from 'bs32'
 import CodecFormat from './../codec/codec-format-interface.js'
 
 export default class DHTMessageResponse extends CodecFormat {

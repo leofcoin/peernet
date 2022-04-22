@@ -1,5 +1,5 @@
-import bs32 from 'bs32';
-import bs58 from 'bs58';
+import bs32 from '@vandeurenglenn/base32';
+import bs58 from '@vandeurenglenn/base58';
 import isHex from 'is-hex';
 import Codec from './codec';
 import Hash from './../hash/hash'
@@ -13,25 +13,18 @@ export default class FormatInterface {
   constructor(buffer, proto, options = {}) {
     this.protoEncode = proto.encode
     this.protoDecode = proto.decode
-    if (options.name) this.name = options.name
     this.hashFormat = options.hashFormat || 'bs32'
-    if (buffer.name === options.name) {
-      return buffer
-    } else if (Buffer.isBuffer(buffer)) {
-      const codec = new Codec(buffer)
-      if (codec.name) {
-        this.fromEncoded(buffer)
-      } else {
-        this.create(buffer)
-      }
-    } else {
-      if (typeof buffer === 'string') {
+    if (options.name) this.name = options.name
+    if (buffer instanceof Uint8Array) return this.fromUint8Array(buffer)
+    else if (buffer instanceof ArrayBuffer) return this.fromArrayBuffer(buffer)
+    else if (buffer.name === options.name) return buffer
+    else if (typeof buffer === 'string') {
         if (isHex(buffer)) this.fromHex(buffer)
-        else if (bs32.test(buffer)) this.fromBs32(buffer)
-        else this.fromBs58(buffer)
-      } else if (typeof buffer === 'object' && !Array.isArray(buffer)) {
-        this.create(buffer)
-      }
+        else if (bs32.isBase32(buffer)) this.fromBs32(buffer)
+        else if (bs58.isBase58(buffer)) this.fromBs58(buffer)
+        else throw new Error(`unsupported string ${buffer}`)
+    } else {
+      this.create(buffer)
     }
   }
 
@@ -56,7 +49,7 @@ export default class FormatInterface {
    */
   decode() {
     let encoded = this.encoded;
-    const discoCodec = new Codec(this.encoded.toString('hex'))
+    const discoCodec = new Codec(this.encoded)
     encoded = encoded.slice(discoCodec.codecBuffer.length)
     this.name = discoCodec.name
     this.decoded = this.protoDecode(encoded)
@@ -69,16 +62,40 @@ export default class FormatInterface {
   encode(decoded) {
     if (!decoded) decoded = this.decoded;
     const codec = new Codec(this.name)
-    this.encoded = Buffer.concat([codec.codecBuffer, this.protoEncode(decoded)])
+    const encoded = this.protoEncode(decoded)
+    const uint8Array = new Uint8Array(encoded.length + codec.codecBuffer.length)
+    uint8Array.set(codec.codecBuffer)
+    uint8Array.set(encoded, codec.codecBuffer.length)
+    this.encoded = uint8Array
     return this.encoded
+  }
+
+  hasCodec() {
+    if (!this.encoded) return false
+    const codec = new Codec(this.encoded)
+    if (codec.name) return true
+  }
+
+  fromUint8Array(buffer) {
+    this.encoded = buffer
+    if (!this.hasCodec()) this.create(
+      JSON.parse(new TextDecoder().decode(this.encoded))
+    )
+    else this.decode()
+  }
+
+  fromArrayBuffer(buffer) {
+    this.encoded = new Uint8Array(buffer, buffer.byteOffset, buffer.byteLength)
+    if (!this.hasCodec()) this.create(
+      JSON.parse(new TextDecoder().decode(this.encoded))
+    )
+    else this.decode()
   }
 
   /**
    * @param {Buffer} encoded
    */
   fromEncoded(encoded) {
-    const codec = new Codec(encoded)
-    this.name = codec.name
     this.encoded = encoded
     this.decode()
   }

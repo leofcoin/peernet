@@ -1,7 +1,7 @@
 import createKeccakHash from 'keccak';
 import varint from 'varint';
-import bs32 from 'bs32';
-import bs58 from 'bs58';
+import bs32 from '@vandeurenglenn/base32';
+import bs58 from '@vandeurenglenn/base58';
 import isHex from 'is-hex';
 import Codec from './../codec/codec';
 
@@ -25,18 +25,28 @@ export default class PeernetHash {
 
       if (typeof buffer === 'string') {
         if (isHex(buffer)) this.fromHex(buffer)
-        if (bs32.test(buffer)) this.fromBs32(buffer)
-        else this.fromBs58(buffer)
+        if (bs32.isBase32(buffer)) this.fromBs32(buffer)
+        else if (bs58.isBase58(buffer)) this.fromBs58(buffer)
+        else throw new Error(`unsupported string ${buffer}`)
       } else if (typeof buffer === 'object') this.fromJSON(buffer)
     }
   }
 
   get prefix() {
-    return Buffer.concat([this.discoCodec.codecBuffer, this.length])
+    const length = this.length
+    const uint8Array = new Uint8Array(length.length + this.discoCodec.codecBuffer.length)
+    for (let i = 0; i < this.discoCodec.codecBuffer.length; i++) {
+      uint8Array[i] = this.discoCodec.codecBuffer[i]
+    }
+
+    for (let i = uint8Array.length - 1; i < length.length; i++) {
+      uint8Array[i] = length[i]
+    }
+    return uint8Array
   }
 
   get length() {
-    return Buffer.from(varint.encode(this.size))
+    return varint.encode(this.size)
   }
 
   get buffer() {
