@@ -1,6 +1,6 @@
 import bs32 from '@vandeurenglenn/base32';
 import bs58 from '@vandeurenglenn/base58';
-import isHex from 'is-hex';
+import isHex from '@vandeurenglenn/is-hex';
 import Codec from './codec';
 import Hash from './../hash/hash'
 

@@ -2,7 +2,7 @@ import createKeccakHash from 'keccak';
 import varint from 'varint';
 import bs32 from '@vandeurenglenn/base32';
 import bs58 from '@vandeurenglenn/base58';
-import isHex from 'is-hex';
+import isHex from '@vandeurenglenn/is-hex';
 import Codec from './../codec/codec';
 
 export default class PeernetHash {
