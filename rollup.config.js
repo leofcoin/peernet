@@ -7,7 +7,6 @@ import modify from 'rollup-plugin-modify'
 import nativePlugin from 'rollup-plugin-natives';
 import polyfills from 'rollup-plugin-node-polyfills'
 
-
 try {
 	execSync('rm dist -r')
 } catch (e) {
