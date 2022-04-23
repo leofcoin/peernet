@@ -85,7 +85,7 @@ export default class Peernet {
     if (this.hasDaemon) {
       Storage = LeofcoinStorageClient
     } else {
-      Storage = LeofcoinStorage
+      Storage = globalThis.LeofcoinStorage?.default ? globalThis.LeofcoinStorage.default : LeofcoinStorage
     }
     globalThis[`${name}Store`] = globalThis[`${name}Store`] ||
       await new Storage(`${prefix}-${name}`, root)
@@ -216,7 +216,7 @@ export default class Peernet {
       message = new PeernetMessage(uint8Array)
       const proto = protoFor(message.decoded.data)
 
-      const from = new TextDecoder().decode(message.decoded.from)
+      const from = message.decoded.from
       this._protoHandler({id, proto}, this.client.connections[from], from)
     })
 
@@ -267,7 +267,7 @@ export default class Peernet {
         const data = new DHTMessageResponse({hash, has})
         const node = await this.prepareMessage(from, data.encoded)
 
-        peer.send(Buffer.from(JSON.stringify({id, data: node.encoded})))
+        peer.send(new TextEncoder().encode(JSON.stringify({id, data: node.encoded})))
         this.bw.up += node.encoded.length
       } else if (proto.name === 'peernet-data') {
         let { hash, store } = proto.decoded
@@ -281,10 +281,10 @@ export default class Peernet {
           data = await store.get(hash)
 
           if (data) {
-            data = new DataMessageResponse({hash, data: data.decoded ? Buffer.from(JSON.stringify(data)) : Buffer.from(data)});
+            data = new DataMessageResponse({hash, data: data.decoded ? new TextEncoder().encode(JSON.stringify(data.decoded)) : data});
 
             const node = await this.prepareMessage(from, data.encoded)
-            peer.send(Buffer.from(JSON.stringify({id, data: node.encoded})))
+            peer.send(new TextEncoder().encode(JSON.stringify({id, data: node.encoded})))
             this.bw.up += node.encoded.length
           }
         } else {
@@ -299,6 +299,7 @@ export default class Peernet {
           const data = await method()
           const node = await this.prepareMessage(from, data.encoded)
           peer.send(new TextEncoder().encode(JSON.stringify({id, data: node.encoded})))
+
           this.bw.up += node.encoded.length
         }
       } else if (proto.name === 'peernet-ps' &&
@@ -431,7 +432,8 @@ export default class Peernet {
         if (closest[0]) data = await closest[0].request(node.encoded)
       }
       if (data.data) {
-        let proto = protoFor(Buffer.from(data.data))
+        console.log(data.data);
+        let proto = protoFor(data.data)
         proto = protoFor(proto.decoded.data)
         return proto.decoded.data
       }
@@ -563,15 +565,15 @@ export default class Peernet {
    */
   async publish(topic, data) {
     // globalSub.publish(topic, data)
-    if (!Buffer.isBuffer(topic)) topic = Buffer.from(topic)
-    if (!Buffer.isBuffer(data)) data = Buffer.from(data)
+    if (topic instanceof Uint8Array === false) topic = new TextEncoder().encode(topic)
+    if (data instanceof Uint8Array === false) data = new TextEncoder().encode(JSON.stringify(data))
     const id = Math.random().toString(36).slice(-12)
     data = new PsMessage({data, topic})
     for (const peer of this.peers) {
       if (peer.connection._connected) {
         if (peer.id.toString() !== this.peerId.toString()) {
           const node = await this.prepareMessage(peer.id, data.encoded)
-          peer.send(Buffer.from(JSON.stringify({id, data: node.encoded})))
+          peer.send(new TextEncoder().encode(JSON.stringify({id, data: node.encoded})))
         }
       } else {
         this.removePeer(peer)

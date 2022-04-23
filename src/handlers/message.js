@@ -32,8 +32,6 @@ export default class MessageHandler {
    * or the messageNode itself
    */
   async prepareMessage(from, to, data, id) {
-    if (!Buffer.isBuffer(from)) from = new Buffer.from(from)
-    if (!Buffer.isBuffer(to)) to = new Buffer.from(to)
     if (data.encoded) data = data.encoded
 
     const message = {

@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 module.exports = {
-  entry: './dist/browser/peernet.js',
+  entry: './src/peernet.js',
   plugins: [
     // Work around for Buffer is undefined:
     // https://github.com/webpack/changelog-v5/issues/10
@@ -10,6 +10,10 @@ module.exports = {
     }),
     new webpack.ProvidePlugin({
         process: 'process/browser',
+  }),
+  new webpack.DefinePlugin({
+    HTTP_IMPORT: '',
+		"import fetch from 'node-fetch'": ''
   })
 ],
 optimization: {
@@ -18,6 +22,8 @@ optimization: {
 resolve: {
         extensions: [ '.ts', '.js' ],
         fallback: {
+          fs: false,
+          util: false,
           "stream": require.resolve("stream-browserify"),
           "buffer": require.resolve("buffer"),
           "path": require.resolve("path-browserify"),

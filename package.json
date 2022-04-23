@@ -26,7 +26,7 @@
     "@leofcoin/generate-account": "^1.0.2",
     "@leofcoin/multi-wallet": "^2.1.1",
     "@leofcoin/peernet-swarm": "^0.1.9",
-    "@leofcoin/storage": "^2.1.2",
+    "@leofcoin/storage": "^2.2.0",
     "@vandeurenglenn/base32": "^1.1.0",
     "@vandeurenglenn/base58": "^1.1.0",
     "@vandeurenglenn/is-hex": "^1.0.0",
