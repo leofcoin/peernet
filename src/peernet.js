@@ -108,7 +108,15 @@ export default class Peernet {
    * @return {Array} peerId
    */
   get peers() {
-    return this.client.connections
+    return Object.keys(this.client.connections)
+  }
+
+  get connections() {
+    return Object.values(this.client.connections)
+  }
+
+  get peerEntries() {
+    return Object.entries(this.client.connections)
   }
 
   /**
@@ -317,7 +325,7 @@ export default class Peernet {
     if (!hash) throw new Error('hash expected, received undefined')
     const data = new DHTMessage({hash})
     const clientId = this.client.id
-    for (const peer of this.peers) {
+    for (const peer of this.connections) {
       const node = await this.prepareMessage(peer.id, data.encoded)
 
       const result = await peer.request(node.encoded)
@@ -415,9 +423,9 @@ export default class Peernet {
     if (!closestPeer || !closestPeer.id) return this.requestData(hash, store.name ? store.name : store)
 
     const id = closestPeer.id.toString()
-    if (this.peers) {
-      let closest = this.peers.filter((peer) => {
-        if (this._getPeerId(peer.id) === id) return peer
+    if (this.connections) {
+      let closest = this.connections.filter((peer) => {
+        if (peer.id === id) return peer
       })
 
       let data = new DataMessage({hash, store: store.name ? store.name : store});
@@ -425,8 +433,8 @@ export default class Peernet {
       const node = await this.prepareMessage(id, data.encoded)
       if (closest[0]) data = await closest[0].request(node.encoded)
       else {
-        closest = this.peers.filter((peer) => {
-          if (peer.id.toString() === id) return peer
+        closest = this.connections.filter((peer) => {
+          if (peer.id === id) return peer
         })
         if (closest[0]) data = await closest[0].request(node.encoded)
       }
@@ -568,9 +576,9 @@ export default class Peernet {
     if (data instanceof Uint8Array === false) data = new TextEncoder().encode(JSON.stringify(data))
     const id = Math.random().toString(36).slice(-12)
     data = new PsMessage({data, topic})
-    for (const peer of this.peers) {
-      if (peer.connection._connected) {
-        if (peer.id.toString() !== this.peerId.toString()) {
+    for (const peer of this.connections) {
+      if (peer.connected) {
+        if (peer.id !== this.peerId) {
           const node = await this.prepareMessage(peer.id, data.encoded)
           peer.send(new TextEncoder().encode(JSON.stringify({id, data: node.encoded})))
         }
