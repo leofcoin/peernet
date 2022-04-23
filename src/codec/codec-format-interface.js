@@ -92,6 +92,28 @@ export default class FormatInterface {
     else this.decode()
   }
 
+  toString() {
+    return this.encoded.toString()
+  }
+
+  async toArray() {
+    const array = []
+    for await (const value of this.encoded.values()) {
+      array.push(value)
+    }
+    return array
+  }
+
+  fromString(string) {
+    this.encoded = new Uint8Array(string.split(','))
+    this.decode()
+  }
+
+  fromArray(array) {
+    this.encoded = new Uint8Array([...array])
+    this.decode()
+  }
+
   /**
    * @param {Buffer} encoded
    */
