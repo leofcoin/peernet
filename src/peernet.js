@@ -108,7 +108,7 @@ export default class Peernet {
    * @return {Array} peerId
    */
   get peers() {
-    return [...connections.values()]
+    return this.client.connections
   }
 
   /**
@@ -596,7 +596,7 @@ export default class Peernet {
   }
 
   async removePeer(peer) {
-    connections.delete(peer.id)
+    delete this.client.connections[peer.id]
   }
 
   get Buffer() {
