@@ -24,9 +24,9 @@
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "dependencies": {
     "@leofcoin/generate-account": "^1.0.2",
-    "@leofcoin/multi-wallet": "^2.1.1",
+    "@leofcoin/multi-wallet": "^2.1.2",
     "@leofcoin/peernet-swarm": "^0.1.9",
-    "@leofcoin/storage": "^2.2.0",
+    "@leofcoin/storage": "^2.3.0",
     "@vandeurenglenn/base32": "^1.1.0",
     "@vandeurenglenn/base58": "^1.1.0",
     "@vandeurenglenn/is-hex": "^1.0.0",
@@ -62,6 +62,7 @@
     "rollup-plugin-node-polyfills": "^0.2.1",
     "tape": "^5.2.2",
     "webpack": "^5.72.0",
-    "webpack-cli": "^4.9.2"
+    "webpack-cli": "^4.9.2",
+    "webpack-node-externals": "^3.0.0"
   }
 }

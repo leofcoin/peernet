@@ -18,8 +18,8 @@ export default class MessageHandler {
    */
   async hashAndSignMessage(message) {
     const hasher = new Hash(message, {name: 'peernet-message'})
-    const identity = await walletStore.get('identity')
-
+    let identity = await walletStore.get('identity')
+    identity = JSON.parse(new TextDecoder().decode(identity))
     const wallet = new MultiWallet(this.network)
     wallet.import(identity.multiWIF)
     return wallet.sign(hasher.hash.slice(0, 32))

@@ -23,6 +23,6 @@ pubsub.subscribe('peer:connected', async peer => {
   response = new globalThis.peernet.protos['peernet-response'](proto.decoded.data)
   console.log({response});
 
-  const block = JSON.parse(response.decoded.response)
+  const block = new TextDecoder().decode(response.decoded.response)
   console.log(block);
 })

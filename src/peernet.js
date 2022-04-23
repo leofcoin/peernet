@@ -175,19 +175,18 @@ export default class Peernet {
 
     try {
       const pub = await accountStore.get('public')
-      this.id = pub.walletId
+      this.id = JSON.parse(new TextDecoder().decode(pub)).walletId
     } catch (e) {
       if (e.code === 'ERR_NOT_FOUND') {
         const wallet = {}
         const {identity, accounts, config} = await generateAccount(this.network)
-        wallet.identity = identity
-        wallet.accounts = accounts
-        wallet.version = 1
-        walletStore.put(wallet)
-        await accountStore.put('config', config);
-        await accountStore.put('public', {walletId: wallet.identity.walletId});
+        walletStore.put('version', new TextEncoder().encode(1))
+        walletStore.put('accounts', new TextEncoder().encode(accounts))
+        walletStore.put('identity', new TextEncoder().encode(JSON.stringify(identity)))
+        await accountStore.put('config', new TextEncoder().encode(JSON.stringify(config)));
+        await accountStore.put('public', new TextEncoder().encode(JSON.stringify({walletId: identity.walletId})));
 
-        this.id = wallet.identity.walletId
+        this.id = identity.walletId
       } else {
         throw e
       }

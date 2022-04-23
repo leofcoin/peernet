@@ -12,7 +12,7 @@
 
       (async () => {
         const peernet = await new Peernet.default()
-        peernet.addRequestHandler('lastBlock', () => new peernet.protos['peernet-response']({response: 100}))
+        peernet.addRequestHandler('lastBlock', () => new peernet.protos['peernet-response']({response: new TextEncoder().encode(100)}))
       })()
     </script>
   </body>
