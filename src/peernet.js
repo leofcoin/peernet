@@ -257,6 +257,7 @@ export default class Peernet {
    * @param {PeernetPeer} peer - peernet peer
    */
   async _protoHandler(message, peer, from) {
+
     const {id, proto} = message
     this.bw.down += proto.encoded.length
 
@@ -309,8 +310,7 @@ export default class Peernet {
 
           this.bw.up += node.encoded.length
         }
-      } else if (proto.name === 'peernet-ps' &&
-                 this._getPeerId(peer.id) !== this.id.toString()) {
+      } else if (proto.name === 'peernet-ps' && peer.peerId !== this.id) {
         globalSub.publish(proto.decoded.topic.toString(), proto.decoded.data.toString())
       }
     // }
@@ -325,12 +325,11 @@ export default class Peernet {
     if (!hash) throw new Error('hash expected, received undefined')
     const data = new DHTMessage({hash})
     const clientId = this.client.id
-    for (const peer of this.connections) {
-      const node = await this.prepareMessage(peer.id, data.encoded)
-
-      const result = await peer.request(node.encoded)
-
-      let proto = protoFor(result.data)
+    const walk = async peer => {
+      const node = await this.prepareMessage(peer.peerId, data.encoded)
+      let result = await peer.request(node.encoded)
+      result = new Uint8Array(Object.values(result))
+      let proto = protoFor(result)
 
       if (proto.name !== 'peernet-message') throw encapsulatedError()
       const from = proto.decoded.from
@@ -354,7 +353,13 @@ export default class Peernet {
 
       if (proto.decoded.has) this.dht.addProvider(peerInfo, proto.decoded.hash)
     }
-    return
+    let walks = []
+    for (const peer of this.connections) {
+      if (peer.peerId !== this.id) {
+        walks.push(walk(peer))
+      }
+    }
+    return Promise.all(walks)
   }
 
   /**
@@ -425,7 +430,7 @@ export default class Peernet {
     const id = closestPeer.id.toString()
     if (this.connections) {
       let closest = this.connections.filter((peer) => {
-        if (peer.id === id) return peer
+        if (peer.peerId === id) return peer
       })
 
       let data = new DataMessage({hash, store: store.name ? store.name : store});
@@ -434,7 +439,7 @@ export default class Peernet {
       if (closest[0]) data = await closest[0].request(node.encoded)
       else {
         closest = this.connections.filter((peer) => {
-          if (peer.id === id) return peer
+          if (peer.peerId === id) return peer
         })
         if (closest[0]) data = await closest[0].request(node.encoded)
       }
@@ -578,8 +583,8 @@ export default class Peernet {
     data = new PsMessage({data, topic})
     for (const peer of this.connections) {
       if (peer.connected) {
-        if (peer.id !== this.peerId) {
-          const node = await this.prepareMessage(peer.id, data.encoded)
+        if (peer.peerId !== this.peerId) {
+          const node = await this.prepareMessage(peer.peerId, data.encoded)
           peer.send(new TextEncoder().encode(JSON.stringify({id, data: node.encoded})))
         }
       } else {
@@ -604,7 +609,7 @@ export default class Peernet {
   }
 
   async removePeer(peer) {
-    delete this.client.connections[peer.id]
+    delete this.client.connections[peer.peerId]
   }
 
   get Buffer() {
