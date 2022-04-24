@@ -22,7 +22,7 @@ export default class MessageHandler {
     identity = JSON.parse(new TextDecoder().decode(identity))
     const wallet = new MultiWallet(this.network)
     wallet.import(identity.multiWIF)
-    return wallet.sign(hasher.hash.slice(0, 32))
+    return wallet.sign(Buffer.from(hasher.hash).slice(0, 32))
   }
 
   /**

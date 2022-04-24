@@ -11,7 +11,7 @@ export default class PeernetHash {
     else this.name = 'disco-hash'
     if (options.codecs) this.codecs = options.codecs
     if (buffer) {
-      if (Buffer.isBuffer(buffer)) {
+      if (buffer instanceof Uint8Array) {
         this.discoCodec = new Codec(buffer, this.codecs)
         const name = this.discoCodec.name
 
@@ -35,13 +35,9 @@ export default class PeernetHash {
   get prefix() {
     const length = this.length
     const uint8Array = new Uint8Array(length.length + this.discoCodec.codecBuffer.length)
-    for (let i = 0; i < this.discoCodec.codecBuffer.length; i++) {
-      uint8Array[i] = this.discoCodec.codecBuffer[i]
-    }
+    uint8Array.set(length)
+    uint8Array.set(this.discoCodec.codecBuffer, length.length)
 
-    for (let i = uint8Array.length - 1; i < length.length; i++) {
-      uint8Array[i] = length[i]
-    }
     return uint8Array
   }
 
@@ -100,10 +96,11 @@ export default class PeernetHash {
 
     this.codec = this.discoCodec.encode();
     this.codec = this.discoCodec.codecBuffer
-    this.hash = Buffer.concat([
-      this.prefix,
-      this.digest,
-    ])
+    const uint8Array = new Uint8Array(this.digest.length + this.prefix.length)
+    uint8Array.set(this.prefix)
+    uint8Array.set(this.digest, this.prefix.length)
+
+    this.hash = uint8Array
 
     return this.hash
   }

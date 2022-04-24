@@ -2,7 +2,7 @@ export default {
   // just a hash
   'disco-hash': {
     codec: parseInt('30', 16),
-    hashAlg: 'dbl-keccak-512', // ,
+    hashAlg: 'dbl-keccak-256', // ,
     // testnet: 'olivia'
   },
   'peernet-peer-response': {
@@ -33,7 +33,7 @@ export default {
   // message
   'peernet-message': {
     codec: parseInt('706d65', 16),
-    hashAlg: 'keccak-512',
+    hashAlg: 'keccak-256',
   },
   // pubsub
   'peernet-ps': {
@@ -74,6 +74,6 @@ export default {
   // chat message
   'chat-message': {
     codec: parseInt('636d', 16),
-    hashAlg: 'dbl-keccak-512',
+    hashAlg: 'dbl-keccak-256',
   },
 }
