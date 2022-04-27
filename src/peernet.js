@@ -260,7 +260,6 @@ export default class Peernet {
 
     const {id, proto} = message
     this.bw.down += proto.encoded.length
-
       if (proto.name === 'peernet-dht') {
         let { hash, store } = proto.decoded
         let has;
@@ -330,11 +329,9 @@ export default class Peernet {
       let result = await peer.request(node.encoded)
       result = new Uint8Array(Object.values(result))
       let proto = protoFor(result)
-
       if (proto.name !== 'peernet-message') throw encapsulatedError()
       const from = proto.decoded.from
       proto = protoFor(proto.decoded.data)
-
       if (proto.name !== 'peernet-dht-response') throw dhtError(proto.name)
 
       // TODO: give ip and port (just used for location)
@@ -425,15 +422,15 @@ export default class Peernet {
     // get closest peer on earth
     const closestPeer = await this.dht.closestPeer(providers)
     // get peer instance by id
-    if (!closestPeer || !closestPeer.id) return this.requestData(hash, store.name ? store.name : store)
+    if (!closestPeer || !closestPeer.id) return this.requestData(hash, store?.name ? store?.name : store)
 
-    const id = closestPeer.id.toString()
+    const id = closestPeer.id
     if (this.connections) {
       let closest = this.connections.filter((peer) => {
         if (peer.peerId === id) return peer
       })
 
-      let data = new DataMessage({hash, store: store.name ? store.name : store});
+      let data = new DataMessage({hash, store: store?.name ? store?.name : store});
 
       const node = await this.prepareMessage(id, data.encoded)
       if (closest[0]) data = await closest[0].request(node.encoded)
@@ -443,12 +440,11 @@ export default class Peernet {
         })
         if (closest[0]) data = await closest[0].request(node.encoded)
       }
-      if (data.data) {
-        console.log(data.data);
-        let proto = protoFor(data.data)
-        proto = protoFor(proto.decoded.data)
-        return proto.decoded.data
-      }
+      data = new Uint8Array(Object.values(data))
+      let proto = protoFor(data)
+      proto = protoFor(proto.decoded.data)
+      // TODO: store data automaticly or not
+      return proto.decoded.data
 
       // this.put(hash, proto.decoded.data)
     }
@@ -542,7 +538,7 @@ export default class Peernet {
     if (store && await store.has(hash)) data = await store.get(hash)
     if (data) return data
 
-    return this.requestData(hash, store.name ? store.name : store)
+    return this.requestData(hash, store?.name ? store.name : store)
   }
 
   /**

@@ -8,6 +8,7 @@ pubsub.subscribe('peer:connected', async peer => {
           request:'lastBlock'
         })
   const to = peer.id
+  await peernet.data.put('hello', 'hi')
   console.log(request);
   const node = await peernet.prepareMessage(to, request.encoded)
   console.log({node});
@@ -25,4 +26,10 @@ pubsub.subscribe('peer:connected', async peer => {
 
   const block = new TextDecoder().decode(response.decoded.response)
   console.log(block);
+  const task = () => setTimeout(() => {
+    console.log(peernet.connections[0]?.connected);
+    console.log(pubsub.subscribers);
+    task()
+  }, 5000);
+  task()
 })
