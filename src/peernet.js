@@ -1,3 +1,4 @@
+import '@vandeurenglenn/debug'
 import Client from './../node_modules/@leofcoin/peernet-swarm/dist/es/client.js'
 import LeofcoinStorage from '@leofcoin/storage'
 import LeofcoinStorageClient from './http/client/storage.js'
@@ -16,7 +17,7 @@ import PeerDiscovery from './discovery/peer-discovery'
 import DHT from './dht/dht.js'
 import Hash from './hash/hash'
 import codecs from './codec/codecs'
-import { debug, protoFor, target } from './utils/utils.js'
+import { protoFor, target } from './utils/utils.js'
 import generateAccount from '@leofcoin/generate-account'
 import MessageHandler from './handlers/message.js'
 import { encapsulatedError, dhtError,

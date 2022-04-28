@@ -16,10 +16,6 @@ export const expected = (expected, actual) => {
       ${entries.join('\n\t')}`;
 }
 
-export const debug = (log) => {
-  if (globalThis.DEBUG || globalThis.debug) console.log(`%c ${log}`, 'color: #0080ff;')
-}
-
 export const protoFor = (data) => {
   if (!Buffer.isBuffer(data)) data = Buffer.from(data)
   const codec = new Codec(data)
