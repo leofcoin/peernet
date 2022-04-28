@@ -310,7 +310,7 @@ export default class Peernet {
           this.bw.up += node.encoded.length
         }
       } else if (proto.name === 'peernet-ps' && peer.peerId !== this.id) {
-        globalSub.publish(proto.decoded.topic.toString(), proto.decoded.data.toString())
+        globalSub.publish(new TextDecoder().decode(proto.decoded.topic), proto.decoded.data)
       }
     // }
   }
