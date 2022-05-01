@@ -121,6 +121,13 @@ export default class Peernet {
   }
 
   /**
+   * @return {String} id - peerId
+   */
+  getConnection(id) {
+    return this.client.connections[id]
+  }
+
+  /**
    * @private
    *
    * @param {Object} options
