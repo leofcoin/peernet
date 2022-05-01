@@ -139,7 +139,6 @@ export default class Peernet {
      * @type {Map}
      * @property {Object} peer Instance of Peer
      */
-    this.peerMap = new Map()
     this.stores = []
     this.requestProtos = {}
     this.storePrefix = options.storePrefix
@@ -237,14 +236,6 @@ export default class Peernet {
       globalThis.addEventListener('beforeunload', async () => this.client.close());
     }
     return this
-  }
-
-  _getPeerId(id) {
-    for (const entry of [...this.peerMap.entries()]) {
-      for (const _id of entry[1]) {
-        if (_id === id) return entry[0]
-      }
-    }
   }
 
   addRequestHandler(name, method) {
