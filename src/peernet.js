@@ -89,7 +89,7 @@ export default class Peernet {
       Storage = globalThis.LeofcoinStorage?.default ? globalThis.LeofcoinStorage.default : LeofcoinStorage
     }
     globalThis[`${name}Store`] = globalThis[`${name}Store`] ||
-      await new Storage(`${prefix}-${name}`, root)
+      await new Storage(name, root)
 
     globalThis[`${name}Store`].private = isPrivate
     if (!isPrivate) this.stores.push(name)
