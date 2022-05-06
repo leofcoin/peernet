@@ -287,7 +287,7 @@ export default class Peernet {
           data = await store.get(hash)
 
           if (data) {
-            data = new DataMessageResponse({hash, data: data.decoded ? new TextEncoder().encode(JSON.stringify(data.decoded)) : data});
+            data = new DataMessageResponse({hash, data});
 
             const node = await this.prepareMessage(from, data.encoded)
             peer.send(new TextEncoder().encode(JSON.stringify({id, data: node.encoded})))
@@ -298,8 +298,6 @@ export default class Peernet {
         }
 
       } else if (proto.name === 'peernet-request') {
-        // TODO: make dynamic
-        // exposeddevapi[proto.decoded.request](proto.decoded.params)
         const method = this.requestProtos[proto.decoded.request]
         if (method) {
           const data = await method()
