@@ -15,14 +15,14 @@ export default class FormatInterface {
     this.protoDecode = proto.decode
     this.hashFormat = options.hashFormat || 'bs32'
     if (options.name) this.name = options.name
-    if (buffer instanceof Uint8Array) return this.fromUint8Array(buffer)
-    else if (buffer instanceof ArrayBuffer) return this.fromArrayBuffer(buffer)
+    if (buffer instanceof Uint8Array) this.fromUint8Array(buffer)
+    else if (buffer instanceof ArrayBuffer) this.fromArrayBuffer(buffer)
     else if (buffer.name === options.name) return buffer
-    else if (typeof buffer === 'string') {
-        if (isHex(buffer)) this.fromHex(buffer)
-        else if (bs32.isBase32(buffer)) this.fromBs32(buffer)
-        else if (bs58.isBase58(buffer)) this.fromBs58(buffer)
-        else throw new Error(`unsupported string ${buffer}`)
+    else if (buffer instanceof String) {
+      if (isHex(buffer)) this.fromHex(buffer)
+      else if (bs32.isBase32(buffer)) this.fromBs32(buffer)
+      else if (bs58.isBase58(buffer)) this.fromBs58(buffer)
+      else throw new Error(`unsupported string ${buffer}`)
     } else {
       this.create(buffer)
     }
