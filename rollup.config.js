@@ -1,11 +1,7 @@
 import { execSync } from 'child_process';
 import lint from '@rollup/plugin-eslint'
-import resolve from '@rollup/plugin-node-resolve'
-import cjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 import modify from 'rollup-plugin-modify'
-import nativePlugin from 'rollup-plugin-natives';
-import polyfills from 'rollup-plugin-node-polyfills'
 
 try {
 	execSync('rm dist -r')
@@ -46,23 +42,10 @@ export default [{
 			"import fetch from 'node-fetch'": '',
 			HTTP_IMPORT: ``
 		}),
-		// nativePlugin(),
-		// polyfills(),
-		// resolve({
-		// 	preferBuiltins: true,
-		// 	mainFields: ["browser", "module", "main"],
-		// 	extensions: ['.mjs', '.js', '.json']
-		// }),
-		// cjs({
-		// 	exclude: ['*.node'],
-		// 	extensions: ['.js']
-		// }),
 		// lint({
 		//   fix: true,
 		// 	exclude: ['package.json', "package-lock.json"]
 		// })
-
-
 	]
 }, {
 	input: 'src/peernet.js',
