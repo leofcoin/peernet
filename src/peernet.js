@@ -86,7 +86,7 @@ export default class Peernet {
     if (this.hasDaemon) {
       Storage = LeofcoinStorageClient
     } else {
-      Storage = globalThis.LeofcoinStorage ? globalThis.LeofcoinStorage : LeofcoinStorage
+      Storage = globalThis.LeofcoinStorage?.default ? globalThis.LeofcoinStorage.default : LeofcoinStorage
     }
     globalThis[`${name}Store`] = globalThis[`${name}Store`] ||
       await new Storage(name, root)
