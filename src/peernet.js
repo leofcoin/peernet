@@ -249,6 +249,16 @@ export default class Peernet {
     this.requestProtos[name] = method
   }
 
+  sendMessage(peer, id, data) {
+    if (peer.readyState === 'open') {
+      peer.send(new TextEncoder().encode(JSON.stringify({id, data})))
+      this.bw.up += data.length
+    } else if (peer.readyState === 'closed') {
+      this.removePeer(peer)
+    }
+
+  }
+
   /**
    * @private
    *
@@ -273,8 +283,7 @@ export default class Peernet {
         const data = new DHTMessageResponse({hash, has})
         const node = await this.prepareMessage(from, data.encoded)
 
-        peer.send(new TextEncoder().encode(JSON.stringify({id, data: node.encoded})))
-        this.bw.up += node.encoded.length
+        sendMessage(peer, id, node.encoded)
       } else if (proto.name === 'peernet-data') {
         let { hash, store } = proto.decoded
         let data
@@ -290,8 +299,7 @@ export default class Peernet {
             data = new DataMessageResponse({hash, data});
 
             const node = await this.prepareMessage(from, data.encoded)
-            peer.send(new TextEncoder().encode(JSON.stringify({id, data: node.encoded})))
-            this.bw.up += node.encoded.length
+            sendMessage(peer, id, node.encoded)
           }
         } else {
           // ban (trying to access private st)
@@ -302,9 +310,7 @@ export default class Peernet {
         if (method) {
           const data = await method()
           const node = await this.prepareMessage(from, data.encoded)
-          peer.send(new TextEncoder().encode(JSON.stringify({id, data: node.encoded})))
-
-          this.bw.up += node.encoded.length
+          sendMessage(peer, id, node.encoded)
         }
       } else if (proto.name === 'peernet-ps' && peer.peerId !== this.id) {
         globalSub.publish(new TextDecoder().decode(proto.decoded.topic), proto.decoded.data)
@@ -575,13 +581,9 @@ export default class Peernet {
     const id = Math.random().toString(36).slice(-12)
     data = new PsMessage({data, topic})
     for (const peer of this.connections) {
-      if (peer.connected) {
-        if (peer.peerId !== this.peerId) {
-          const node = await this.prepareMessage(peer.peerId, data.encoded)
-          peer.send(new TextEncoder().encode(JSON.stringify({id, data: node.encoded})))
-        }
-      } else {
-        this.removePeer(peer)
+      if (peer.peerId !== this.peerId) {
+        const node = await this.prepareMessage(peer.peerId, data.encoded)
+        sendMessage(peer, id, node.encoded)
       }
       // TODO: if peer subscribed
     }
@@ -602,7 +604,7 @@ export default class Peernet {
   }
 
   async removePeer(peer) {
-    delete this.client.connections[peer.peerId]
+    return this.client.removePeer(peer)
   }
 
   get Buffer() {
