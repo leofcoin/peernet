@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 module.exports = [{
   entry: './src/peernet.js',
+  mode: 'production',
   plugins: [
     // Work around for Buffer is undefined:
     // https://github.com/webpack/changelog-v5/issues/10
@@ -14,7 +15,13 @@ module.exports = [{
   new webpack.DefinePlugin({
     HTTP_IMPORT: '',
 		"import fetch from 'node-fetch'": ''
-  })
+  }),
+  new webpack.IgnorePlugin({
+    checkResource(resource, context) {
+      if (resource.includes('./wordlists') && !resource.includes('english')) return true
+      // console.log(resource, context);
+    }
+  }) // bi39 wordlist (mnemonic) only english
 ],
 optimization: {
   minimize: false
@@ -27,7 +34,9 @@ resolve: {
           "stream": require.resolve("stream-browserify"),
           "buffer": require.resolve("buffer"),
           "path": require.resolve("path-browserify"),
-          "os": require.resolve("os-browserify")
+          "os": require.resolve("os-browserify"),
+          "crypto": require.resolve("crypto-browserify"),
+          "vm": require.resolve("vm-browserify")
         }
     },
   output: {

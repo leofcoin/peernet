@@ -27,7 +27,8 @@ export default [{
 			} else {
 				const http = await import('./http/http.js')
 	      if (environment !== 'browser') http.default(options)
-	    }`
+	    }`,
+			SUBTLE_IMPORT: `const { subtle } = require('crypto').webcrypto`
 		})
 	]
 }, {
@@ -40,7 +41,8 @@ export default [{
 		json(),
 		modify({
 			"import fetch from 'node-fetch'": '',
-			HTTP_IMPORT: ``
+			HTTP_IMPORT: ``,
+			SUBTLE_IMPORT: `const { subtle } = crypto`
 		}),
 		// lint({
 		//   fix: true,
@@ -54,6 +56,11 @@ export default [{
 		format: 'es'
 	},
 	plugins: [
-		json()
+		json(),
+		modify({
+			"import fetch from 'node-fetch'": '',
+			HTTP_IMPORT: ``,
+			SUBTLE_IMPORT: `const { subtle } = crypto`
+		}),
 	]
 }]
