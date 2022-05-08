@@ -1,6 +1,6 @@
 {
   "name": "@leofcoin/peernet",
-  "version": "0.11.15",
+  "version": "0.11.16",
   "description": "",
   "main": "dist/commonjs/peernet.js",
   "module": "dist/module/peernet.js",
