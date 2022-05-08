@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 module.exports = [{
-  entry: './src/peernet.js',
+  entry: './dist/browser/peernet.js',
   mode: 'production',
   plugins: [
     // Work around for Buffer is undefined:

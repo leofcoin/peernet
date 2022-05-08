@@ -6,7 +6,7 @@
   "module": "dist/module/peernet.js",
   "browser": "dist/browser/peernet.js",
   "scripts": {
-    "build": "webpack",
+    "build": "npm run c && webpack",
     "test": "node test/index.js",
     "server": "discovery-swarm-webrtc --port=4000",
     "demo": "jsproject --serve ./ --port 6868",

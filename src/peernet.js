@@ -18,7 +18,7 @@ import DHT from './dht/dht.js'
 import Hash from './hash/hash'
 import codecs from './codec/codecs'
 import { protoFor, target } from './utils/utils.js'
-import generateAccount from '@leofcoin/generate-account'
+import generateAccount from './../node_modules/@leofcoin/generate-account/dist/module/generate-account'
 import MessageHandler from './handlers/message.js'
 import { encapsulatedError, dhtError,
   nothingFoundError } from './errors/errors.js'
@@ -283,7 +283,7 @@ export default class Peernet {
         const data = new DHTMessageResponse({hash, has})
         const node = await this.prepareMessage(from, data.encoded)
 
-        sendMessage(peer, id, node.encoded)
+        this.sendMessage(peer, id, node.encoded)
       } else if (proto.name === 'peernet-data') {
         let { hash, store } = proto.decoded
         let data
@@ -299,7 +299,7 @@ export default class Peernet {
             data = new DataMessageResponse({hash, data});
 
             const node = await this.prepareMessage(from, data.encoded)
-            sendMessage(peer, id, node.encoded)
+            this.sendMessage(peer, id, node.encoded)
           }
         } else {
           // ban (trying to access private st)
@@ -310,7 +310,7 @@ export default class Peernet {
         if (method) {
           const data = await method()
           const node = await this.prepareMessage(from, data.encoded)
-          sendMessage(peer, id, node.encoded)
+          this.sendMessage(peer, id, node.encoded)
         }
       } else if (proto.name === 'peernet-ps' && peer.peerId !== this.id) {
         globalSub.publish(new TextDecoder().decode(proto.decoded.topic), proto.decoded.data)
@@ -583,7 +583,7 @@ export default class Peernet {
     for (const peer of this.connections) {
       if (peer.peerId !== this.peerId) {
         const node = await this.prepareMessage(peer.peerId, data.encoded)
-        sendMessage(peer, id, node.encoded)
+        this.sendMessage(peer, id, node.encoded)
       }
       // TODO: if peer subscribed
     }

@@ -21,7 +21,7 @@ export default class MessageHandler {
     let identity = await walletStore.get('identity')
     identity = JSON.parse(new TextDecoder().decode(identity))
     const wallet = new MultiWallet(this.network)
-    wallet.import(identity.multiWIF)
+    wallet.recover(identity.mnemonic)
     return wallet.sign(Buffer.from(hasher.hash).slice(0, 32))
   }
 
