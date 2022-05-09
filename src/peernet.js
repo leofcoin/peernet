@@ -20,6 +20,7 @@ import codecs from './codec/codecs'
 import { protoFor, target } from './utils/utils.js'
 import generateAccount from './../node_modules/@leofcoin/generate-account/dist/module/generate-account'
 import MessageHandler from './handlers/message.js'
+import dataHandler from './handlers/data.js'
 import { encapsulatedError, dhtError,
   nothingFoundError } from './errors/errors.js'
 
@@ -220,19 +221,11 @@ export default class Peernet {
       // })
     })
 
-    pubsub.subscribe('peer:data', async message => {
-      if (!message.data) return
-      const {id, data} = JSON.parse(new TextDecoder().decode(message.data))
-      const uint8Array = new Uint8Array(Object.keys(data).length)
-      for (var i = 0; i < Object.keys(data).length; i++) {
-        uint8Array[i] = data[i]
-      }
-      message = new PeernetMessage(uint8Array)
-      const proto = protoFor(message.decoded.data)
-
-      const from = message.decoded.from
-      this._protoHandler({id, proto}, this.client.connections[from], from)
-    })
+    /**
+     * converts data -> message -> proto
+     * @see DataHandler
+     */
+    pubsub.subscribe('peer:data', dataHandler)
 
     /**
      * @access public
@@ -251,10 +244,10 @@ export default class Peernet {
 
   sendMessage(peer, id, data) {
     if (peer.readyState === 'open') {
-      peer.send(new TextEncoder().encode(JSON.stringify({id, data})))
+      peer.send(data, id)
       this.bw.up += data.length
     } else if (peer.readyState === 'closed') {
-      this.removePeer(peer)
+      // this.removePeer(peer)
     }
 
   }
