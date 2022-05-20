@@ -9,9 +9,9 @@ try {
 
 }
 export default [{
-	input: ['src/peernet.js', 'src/codec/codec.js', 'src/hash/hash.js', 'src/messages/dht.js',
+	input: ['src/peernet.js', 'src/messages/dht.js',
 'src/messages/peernet-message.js', 'src/messages/dht-response.js', 'src/messages/request.js',
-'src/messages/response.js', 'src/codec/codec-format-interface.js'],
+'src/messages/response.js'],
 	output: {
 		dir: 'dist/commonjs',
 		format: 'cjs'

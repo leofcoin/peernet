@@ -1,8 +1,8 @@
 import protons from 'protons'
 import proto from './../proto/dht-response.proto.js'
-import CodecFormat from './../codec/codec-format-interface.js'
+import { FormatInterface } from '@leofcoin/codec-format-interface'
 
-export default class DHTMessageResponse extends CodecFormat {
+export default class DHTMessageResponse extends FormatInterface {
   get keys() {
     return ['hash', 'has']
   }

@@ -1,8 +1,8 @@
 import protons from 'protons'
 import proto from './../proto/peer-response.proto.js'
-import CodecFormat from './../codec/codec-format-interface.js'
+import { FormatInterface } from '@leofcoin/codec-format-interface'
 
-export default class PeerMessageResponse extends CodecFormat {
+export default class PeerMessageResponse extends FormatInterface {
   get keys() {
     return ['id']
   }

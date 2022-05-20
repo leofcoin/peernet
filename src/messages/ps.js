@@ -1,8 +1,8 @@
 import protons from 'protons'
 import proto from './../proto/ps.proto.js'
-import CodecFormat from './../codec/codec-format-interface.js'
+import { FormatInterface } from '@leofcoin/codec-format-interface'
 
-export default class PsMessage extends CodecFormat {
+export default class PsMessage extends FormatInterface {
   get keys() {
     return ['data', 'topic']
   }

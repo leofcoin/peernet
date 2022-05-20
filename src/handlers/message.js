@@ -1,5 +1,5 @@
 import MultiWallet from './../../node_modules/@leofcoin/multi-wallet/src/index'
-import Hash from './../hash/hash.js'
+import { CodecHash as Hash } from '@leofcoin/codec-format-interface'
 import PeernetMessage from './../messages/peernet-message.js'
 
 export default class MessageHandler {

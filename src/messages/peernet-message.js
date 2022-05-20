@@ -1,8 +1,8 @@
 import protons from 'protons'
 import proto from './../proto/peernet.proto.js'
-import CodecFormat from './../codec/codec-format-interface.js'
+import { FormatInterface } from '@leofcoin/codec-format-interface'
 
-export default class PeernetMessage extends CodecFormat {
+export default class PeernetMessage extends FormatInterface {
   get keys() {
     return ['data', 'signature', 'from', 'to', 'id']
   }

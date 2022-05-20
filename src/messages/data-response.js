@@ -1,8 +1,8 @@
 import protons from 'protons'
 import proto from './../proto/data-response.proto.js'
-import CodecFormat from './../codec/codec-format-interface.js'
+import { FormatInterface } from '@leofcoin/codec-format-interface'
 
-export default class DataMessageResponse extends CodecFormat {
+export default class DataMessageResponse extends FormatInterface {
   get keys() {
     return ['hash', 'data']
   }

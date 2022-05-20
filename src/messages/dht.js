@@ -1,6 +1,6 @@
 import protons from 'protons'
 import proto from './../proto/dht.proto.js'
-import CodecFormat from './../codec/codec-format-interface.js'
+import { FormatInterface } from '@leofcoin/codec-format-interface'
 
 /**
  * @example `
@@ -10,7 +10,7 @@ import CodecFormat from './../codec/codec-format-interface.js'
    message = new DHTMessage('hashmvbs124xcfd...', 'block')
  `
  */
-export default class DHTMessage extends CodecFormat {
+export default class DHTMessage extends FormatInterface {
   /**
    *
    */

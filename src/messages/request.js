@@ -1,8 +1,8 @@
 import protons from 'protons'
 import proto from './../proto/request.proto.js'
-import CodecFormat from './../codec/codec-format-interface.js'
+import { FormatInterface } from '@leofcoin/codec-format-interface'
 
-export default class RequestMessage extends CodecFormat {
+export default class RequestMessage extends FormatInterface {
   get keys() {
     return ['request']
   }

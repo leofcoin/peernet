@@ -1,5 +1,6 @@
 import fetch from 'node-fetch'
-import Codec from './../codec/codec.js'
+
+import { Codec } from '@leofcoin/codec-format-interface'
 
 export const expected = (expected, actual) => {
   const rule = (entry) => {
