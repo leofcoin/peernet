@@ -26,7 +26,7 @@
     "@leofcoin/codec-format-interface": "^1.0.1",
     "@leofcoin/generate-account": "^1.0.2",
     "@leofcoin/multi-wallet": "^2.1.2",
-    "@leofcoin/peernet-swarm": "^0.3.0",
+    "@leofcoin/peernet-swarm": "^0.3.1",
     "@leofcoin/storage": "^2.3.0",
     "@vandeurenglenn/base32": "^1.1.0",
     "@vandeurenglenn/base58": "^1.1.0",
