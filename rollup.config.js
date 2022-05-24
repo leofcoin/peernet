@@ -19,15 +19,7 @@ export default [{
 	plugins: [
 		json(),
 		modify({
-			HTTP_IMPORT: `if (this.hasDaemon) {
-				const httpClient = await import('./http/client/client.js')
-				globalThis.peernet.client = await httpClient.default({
-					protocol: 'peernet-v0.1.0', host: '127.0.0.1', port: options.port
-				})
-			} else {
-				const http = await import('./http/http.js')
-	      if (environment !== 'browser') http.default(options)
-	    }`,
+			HTTP_IMPORT: ``,
 			SUBTLE_IMPORT: `const { subtle } = require('crypto').webcrypto`
 		})
 	]
