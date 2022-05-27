@@ -197,7 +197,7 @@ export default class Peernet {
         const wallet = {}
         const {identity, accounts, config} = await generateAccount(this.network)
         walletStore.put('version', new TextEncoder().encode(1))
-        walletStore.put('accounts', new TextEncoder().encode(accounts))
+        walletStore.put('accounts', new TextEncoder().encode(JSON.stringify(accounts)))
         walletStore.put('identity', new TextEncoder().encode(JSON.stringify(identity)))
         await accountStore.put('config', new TextEncoder().encode(JSON.stringify(config)));
         await accountStore.put('public', new TextEncoder().encode(JSON.stringify({walletId: identity.walletId})));
