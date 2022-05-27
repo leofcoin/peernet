@@ -1,7 +1,6 @@
 import '@vandeurenglenn/debug'
 import Client from './../node_modules/@leofcoin/peernet-swarm/dist/es/client.js'
 import LeofcoinStorage from '@leofcoin/storage'
-import LeofcoinStorageClient from './http/client/storage.js'
 import PeernetMessage from './messages/peernet-message.js'
 import DHTMessage from './messages/dht.js'
 import DHTMessageResponse from './messages/dht-response.js'
@@ -191,6 +190,8 @@ export default class Peernet {
     try {
       const pub = await accountStore.get('public')
       this.id = JSON.parse(new TextDecoder().decode(pub)).walletId
+      const accounts = await walletStore.get('accounts')
+      this.accounts = JSON.parse(new TextDecoder().decode(accounts))
     } catch (e) {
       if (e.code === 'ERR_NOT_FOUND') {
         const wallet = {}
