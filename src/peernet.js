@@ -190,7 +190,17 @@ export default class Peernet {
     try {
       const pub = await accountStore.get('public')
       this.id = JSON.parse(new TextDecoder().decode(pub)).walletId
-      const accounts = await walletStore.get('accounts')
+      let accounts = await walletStore.get('accounts')
+      accounts = new TextDecoder().decode(accounts)
+
+      // fixing account issue (string while needs to be a JSON)
+      // TODO: remove when on mainnet
+      try {
+        accounts = JSON.parse(new TextDecoder().decode(accounts))
+      } catch (e) {
+        accounts = [accounts.split(',')]
+      }
+
       this.accounts = JSON.parse(new TextDecoder().decode(accounts))
     } catch (e) {
       if (e.code === 'ERR_NOT_FOUND') {
