@@ -196,12 +196,10 @@ export default class Peernet {
       // fixing account issue (string while needs to be a JSON)
       // TODO: remove when on mainnet
       try {
-        accounts = JSON.parse(new TextDecoder().decode(accounts))
+        this.accounts = JSON.parse(account)
       } catch (e) {
-        accounts = [accounts.split(',')]
+        this.accounts = [accounts.split(',')]
       }
-
-      this.accounts = JSON.parse(new TextDecoder().decode(accounts))
     } catch (e) {
       if (e.code === 'ERR_NOT_FOUND') {
         const wallet = {}
