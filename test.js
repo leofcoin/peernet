@@ -4,7 +4,7 @@ const client = new Client({root: '.peernet/test'})
 
 pubsub.subscribe('peer:connected', async peer => {
   chainStore.put('localBlock', '00000')
-  const request = new globalThis.peernet.protos['peernet-request']({
+  const request = await new globalThis.peernet.protos['peernet-request']({
           request:'lastBlock'
         })
   const to = peer.id
@@ -19,9 +19,9 @@ pubsub.subscribe('peer:connected', async peer => {
   for (const key of keys) {
     uint8Array[Number(key)] = response[key]
   }
-  const proto = new globalThis.peernet.protos['peernet-message'](uint8Array)
+  const proto = await new globalThis.peernet.protos['peernet-message'](uint8Array)
   console.log(proto.decoded.data);
-  response = new globalThis.peernet.protos['peernet-response'](proto.decoded.data)
+  response = await new globalThis.peernet.protos['peernet-response'](proto.decoded.data)
   console.log({response});
 
   const block = new TextDecoder().decode(response.decoded.response)

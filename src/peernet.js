@@ -1,4 +1,5 @@
 import '@vandeurenglenn/debug'
+import PubSub from '@vandeurenglenn/little-pubsub'
 import PeerDiscovery from './discovery/peer-discovery'
 import DHT from './dht/dht.js'
 import { CodecHash, codecs} from '@leofcoin/codec-format-interface'
@@ -9,6 +10,7 @@ import { encapsulatedError, dhtError,
   nothingFoundError } from './errors/errors.js'
 
 globalThis.leofcoin = globalThis.leofcoin || {}
+globalThis.pubsub = globalThis.pubsub || new PubSub()
 globalThis.globalSub = globalThis.globalSub || new PubSub({verbose: true})
 
 /**
@@ -55,16 +57,12 @@ export default class Peernet {
     return ['account', 'wallet', 'block', 'transaction', 'chain', 'data', 'message']
   }
 
-  get protos() {
-    return globalThis.peernet.protos
-  }
-
   get codecs() {
     return codecs
   }
 
   addProto(name, proto) {
-    if (!this.protos[name]) this.protos[name] = proto
+    if (!globalThis.peernet.protos[name]) globalThis.peernet.protos[name] = proto
   }
 
   addCodec(name, codec) {
@@ -294,7 +292,7 @@ export default class Peernet {
           if (store.private) has = false
           else has = await store.has(hash)
         }
-        const data = await new this.protos['peernet-dht-response']({hash, has})
+        const data = await new globalThis.peernet.protos['peernet-dht-response']({hash, has})
         const node = await this.prepareMessage(from, data.encoded)
 
         this.sendMessage(peer, id, node.encoded)
@@ -310,7 +308,7 @@ export default class Peernet {
           data = await store.get(hash)
 
           if (data) {
-            data = await new this.protos['peernet-data-response']({hash, data});
+            data = await new globalThis.peernet.protos['peernet-data-response']({hash, data});
 
             const node = await this.prepareMessage(from, data.encoded)
             this.sendMessage(peer, id, node.encoded)
@@ -339,7 +337,7 @@ export default class Peernet {
    */
   async walk(hash) {
     if (!hash) throw new Error('hash expected, received undefined')
-    const data = await new this.protos['peernet-dht']({hash})
+    const data = await new globalThis.peernet.protos['peernet-dht']({hash})
     const clientId = this.client.id
     const walk = async peer => {
       const node = await this.prepareMessage(peer.peerId, data.encoded)
@@ -447,7 +445,7 @@ export default class Peernet {
         if (peer.peerId === id) return peer
       })
 
-      let data = await new this.protos['peernet-data']({hash, store: store?.name ? store?.name : store});
+      let data = await new globalThis.peernet.protos['peernet-data']({hash, store: store?.name ? store?.name : store});
 
       const node = await this.prepareMessage(id, data.encoded)
       if (closest[0]) data = await closest[0].request(node.encoded)
@@ -593,7 +591,7 @@ export default class Peernet {
     if (topic instanceof Uint8Array === false) topic = new TextEncoder().encode(topic)
     if (data instanceof Uint8Array === false) data = new TextEncoder().encode(JSON.stringify(data))
     const id = Math.random().toString(36).slice(-12)
-    data = await new this.protos['peernet-ps']({data, topic})
+    data = await new globalThis.peernet.protos['peernet-ps']({data, topic})
     for (const peer of this.connections) {
       if (peer.peerId !== this.peerId) {
         const node = await this.prepareMessage(peer.peerId, data.encoded)
