@@ -1,22 +1,8 @@
 import '@vandeurenglenn/debug'
-import Client from './../node_modules/@leofcoin/peernet-swarm/dist/es/client.js'
-import LeofcoinStorage from '@leofcoin/storage'
-import PeernetMessage from './messages/peernet-message.js'
-import DHTMessage from './messages/dht.js'
-import DHTMessageResponse from './messages/dht-response.js'
-import DataMessage from './messages/data.js'
-import PsMessage from './messages/ps.js'
-import PeerMessage from './messages/peer.js'
-import RequestMessage from './messages/request.js'
-import ResponseMessage from './messages/response.js'
-import PeerMessageResponse from './messages/peer-response.js'
-import DataMessageResponse from './messages/data-response.js'
-import ChatMessage from './messages/chat-message.js'
 import PeerDiscovery from './discovery/peer-discovery'
 import DHT from './dht/dht.js'
-import { CodecHash as Hash, codecs} from '@leofcoin/codec-format-interface'
+import { CodecHash, codecs} from '@leofcoin/codec-format-interface'
 import { protoFor, target } from './utils/utils.js'
-import generateAccount from './../node_modules/@leofcoin/generate-account/dist/module/generate-account'
 import MessageHandler from './handlers/message.js'
 import dataHandler from './handlers/data.js'
 import { encapsulatedError, dhtError,
@@ -86,6 +72,10 @@ export default class Peernet {
   }
 
   async addStore(name, prefix, root, isPrivate = true) {
+    if (!globalThis.LeofcoinStorage) {
+      const importee = await import(/* webpackChunkName: "storage" */ '@leofcoin/storage')
+      globalThis.LeofcoinStorage = importee.default
+    }
     if (name === 'block' || name === 'transaction' || name === 'chain' ||
         name === 'data' || name === 'message') isPrivate = false
 
@@ -93,7 +83,7 @@ export default class Peernet {
     if (this.hasDaemon) {
       Storage = LeofcoinStorageClient
     } else {
-      Storage = globalThis.LeofcoinStorage?.default ? globalThis.LeofcoinStorage.default : LeofcoinStorage
+      Storage = LeofcoinStorage
     }
     globalThis[`${name}Store`] = globalThis[`${name}Store`] ||
       await new Storage(name, root)
@@ -158,6 +148,20 @@ export default class Peernet {
     this.storePrefix = options.storePrefix
     this.root = options.root
 
+    const {
+      RequestMessage,
+      ResponseMessage,
+      PeerMessage,
+      PeerMessageResponse,
+      PeernetMessage,
+      DHTMessage,
+      DHTMessageResponse,
+      DataMessage,
+      DataMessageResponse,
+      PsMessage,
+      ChatMessage
+    } = await import(/* webpackChunkName: "messages" */ './messages.js')
+
     /**
      * proto Object containing protos
      * @type {Object}
@@ -167,6 +171,7 @@ export default class Peernet {
      * @property {DataMessage} protos[peernet-data] messageNode
      * @property {DataMessageResponse} protos[peernet-data-response] messageNode
      */
+
     globalThis.peernet.protos = {
       'peernet-request': RequestMessage,
       'peernet-response': ResponseMessage,
@@ -205,6 +210,9 @@ export default class Peernet {
       }
     } catch (e) {
       if (e.code === 'ERR_NOT_FOUND') {
+
+        const importee = await import(/* webpackChunkName: "generate-account" */ '@leofcoin/generate-account')
+        const generateAccount = importee.default
         const wallet = {}
         const {identity, accounts, config} = await generateAccount(this.network)
         walletStore.put('version', new TextEncoder().encode(1))
@@ -238,11 +246,13 @@ export default class Peernet {
      */
     pubsub.subscribe('peer:data', dataHandler)
 
+
+    const importee = await import(/* webpackChunkName: "peernet-swarm" */ '@leofcoin/peernet-swarm')
     /**
      * @access public
      * @type {PeernetClient}
      */
-    this.client = new Client(this.id)
+    this.client = new importee.default(this.id)
     if (globalThis.onbeforeunload) {
       globalThis.addEventListener('beforeunload', async () => this.client.close());
     }
@@ -284,7 +294,7 @@ export default class Peernet {
           if (store.private) has = false
           else has = await store.has(hash)
         }
-        const data = await new DHTMessageResponse({hash, has})
+        const data = await new this.protos['peernet-dht-response']({hash, has})
         const node = await this.prepareMessage(from, data.encoded)
 
         this.sendMessage(peer, id, node.encoded)
@@ -300,7 +310,7 @@ export default class Peernet {
           data = await store.get(hash)
 
           if (data) {
-            data = await new DataMessageResponse({hash, data});
+            data = await new this.protos['peernet-data-response']({hash, data});
 
             const node = await this.prepareMessage(from, data.encoded)
             this.sendMessage(peer, id, node.encoded)
@@ -329,7 +339,7 @@ export default class Peernet {
    */
   async walk(hash) {
     if (!hash) throw new Error('hash expected, received undefined')
-    const data = await new DHTMessage({hash})
+    const data = await new this.protos['peernet-dht']({hash})
     const clientId = this.client.id
     const walk = async peer => {
       const node = await this.prepareMessage(peer.peerId, data.encoded)
@@ -437,7 +447,7 @@ export default class Peernet {
         if (peer.peerId === id) return peer
       })
 
-      let data = await new DataMessage({hash, store: store?.name ? store?.name : store});
+      let data = await new this.protos['peernet-data']({hash, store: store?.name ? store?.name : store});
 
       const node = await this.prepareMessage(id, data.encoded)
       if (closest[0]) data = await closest[0].request(node.encoded)
@@ -583,7 +593,7 @@ export default class Peernet {
     if (topic instanceof Uint8Array === false) topic = new TextEncoder().encode(topic)
     if (data instanceof Uint8Array === false) data = new TextEncoder().encode(JSON.stringify(data))
     const id = Math.random().toString(36).slice(-12)
-    data = await new PsMessage({data, topic})
+    data = await new this.protos['peernet-ps']({data, topic})
     for (const peer of this.connections) {
       if (peer.peerId !== this.peerId) {
         const node = await this.prepareMessage(peer.peerId, data.encoded)
@@ -594,7 +604,7 @@ export default class Peernet {
   }
 
   createHash(data, name) {
-    return new Hash(data, {name})
+    return new CodeHash(data, {name})
   }
 
   /**

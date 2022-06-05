@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 module.exports = [{
-  entry: './dist/browser/peernet.js',
+  entry: './src/peernet.js',
   mode: 'production',
   plugins: [
     // Work around for Buffer is undefined:
@@ -26,6 +26,9 @@ module.exports = [{
 optimization: {
   minimize: false
 },
+experiments: {
+  outputModule: true
+},
 resolve: {
         extensions: [ '.ts', '.js' ],
         fallback: {
@@ -41,9 +44,9 @@ resolve: {
     },
   output: {
     library: {
-      name: 'Peernet',
-      type: 'global'
+      type: 'module'
     },
+    chunkFilename: '[name].js',
     filename: 'peernet.js',
     path: path.resolve(__dirname, 'dist', 'browser'),
   },
