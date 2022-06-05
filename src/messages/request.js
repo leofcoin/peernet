@@ -1,4 +1,3 @@
-import protons from 'protons'
 import proto from './../proto/request.proto.js'
 import { FormatInterface } from '@leofcoin/codec-format-interface'
 
@@ -7,8 +6,12 @@ export default class RequestMessage extends FormatInterface {
     return ['request']
   }
 
+  get messageName() {
+    return 'PeernetRequestMessage'
+  }
+
   constructor(data) {
     const name = 'peernet-request'
-    super(data, protons(proto).PeernetRequestMessage, {name})
+    super(data, proto, {name})
   }
 }

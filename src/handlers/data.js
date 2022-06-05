@@ -5,8 +5,8 @@ const dataHandler = async message => {
 
   const {data, id} = message
 
-  message = protoFor(data)
-  const proto = protoFor(message.decoded.data)
+  message = await protoFor(data)
+  const proto = await protoFor(message.decoded.data)
   const from = message.decoded.from
 
   peernet._protoHandler({id, proto}, peernet.client.connections[from], from)

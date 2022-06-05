@@ -1,4 +1,3 @@
-import protons from 'protons'
 import proto from './../proto/dht.proto.js'
 import { FormatInterface } from '@leofcoin/codec-format-interface'
 
@@ -18,8 +17,12 @@ export default class DHTMessage extends FormatInterface {
     return ['hash', 'store']
   }
 
+  get messageName() {
+    return 'PeernetDHTMessage'
+  }
+
   constructor(data) {
     const name = 'peernet-dht'
-    super(data, protons(proto).PeernetDHTMessage, {name})
+    super(data, proto, {name})
   }
 }

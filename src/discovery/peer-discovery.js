@@ -18,12 +18,12 @@ export default class PeerDiscovery {
   async discover(peer) {
     let id = this._getPeerId(peer.id)
     if (id) return id
-    const data = new peernet.protos['peernet-peer']({id: this.id})
+    const data = await new peernet.protos['peernet-peer']({id: this.id})
     const node = await peernet.prepareMessage(peer.id, data.encoded)
 
     let response = await peer.request(node.encoded)
-    response = protoFor(response)
-    response = new peernet.protos['peernet-peer-response'](response.decoded.data)
+    response = await protoFor(response)
+    response = await new peernet.protos['peernet-peer-response'](response.decoded.data)
 
     id = response.decoded.id
     if (id === this.id) return;
@@ -54,7 +54,7 @@ export default class PeerDiscovery {
           peernet.peerMap.set(from, connections)
         }
       }
-      const data = new peernet.protos['peernet-peer-response']({id: this.id})
+      const data = await new peernet.protos['peernet-peer-response']({id: this.id})
       const node = await peernet.prepareMessage(from, data.encoded)
 
       peer.write(Buffer.from(JSON.stringify({id, data: node.encoded})))

@@ -69,6 +69,14 @@ export default class Peernet {
     return ['account', 'wallet', 'block', 'transaction', 'chain', 'data', 'message']
   }
 
+  get protos() {
+    return globalThis.peernet.protos
+  }
+
+  get codecs() {
+    return codecs
+  }
+
   addProto(name, proto) {
     if (!this.protos[name]) this.protos[name] = proto
   }
@@ -173,15 +181,10 @@ export default class Peernet {
       'chat-message': ChatMessage,
     }
 
-    this.protos = globalThis.peernet.protos
-    this.codecs = codecs
-
     this._messageHandler = new MessageHandler(this.network)
 
     const {daemon, environment} = await target()
     this.hasDaemon = daemon
-
-    HTTP_IMPORT
 
     for (const store of this.defaultStores) {
       await this.addStore(store, options.storePrefix, options.root)
@@ -281,7 +284,7 @@ export default class Peernet {
           if (store.private) has = false
           else has = await store.has(hash)
         }
-        const data = new DHTMessageResponse({hash, has})
+        const data = await new DHTMessageResponse({hash, has})
         const node = await this.prepareMessage(from, data.encoded)
 
         this.sendMessage(peer, id, node.encoded)
@@ -297,7 +300,7 @@ export default class Peernet {
           data = await store.get(hash)
 
           if (data) {
-            data = new DataMessageResponse({hash, data});
+            data = await new DataMessageResponse({hash, data});
 
             const node = await this.prepareMessage(from, data.encoded)
             this.sendMessage(peer, id, node.encoded)
@@ -326,16 +329,16 @@ export default class Peernet {
    */
   async walk(hash) {
     if (!hash) throw new Error('hash expected, received undefined')
-    const data = new DHTMessage({hash})
+    const data = await new DHTMessage({hash})
     const clientId = this.client.id
     const walk = async peer => {
       const node = await this.prepareMessage(peer.peerId, data.encoded)
       let result = await peer.request(node.encoded)
       result = new Uint8Array(Object.values(result))
-      let proto = protoFor(result)
+      let proto = await protoFor(result)
       if (proto.name !== 'peernet-message') throw encapsulatedError()
       const from = proto.decoded.from
-      proto = protoFor(proto.decoded.data)
+      proto = await protoFor(proto.decoded.data)
       if (proto.name !== 'peernet-dht-response') throw dhtError(proto.name)
 
       // TODO: give ip and port (just used for location)
@@ -434,7 +437,7 @@ export default class Peernet {
         if (peer.peerId === id) return peer
       })
 
-      let data = new DataMessage({hash, store: store?.name ? store?.name : store});
+      let data = await new DataMessage({hash, store: store?.name ? store?.name : store});
 
       const node = await this.prepareMessage(id, data.encoded)
       if (closest[0]) data = await closest[0].request(node.encoded)
@@ -445,8 +448,8 @@ export default class Peernet {
         if (closest[0]) data = await closest[0].request(node.encoded)
       }
       data = new Uint8Array(Object.values(data))
-      let proto = protoFor(data)
-      proto = protoFor(proto.decoded.data)
+      let proto = await protoFor(data)
+      proto = await protoFor(proto.decoded.data)
       // TODO: store data automaticly or not
       return proto.decoded.data
 
@@ -580,7 +583,7 @@ export default class Peernet {
     if (topic instanceof Uint8Array === false) topic = new TextEncoder().encode(topic)
     if (data instanceof Uint8Array === false) data = new TextEncoder().encode(JSON.stringify(data))
     const id = Math.random().toString(36).slice(-12)
-    data = new PsMessage({data, topic})
+    data = await new PsMessage({data, topic})
     for (const peer of this.connections) {
       if (peer.peerId !== this.peerId) {
         const node = await this.prepareMessage(peer.peerId, data.encoded)

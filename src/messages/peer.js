@@ -1,4 +1,3 @@
-import protons from 'protons'
 import proto from './../proto/peer.proto.js'
 import { FormatInterface } from '@leofcoin/codec-format-interface'
 
@@ -7,8 +6,12 @@ export default class PeerMessage extends FormatInterface {
     return ['id']
   }
 
+  get messageName() {
+    return 'PeernetPeerMessage'
+  }
+
   constructor(data) {
     const name = 'peernet-peer'
-    super(data, protons(proto).PeernetPeerMessage, {name})
+    super(data, proto, {name})
   }
 }

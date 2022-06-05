@@ -1,4 +1,3 @@
-import protons from 'protons'
 import proto from './../proto/data.proto.js'
 import { FormatInterface } from '@leofcoin/codec-format-interface'
 
@@ -9,10 +8,14 @@ export default class DataMessage extends FormatInterface {
   get keys() {
     return ['hash', 'store']
   }
+
+  get messageName() {
+    return 'PeernetDataMessage'
+  }
   /**
    * @param {Buffer|String|Object|DataMessage} data - The data needed to create the DataMessage
    */
   constructor(data) {
-    super(data, protons(proto).PeernetDataMessage, {name: 'peernet-data'})
+    super(data, proto, {name: 'peernet-data'})
   }
 }

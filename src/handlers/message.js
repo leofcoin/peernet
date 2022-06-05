@@ -40,7 +40,7 @@ export default class MessageHandler {
       data,
     }
     const signature = await this.hashAndSignMessage(message)
-    const node = new PeernetMessage({
+    const node = await new PeernetMessage({
       ...message,
       signature,
     })

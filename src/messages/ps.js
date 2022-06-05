@@ -1,4 +1,3 @@
-import protons from 'protons'
 import proto from './../proto/ps.proto.js'
 import { FormatInterface } from '@leofcoin/codec-format-interface'
 
@@ -7,8 +6,12 @@ export default class PsMessage extends FormatInterface {
     return ['data', 'topic']
   }
 
+  get messageName() {
+    return 'PsMessage'
+  }
+
   constructor(buffer) {
     const name = 'peernet-ps'
-    super(buffer, protons(proto).PsMessage, {name})
+    super(buffer, proto, {name})
   }
 }
