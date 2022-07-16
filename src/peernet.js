@@ -9,6 +9,7 @@ import dataHandler from './handlers/data.js'
 import { encapsulatedError, dhtError,
   nothingFoundError } from './errors/errors.js'
 
+import {parse} from 'path'
 globalThis.leofcoin = globalThis.leofcoin || {}
 globalThis.pubsub = globalThis.pubsub || new PubSub()
 globalThis.globalSub = globalThis.globalSub || new PubSub({verbose: true})
@@ -157,7 +158,9 @@ export default class Peernet {
       DataMessage,
       DataMessageResponse,
       PsMessage,
-      ChatMessage
+      ChatMessage,
+      PeernetFile
+      // FolderMessageResponse
     } = await import(/* webpackChunkName: "messages" */ './messages.js')
 
     /**
@@ -182,6 +185,7 @@ export default class Peernet {
       'peernet-data-response': DataMessageResponse,
       'peernet-ps': PsMessage,
       'chat-message': ChatMessage,
+      'peernet-file': PeernetFile
     }
 
     this._messageHandler = new MessageHandler(this.network)
@@ -521,6 +525,76 @@ export default class Peernet {
        */
       has: async (hash) => await dataStore.has(hash),
     }
+  }
+
+  get folder() {
+    return {
+      /**
+       * Get content for given data hash
+       *
+       * @param {String} hash
+       */
+      get: async (hash) => {
+        debug(`get data ${hash}`)
+        const data = await dataStore.has(hash)
+        if (data) return await dataStore.get(hash)
+        return this.requestData(hash, 'data')
+      },
+      /**
+       * put data content
+       *
+       * @param {String} hash
+       * @param {Buffer} data
+       */
+      put: async (hash, data) => await dataStore.put(hash, data),
+      /**
+       * @param {String} hash
+       * @return {Boolean}
+       */
+      has: async (hash) => await dataStore.has(hash),
+    }
+  }
+
+  async addFolder(files) {
+    const links = []
+    for (const file of files) {
+      const fileNode = await new globalThis.peernet.protos['peernet-file'](file)
+      const hash = await fileNode.hash
+      await dataStore.put(hash, fileNode.encoded)
+      links.push({hash, path: file.path})
+    }
+    const node = await new globalThis.peernet.protos['peernet-file']({path: '/', links})
+    const hash = await node.hash
+    await dataStore.put(hash, node.encoded)
+
+    return hash
+  }
+
+  async ls(hash) {
+    let data
+    const has = await dataStore.has(hash)
+    if (has) data = await dataStore.get(hash)
+    else data = await this.requestData(hash, 'data')
+
+    const node = await new peernet.protos['peernet-file'](data)
+    const paths = []
+    if (node.decoded?.links.length === 0) throw new Error(`${hash} is a file`)
+    for (const {path, hash} of node.decoded.links) {
+      paths.push({path, hash})
+    }
+
+    return paths
+  }
+
+  async cat(hash) {
+    let data
+    const has = await dataStore.has(hash)
+    if (has) data = await dataStore.get(hash)
+    else data = await this.requestData(hash, 'data')
+    const node = await new peernet.protos['peernet-file'](data)
+    const paths = []
+    if (node.decoded?.links.length > 0) throw new Error(`${hash} is a directory`)
+    return node.decoded.content
   }
 
   /**
