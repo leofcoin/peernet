@@ -6,10 +6,10 @@ const Client = require('./dist/commonjs/peernet.js');
 
   peernet.addFolder([{
     path: 'assets/asset.png',
-    content: 'png'
+    content: Buffer.from('png')
   }, {
     path: 'index.html',
-    content: 'html'
+    content: Buffer.from('html')
   }]).then(hash => peernet.ls(hash).then(paths => peernet.cat(paths[0].hash).then(content => console.log(content))))
 
   pubsub.subscribe('peer:connected', async peer => {
