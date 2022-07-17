@@ -570,7 +570,7 @@ export default class Peernet {
     return hash
   }
 
-  async ls(hash) {
+  async ls(hash, options) {
     let data
     const has = await dataStore.has(hash)
     if (has) data = await dataStore.get(hash)
@@ -582,18 +582,19 @@ export default class Peernet {
     for (const {path, hash} of node.decoded.links) {
       paths.push({path, hash})
     }
-
+    if (options?.pin) await dataStore.put(hash, node.encoded)
     return paths
   }
 
-  async cat(hash) {
+  async cat(hash, options) {
     let data
     const has = await dataStore.has(hash)
     if (has) data = await dataStore.get(hash)
     else data = await this.requestData(hash, 'data')
     const node = await new peernet.protos['peernet-file'](data)
-    const paths = []
+
     if (node.decoded?.links.length > 0) throw new Error(`${hash} is a directory`)
+    if (options?.pin) await dataStore.put(hash, node.encoded)
     return node.decoded.content
   }
 
