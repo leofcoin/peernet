@@ -8,7 +8,7 @@ message PeernetFileLink {
 
 message PeernetFile {
   required string path = 1;
-  optional bytes content = 2;
+  optional string content = 2;
   repeated PeernetFileLink links = 3;
 }
 `
