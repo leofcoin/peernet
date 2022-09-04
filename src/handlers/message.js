@@ -19,8 +19,8 @@ export default class MessageHandler {
     let identity = await walletStore.get('identity')
     identity = JSON.parse(identity)
     if (!globalThis.MultiWallet) {
-      const importee = await import(/* webpackChunkName: "storage" */ '@leofcoin/multi-wallet')
-      globalThis.LeofcoinStorage = importee.default
+      const importee = await import(/* webpackChunkName: "multi-wallet" */ '@leofcoin/multi-wallet')
+      globalThis.MultiWallet = importee.default
     }
     const wallet = new MultiWallet(this.network)
     wallet.recover(identity.mnemonic)
