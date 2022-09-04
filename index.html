@@ -8,8 +8,8 @@
     <script src="./dist/browser/peernet.js">
     </script>
 
-    <script>
-
+    <script type="module">
+      // import Peernet from './dist/browser/peernet.js';
       (async () => {
         const peernet = await new Peernet()
         peernet.addRequestHandler('lastBlock', () => new peernet.protos['peernet-response']({response: new TextEncoder().encode(100)}))

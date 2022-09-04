@@ -1,6 +1,7 @@
 import { execSync } from 'child_process';
 import json from '@rollup/plugin-json'
 import modify from 'rollup-plugin-modify'
+import resolve from 'rollup-plugin-node-resolve'
 
 try {
 	execSync('rm dist -r')
@@ -26,7 +27,7 @@ export default [{
 	input: 'src/peernet.js',
 	output: {
 		dir: 'dist/module',
-		format: 'es'
+		format: 'cjs'
 	},
 	plugins: [
 		json(),

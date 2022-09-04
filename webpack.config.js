@@ -1,7 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
 module.exports = [{
-  entry: './src/peernet.js',
+  entry: {
+    peernet: './dist/module/peernet.js'
+  },
   mode: 'production',
   plugins: [
     // Work around for Buffer is undefined:
@@ -26,9 +28,9 @@ module.exports = [{
 optimization: {
   minimize: false
 },
-experiments: {
-  outputModule: true
-},
+// experiments: {
+//   outputModule: true
+// },
 resolve: {
         extensions: [ '.ts', '.js' ],
         fallback: {
@@ -39,15 +41,19 @@ resolve: {
           "path": require.resolve("path-browserify"),
           "os": require.resolve("os-browserify"),
           "crypto": require.resolve("crypto-browserify"),
-          "vm": require.resolve("vm-browserify")
+          "vm": require.resolve("vm-browserify"),
+          "@store:import": require.resolve("@leofcoin/storage/src/store-shim.js")
         }
     },
   output: {
+    // library: {
+    //   type: 'module'
+    // },
     library: {
-      type: 'module'
+      type: 'global'
     },
     chunkFilename: '[name].js',
-    filename: 'peernet.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist', 'browser'),
   },
 }];

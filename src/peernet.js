@@ -2,14 +2,13 @@ import '@vandeurenglenn/debug'
 import PubSub from '@vandeurenglenn/little-pubsub'
 import PeerDiscovery from './discovery/peer-discovery'
 import DHT from './dht/dht.js'
-import { CodecHash, codecs} from '@leofcoin/codec-format-interface'
+import codecs from './../node_modules/@leofcoin/codec-format-interface/src/codecs'
 import { protoFor, target } from './utils/utils.js'
 import MessageHandler from './handlers/message.js'
 import dataHandler from './handlers/data.js'
 import { encapsulatedError, dhtError,
   nothingFoundError } from './errors/errors.js'
-
-import {parse} from 'path'
+  
 globalThis.leofcoin = globalThis.leofcoin || {}
 globalThis.pubsub = globalThis.pubsub || new PubSub()
 globalThis.globalSub = globalThis.globalSub || new PubSub({verbose: true})
@@ -197,36 +196,33 @@ export default class Peernet {
       await this.addStore(store, options.storePrefix, options.root)
     }
 
-    try {
+    const accountExists = await accountStore.has('public')
+    if (accountExists) {
       const pub = await accountStore.get('public')
-      this.id = JSON.parse(new TextDecoder().decode(pub)).walletId
+      this.id = JSON.parse(pub).walletId
       let accounts = await walletStore.get('accounts')
-      accounts = new TextDecoder().decode(accounts)
+      
+      
 
       // fixing account issue (string while needs to be a JSON)
       // TODO: remove when on mainnet
       try {
-        this.accounts = JSON.parse(account)
+        this.accounts = JSON.parse(accounts)
       } catch (e) {
         this.accounts = [accounts.split(',')]
       }
-    } catch (e) {
-      if (e.code === 'ERR_NOT_FOUND') {
+    } else {
+      const importee = await import(/* webpackChunkName: "generate-account" */ '@leofcoin/generate-account')
+      const generateAccount = importee.default
+      const {identity, accounts, config} = await generateAccount(this.network)
+      // await accountStore.put('config', JSON.stringify(config));
+      await accountStore.put('public', JSON.stringify({walletId: identity.walletId}));
+      
+      await walletStore.put('version', String(1))
+      await walletStore.put('accounts', JSON.stringify(accounts))
+      await walletStore.put('identity', JSON.stringify(identity))
 
-        const importee = await import(/* webpackChunkName: "generate-account" */ '@leofcoin/generate-account')
-        const generateAccount = importee.default
-        const wallet = {}
-        const {identity, accounts, config} = await generateAccount(this.network)
-        walletStore.put('version', new TextEncoder().encode(1))
-        walletStore.put('accounts', new TextEncoder().encode(JSON.stringify(accounts)))
-        walletStore.put('identity', new TextEncoder().encode(JSON.stringify(identity)))
-        await accountStore.put('config', new TextEncoder().encode(JSON.stringify(config)));
-        await accountStore.put('public', new TextEncoder().encode(JSON.stringify({walletId: identity.walletId})));
-
-        this.id = identity.walletId
-      } else {
-        throw e
-      }
+      this.id = identity.walletId
     }
     this._peerHandler = new PeerDiscovery(this.id)
     this.peerId = this.id
@@ -706,3 +702,4 @@ export default class Peernet {
   //
   // }
 }
+globalThis.Peernet = Peernet
