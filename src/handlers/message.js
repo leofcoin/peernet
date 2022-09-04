@@ -1,4 +1,3 @@
-import MultiWallet from '@leofcoin/multi-wallet'
 import { CodecHash } from '@leofcoin/codec-format-interface'
 
 export default class MessageHandler {
@@ -18,7 +17,11 @@ export default class MessageHandler {
   async hashAndSignMessage(message) {
     const hasher = new CodecHash(message, {name: 'peernet-message'})
     let identity = await walletStore.get('identity')
-    identity = JSON.parse(new TextDecoder().decode(identity))
+    identity = JSON.parse(identity)
+    if (!globalThis.MultiWallet) {
+      const importee = await import(/* webpackChunkName: "storage" */ '@leofcoin/multi-wallet')
+      globalThis.LeofcoinStorage = importee.default
+    }
     const wallet = new MultiWallet(this.network)
     wallet.recover(identity.mnemonic)
     return wallet.sign(Buffer.from(hasher.hash).slice(0, 32))
