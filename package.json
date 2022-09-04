@@ -2,8 +2,12 @@
   "name": "@leofcoin/peernet",
   "version": "0.13.4",
   "description": "",
+  "source": "src/peernet.js",
   "main": "dist/commonjs/peernet.js",
-  "module": "src/module/peernet.js",
+  "module": "dist/module/peernet.js",
+  "targets": [
+    "browser"
+  ],
   "scripts": {
     "build": "npm run c && webpack",
     "test": "node test/index.js",
@@ -15,18 +19,20 @@
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "c": "rollup -c",
     "w": "rollup -c -w",
-    "b": "browserify dist/browser/peernet.js -o dist/browser/peernet.js --standalone Peernet && rm browser.js"
+    "watch": "parcel watch",
+    "parcel-build": "parcel build",
+    "b": "browserify dist/module/peernet.js -o dist/module/peernet.js --standalone Peernet && rm browser.js"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "browserslist": "> 5%, last 2 versions, not dead",
   "dependencies": {
     "@leofcoin/codec-format-interface": "^1.2.5",
     "@leofcoin/generate-account": "^1.0.4",
     "@leofcoin/multi-wallet": "^2.1.2",
     "@leofcoin/peernet-swarm": "^0.3.3",
-    "@leofcoin/storage": "^2.3.0",
+    "@leofcoin/storage": "^3.0.0",
     "@vandeurenglenn/base32": "^1.1.0",
     "@vandeurenglenn/base58": "^1.1.0",
     "@vandeurenglenn/debug": "^1.0.0",
