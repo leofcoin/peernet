@@ -1,6 +1,6 @@
 {
   "name": "@leofcoin/peernet",
-  "version": "0.14.2",
+  "version": "0.14.6",
   "description": "",
   "source": "src/peernet.js",
   "main": "dist/commonjs/peernet.js",
@@ -28,7 +28,7 @@
   "license": "MIT",
   "browserslist": "> 5%, last 2 versions, not dead",
   "dependencies": {
-    "@leofcoin/codec-format-interface": "^1.2.5",
+    "@leofcoin/codec-format-interface": "^1.4.0",
     "@leofcoin/generate-account": "^1.0.4",
     "@leofcoin/multi-wallet": "^2.1.2",
     "@leofcoin/peernet-swarm": "^0.3.3",

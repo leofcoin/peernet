@@ -4,13 +4,13 @@ const Client = require('./dist/commonjs/peernet.js');
 (async () => {
   const client = await new Client({root: '.peernet/test'})
 
-  peernet.addFolder([{
-    path: 'assets/asset.png',
-    content: Buffer.from('png')
-  }, {
-    path: 'index.html',
-    content: Buffer.from('html')
-  }]).then(hash => peernet.ls(hash).then(paths => peernet.cat(paths[0].hash).then(content => console.log(content))))
+  // peernet.addFolder([{
+  //   path: 'assets/asset.png',
+  //   content: Buffer.from('png')
+  // }, {
+  //   path: 'index.html',
+  //   content: Buffer.from('html')
+  // }]).then(hash => peernet.ls(hash).then(paths => peernet.cat(paths[0].hash).then(content => console.log(content))))
 
   pubsub.subscribe('peer:connected', async peer => {
     chainStore.put('localBlock', '00000')
@@ -19,8 +19,8 @@ const Client = require('./dist/commonjs/peernet.js');
           })
     const to = peer.id
     await peernet.data.put('hello', 'hi')
-    console.log(request);
-    const node = await peernet.prepareMessage(to, request.encoded)
+    console.log({request});
+    const node = await peernet.prepareMessage(request)
     console.log({node});
     let response = await peer.request(node.encoded)
     console.log({response});
@@ -29,9 +29,9 @@ const Client = require('./dist/commonjs/peernet.js');
     for (const key of keys) {
       uint8Array[Number(key)] = response[key]
     }
-    const proto = await new globalThis.peernet.protos['peernet-message'](uint8Array)
-    console.log(proto.decoded.data);
-    response = await new globalThis.peernet.protos['peernet-response'](proto.decoded.data)
+    // const proto = await new globalThis.peernet.protos['peernet-message'](uint8Array)
+    // console.log(proto.decoded.data);
+    response = await new globalThis.peernet.protos['peernet-response'](uint8Array)
     console.log({response});
 
     const block = new TextDecoder().decode(response.decoded.response)

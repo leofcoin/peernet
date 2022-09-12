@@ -94,8 +94,8 @@ export default class Peernet {
   /**
    * @see MessageHandler
    */
-  prepareMessage(to, data) {
-    return this._messageHandler.prepareMessage(this.id, to, data)
+  prepareMessage(data) {
+    return this._messageHandler.prepareMessage(data)
   }
 
   /**
@@ -293,7 +293,7 @@ export default class Peernet {
           else has = await store.has(hash)
         }
         const data = await new globalThis.peernet.protos['peernet-dht-response']({hash, has})
-        const node = await this.prepareMessage(from, data.encoded)
+        const node = await this.prepareMessage(data)
 
         this.sendMessage(peer, id, node.encoded)
       } else if (proto.name === 'peernet-data') {
@@ -310,7 +310,7 @@ export default class Peernet {
           if (data) {
             data = await new globalThis.peernet.protos['peernet-data-response']({hash, data});
 
-            const node = await this.prepareMessage(from, data.encoded)
+            const node = await this.prepareMessage(data)
             this.sendMessage(peer, id, node.encoded)
           }
         } else {
@@ -321,7 +321,7 @@ export default class Peernet {
         const method = this.requestProtos[proto.decoded.request]
         if (method) {
           const data = await method()
-          const node = await this.prepareMessage(from, data.encoded)
+          const node = await this.prepareMessage(data)
           this.sendMessage(peer, id, node.encoded)
         }
       } else if (proto.name === 'peernet-ps' && peer.peerId !== this.id) {
@@ -340,13 +340,11 @@ export default class Peernet {
     const data = await new globalThis.peernet.protos['peernet-dht']({hash})
     const clientId = this.client.id
     const walk = async peer => {
-      const node = await this.prepareMessage(peer.peerId, data.encoded)
+      const node = await this.prepareMessage(data)
       let result = await peer.request(node.encoded)
+      console.log({result});
       result = new Uint8Array(Object.values(result))
-      let proto = await protoFor(result)
-      if (proto.name !== 'peernet-message') throw encapsulatedError()
-      const from = proto.decoded.from
-      proto = await protoFor(proto.decoded.data)
+      const proto = await protoFor(result)
       if (proto.name !== 'peernet-dht-response') throw dhtError(proto.name)
 
       // TODO: give ip and port (just used for location)
@@ -360,7 +358,7 @@ export default class Peernet {
         family: peer.connection.remoteFamily || peer.connection.localFamily,
         address: peer.connection.remoteAddress || peer.connection.localAddress,
         port: peer.connection.remotePort || peer.connection.localPort,
-        id: from,
+        id: peerId,
       }
 
       if (proto.decoded.has) this.dht.addProvider(peerInfo, proto.decoded.hash)
@@ -447,7 +445,7 @@ export default class Peernet {
 
       let data = await new globalThis.peernet.protos['peernet-data']({hash, store: store?.name ? store?.name : store});
 
-      const node = await this.prepareMessage(id, data.encoded)
+      const node = await this.prepareMessage(data)
       if (closest[0]) data = await closest[0].request(node.encoded)
       else {
         closest = this.connections.filter((peer) => {
@@ -455,9 +453,9 @@ export default class Peernet {
         })
         if (closest[0]) data = await closest[0].request(node.encoded)
       }
+      console.log({data});
       data = new Uint8Array(Object.values(data))
-      let proto = await protoFor(data)
-      proto = await protoFor(proto.decoded.data)
+      proto = await protoFor(data)
       // TODO: store data automaticly or not
       return proto.decoded.data
 
@@ -573,6 +571,8 @@ export default class Peernet {
     else data = await this.requestData(hash, 'data')
 
     const node = await new peernet.protos['peernet-file'](data)
+    await node.decode()
+    console.log(data);
     const paths = []
     if (node.decoded?.links.length === 0) throw new Error(`${hash} is a file`)
     for (const {path, hash} of node.decoded.links) {
@@ -665,7 +665,7 @@ export default class Peernet {
     data = await new globalThis.peernet.protos['peernet-ps']({data, topic})
     for (const peer of this.connections) {
       if (peer.peerId !== this.peerId) {
-        const node = await this.prepareMessage(peer.peerId, data.encoded)
+        const node = await this.prepareMessage(data)
         this.sendMessage(peer, id, node.encoded)
       }
       // TODO: if peer subscribed
