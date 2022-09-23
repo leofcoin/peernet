@@ -1,6 +1,6 @@
 {
   "name": "@leofcoin/peernet",
-  "version": "0.14.9",
+  "version": "0.14.10",
   "description": "",
   "source": "src/peernet.js",
   "main": "dist/commonjs/peernet.js",
