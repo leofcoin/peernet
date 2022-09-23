@@ -199,9 +199,9 @@ export default class Peernet {
     const accountExists = await accountStore.has('public')
     if (accountExists) {
       const pub = await accountStore.get('public')
-      this.id = JSON.parse(pub).walletId
+      this.id = JSON.parse(new TextDecoder().decode(pub)).walletId;
       let accounts = await walletStore.get('accounts')
-      
+      accounts = new TextDecoder().decode(accounts)
       
 
       // fixing account issue (string while needs to be a JSON)
@@ -325,7 +325,7 @@ export default class Peernet {
           this.sendMessage(peer, id, node.encoded)
         }
       } else if (proto.name === 'peernet-ps' && peer.peerId !== this.id) {
-        globalSub.publish(new TextDecoder().decode(proto.decoded.topic), proto.decoded.data)
+        globalSub.publish(proto.decoded.topic, proto.decoded.data)
       }
     // }
   }
@@ -358,7 +358,7 @@ export default class Peernet {
         family: peer.connection.remoteFamily || peer.connection.localFamily,
         address: peer.connection.remoteAddress || peer.connection.localAddress,
         port: peer.connection.remotePort || peer.connection.localPort,
-        id: peerId,
+        id: peer.peerId,
       }
 
       if (proto.decoded.has) this.dht.addProvider(peerInfo, proto.decoded.hash)
@@ -659,8 +659,6 @@ export default class Peernet {
    */
   async publish(topic, data) {
     // globalSub.publish(topic, data)
-    if (topic instanceof Uint8Array === false) topic = new TextEncoder().encode(topic)
-    if (data instanceof Uint8Array === false) data = new TextEncoder().encode(JSON.stringify(data))
     const id = Math.random().toString(36).slice(-12)
     data = await new globalThis.peernet.protos['peernet-ps']({data, topic})
     for (const peer of this.connections) {
