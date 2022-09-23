@@ -455,7 +455,7 @@ export default class Peernet {
       }
       console.log({data});
       data = new Uint8Array(Object.values(data))
-      proto = await protoFor(data)
+      const proto = await protoFor(data)
       // TODO: store data automaticly or not
       return proto.decoded.data
 
