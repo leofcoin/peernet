@@ -19,9 +19,7 @@
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "c": "rollup -c",
     "w": "rollup -c -w",
-    "watch": "parcel watch",
-    "parcel-build": "parcel build",
-    "b": "browserify dist/module/peernet.js -o dist/module/peernet.js --standalone Peernet && rm browser.js"
+    "watch": "npm run w"
   },
   "keywords": [],
   "author": "",
@@ -43,7 +41,6 @@
     "node-fetch": "^2.6.1",
     "socket-request-client": "^1.5.0",
     "socket-request-server": "^1.5.0",
-    "stream-browserify": "^3.0.0",
     "varint": "^6.0.0"
   },
   "devDependencies": {
@@ -56,6 +53,7 @@
     "path-browserify": "^1.0.1",
     "rollup": "^2.70.2",
     "rollup-plugin-modify": "^3.0.0",
+    "stream-browserify": "^3.0.0",
     "tape": "^5.2.2",
     "vm-browserify": "^1.1.2",
     "webpack": "^5.72.0",
