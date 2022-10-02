@@ -42,8 +42,8 @@ export default class Peernet {
     if (!options.storePrefix) options.storePrefix = 'lfc'
     if (!options.port) options.port = 2000
     if (!options.root) {
-      if (parts[1]) options.root = `.${parts[0]}/peernet/${parts[1]}`
-      else options.root = `.${this.network}/peernet`
+      if (parts[1]) options.root = `.${parts[0]}/${parts[1]}`
+      else options.root = `.${this.network}`
     }
     globalThis.peernet = this
     this.bw = {
