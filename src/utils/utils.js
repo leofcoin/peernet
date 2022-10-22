@@ -2,6 +2,13 @@ import fetch from 'node-fetch'
 
 import { Codec } from '@leofcoin/codec-format-interface'
 
+export const BufferToUint8Array = () => {
+  if (data.type === 'Buffer') {
+    data = new Uint8Array(data.data)
+  }
+  return data
+}
+
 export const expected = (expected, actual) => {
   const rule = (entry) => {
     return !entry ? `: undefined - ${entry} ` :`: ${typeof entry} - `

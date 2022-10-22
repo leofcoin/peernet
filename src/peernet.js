@@ -3,7 +3,7 @@ import PubSub from '@vandeurenglenn/little-pubsub'
 import PeerDiscovery from './discovery/peer-discovery'
 import DHT from './dht/dht.js'
 import codecs from './../node_modules/@leofcoin/codec-format-interface/src/codecs'
-import { protoFor, target } from './utils/utils.js'
+import { BufferToUint8Array, protoFor, target } from './utils/utils.js'
 import MessageHandler from './handlers/message.js'
 import dataHandler from './handlers/data.js'
 import { encapsulatedError, dhtError,
@@ -402,7 +402,7 @@ export default class Peernet {
     return {
       get: async (hash) => {
         const data = await blockStore.has(hash)
-        if (data) return await blockStore.get(hash)
+        if (data) return blockStore.get(hash)
         return this.requestData(hash, 'block')
       },
       put: async (hash, data) => {
@@ -453,11 +453,10 @@ export default class Peernet {
         })
         if (closest[0]) data = await closest[0].request(node.encoded)
       }
-      console.log({data});
       data = new Uint8Array(Object.values(data))
       const proto = await protoFor(data)
       // TODO: store data automaticly or not
-      return proto.decoded.data
+      return BufferToUint8Array(proto.decoded.data)
 
       // this.put(hash, proto.decoded.data)
     }
