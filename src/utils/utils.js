@@ -2,7 +2,7 @@ import fetch from 'node-fetch'
 
 import { Codec } from '@leofcoin/codec-format-interface'
 
-export const BufferToUint8Array = () => {
+export const BufferToUint8Array = data => {
   if (data.type === 'Buffer') {
     data = new Uint8Array(data.data)
   }
