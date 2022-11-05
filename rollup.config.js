@@ -27,7 +27,7 @@ export default [{
 	input: 'src/peernet.js',
 	output: {
 		dir: 'dist/module',
-		format: 'cjs',
+		format: 'es',
 		externals: ["@leofcoin/storage"]
 	},
 	plugins: [

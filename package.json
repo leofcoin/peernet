@@ -39,8 +39,10 @@
     "keccak": "^3.0.1",
     "koa": "^2.13.1",
     "node-fetch": "^2.6.1",
+    "readable-stream": "^4.2.0",
     "socket-request-client": "^1.5.0",
     "socket-request-server": "^1.5.0",
+    "stream-browserify": "^3.0.0",
     "varint": "^6.0.0"
   },
   "devDependencies": {
@@ -53,7 +55,6 @@
     "path-browserify": "^1.0.1",
     "rollup": "^2.70.2",
     "rollup-plugin-modify": "^3.0.0",
-    "stream-browserify": "^3.0.0",
     "tape": "^5.2.2",
     "vm-browserify": "^1.1.2",
     "webpack": "^5.72.0",

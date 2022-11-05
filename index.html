@@ -5,11 +5,11 @@
     <title></title>
   </head>
   <body>
-    <script src="./dist/browser/peernet.js">
-    </script>
+    <!-- <script src="./dist/browser/peernet.js">
+    </script> -->
 
-    <script >
-      // import Peernet from './dist/browser/peernet.js';
+    <script type="module">
+      import Peernet from './dist/browser/peernet.mjs';
       (async () => {
         const peernet = await new Peernet()
         peernet.addRequestHandler('lastBlock', () => new peernet.protos['peernet-response']({response: new TextEncoder().encode(100)}))
