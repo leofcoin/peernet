@@ -228,7 +228,7 @@ export default class Peernet {
     this.peerId = this.id
 
     pubsub.subscribe('peer:connected', async (peer) => {
-      console.log(peer);
+      // console.log(peer);
       // console.log({connected: peer.id, as: this._getPeerId(peer.id) });
       // peer.on('peernet.data', async (message) => {
       //   const id = message.id
@@ -342,7 +342,6 @@ export default class Peernet {
     const walk = async peer => {
       const node = await this.prepareMessage(data)
       let result = await peer.request(node.encoded)
-      console.log({result});
       result = new Uint8Array(Object.values(result))
       const proto = await protoFor(result)
       if (proto.name !== 'peernet-dht-response') throw dhtError(proto.name)
@@ -690,13 +689,5 @@ export default class Peernet {
   get Buffer() {
     return Buffer
   }
-  // async block(index) {
-  //   const _values = []
-  //   for (const peer of this.peers) {
-  //     const value = await peer.request({type: 'block', index})
-  //     console.log(value);
-  //   }
-  //
-  // }
 }
 globalThis.Peernet = Peernet
