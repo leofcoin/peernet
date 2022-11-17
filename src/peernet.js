@@ -203,7 +203,7 @@ export default class Peernet {
       let accounts = await walletStore.get('accounts')
       accounts = new TextDecoder().decode(accounts)
       const selected = await walletStore.get('selected-account')
-      globalThis.selectedAccount = new TextDecoder().decode(selected)
+      globalThis.peernet.selectedAccount = new TextDecoder().decode(selected)
 
       // fixing account issue (string while needs to be a JSON)
       // TODO: remove when on mainnet
@@ -224,7 +224,7 @@ export default class Peernet {
       await walletStore.put('selected-account', accounts[0][1])
       await walletStore.put('identity', JSON.stringify(identity))
 
-      globalThis.selectedAccount = accounts[0][1]
+      globalThis.peernet.selectedAccount = accounts[0][1]
       this.id = identity.walletId
     }
     this._peerHandler = new PeerDiscovery(this.id)
