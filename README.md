@@ -1,9 +1,21 @@
-# socket-discovery
+# peernet
 
 ## Usage
 ```js
-import discovery from 'socket-discovery'
+import Peernet from '@leofcoin/peernet'
+
+
+const config = {
+  network: 'leofcoin:peach',
+  stars: ['wss://peach.leofcoin.org']
+}
+
+await new Peernet(config)
+
+console.log(globalThis.peernet)
 ```
+
+
 
 ## API
 #### addRequestHandler
@@ -30,6 +42,12 @@ peernet.addRequestHandler('hello', () => {
 ```
 
 ## Development
+
+`note: you need to install jsproject`
+```sh
+npm i -g @vandeurenglenn/project
+```
+
 ### watch
 ```sh
 npm run w
@@ -43,7 +61,3 @@ npm run c
 npm run demo
 ```
 
-`note: you need to install jsproject`
-```sh
-npm i -g @vandeurenglenn/project
-```

@@ -23,6 +23,7 @@ export default class Peernet {
    * @access public
    * @param {Object} options
    * @param {String} options.network - desired network
+   * @param {String} options.stars - star list for selected network (these should match, don't mix networks)
    * @param {String} options.root - path to root directory
    * @param {String} options.storePrefix - prefix for datatores (lfc)
    *
@@ -37,6 +38,7 @@ export default class Peernet {
      * @property {String} network - current network
      */
     this.network = options.network || 'leofcoin'
+    this.stars = options.stars
     const parts = this.network.split(':')
 
     if (!options.storePrefix) options.storePrefix = 'lfc'
@@ -253,7 +255,7 @@ export default class Peernet {
      * @access public
      * @type {PeernetClient}
      */
-    this.client = new importee.default(this.id)
+    this.client = new importee.default(this.id, this.network, this.stars)
     if (globalThis.onbeforeunload) {
       globalThis.addEventListener('beforeunload', async () => this.client.close());
     } else {
