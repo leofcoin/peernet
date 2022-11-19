@@ -256,6 +256,12 @@ export default class Peernet {
     this.client = new importee.default(this.id)
     if (globalThis.onbeforeunload) {
       globalThis.addEventListener('beforeunload', async () => this.client.close());
+    } else {
+      process.on('SIGTERM', async () => {
+        process.stdin.resume();
+        await this.client.close()
+        process.exit()
+      });
     }
     return this
   }
