@@ -40,8 +40,8 @@ export default class Peernet {
     this.network = options.network || 'leofcoin'
     this.stars = options.stars
     const parts = this.network.split(':')
-    this.networkVersion = parts.length > 1 ? parts[1] : 'mainnet'
-    
+    this.networkVersion = options.networkVersion ? options.networkVersion : parts.length > 1 ? parts[1] : 'mainnet'
+
     if (!options.storePrefix) options.storePrefix = 'lfc'
     if (!options.port) options.port = 2000
     if (!options.root) {
