@@ -139,7 +139,7 @@ export default class Peernet {
      * @property {Object} peer Instance of Peer
      */
     this.stores = []
-    this.codecs = codecs
+    this.codecs = {...codecs}
     this.requestProtos = {}
     this.storePrefix = options.storePrefix
     this.root = options.root
