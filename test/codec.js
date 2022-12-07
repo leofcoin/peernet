@@ -1,5 +1,5 @@
-const test = require('tape')
-const Codec = require('./../dist/commonjs/codec.js')
+import test from 'tape'
+import Codec from './../dist/commonjs/codec.js'
 
 const block = '4lmacqas6kpnmvehxpmlvsndgydw5i46mf2pgnaub72eug63dozkw4oqxhk3fazbhkguvlhslcaeqm5jtwghxdk5nvmuakrs7yi2gl6xqmmmw';
 const itx = '5hmacqb6ao252jmbhkhu5isr4yua3jnkhgb5ejjbiomrlzglwarlb777wq7aw5nfz5m4pubx5uffaxp2cqc4ckrh4xirss4nkujvcjbnmomtm';

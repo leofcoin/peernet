@@ -1,13 +1,16 @@
 import '@vandeurenglenn/debug'
 import PubSub from '@vandeurenglenn/little-pubsub'
-import PeerDiscovery from './discovery/peer-discovery'
+import PeerDiscovery from './discovery/peer-discovery.js'
 import DHT from './dht/dht.js'
-import codecs from './../node_modules/@leofcoin/codec-format-interface/src/codecs'
+import codecs from './../node_modules/@leofcoin/codec-format-interface/src/codecs.js'
 import { BufferToUint8Array, protoFor, target } from './utils/utils.js'
 import MessageHandler from './handlers/message.js'
 import dataHandler from './handlers/data.js'
 import { encapsulatedError, dhtError,
   nothingFoundError } from './errors/errors.js'
+
+import LeofcoinStorage from '@leofcoin/storage'
+globalThis.LeofcoinStorage = LeofcoinStorage
   
 globalThis.leofcoin = globalThis.leofcoin || {}
 globalThis.pubsub = globalThis.pubsub || new PubSub()
@@ -74,19 +77,13 @@ export default class Peernet {
   }
 
   async addStore(name, prefix, root, isPrivate = true) {
-    if (!globalThis.LeofcoinStorage) {
-      const importee = await import(/* webpackChunkName: "storage" */ '@leofcoin/storage')
-      globalThis.LeofcoinStorage = importee.default
-    }
     if (name === 'block' || name === 'transaction' || name === 'chain' ||
         name === 'data' || name === 'message') isPrivate = false
 
     let Storage
-    if (this.hasDaemon) {
-      Storage = LeofcoinStorageClient
-    } else {
-      Storage = LeofcoinStorage
-    }
+    
+    this.hasDaemon ? Storage = LeofcoinStorageClient : Storage = LeofcoinStorage
+    
     globalThis[`${name}Store`] = globalThis[`${name}Store`] ||
       await new Storage(name, root)
 

@@ -1,5 +1,3 @@
-import { CodecHash } from '@leofcoin/codec-format-interface'
-
 export default class MessageHandler {
   constructor(network) {
     this.network = network

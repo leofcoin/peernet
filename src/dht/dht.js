@@ -1,5 +1,3 @@
-import fetch from 'node-fetch'
-
 /**
  * Keep history of fetched address and ptr
  * @property {Object} address

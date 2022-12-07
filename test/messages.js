@@ -1,5 +1,5 @@
-const test = require('tape')
-const Node = require('./../dist/commonjs/dht-response.js')
+import test from 'tape'
+import Node from './../dist/commonjs/dht-response.js'
 
 const responseHash = 'cqbigjfvm5mizik7ke3v6lyhoahecqiwergnl3cytarf5bd2qvqase'
 

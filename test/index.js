@@ -1,4 +1,3 @@
-require('./messages')
-require('./codec')
+import './messages.js'
 // require('./peernet')
 // require('./hash')

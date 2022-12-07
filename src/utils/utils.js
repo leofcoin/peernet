@@ -1,5 +1,3 @@
-import fetch from 'node-fetch'
-
 import { Codec } from '@leofcoin/codec-format-interface'
 
 export const BufferToUint8Array = data => {
@@ -74,8 +72,7 @@ export const environment = () => {
  */
 export const target = async () => {
   let daemon = false
-  const env = await environment()
   if (!https()) daemon = await hasDaemon()
 
-  return {daemon, environment: env}
+  return {daemon, environment: environment()}
 }

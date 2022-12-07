@@ -1,7 +1,7 @@
-const Client = require('./dist/commonjs/peernet.js');
+import Client from './src/peernet.js'
 
 
-(async () => {
+
   const client = await new Client({root: '.peernet/test'})
 
   // peernet.addFolder([{
@@ -44,4 +44,4 @@ const Client = require('./dist/commonjs/peernet.js');
     task()
   })
 
-})()
+
