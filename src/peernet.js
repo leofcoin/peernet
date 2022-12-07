@@ -64,10 +64,6 @@ export default class Peernet {
     return ['account', 'wallet', 'block', 'transaction', 'chain', 'data', 'message']
   }
 
-  get codecs() {
-    return codecs
-  }
-
   addProto(name, proto) {
     if (!globalThis.peernet.protos[name]) globalThis.peernet.protos[name] = proto
   }
@@ -143,6 +139,7 @@ export default class Peernet {
      * @property {Object} peer Instance of Peer
      */
     this.stores = []
+    this.codecs = codecs
     this.requestProtos = {}
     this.storePrefix = options.storePrefix
     this.root = options.root
