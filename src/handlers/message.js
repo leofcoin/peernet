@@ -32,7 +32,7 @@ export default class MessageHandler {
    * or the messageNode itself
    */
   async prepareMessage(message) {    
-    if (message.keys.indexOf('signature') !== -1) {
+    if (message.keys.includes('signature')) {
       message = await this.hashAndSignMessage(message)
     }
 

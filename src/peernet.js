@@ -43,13 +43,12 @@ export default class Peernet {
     this.network = options.network || 'leofcoin'
     this.stars = options.stars
     const parts = this.network.split(':')
-    this.networkVersion = options.networkVersion ? options.networkVersion : parts.length > 1 ? parts[1] : 'mainnet'
+    this.networkVersion = options.networkVersion || parts.length > 1 ? parts[1] : 'mainnet'
 
     if (!options.storePrefix) options.storePrefix = 'lfc'
     if (!options.port) options.port = 2000
     if (!options.root) {
-      if (parts[1]) options.root = `.${parts[0]}/${parts[1]}`
-      else options.root = `.${this.network}`
+      parts[1] ? options.root = `.${parts[0]}/${parts[1]}` : options.root = `.${this.network}`
     }
     
     globalThis.peernet = this
@@ -207,7 +206,7 @@ export default class Peernet {
       // TODO: remove when on mainnet
       try {
         this.accounts = JSON.parse(accounts)
-      } catch (e) {
+      } catch {
         this.accounts = [accounts.split(',')]
       }
     } else {
@@ -278,6 +277,51 @@ export default class Peernet {
 
   }
 
+  async handleDHT(peer, id, proto) {
+    let { hash, store } = proto.decoded
+    let has;
+
+    if (store) {
+      store = globalThis[`${store}Store`]
+      has = store.private ? false : await store.has(hash)
+    } else {
+      has = await this.has(hash)
+    }
+
+    const data = await new globalThis.peernet.protos['peernet-dht-response']({hash, has})
+    const node = await this.prepareMessage(data)
+
+    this.sendMessage(peer, id, node.encoded)
+  }
+
+  async handleData(peer, id, proto) {
+    let { hash, store } = proto.decoded
+    let data
+    store = globalThis[`${store}Store`] || await this.whichStore([...this.stores], hash)
+    
+    if (store && !store.private) {
+      data = await store.get(hash)
+
+      if (data) {
+        data = await new globalThis.peernet.protos['peernet-data-response']({hash, data});
+
+        const node = await this.prepareMessage(data)
+        this.sendMessage(peer, id, node.encoded)
+      }
+    } else {
+      // ban (trying to access private st)
+    }
+  }
+
+  async handleRequest(peer, id, proto) {
+    const method = this.requestProtos[proto.decoded.request]
+    if (method) {
+      const data = await method()
+      const node = await this.prepareMessage(data)
+      this.sendMessage(peer, id, node.encoded)
+    }
+  }
+
   /**
    * @private
    *
@@ -285,56 +329,25 @@ export default class Peernet {
    * @param {PeernetPeer} peer - peernet peer
    */
   async _protoHandler(message, peer, from) {
-
     const {id, proto} = message
     this.bw.down += proto.encoded.length
-      if (proto.name === 'peernet-dht') {
-        let { hash, store } = proto.decoded
-        let has;
-
-        if (!store) {
-          has = await this.has(hash)
-        } else {
-          store = globalThis[`${store}Store`]
-          if (store.private) has = false
-          else has = await store.has(hash)
-        }
-        const data = await new globalThis.peernet.protos['peernet-dht-response']({hash, has})
-        const node = await this.prepareMessage(data)
-
-        this.sendMessage(peer, id, node.encoded)
-      } else if (proto.name === 'peernet-data') {
-        let { hash, store } = proto.decoded
-        let data
-        if (!store) {
-          store = await this.whichStore([...this.stores], hash)
-        } else {
-          store = globalThis[`${store}Store`]
-        }
-        if (store && !store.private) {
-          data = await store.get(hash)
-
-          if (data) {
-            data = await new globalThis.peernet.protos['peernet-data-response']({hash, data});
-
-            const node = await this.prepareMessage(data)
-            this.sendMessage(peer, id, node.encoded)
-          }
-        } else {
-          // ban (trying to access private st)
-        }
-
-      } else if (proto.name === 'peernet-request') {
-        const method = this.requestProtos[proto.decoded.request]
-        if (method) {
-          const data = await method()
-          const node = await this.prepareMessage(data)
-          this.sendMessage(peer, id, node.encoded)
-        }
-      } else if (proto.name === 'peernet-ps' && peer.peerId !== this.id) {
-        globalSub.publish(proto.decoded.topic, proto.decoded.data)
+    switch(proto.name) {
+      case 'peernet-dht': {
+        this.handleDHT(peer, id, proto)
+        break
       }
-    // }
+      case 'peenet-data': {
+        this.handleData(peer, id, proto)
+        break
+      }
+      case 'peernet-request': {
+        this.handleRequest(peer, id, proto)
+      }
+
+      case 'peernet-ps': {
+        if (peer.peerId !== this.id) globalSub.publish(proto.decoded.topic, proto.decoded.data)
+      }
+    }
   }
 
   /**
@@ -441,7 +454,7 @@ export default class Peernet {
     // get closest peer on earth
     const closestPeer = await this.dht.closestPeer(providers)
     // get peer instance by id
-    if (!closestPeer || !closestPeer.id) return this.requestData(hash, store?.name ? store?.name : store)
+    if (!closestPeer || !closestPeer.id) return this.requestData(hash, store?.name || store)
 
     const id = closestPeer.id
     if (this.connections) {
@@ -449,7 +462,7 @@ export default class Peernet {
         if (peer.peerId === id) return peer
       })
 
-      let data = await new globalThis.peernet.protos['peernet-data']({hash, store: store?.name ? store?.name : store});
+      let data = await new globalThis.peernet.protos['peernet-data']({hash, store: store?.name || store});
 
       const node = await this.prepareMessage(data)
       if (closest[0]) data = await closest[0].request(node.encoded)
@@ -466,7 +479,7 @@ export default class Peernet {
 
       // this.put(hash, proto.decoded.data)
     }
-    return null
+    return
   }
 
 
@@ -572,8 +585,7 @@ export default class Peernet {
   async ls(hash, options) {
     let data
     const has = await dataStore.has(hash)
-    if (has) data = await dataStore.get(hash)
-    else data = await this.requestData(hash, 'data')
+    data = has ? await dataStore.get(hash) : await this.requestData(hash, 'data')
 
     const node = await new peernet.protos['peernet-file'](data)
     await node.decode()
@@ -590,8 +602,7 @@ export default class Peernet {
   async cat(hash, options) {
     let data
     const has = await dataStore.has(hash)
-    if (has) data = await dataStore.get(hash)
-    else data = await this.requestData(hash, 'data')
+    data = has ? await dataStore.get(hash) : await this.requestData(hash, 'data')
     const node = await new peernet.protos['peernet-file'](data)
 
     if (node.decoded?.links.length > 0) throw new Error(`${hash} is a directory`)
@@ -612,7 +623,7 @@ export default class Peernet {
       const has = await store.has(hash)
       if (has) return store
       if (stores.length > 0) return this.whichStore(stores, hash)
-    } else return null
+    } else return
   }
 
   /**
@@ -629,7 +640,7 @@ export default class Peernet {
     if (store && await store.has(hash)) data = await store.get(hash)
     if (data) return data
 
-    return this.requestData(hash, store?.name ? store.name : store)
+    return this.requestData(hash, store?.name || store)
   }
 
   /**
@@ -651,8 +662,7 @@ export default class Peernet {
   async has(hash) {
     const store = await this.whichStore([...this.stores], hash)
     if (store) {
-      if (store.private) return false
-      else return true
+      return store.private ? false : true
     }
     return false
   }
@@ -684,9 +694,9 @@ export default class Peernet {
    * @param {String} topic
    * @param {Method} cb
    */
-  async subscribe(topic, cb) {
+  async subscribe(topic, callback) {
     // TODO: if peer subscribed
-    globalSub.subscribe(topic, cb)
+    globalSub.subscribe(topic, callback)
   }
 
   async removePeer(peer) {
