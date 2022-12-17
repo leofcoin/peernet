@@ -245,7 +245,7 @@ export default class Peernet {
     pubsub.subscribe('peer:data', dataHandler)
 
 
-    const importee = await import(/* webpackChunkName: "peernet-swarm" */ '@leofcoin/peernet-swarm')
+    const importee = await import(/* webpackChunkName: "peernet-swarm" */ '@leofcoin/peernet-swarm/client')
     /**
      * @access public
      * @type {PeernetClient}

@@ -1,5 +1,5 @@
-import server from './../node_modules/socket-request-server/src/index.js';
-import socketResponse from './../node_modules/socket-request-server/src/socket-response.js';
+import server from 'socket-request-server/server';
+import socketResponse from 'socket-request-server/response';
 
 globalThis.peerMap = new Map()
 
