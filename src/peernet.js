@@ -79,8 +79,10 @@ export default class Peernet {
     
     this.hasDaemon ? Storage = LeofcoinStorageClient : Storage = LeofcoinStorage
     
-    globalThis[`${name}Store`] = globalThis[`${name}Store`] ||
-      await new Storage(name, root)
+    if (!globalThis[`${name}Store`]) {
+      globalThis[`${name}Store`] = new Storage(name, root)
+      await globalThis[`${name}Store`].init()
+    }
 
     globalThis[`${name}Store`].private = isPrivate
     if (!isPrivate) this.stores.push(name)
