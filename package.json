@@ -3,11 +3,17 @@
   "version": "0.16.7",
   "description": "",
   "main": "src/peernet.js",
+  "exports": {
+    ".": "./exports/peernet.js",
+    "./browser": "./exports/browser/peernet.js"
+  },
   "type": "module",
   "engines": {
     "node": ">=19.0.0"
   },
   "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c -w",
     "set-flags": "set NODE_OPTIONS=--openssl-legacy-provider",
     "test": "npm run set-flags && node test/index.js",
     "server": "discovery-swarm-webrtc --port=4000",
@@ -19,20 +25,29 @@
   "license": "MIT",
   "dependencies": {
     "@leofcoin/codec-format-interface": "^1.4.0",
-    "@leofcoin/generate-account": "^1.0.4",
-    "@leofcoin/multi-wallet": "^2.1.2",
+    "@leofcoin/generate-account": "^1.2.0",
+    "@leofcoin/multi-wallet": "^3.0.1",
     "@leofcoin/peernet-swarm": "^0.5.0",
     "@leofcoin/storage": "^3.0.0",
+    "@types/node": "^18.11.18",
     "@vandeurenglenn/base32": "^1.1.0",
     "@vandeurenglenn/base58": "^1.1.0",
     "@vandeurenglenn/debug": "^1.0.0",
     "@vandeurenglenn/is-hex": "^1.0.0",
     "@vandeurenglenn/little-pubsub": "^1.3.1",
+    "multi-signature": "^1.3.1",
     "socket-request-client": "^1.5.0",
     "socket-request-server": "^1.5.0"
   },
   "devDependencies": {
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-wasm": "^6.1.1",
+    "@types/bs58check": "^2.1.0",
+    "@types/secp256k1": "^4.0.3",
+    "@types/varint": "^6.0.1",
     "eslint": "^8.29.0",
-    "eslint-plugin-unicorn": "^45.0.1"
+    "eslint-plugin-unicorn": "^45.0.1",
+    "rollup": "^3.9.0"
   }
 }

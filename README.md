@@ -7,6 +7,7 @@ import Peernet from '@leofcoin/peernet'
 
 const config = {
   network: 'leofcoin:peach',
+  networkVersion: 'peach',
   stars: ['wss://peach.leofcoin.org']
 }
 

@@ -190,7 +190,7 @@ export default class Peernet {
 
     const {daemon, environment} = await target()
     this.hasDaemon = daemon
-
+    
     for (const store of this.defaultStores) {
       await this.addStore(store, options.storePrefix, options.root)
     }
@@ -253,7 +253,7 @@ export default class Peernet {
      * @type {PeernetClient}
      */
     this.client = new importee.default(this.id, this.networkVersion, this.stars)
-    if (globalThis.onbeforeunload) {
+    if (globalThis.navigator) {
       globalThis.addEventListener('beforeunload', async () => this.client.close());
     } else {
       process.on('SIGTERM', async () => {

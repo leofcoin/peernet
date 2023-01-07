@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "ES2022",
+    "target": "es2022",
+    // "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "outDir": ".build/",
+    "moduleResolution":"NodeNext",
+    "sourceMap": true,
+    "allowJs": true
+  },
+  "include": [
+    "./src/**/*",
+    "@vandeurenglenn/little-pubsub",
+    "@leofcoin/storage"
+  ],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}
