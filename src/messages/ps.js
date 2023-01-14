@@ -2,10 +2,6 @@ import proto from './../proto/ps.proto.js'
 import { FormatInterface } from '@leofcoin/codec-format-interface'
 
 export default class PsMessage extends FormatInterface {
-  get keys() {
-    return ['data', 'topic']
-  }
-
   get messageName() {
     return 'PsMessage'
   }

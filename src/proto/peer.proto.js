@@ -1,6 +1,3 @@
-export default `
-// PeernetPeerMessage
-message PeernetPeerMessage {
-  required string id = 1;
+export default {
+  id: String()
 }
-`

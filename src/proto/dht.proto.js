@@ -1,7 +1,4 @@
-export default `
-// PeernetDHTMessage
-message PeernetDHTMessage {
-  required string hash = 1;
-  optional string store = 2;
+export default {
+  hash: String(),
+  'store?': String()
 }
-`

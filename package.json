@@ -24,7 +24,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@leofcoin/codec-format-interface": "^1.4.0",
+    "@leofcoin/codec-format-interface": "^1.6.0",
     "@leofcoin/generate-account": "^1.2.0",
     "@leofcoin/multi-wallet": "^3.0.1",
     "@leofcoin/peernet-swarm": "^0.5.0",

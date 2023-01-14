@@ -10,12 +10,6 @@ import { FormatInterface } from '@leofcoin/codec-format-interface'
  `
  */
 export default class DHTMessage extends FormatInterface {
-  /**
-   *
-   */
-  get keys() {
-    return ['hash', 'store']
-  }
 
   get messageName() {
     return 'PeernetDHTMessage'

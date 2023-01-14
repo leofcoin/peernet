@@ -2,9 +2,6 @@ import proto from './../proto/chat-message.proto.js'
 import { FormatInterface } from '@leofcoin/codec-format-interface'
 
 export default class ChatMessage extends FormatInterface {
-  get keys() {
-    return ['author', 'value', 'timestamp', 'files']
-  }
 
   get messageName() {
     return 'ChatMessage'

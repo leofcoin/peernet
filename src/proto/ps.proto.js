@@ -1,6 +1,4 @@
-export default `
-// PsMessage
-message PsMessage {
-  required bytes data = 1;
-  required bytes topic = 2;
-}`
+export default {
+  data: new Uint8Array(),
+  topic: new Uint8Array()
+}

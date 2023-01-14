@@ -5,9 +5,6 @@ import { FormatInterface } from '@leofcoin/codec-format-interface'
  * @extends {CodecFormat}
  */
 export default class DataMessage extends FormatInterface {
-  get keys() {
-    return ['hash', 'store']
-  }
 
   get messageName() {
     return 'PeernetDataMessage'

@@ -1,8 +1,8 @@
-import Client from './src/peernet.js'
+import Client from './exports/peernet.js'
 
 
 
-  const client = await new Client({root: '.peernet/test'})
+  const client = await new Client({root: '.peernet/test', network: 'leofcoin:peach', networkVersion: 'peach', stars: ['wss://peach.leofcoin.org']})
 
   // peernet.addFolder([{
   //   path: 'assets/asset.png',

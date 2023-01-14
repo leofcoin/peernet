@@ -1,6 +1,3 @@
-export default `
-// PeernetResponseMessage
-message PeernetResponseMessage {
-  required bytes response = 1;
+export default {
+  response: new Uint8Array()
 }
-`

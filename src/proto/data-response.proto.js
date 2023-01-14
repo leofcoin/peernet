@@ -1,7 +1,4 @@
-export default `
-// PeernetDataMessageResponse
-message PeernetDataMessageResponse {
-  required string hash = 1;
-  required bytes data = 2;
+export default {
+  hash: String(),
+  data: new Uint8Array(),
 }
-`
