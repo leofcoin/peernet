@@ -2,7 +2,6 @@ import '@vandeurenglenn/debug'
 import PubSub from '@vandeurenglenn/little-pubsub'
 import PeerDiscovery from './discovery/peer-discovery.js'
 import DHT from './dht/dht.js'
-import { codecs } from '@leofcoin/codec-format-interface'
 import { BufferToUint8Array, protoFor, target } from './utils/utils.js'
 import MessageHandler from './handlers/message.js'
 import dataHandler from './handlers/data.js'
@@ -10,18 +9,38 @@ import { encapsulatedError, dhtError,
   nothingFoundError } from './errors/errors.js'
 
 import LeofcoinStorage from '@leofcoin/storage'
+import { utils as codecUtils } from '@leofcoin/codecs'
 globalThis.LeofcoinStorage = LeofcoinStorage
   
 globalThis.leofcoin = globalThis.leofcoin || {}
 globalThis.pubsub = globalThis.pubsub || new PubSub()
-globalThis.globalSub = globalThis.globalSub || new PubSub({verbose: true})
-
+globalThis.globalSub = globalThis.globalSub || new PubSub(true)
 /**
  * @access public
  * @example
  * const peernet = new Peernet();
  */
 export default class Peernet {
+  stores: [] = []
+  /**
+   * @type {Object}
+   * @property {Object} peer Instance of Peer
+   */
+  dht: DHT = new DHT()
+  /** @leofcoin/peernet-swarm/client */
+  client: {
+    connections: [],
+    id: string,
+    removePeer: (peer: string) => {},
+    close: () => {}
+  }
+  network: string
+  stars: string[]
+  networkVersion: string
+  bw: {
+    up: number
+    down: number
+  }
   /**
    * @access public
    * @param {Object} options
@@ -35,8 +54,7 @@ export default class Peernet {
    * @example
    * const peernet = new Peernet({network: 'leofcoin', root: '.leofcoin'});
    */
-  constructor(options = {}) {
-    this._discovered = []
+  constructor(options: options) {
     /**
      * @property {String} network - current network
      */
@@ -67,8 +85,8 @@ export default class Peernet {
     if (!globalThis.peernet.protos[name]) globalThis.peernet.protos[name] = proto
   }
 
-  addCodec(name, codec) {
-    if (!this.codecs[name]) this.codecs[name] = codec
+  addCodec(codec: codec) {
+    return codecUtils.addCodec(codec)
   }
 
   async addStore(name, prefix, root, isPrivate = true) {
@@ -129,18 +147,6 @@ export default class Peernet {
    * @return {Promise} instance of Peernet
    */
   async _init(options) {
-    // peernetDHT aka closesPeer by coordinates
-    /**
-     * @type {Object}
-     * @property {Object} peer Instance of Peer
-     */
-    this.dht = new DHT()
-    /**
-     * @type {Map}
-     * @property {Object} peer Instance of Peer
-     */
-    this.stores = []
-    this.codecs = {...codecs}
     this.requestProtos = {}
     this.storePrefix = options.storePrefix
     this.root = options.root
@@ -247,7 +253,7 @@ export default class Peernet {
     pubsub.subscribe('peer:data', dataHandler)
 
 
-    const importee = await import(/* webpackChunkName: "peernet-swarm" */ '@leofcoin/peernet-swarm/client')
+    const importee = await import('@leofcoin/peernet-swarm/client')
     /**
      * @access public
      * @type {PeernetClient}

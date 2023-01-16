@@ -3,7 +3,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 import wasm from '@rollup/plugin-wasm'
 import rimraf from 'rimraf'
-
+import typescript from '@rollup/plugin-typescript'
 rimraf.sync('./exports/**')
 
 
