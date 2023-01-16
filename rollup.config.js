@@ -2,8 +2,10 @@ import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 import wasm from '@rollup/plugin-wasm'
-import rimraf from 'rimraf'
-import typescript from '@rollup/plugin-typescript'
+import rimraf from 'rimraf';
+import typescript from '@rollup/plugin-typescript';
+import tsconfig from './tsconfig.json' assert { type: 'json'}
+
 rimraf.sync('./exports/**')
 
 
@@ -19,12 +21,16 @@ export default [{
     commonjs(),
     resolve({
       mainFields: ["browser", "module", "main"]
-    })
+    }),
+    typescript({...tsconfig, outDir: './exports/browser'})
   ]
 }, {
   input: ['./src/peernet.ts', './node_modules/@leofcoin/storage/exports/store.js'],
   output: {
     format: 'es',
     dir: './exports'
-  }
+  },
+  plugins: [
+    typescript({...tsconfig, outDir: './exports'})
+  ]
 }]
