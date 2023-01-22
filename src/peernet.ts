@@ -344,7 +344,7 @@ export default class Peernet {
         this.handleDHT(peer, id, proto)
         break
       }
-      case 'peenet-data': {
+      case 'peernet-data': {
         this.handleData(peer, id, proto)
         break
       }
