@@ -480,7 +480,6 @@ export default class Peernet {
         })
         if (closest[0]) data = await closest[0].request(node.encoded)
       }
-      data = new Uint8Array(Object.values(data))
       const proto = await protoFor(data)
       // TODO: store data automaticly or not
       return BufferToUint8Array(proto.decoded.data)
