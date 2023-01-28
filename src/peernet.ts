@@ -10,6 +10,7 @@ import { encapsulatedError, dhtError,
 
 import LeofcoinStorage from '@leofcoin/storage'
 import { utils as codecUtils } from '@leofcoin/codecs'
+import Identity from './identity.js'
 globalThis.LeofcoinStorage = LeofcoinStorage
   
 globalThis.leofcoin = globalThis.leofcoin || {}
@@ -21,6 +22,7 @@ globalThis.globalSub = globalThis.globalSub || new PubSub(true)
  * const peernet = new Peernet();
  */
 export default class Peernet {
+  identity: Identity
   stores: [] = []
   /**
    * @type {Object}
@@ -75,6 +77,14 @@ export default class Peernet {
       down: 0,
     }
     return this._init(options)
+  }
+
+  get id() {
+    return this.identity.id
+  }
+
+  get accounts(): Promise<[[name: string, externalAddress: string, internalAddress: string]]> {
+    return this.identity.accounts
   }
 
   get defaultStores() {
@@ -201,37 +211,10 @@ export default class Peernet {
       await this.addStore(store, options.storePrefix, options.root)
     }
 
-    const accountExists = await accountStore.has('public')
-    if (accountExists) {
-      const pub = await accountStore.get('public')
-      this.id = JSON.parse(new TextDecoder().decode(pub)).walletId;
-      let accounts = await walletStore.get('accounts')
-      accounts = new TextDecoder().decode(accounts)
-      const selected = await walletStore.get('selected-account')
-      globalThis.peernet.selectedAccount = new TextDecoder().decode(selected)
+    this.identity = new Identity(this.network)
+    await this.identity.load()
 
-      // fixing account issue (string while needs to be a JSON)
-      // TODO: remove when on mainnet
-      try {
-        this.accounts = JSON.parse(accounts)
-      } catch {
-        this.accounts = [accounts.split(',')]
-      }
-    } else {
-      const importee = await import(/* webpackChunkName: "generate-account" */ '@leofcoin/generate-account')
-      const generateAccount = importee.default
-      const {identity, accounts, config} = await generateAccount(this.network)
-      // await accountStore.put('config', JSON.stringify(config));
-      await accountStore.put('public', JSON.stringify({walletId: identity.walletId}));
-      
-      await walletStore.put('version', String(1))
-      await walletStore.put('accounts', JSON.stringify(accounts))
-      await walletStore.put('selected-account', accounts[0][1])
-      await walletStore.put('identity', JSON.stringify(identity))
-
-      globalThis.peernet.selectedAccount = accounts[0][1]
-      this.id = identity.walletId
-    }
+    
     this._peerHandler = new PeerDiscovery(this.id)
     this.peerId = this.id
 

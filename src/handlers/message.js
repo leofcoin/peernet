@@ -21,7 +21,8 @@ export default class MessageHandler {
     }
     const wallet = new MultiWallet(this.network)
     wallet.recover(identity.mnemonic)
-    message.decoded.signature = wallet.sign(Buffer.from(await message.hash).slice(0, 32))
+    const hash = await message.hash()
+    message.decoded.signature = wallet.sign(hash.subarray(0, 32))
     return message
   }
 
