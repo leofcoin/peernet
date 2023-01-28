@@ -56,7 +56,7 @@ export default class Peernet {
    * @example
    * const peernet = new Peernet({network: 'leofcoin', root: '.leofcoin'});
    */
-  constructor(options: options) {
+  constructor(options: options, password) {
     /**
      * @property {String} network - current network
      */
@@ -76,7 +76,7 @@ export default class Peernet {
       up: 0,
       down: 0,
     }
-    return this._init(options)
+    return this._init(options, password)
   }
 
   get id() {
@@ -156,7 +156,7 @@ export default class Peernet {
    *
    * @return {Promise} instance of Peernet
    */
-  async _init(options) {
+  async _init(options, password) {
     this.requestProtos = {}
     this.storePrefix = options.storePrefix
     this.root = options.root
@@ -212,7 +212,7 @@ export default class Peernet {
     }
 
     this.identity = new Identity(this.network)
-    await this.identity.load()
+    await this.identity.load(password)
 
     
     this._peerHandler = new PeerDiscovery(this.id)

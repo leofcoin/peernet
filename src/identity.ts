@@ -61,6 +61,10 @@ export default class Identity {
     await this.#wallet.recover(identity.mnemonic, password, this.network)
   }
 
+  sign(hash: Uint8Array) {
+    return this.#wallet.sign(hash.subarray(0, 32))
+  }
+
   async export(password: string) {
     if (!password) throw new Error('IdentityExportError: password required')
     const identity = JSON.parse(new TextDecoder().decode(await walletStore.get('identity')))

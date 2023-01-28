@@ -13,16 +13,8 @@ export default class MessageHandler {
    * @return message
    */
   async hashAndSignMessage(message) {
-    let identity = await walletStore.get('identity')
-    identity = JSON.parse(identity)
-    if (!globalThis.MultiWallet) {
-      const importee = await import(/* webpackChunkName: "multi-wallet" */ '@leofcoin/multi-wallet')
-      globalThis.MultiWallet = importee.default
-    }
-    const wallet = new MultiWallet(this.network)
-    wallet.recover(identity.mnemonic)
-    const hash = await message.hash()
-    message.decoded.signature = wallet.sign(hash.subarray(0, 32))
+    const hash = await message.peernetHash
+    message.decoded.signature = globalThis.identity.sign(hash.buffer)
     return message
   }
 
