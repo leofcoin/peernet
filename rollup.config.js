@@ -43,12 +43,12 @@ export default [{
   input: ['./src/prompts/password/browser.js'],
   output: {
     format: 'es',
-    file: './exports/browser/prompts/password.js'
+    file: './exports/browser/src/prompts/password.js'
   }
 }, {
   input: ['./src/prompts/password/node.js'],
   output: {
     format: 'es',
-    file: './exports/prompts/password.js'
+    file: './exports/src/prompts/password.js'
   }
 }]
