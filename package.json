@@ -42,6 +42,7 @@
     "socket-request-server": "^1.5.0"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-wasm": "^6.1.1",
@@ -50,6 +51,6 @@
     "@types/varint": "^6.0.1",
     "eslint": "^8.29.0",
     "eslint-plugin-unicorn": "^45.0.1",
-    "rollup": "^3.10.0"
+    "rollup": "^3.12.0"
   }
 }
