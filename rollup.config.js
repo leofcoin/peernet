@@ -10,7 +10,7 @@ rimraf.sync('./exports/**')
 
 
 export default [{
-  input: ['./src/peernet.ts', './src/prompts/password/browser.js', './node_modules/@leofcoin/storage/exports/browser-store.js'],
+  input: ['./src/peernet.ts', './node_modules/@leofcoin/storage/exports/browser-store.js'],
   output: {
     format: 'es',
     dir: './exports/browser'
@@ -25,10 +25,10 @@ export default [{
     typescript({...tsconfig, outDir: './exports/browser'})
   ],
   external: [
-    './prompts/password/node.js'
+    './prompts/password.js'
   ]
 }, {
-  input: ['./src/peernet.ts', './src/prompts/password/node.js', './node_modules/@leofcoin/storage/exports/store.js'],
+  input: ['./src/peernet.ts', './node_modules/@leofcoin/storage/exports/store.js'],
   output: {
     format: 'es',
     dir: './exports'
@@ -37,6 +37,18 @@ export default [{
     typescript({...tsconfig, outDir: './exports'})
   ],
   external: [
-    './prompts/password/browser.js'
+    './prompts/password.js'
   ]
+}, {
+  input: ['./src/prompts/password/browser.js'],
+  output: {
+    format: 'es',
+    file: './exports/browser/prompts/password.js'
+  }
+}, {
+  input: ['./src/prompts/password/node.js'],
+  output: {
+    format: 'es',
+    file: './exports/prompts/password.js'
+  }
 }]
