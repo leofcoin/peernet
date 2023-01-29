@@ -1,4 +1,8 @@
 import MultiWallet from '@leofcoin/multi-wallet'
+import base58 from '@vandeurenglenn/base58'
+import {encrypt, decrypt} from '@leofcoin/identity-utils'
+import QrScanner from 'qr-scanner'
+import qrcode from 'qrcode'
 
 export default class Identity {
   #wallet: MultiWallet
@@ -46,7 +50,8 @@ export default class Identity {
     }
     const identity = JSON.parse(new TextDecoder().decode(await globalThis.walletStore.get('identity')))
     this.#wallet = new MultiWallet(this.network)
-    await this.#wallet.recover(identity.mnemonic, password, this.network)
+    const multiWIF = await decrypt(password, base58.decode(identity.multiWIF))
+    await this.#wallet.fromMultiWif(multiWIF)
   }
 
   sign(hash: Uint8Array) {
@@ -54,28 +59,24 @@ export default class Identity {
   }
 
   async export(password: string) {
-    if (!password) throw new Error('IdentityExportError: password required')
-    const identity = JSON.parse(new TextDecoder().decode(await globalThis.walletStore.get('identity')))
+    const multiWIF =  this.#wallet.toMultiWif()
+    const encypted = await encrypt(password, multiWIF)
+    return base58.encode(encypted)
+  }
+
+  async import(password, encrypted: base58String) {
     this.#wallet = new MultiWallet(this.network)
-    await this.#wallet.recover(identity.mnemonic, password, this.network)
-    return this.#wallet.toMultiWif()
+    const decrypted = await decrypt(password, base58.decode(encrypted))
+    await this.#wallet.fromMultiWif(decrypted)
   }
 
-  async import(multiWIF: string) {
-    this.#wallet = new MultiWallet(this.network)
-    await this.#wallet.fromMultiWif(multiWIF)
+  async exportQR(password: string) {
+    const exported = await this.export(password)
+    return globalThis.navigator ? await qrcode.toDataURL(exported) : await qrcode.toString(exported, {type: 'terminal'})
   }
 
-  async unlock({ key, iv, cipher }) {
-
-  }
-
-  /**
-   * Lock current wallet or import wallet using a MultiWIF and lock
-   * 
-   * @param password 
-   * @param multiWIF 
-   */
-  async lock(password: string, multiWIF?: string) {
+  async importQR(image: File | Blob , password: string) {
+    const multiWIF = QrScanner.scanImage(image)
+    return this.import(password, multiWIF)
   }
 }
