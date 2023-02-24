@@ -3,6 +3,7 @@ import base58 from '@vandeurenglenn/base58'
 import {encrypt, decrypt} from '@leofcoin/identity-utils'
 import QrScanner from 'qr-scanner'
 import qrcode from 'qrcode'
+import { readFile } from 'fs/promises'
 
 export default class Identity {
   #wallet: MultiWallet
@@ -23,7 +24,8 @@ export default class Identity {
     return JSON.parse(accounts)
   }
 
-  async load(password?: string): Promise<void> {    
+  async load(password?: string): Promise<void> {
+    if (password && password.includes('.txt')) password = (await readFile(password)).toString()
     if (!password) {
       const importee: { default: () => Promise<string> } = await import('./prompts/password.js')
       password = await importee.default()
