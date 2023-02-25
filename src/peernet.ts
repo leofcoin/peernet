@@ -307,7 +307,7 @@ export default class Peernet {
   async handleRequest(peer, id, proto) {
     const method = this.requestProtos[proto.decoded.request]
     if (method) {
-      const data = await method()
+      const data = await method(proto.decoded.requested)
       const node = await this.prepareMessage(data)
       this.sendMessage(peer, id, node.encoded)
     }

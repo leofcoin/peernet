@@ -1,3 +1,4 @@
 export default {
-  request: String()
+  request: String(),
+  'requested?': Uint8Array()
 }
