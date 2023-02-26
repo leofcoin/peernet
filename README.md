@@ -11,7 +11,9 @@ const config = {
   stars: ['wss://peach.leofcoin.org']
 }
 
-await new Peernet(config)
+const node = await new Peernet(config)
+// ... setup some things
+await node.start()
 
 console.log(globalThis.peernet)
 ```

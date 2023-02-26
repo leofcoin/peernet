@@ -235,13 +235,6 @@ export default class Peernet {
      */
     pubsub.subscribe('peer:data', dataHandler)
 
-
-    const importee = await import('@leofcoin/peernet-swarm/client')
-    /**
-     * @access public
-     * @type {PeernetClient}
-     */
-    this.client = new importee.default(this.id, this.networkVersion, this.stars)
     if (globalThis.navigator) {
       globalThis.addEventListener('beforeunload', async () => this.client.close());
     } else {
@@ -252,6 +245,18 @@ export default class Peernet {
       });
     }
     return this
+  }
+
+  async start() {
+    this.starting = true
+    const importee = await import('@leofcoin/peernet-swarm/client')
+    /**
+     * @access public
+     * @type {PeernetClient}
+     */
+    this.client = new importee.default(this.id, this.networkVersion, this.stars)
+    this.started = true
+    this.starting = false
   }
 
   addRequestHandler(name, method) {
