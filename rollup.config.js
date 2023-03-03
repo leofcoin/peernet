@@ -20,6 +20,7 @@ export default [{
     wasm(),
     commonjs(),
     resolve({
+      preferBuiltins: false,
       mainFields: ["browser", "module", "main"]
     }),
     typescript({...tsconfig, outDir: './exports/browser'})
