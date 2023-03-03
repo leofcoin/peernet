@@ -29,7 +29,7 @@
     "@leofcoin/generate-account": "^2.0.0",
     "@leofcoin/identity-utils": "^1.0.0",
     "@leofcoin/multi-wallet": "^3.0.1",
-    "@leofcoin/peernet-swarm": "^1.0.0",
+    "@leofcoin/peernet-swarm": "^1.1.0",
     "@leofcoin/storage": "^3.0.0",
     "@types/node": "^18.11.18",
     "@vandeurenglenn/base32": "^1.1.0",
