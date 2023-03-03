@@ -43,6 +43,10 @@ export default class Peernet {
     up: number
     down: number
   }
+  autoStart: boolean = true
+  #starting: boolean = false
+  #started: boolean = false
+
   /**
    * @access public
    * @param {Object} options
@@ -56,11 +60,12 @@ export default class Peernet {
    * @example
    * const peernet = new Peernet({network: 'leofcoin', root: '.leofcoin'});
    */
-  constructor(options: options, password) {
+  constructor(options, password) {
     /**
      * @property {String} network - current network
      */
     this.network = options.network || 'leofcoin'
+    this.autoStart = options.autoStart === undefined ? true : options.autoStart
     this.stars = options.stars
     const parts = this.network.split(':')
     this.networkVersion = options.networkVersion || parts.length > 1 ? parts[1] : 'mainnet'
@@ -244,19 +249,22 @@ export default class Peernet {
         process.exit()
       });
     }
+    if (this.autoStart) await this.start()
     return this
   }
 
   async start() {
-    this.starting = true
+    if (this.#starting || this.#started) return
+
+    this.#starting = true
     const importee = await import('@leofcoin/peernet-swarm/client')
     /**
      * @access public
      * @type {PeernetClient}
      */
     this.client = new importee.default(this.id, this.networkVersion, this.stars)
-    this.started = true
-    this.starting = false
+    this.#started = true
+    this.#starting = false
   }
 
   addRequestHandler(name, method) {
