@@ -18,15 +18,17 @@ export default [{
   plugins: [
     json(),
     wasm(),
-    commonjs(),
+    commonjs({exclude: ['./swarm-client.js']}),
     resolve({
+      exclude: ['./swarm-client.js'],
       preferBuiltins: false,
-      mainFields: ["browser", "module", "main"]
+      mainFields: ["browser", "module"]
     }),
     typescript({...tsconfig, outDir: './exports/browser'})
   ],
   external: [
-    './prompts/password.js'
+    './prompts/password.js',
+    './swarm-client.js'
   ]
 }, {
   input: ['./src/peernet.ts', './node_modules/@leofcoin/storage/exports/store.js'],
@@ -38,7 +40,8 @@ export default [{
     typescript({...tsconfig, outDir: './exports'})
   ],
   external: [
-    './prompts/password.js'
+    './prompts/password.js',
+    './swarm-client.js'
   ]
 }, {
   input: ['./src/prompts/password/browser.js'],
@@ -51,5 +54,19 @@ export default [{
   output: {
     format: 'es',
     file: './exports/src/prompts/password.js'
+  }
+}, {
+  input: './node_modules/@leofcoin/peernet-swarm/exports/browser/client.js',
+  inlineDynamicImports: true,
+  output: {
+    format: 'es',
+    file: './exports/browser/swarm-client.js'
+  }
+}, {
+  input: './node_modules/@leofcoin/peernet-swarm/exports/client.js',
+  inlineDynamicImports: true,
+  output: {
+    format: 'es',
+    file: './exports/swarm-client.js'
   }
 }]
