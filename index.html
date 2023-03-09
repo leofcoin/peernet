@@ -9,7 +9,7 @@
     </script> -->
 
     <script type="module">
-      import Peernet from './dist/peernet.js';
+      import Peernet from './exports/browser/peernet.js';
       (async () => {
         const peernet = await new Peernet({network: 'leofcoin:peach', networkVersion: 'peach'})
         peernet.addRequestHandler('lastBlock', () => new peernet.protos['peernet-response']({response: new TextEncoder().encode(100)}))
