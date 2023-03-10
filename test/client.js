@@ -1,7 +1,15 @@
 const Client = require('./../client.js')
 
-const client = new Client({id: Buffer.from('testtesttesttesttesttesttesttest')})
+const client = new Client()
 
-pubsub.subscribe('peer:connected', async peer => setInterval(async () => {
-    console.log(await peer.request({type: 'block', index: 0}));
-  }, 5000))
+console.log(pubsub.subscribers);
+pubsub.subscribe('peer:connected', (data) => {
+  console.log(data);
+})
+pubsub.subscribe('peer:data', (data) => {
+  console.log(data);
+})
+
+// pubsub.subscribe('peer:connected', async peer => setInterval(async () => {
+//     // console.log(await peer.request({type: 'block', index: 0}));
+//   }, 5000))

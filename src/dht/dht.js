@@ -84,9 +84,8 @@ export default class DhtEarth {
     let all = []
     const address = await getAddress();
     const peerLoc = await this.getCoordinates(address)
-
     for (const provider of providers) {
-      if (provider.address === '127.0.0.1') all.push({provider, distance: 0})
+      if (provider.address === '127.0.0.1' || provider.address === '::1') all.push({provider, distance: 0})
       else all.push(this.getDistance(peerLoc, provider))
     }
 

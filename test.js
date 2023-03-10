@@ -2,8 +2,16 @@ import Client from './exports/peernet.js'
 
 
 
-  const client = await new Client({root: '.peernet/test', network: 'leofcoin:peach', networkVersion: 'peach', stars: ['wss://peach.leofcoin.org']})
-
+  const client = await new Client({
+    network: 'leofcoin:peach', networkVersion: 'peach', stars: ['wss://peach.leofcoin.org']
+  })
+  console.log(pubsub.subscribers);
+  pubsub.subscribe('peer:connected', (data) => {
+    console.log(data);
+  })
+  pubsub.subscribe('peer:data', (data) => {
+    console.log(data);
+  })
   // peernet.addFolder([{
   //   path: 'assets/asset.png',
   //   content: Buffer.from('png')

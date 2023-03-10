@@ -373,34 +373,24 @@ export default class Peernet {
   async walk(hash) {
     if (!hash) throw new Error('hash expected, received undefined')
     const data = await new globalThis.peernet.protos['peernet-dht']({hash})
-    const clientId = this.client.id
-    const walk = async peer => {
+    const walk = async (peer, peerId) => {
       const node = await this.prepareMessage(data)
       let result = await peer.request(node.encoded)
       result = new Uint8Array(Object.values(result))
       const proto = await protoFor(result)
       if (proto.name !== 'peernet-dht-response') throw dhtError(proto.name)
 
-      // TODO: give ip and port (just used for location)
-      if (!peer.connection.remoteAddress || !peer.connection.localAddress) {
-        peer.connection.remoteFamily = 'ipv4'
-        peer.connection.remoteAddress = '127.0.0.1'
-        peer.connection.remotePort = '0000'
-      }
-
       const peerInfo = {
-        family: peer.connection.remoteFamily || peer.connection.localFamily,
-        address: peer.connection.remoteAddress || peer.connection.localAddress,
-        port: peer.connection.remotePort || peer.connection.localPort,
-        id: peer.peerId,
+        ...peer.connectionStats,
+        id: peerId,
       }
 
       if (proto.decoded.has) this.dht.addProvider(peerInfo, proto.decoded.hash)
     }
     let walks = []
-    for (const peer of this.connections) {
-      if (peer.peerId !== this.id) {
-        walks.push(walk(peer))
+    for (const [peerId, peer] of Object.entries(this.#connections)) {
+      if (peerId !== this.id) {
+        walks.push(walk(peer, peerId))
       }
     }
     return Promise.all(walks)
@@ -411,7 +401,7 @@ export default class Peernet {
    *
    * @param {String} hash
    */
-  async providersFor(hash) {
+  async providersFor(hash: string, store?: undefined) {
     let providers = await this.dht.providersFor(hash)
     // walk the network to find a provider
     if (!providers || providers.length === 0) {
@@ -472,21 +462,31 @@ export default class Peernet {
     if (!closestPeer || !closestPeer.id) return this.requestData(hash, store?.name || store)
 
     const id = closestPeer.id
-    if (this.connections) {
-      let closest = this.connections.filter((peer) => {
-        if (peer.peerId === id) return peer
-      })
+    console.log({id});
+    console.log(this.#connections[id]);
+    
+    if (this.#connections[id]) {
+      const peer = this.#connections[id]
 
       let data = await new globalThis.peernet.protos['peernet-data']({hash, store: store?.name || store});
 
       const node = await this.prepareMessage(data)
-      if (closest[0]) data = await closest[0].request(node.encoded)
+      
+      if (peer) data = await peer.request(node.encoded)
       else {
-        closest = this.connections.filter((peer) => {
-          if (peer.peerId === id) return peer
-        })
-        if (closest[0]) data = await closest[0].request(node.encoded)
+        // fallback and try every provider found
+        const promises = []
+        const providers = await this.providersFor(hash, store)
+        for (const provider of providers) {
+          
+          const peer = this.#connections[provider.id]
+        
+          if (peer) promises.push(peer.request(node.encoded))
+        }
+        data = await Promise.race(promises)
       }
+      if (data) data = new Uint8Array(Object.values(data))
+      
       const proto = await protoFor(data)
       // TODO: store data automaticly or not
       return BufferToUint8Array(proto.decoded.data)
@@ -690,8 +690,8 @@ export default class Peernet {
     // globalSub.publish(topic, data)
     const id = Math.random().toString(36).slice(-12)
     data = await new globalThis.peernet.protos['peernet-ps']({data, topic})
-    for (const peer of this.connections) {
-      if (peer.peerId !== this.peerId) {
+    for (const [peerId, peer] of this.#connections) {
+      if (peerId !== this.id) {
         const node = await this.prepareMessage(data)
         this.sendMessage(peer, id, node.encoded)
       }
