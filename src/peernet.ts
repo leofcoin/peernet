@@ -462,8 +462,6 @@ export default class Peernet {
     if (!closestPeer || !closestPeer.id) return this.requestData(hash, store?.name || store)
 
     const id = closestPeer.id
-    console.log({id});
-    console.log(this.#connections[id]);
     
     if (this.#connections[id]) {
       const peer = this.#connections[id]
