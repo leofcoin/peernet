@@ -136,7 +136,7 @@ export default class Peernet {
    * @return {Array} peerId
    */
   get peers() {
-    return Object.values(this.#connections)
+    return Object.entries(this.#connections)
   }
 
   get connections() {
