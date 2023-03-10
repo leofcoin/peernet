@@ -688,7 +688,7 @@ export default class Peernet {
     // globalSub.publish(topic, data)
     const id = Math.random().toString(36).slice(-12)
     data = await new globalThis.peernet.protos['peernet-ps']({data, topic})
-    for (const [peerId, peer] of this.#connections) {
+    for (const [peerId, peer] of Object.entries(this.#connections)) {
       if (peerId !== this.id) {
         const node = await this.prepareMessage(data)
         this.sendMessage(peer, id, node.encoded)
