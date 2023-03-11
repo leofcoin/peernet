@@ -292,14 +292,10 @@ export default class Peernet {
   }
 
   async sendMessage(peer, id, data) {
-    
-    if (peer.readyState === 'open') {
+    if (peer.connected) {
       await peer.send(data, id)
       this.bw.up += data.length
-    } else if (peer.readyState === 'closed') {
-      this.removePeer(peer)
-    }
-
+    } else this.removePeer(peer)
   }
 
   async handleDHT(peer, id, proto) {
