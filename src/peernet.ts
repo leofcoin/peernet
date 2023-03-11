@@ -242,6 +242,8 @@ export default class Peernet {
       // todo: cleanup discovered
     })
 
+    pubsub.subscribe('peer:left', this.#peerLeft.bind(this))
+
     /**
      * converts data -> message -> proto
      * @see DataHandler
@@ -249,11 +251,11 @@ export default class Peernet {
     pubsub.subscribe('peer:data', dataHandler)
 
     if (globalThis.navigator) {
-      globalThis.addEventListener('beforeunload', async () => this.client.close());
+      globalThis.addEventListener('beforeunload', async () => this.client.destroy());
     } else {
       process.on('SIGTERM', async () => {
         process.stdin.resume();
-        await this.client.close()
+        await this.client.destroy()
         process.exit()
       });
     }
@@ -275,18 +277,28 @@ export default class Peernet {
     this.#starting = false
   }
 
+  #peerLeft(peer) {
+    for (const [id, _peer] of Object.entries(this.#connections)) {
+      if (peer.id === peer.id) {
+        delete this.#connections[id]
+        this.removePeer(_peer)
+      }
+    }
+    
+  }
+
   addRequestHandler(name, method) {
     this.requestProtos[name] = method
   }
 
   async sendMessage(peer, id, data) {
     
-    // if (peer.readyState === 'open') {
+    if (peer.readyState === 'open') {
       await peer.send(data, id)
       this.bw.up += data.length
-    // } else if (peer.readyState === 'closed') {
-      // this.removePeer(peer)
-    // }
+    } else if (peer.readyState === 'closed') {
+      this.removePeer(peer)
+    }
 
   }
 
@@ -712,7 +724,7 @@ export default class Peernet {
   }
 
   async removePeer(peer) {
-    return this.client.removePeer(peer)
+    return this.client._removePeer(peer)
   }
 
   get Buffer() {
