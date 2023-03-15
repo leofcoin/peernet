@@ -279,7 +279,7 @@ export default class Peernet {
 
   #peerLeft(peer) {
     for (const [id, _peer] of Object.entries(this.#connections)) {
-      if (peer.id === peer.id) {
+      if (_peer.id === peer.id) {
         delete this.#connections[id]
         this.removePeer(_peer)
       }
