@@ -14,6 +14,8 @@ const lastFetched = {
   },
 }
 
+const fetchedCoordinates = {}
+
 const getAddress = async () => {
   const {address} = lastFetched
   const now = Math.round(new Date().getTime() / 1000);
@@ -58,12 +60,14 @@ export default class DhtEarth {
    * @return {Object} {latitude: lat, longitude: lon}
    */
   async getCoordinates(address) {
-    // const {address} = parseAddress(provider)
-    const request = `https://whereis.leofcoin.org/?ip=${address}`
-    let response = await fetch(request)
-    response = await response.json()
-    const {lat, lon} = response;
-    return {latitude: lat, longitude: lon}
+    if (!fetchedCoordinates[address]) {
+      const request = `https://whereis.leofcoin.org/?ip=${address}`
+      let response = await fetch(request)
+      response = await response.json()
+      const {lat, lon} = response;
+      fetchedCoordinates[address] = {latitude: lat, longitude: lon}
+    }
+    return fetchedCoordinates[address]
   }
 
   /**
