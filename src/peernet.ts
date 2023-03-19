@@ -465,7 +465,8 @@ export default class Peernet {
     if (!providers || providers.size === 0) throw nothingFoundError(hash)
     debug(`found ${providers.size} provider(s) for ${hash}`)
     // get closest peer on earth
-    const closestPeer = providers[0]
+    const closestPeer = Array.from(providers)[0];
+    
     // get peer instance by id
     if (!closestPeer || !closestPeer.id) return this.requestData(hash, store?.name || store)
 
