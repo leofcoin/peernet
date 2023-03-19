@@ -43,6 +43,12 @@ peernet.addRequestHandler('hello', () => {
   return new peernet.protos['peernet-response']({ response: 'hi' })
 })
 ```
+#### add version to peer
+```js
+peernet.addRequestHandler('version', () => {
+  return new ResponseMessage({ response: {version: 1} })
+})
+```
 
 ## Development
 

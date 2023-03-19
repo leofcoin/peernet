@@ -47,6 +47,7 @@ export default class Peernet {
   #starting: boolean = false
   #started: boolean = false
   #connections = {}
+  requestProtos = {}
 
   /**
    * @access public
@@ -163,7 +164,6 @@ export default class Peernet {
    * @return {Promise} instance of Peernet
    */
   async _init(options, password) {
-    this.requestProtos = {}
     this.storePrefix = options.storePrefix
     this.root = options.root
 
@@ -231,12 +231,21 @@ export default class Peernet {
     pubsub.subscribe('peer:discovered', async (peer) => {
       // console.log(peer);
       
+      if (this.requestProtos['version']) {
+        let data = await new globalThis.peernet.protos['peernet-request']({request: 'version'});
+        let node = await globalThis.peernet.prepareMessage(data);
+        let response = await peer.request(node.encoded)
+        response = await new globalThis.peernet.protos['peernet-response'](new Uint8Array(Object.values(response)))
+        peer.version = response.decoded.response.version
+      }
+      
       let data = await new globalThis.peernet.protos['peernet-request']({request: 'handshake'});
       let node = await globalThis.peernet.prepareMessage(data);
       let response = await peer.request(node.encoded)
       
       response = await new globalThis.peernet.protos['peernet-response'](new Uint8Array(Object.values(response)))
       // todo: response.decoded should be the response and not response.peerId
+      
       this.#connections[response.decoded.response.peerId] = peer
       pubsub.publish('peer:connected', peer)
       // todo: cleanup discovered
