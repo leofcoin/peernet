@@ -6,17 +6,21 @@ import Client from './exports/peernet.js'
     network: 'leofcoin:peach', networkVersion: 'peach', stars: ['wss://peach.leofcoin.org']
   })
   console.log(pubsub.subscribers);
+  pubsub.subscribe('peer:discovered', (data) => {
+    // console.log(data);
+    console.log(`discovered: ${Object.keys(peernet.client.discovered).length}`);
+    console.log(Object.keys(peernet.client.discovered));
+  })
   pubsub.subscribe('peer:connected', (data) => {
-    console.log(data);
+    // console.log(data);
+    console.log(`connections: ${peernet.connections.length}`);
   })
-  pubsub.subscribe('peer:data', (data) => {
-    console.log(data);
-  })
-
-  setInterval(() => {
+  pubsub.subscribe('peer:left', (data) => {
     console.log(`connections: ${peernet.connections.length}`);
     console.log(`discovered: ${Object.keys(peernet.client.discovered).length}`);
-  }, 3000)
+    // console.log(data);
+  })
+
   // peernet.addFolder([{
   //   path: 'assets/asset.png',
   //   content: Buffer.from('png')
