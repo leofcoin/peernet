@@ -12,6 +12,11 @@ import Client from './exports/peernet.js'
   pubsub.subscribe('peer:data', (data) => {
     console.log(data);
   })
+
+  setInterval(() => {
+    console.log(`connections: ${peernet.connections.length}`);
+    console.log(`discovered: ${Object.keys(peernet.client.discovered).length}`);
+  }, 3000)
   // peernet.addFolder([{
   //   path: 'assets/asset.png',
   //   content: Buffer.from('png')
