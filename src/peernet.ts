@@ -480,9 +480,9 @@ export default class Peernet {
     if (!closestPeer || !closestPeer.id) return this.requestData(hash, store?.name || store)
 
     const id = closestPeer.id
-    
-    if (this.#connections[id]) {
-      const peer = this.#connections[id]
+    const peer = this.#connections[id]
+
+    if (peer?.connected) {
 
       let data = await new globalThis.peernet.protos['peernet-data']({hash, store: store?.name || store});
 
@@ -508,6 +508,8 @@ export default class Peernet {
       return BufferToUint8Array(proto.decoded.data)
 
       // this.put(hash, proto.decoded.data)
+    } else {
+      this.dht.removeProvider(id, hash)
     }
     return
   }

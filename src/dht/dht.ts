@@ -47,18 +47,15 @@ const distanceInKmBetweenEarthCoordinates = (lat1, lon1, lat2, lon2) => {
 }
 
 export default class DhtEarth {
+  providerMap = new Map<string, Set<string>>
+
   /**
    *
    */
   constructor() {
     this.providerMap = new Map();
   }
-
-  /**
-   * @param {Object} address
-   * @return {Object} {latitude: lat, longitude: lon}
-   */
-  async getCoordinates(address) {
+  async getCoordinates(address: string): Promise<object> {
     if (!fetchedCoordinates[address]) {
       const request = `https://whereis.leofcoin.org/?ip=${address}`
       let response = await fetch(request)
@@ -74,16 +71,12 @@ export default class DhtEarth {
    * @param {Object} provider
    * @return {Object} {provider, distance}
    */
-  async getDistance(peer, provider) {
+  async getDistance(peer: object, provider: object): object {
     const {latitude, longitude} = await this.getCoordinates(provider.address)
     return {provider, distance: distanceInKmBetweenEarthCoordinates(peer.latitude, peer.longitude, latitude, longitude)}
   }
 
-  /**
-   * @param {Array} providers
-   * @return {Object} closestPeer
-   */
-  async closestPeer(providers) {
+  async closestPeer(providers: Array<any>): object {
     let all = []
     const address = await getAddress();
     const peerLoc = await this.getCoordinates(address)
@@ -97,25 +90,32 @@ export default class DhtEarth {
     return all[0].provider;
   }
 
-  /**
-   * @param {String} hash
-   * @return {Array} providers
-   */
-  providersFor(hash) {
-    return this.providerMap.get(hash);
+  hasProvider(hash: string): boolean {
+    return this.providerMap.has(hash)
   }
 
-  /**
-   * @param {String} address
-   * @param {String} hash
-   * @return {Array} providers
-   */
-  async addProvider(address, hash) {
-    let providers = [];
-    if (this.providerMap.has(hash)) providers = this.providerMap.get(hash)
+  providersFor(hash: string): string[] {
+    let providers = []
+    if (this.providerMap.has(hash)) providers = [...this.providerMap.get(hash)]
+    return providers
+  }
 
-    providers = new Set([...providers, address])
+  addProvider(address: string, hash: string): string[] {
+    let providers:Set<string> = new Set()
+    if (this.providerMap.has(hash)) {
+      providers = this.providerMap.get(hash)
+    }
+    providers.add(address)
     this.providerMap.set(hash, providers)
-    return providers;
+  }
+
+  removeProvider(address: string, hash: string): true | undefined {
+    let deleted = undefined
+    if (this.providerMap.has(hash)) {
+      const providers = this.providerMap.get(hash)
+      deleted = providers.delete(address) 
+      deleted && this.providerMap.set(hash, providers)
+    }
+    return deleted;
   }
 }
