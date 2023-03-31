@@ -94,13 +94,13 @@ export default class DhtEarth {
     return this.providerMap.has(hash)
   }
 
-  providersFor(hash: string): string[] {
-    let providers = []
-    if (this.providerMap.has(hash)) providers = [...this.providerMap.get(hash)]
+  providersFor(hash: string): Set<string> {
+    let providers
+    if (this.providerMap.has(hash)) providers = this.providerMap.get(hash)
     return providers
   }
 
-  addProvider(address: string, hash: string): string[] {
+  addProvider(address: string, hash: string) {
     let providers:Set<string> = new Set()
     if (this.providerMap.has(hash)) {
       providers = this.providerMap.get(hash)
