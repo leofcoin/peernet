@@ -15,7 +15,7 @@ globalThis.LeofcoinStorage = LeofcoinStorage
   
 globalThis.leofcoin = globalThis.leofcoin || {}
 globalThis.pubsub = globalThis.pubsub || new PubSub()
-globalThis.globalSub = globalThis.globalSub || new PubSub(true)
+globalThis.globalSub = globalThis.globalSub || new PubSub()
 /**
  * @access public
  * @example
