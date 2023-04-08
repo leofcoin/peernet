@@ -732,7 +732,16 @@ export default class Peernet {
   }
 
   async removePeer(peer) {
-    return this.client._removePeer(peer)
+    console.log('removepeer', peer.id)
+    const id = peer.id
+      await this.client._removePeer(peer);
+      console.log(this.client.peers[id])
+      if (this.client.peers[id]) {
+        for (const connection of Object.keys(this.client.peers[id])) {
+            // if (this.client.peers[id][connection].connected === false) delete this.client.peers[id][connection] 
+            if (this.client.peers[id][connection].connected ) return this.client.emit('peerconnect', connection)
+        }
+    }
   }
 
   get Buffer() {
