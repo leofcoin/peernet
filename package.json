@@ -8,7 +8,7 @@
       "import": "./exports/peernet.js",
       "require": "./exports/commonjs/peernet.js"
     },
-    "./browser": "./exports/browser/peernet.umd.js"
+    "./browser": "./exports/browser/peernet.js"
   },
   "type": "module",
   "engines": {
