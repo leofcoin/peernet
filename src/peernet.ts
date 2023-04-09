@@ -276,7 +276,7 @@ export default class Peernet {
     if (this.#starting || this.#started) return
 
     this.#starting = true
-    const importee = await import('@netpeer/p2pt-swarm/client.js')
+    const importee = await import('@netpeer/p2pt-swarm')
     /**
      * @access public
      * @type {PeernetClient}
