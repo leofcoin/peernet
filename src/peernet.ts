@@ -93,7 +93,7 @@ export default class Peernet {
       parts[1] ? options.root = `.${parts[0]}/${parts[1]}` : options.root = `.${this.network}`
     }
     
-    peernet = this
+    globalThis.peernet = this
     this.bw = {
       up: 0,
       down: 0,
