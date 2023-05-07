@@ -24,8 +24,8 @@ declare global {
 globalThis.LeofcoinStorage = LeofcoinStorageClass
   
 globalThis.leofcoin = globalThis.leofcoin || {}
-pubsub = pubsub || new PubSub()
-globalSub = globalSub || new PubSub()
+globalThis.pubsub = globalThis.pubsub || new PubSub()
+globalThis.globalSub = globalThis.globalSub || new PubSub()
 
 
 /**
