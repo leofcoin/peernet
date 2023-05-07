@@ -8,7 +8,7 @@ import dataHandler from './handlers/data.js'
 import { encapsulatedError, dhtError,
   nothingFoundError } from './errors/errors.js'
 
-import {LeofcoinStorage as LeofcoinStorageClass} from '@leofcoin/storage'
+import LeofcoinStorageClass from '@leofcoin/storage'
 import { utils as codecUtils } from '@leofcoin/codecs'
 import Identity from './identity.js'
 
@@ -21,7 +21,7 @@ declare global {
   var LeofcoinStorageClient
 }
 
-globalThis.LeofcoinStorage = LeofcoinStorage
+globalThis.LeofcoinStorage = LeofcoinStorageClass
   
 globalThis.leofcoin = globalThis.leofcoin || {}
 pubsub = pubsub || new PubSub()
