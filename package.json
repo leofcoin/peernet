@@ -6,7 +6,8 @@
   "exports": {
     ".": {
       "import": "./exports/peernet.js",
-      "require": "./exports/commonjs/peernet.js"
+      "require": "./exports/commonjs/peernet.js",
+      "types": "./exports/types/peernet.d.ts"
     },
     "./browser": "./exports/browser/peernet.js"
   },

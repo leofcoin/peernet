@@ -8,14 +8,26 @@ import dataHandler from './handlers/data.js'
 import { encapsulatedError, dhtError,
   nothingFoundError } from './errors/errors.js'
 
-import LeofcoinStorage from '@leofcoin/storage'
+import {LeofcoinStorage as LeofcoinStorageClass} from '@leofcoin/storage'
 import { utils as codecUtils } from '@leofcoin/codecs'
 import Identity from './identity.js'
+
+
+declare global {
+  var globalSub: PubSub;
+  var pubsub: PubSub
+  var peernet: Peernet
+  var LeofcoinStorage: typeof LeofcoinStorageClass
+  var LeofcoinStorageClient
+}
+
 globalThis.LeofcoinStorage = LeofcoinStorage
   
 globalThis.leofcoin = globalThis.leofcoin || {}
-globalThis.pubsub = globalThis.pubsub || new PubSub()
-globalThis.globalSub = globalThis.globalSub || new PubSub()
+pubsub = pubsub || new PubSub()
+globalSub = globalSub || new PubSub()
+
+
 /**
  * @access public
  * @example
@@ -23,7 +35,7 @@ globalThis.globalSub = globalThis.globalSub || new PubSub()
  */
 export default class Peernet {
   identity: Identity
-  stores: [] = []
+  stores: string[] = []
   /**
    * @type {Object}
    * @property {Object} peer Instance of Peer
@@ -43,11 +55,14 @@ export default class Peernet {
     up: number
     down: number
   }
+  hasDaemon: boolean = false
   autoStart: boolean = true
   #starting: boolean = false
   #started: boolean = false
   #connections = {}
   requestProtos = {}
+  _messageHandler: MessageHandler
+  protos: {}
 
   /**
    * @access public
@@ -62,7 +77,7 @@ export default class Peernet {
    * @example
    * const peernet = new Peernet({network: 'leofcoin', root: '.leofcoin'});
    */
-  constructor(options, password) {
+  constructor(options, password){
     /**
      * @property {String} network - current network
      */
@@ -78,7 +93,7 @@ export default class Peernet {
       parts[1] ? options.root = `.${parts[0]}/${parts[1]}` : options.root = `.${this.network}`
     }
     
-    globalThis.peernet = this
+    peernet = this
     this.bw = {
       up: 0,
       down: 0,
@@ -102,7 +117,7 @@ export default class Peernet {
     if (!globalThis.peernet.protos[name]) globalThis.peernet.protos[name] = proto
   }
 
-  addCodec(codec: codec) {
+  addCodec(codec) {
     return codecUtils.addCodec(codec)
   }
 
@@ -163,7 +178,7 @@ export default class Peernet {
    *
    * @return {Promise} instance of Peernet
    */
-  async _init(options, password) {
+  async _init(options, password): Peernet  {
     this.storePrefix = options.storePrefix
     this.root = options.root
 

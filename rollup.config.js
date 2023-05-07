@@ -34,7 +34,7 @@ export default [{
       mainFields: ['browser', 'module', 'main']
     }),
     
-    typescript({...tsconfig, outDir: './exports/browser'})
+    typescript({ compilerOptions: { outDir: './exports/browser'} })
   ],
   external: [
     './prompts/password.js'
@@ -49,7 +49,7 @@ export default [{
     modify({
       "@netpeer/p2pt-swarm": '@netpeer/p2pt-swarm'
     }),
-    typescript({...tsconfig, outDir: './exports'})
+    typescript({ compilerOptions: { outDir: './exports', declarationDir: './exports/types'} })
   ],
   external: [
     './prompts/password.js'
