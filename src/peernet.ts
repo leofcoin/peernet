@@ -1,25 +1,16 @@
 import '@vandeurenglenn/debug'
 import PubSub from '@vandeurenglenn/little-pubsub'
 import PeerDiscovery from './discovery/peer-discovery.js'
-import DHT from './dht/dht.js'
+import DHT, { DHTProvider, DHTProviderDistanceResult } from './dht/dht.js'
 import { BufferToUint8Array, protoFor, target } from './utils/utils.js'
 import MessageHandler from './handlers/message.js'
 import dataHandler from './handlers/data.js'
-import { encapsulatedError, dhtError,
-  nothingFoundError } from './errors/errors.js'
-
+import { dhtError, nothingFoundError } from './errors/errors.js'
 import LeofcoinStorageClass from '@leofcoin/storage'
 import { utils as codecUtils } from '@leofcoin/codecs'
 import Identity from './identity.js'
-
-
-declare global {
-  var globalSub: PubSub;
-  var pubsub: PubSub
-  var peernet: Peernet
-  var LeofcoinStorage: typeof LeofcoinStorageClass
-  var LeofcoinStorageClient
-}
+import swarm, { PeerId } from '@netpeer/p2pt-swarm'
+import P2PTPeer from '@netpeer/p2pt-swarm/peer'
 
 globalThis.LeofcoinStorage = LeofcoinStorageClass
   
@@ -27,27 +18,24 @@ globalThis.leofcoin = globalThis.leofcoin || {}
 globalThis.pubsub = globalThis.pubsub || new PubSub()
 globalThis.globalSub = globalThis.globalSub || new PubSub()
 
-
 /**
  * @access public
  * @example
  * const peernet = new Peernet();
  */
 export default class Peernet {
+  storePrefix: string
+  root: string
   identity: Identity
   stores: string[] = []
+  peerId: string
   /**
    * @type {Object}
    * @property {Object} peer Instance of Peer
    */
   dht: DHT = new DHT()
   /** @leofcoin/peernet-swarm/client */
-  client: {
-    connections: [],
-    id: string,
-    removePeer: (peer: string) => {},
-    close: () => {}
-  }
+  client: swarm
   network: string
   stars: string[]
   networkVersion: string
@@ -59,9 +47,10 @@ export default class Peernet {
   autoStart: boolean = true
   #starting: boolean = false
   #started: boolean = false
-  #connections = {}
+  #connections: {[index: PeerId]: P2PTPeer} = {}
   requestProtos = {}
   _messageHandler: MessageHandler
+  _peerHandler: PeerDiscovery
   protos: {}
 
   /**
@@ -98,6 +87,7 @@ export default class Peernet {
       up: 0,
       down: 0,
     }
+    // @ts-ignore
     return this._init(options, password)
   }
 
@@ -178,7 +168,7 @@ export default class Peernet {
    *
    * @return {Promise} instance of Peernet
    */
-  async _init(options, password): Peernet  {
+  async _init(options, password): Promise<Peernet>  {
     this.storePrefix = options.storePrefix
     this.root = options.root
 
@@ -279,7 +269,12 @@ export default class Peernet {
     } else {
       process.on('SIGTERM', async () => {
         process.stdin.resume();
-        await this.client.destroy()
+        try {
+          await this.client.destroy()
+        } catch (error) {
+          // @ts-ignore
+          await this.client.close()
+        }
         process.exit()
       });
     }
@@ -301,7 +296,7 @@ export default class Peernet {
     this.#starting = false
   }
 
-  #peerLeft(peer) {
+  #peerLeft(peer: P2PTPeer) {
     for (const [id, _peer] of Object.entries(this.#connections)) {
       if (_peer.id === peer.id && this.#connections[id] && !this.#connections[id].connected) {
         delete this.#connections[id]
@@ -434,21 +429,13 @@ export default class Peernet {
    * @param {String} hash
    */
   async providersFor(hash: string, store?: undefined) {
-    let providers = await this.dht.providersFor(hash)
+    let providers = this.dht.providersFor(hash)
     // walk the network to find a provider
-    if (!providers || providers.length === 0) {
+    let tries = 0
+    while (Object.keys(providers).length === 0 && tries < 3) {
+      tries += 1
       await this.walk(hash)
-      providers = await this.dht.providersFor(hash)
-      // second walk the network to find a provider
-      if (!providers || providers.length === 0) {
-        await this.walk(hash)
-        providers = await this.dht.providersFor(hash)
-      }
-      // last walk
-      if (!providers || providers.length === 0) {
-        await this.walk(hash)
-        providers = await this.dht.providersFor(hash)
-      }
+      providers = this.dht.providersFor(hash)
     }
     // undefined if no providers given
     return providers
@@ -456,40 +443,40 @@ export default class Peernet {
 
   get block() {
     return {
-      get: async (hash) => {
+      get: async (hash: string) => {
         const data = await blockStore.has(hash)
         if (data) return blockStore.get(hash)
         return this.requestData(hash, 'block')
       },
-      put: async (hash, data) => {
+      put: async (hash: string, data: Uint8Array) => {
         if (await blockStore.has(hash)) return
         return await blockStore.put(hash, data)
       },
-      has: async (hash) => await blockStore.has(hash, 'block'),
+      has: async (hash: string) => await blockStore.has(hash, 'block'),
     }
   }
 
   get transaction() {
     return {
-      get: async (hash) => {
+      get: async (hash: string) => {
         const data = await transactionStore.has(hash)
         if (data) return await transactionStore.get(hash)
         return this.requestData(hash, 'transaction')
       },
-      put: async (hash, data) => {
+      put: async (hash: string, data: Uint8Array) => {
         if (await transactionStore.has(hash)) return
         return await transactionStore.put(hash, data)
       },
-      has: async (hash) => await transactionStore.has(hash),
+      has: async (hash: string) => await transactionStore.has(hash),
     }
   }
 
   async requestData(hash, store) {
     const providers = await this.providersFor(hash)
-    if (!providers || providers.size === 0) throw nothingFoundError(hash)
+    if (!providers || Object.keys(providers).length === 0) throw nothingFoundError(hash)
     debug(`found ${providers.size} provider(s) for ${hash}`)
     // get closest peer on earth
-    const closestPeer = Array.from(providers)[0];
+    const closestPeer: DHTProvider = Object.values(providers)[0];
     
     // get peer instance by id
     if (!closestPeer || !closestPeer.id) return this.requestData(hash, store?.name || store)
@@ -508,7 +495,7 @@ export default class Peernet {
         // fallback and try every provider found
         const promises = []
         const providers = await this.providersFor(hash, store)
-        for (const provider of providers) {
+        for (const provider of Object.values(providers)) {
           
           const peer = this.#connections[provider.id]
         
@@ -695,10 +682,10 @@ export default class Peernet {
    *
    * @param {String} hash
    * @param {Buffer} data
-   * @param {String} store - storeName to access
+   * @param {String} storeName - storeName to access
    */
-  async put(hash, data, store = 'data') {
-    store = globalThis[`${store}Store`]
+  async put(hash: string, data: Uint8Array, storeName: string | LeofcoinStorageClass = 'data') {
+    const store: LeofcoinStorageClass = globalThis[`${storeName}Store`] 
     return store.put(hash, data)
   }
 
@@ -732,16 +719,16 @@ export default class Peernet {
     }
   }
 
-  createHash(data, name) {
-    return new CodeHash(data, {name})
-  }
+  // createHash(data, name) {
+  //   return new CodeHash(data, {name})
+  // }
 
   /**
    *
    * @param {String} topic
    * @param {Method} cb
    */
-  async subscribe(topic, callback) {
+  async subscribe(topic: string, callback: Function) {
     // TODO: if peer subscribed
     globalSub.subscribe(topic, callback)
   }
@@ -749,13 +736,13 @@ export default class Peernet {
   async removePeer(peer) {
     console.log('removepeer', peer.id)
     const id = peer.id
-      await this.client._removePeer(peer);
-      console.log(this.client.peers[id])
-      if (this.client.peers[id]) {
-        for (const connection of Object.keys(this.client.peers[id])) {
-            // if (this.client.peers[id][connection].connected === false) delete this.client.peers[id][connection] 
-            if (this.client.peers[id][connection].connected ) return this.client.emit('peerconnect', connection)
-        }
+    await this.client._removePeer(peer);
+    if (this.client.peers[id]) {
+      for (const connection of Object.keys(this.client.peers[id])) {
+          // if (this.client.peers[id][connection].connected === false) delete this.client.peers[id][connection]
+          // @ts-ignore
+          if (this.client.peers[id][connection].connected ) return this.client.emit('peerconnect', connection)
+      }
     }
   }
 

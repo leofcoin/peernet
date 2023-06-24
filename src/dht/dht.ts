@@ -1,3 +1,23 @@
+export declare type DHTProvider = {
+  address: string,
+  id: string
+}
+
+export declare type DHTProviderDistanceResult = {
+  provider: DHTProvider,
+  /**
+   * distance on earth between peers in km
+   */
+  distance: number
+}
+
+export declare type DHTProviderMapValue = {[index: string]: DHTProvider}
+
+declare type Coordinates = {
+  longitude: number,
+  latitude: number
+}
+
 /**
  * Keep history of fetched address and ptr
  * @property {Object} address
@@ -47,7 +67,7 @@ const distanceInKmBetweenEarthCoordinates = (lat1, lon1, lat2, lon2) => {
 }
 
 export default class DhtEarth {
-  providerMap = new Map<string, Set<string>>
+  providerMap = new Map<string, DHTProviderMapValue>
 
   /**
    *
@@ -55,12 +75,12 @@ export default class DhtEarth {
   constructor() {
     this.providerMap = new Map();
   }
-  async getCoordinates(address: string): Promise<object> {
+
+  async getCoordinates(address: string): Promise<Coordinates> {
     if (!fetchedCoordinates[address]) {
       const request = `https://whereis.leofcoin.org/?ip=${address}`
       let response = await fetch(request)
-      response = await response.json()
-      const {lat, lon} = response;
+      const {lat, lon} = await response.json() as { lat: number, lon: number}
       fetchedCoordinates[address] = {latitude: lat, longitude: lon}
     }
     return fetchedCoordinates[address]
@@ -71,20 +91,22 @@ export default class DhtEarth {
    * @param {Object} provider
    * @return {Object} {provider, distance}
    */
-  async getDistance(peer: object, provider: object): object {
+  async getDistance(peer: { latitude: number, longitude: number } , provider: DHTProvider): Promise<DHTProviderDistanceResult> {
     const {latitude, longitude} = await this.getCoordinates(provider.address)
     return {provider, distance: distanceInKmBetweenEarthCoordinates(peer.latitude, peer.longitude, latitude, longitude)}
   }
 
-  async closestPeer(providers: Array<any>): object {
+  async closestPeer(providers: Array<any>): Promise<DHTProvider> {
     let all = []
     const address = await getAddress();
     const peerLoc = await this.getCoordinates(address)
+
     for (const provider of providers) {
       if (provider.address === '127.0.0.1' || provider.address === '::1') all.push({provider, distance: 0})
       else all.push(this.getDistance(peerLoc, provider))
     }
 
+    // todo queue
     all = await Promise.all(all);
     all = all.sort((previous, current) => previous.distance - current.distance)
     return all[0].provider;
@@ -94,28 +116,26 @@ export default class DhtEarth {
     return this.providerMap.has(hash)
   }
 
-  providersFor(hash: string): Set<string> {
-    let providers
+  providersFor(hash: string): DHTProviderMapValue {
+    let providers:  DHTProviderMapValue
     if (this.providerMap.has(hash)) providers = this.providerMap.get(hash)
     return providers
   }
 
-  addProvider(address: string, hash: string) {
-    let providers:Set<string> = new Set()
+  addProvider(provider: DHTProvider, hash: string) {
+    let providers: DHTProviderMapValue
     if (this.providerMap.has(hash)) {
       providers = this.providerMap.get(hash)
     }
-    providers.add(address)
+    providers[provider.address] = provider
     this.providerMap.set(hash, providers)
   }
 
-  removeProvider(address: string, hash: string): true | undefined {
-    let deleted = undefined
+  removeProvider(address: string, hash: string){
     if (this.providerMap.has(hash)) {
       const providers = this.providerMap.get(hash)
-      deleted = providers.delete(address) 
-      deleted && this.providerMap.set(hash, providers)
+      delete providers[address]
+      this.providerMap.set(hash, providers)
     }
-    return deleted;
   }
 }
