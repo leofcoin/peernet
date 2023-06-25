@@ -432,7 +432,7 @@ export default class Peernet {
     let providers = this.dht.providersFor(hash)
     // walk the network to find a provider
     let tries = 0
-    while (Object.keys(providers).length === 0 && tries < 3) {
+    while (!providers && tries < 3 || Object.keys(providers).length === 0 && tries < 3) {
       tries += 1
       await this.walk(hash)
       providers = this.dht.providersFor(hash)
@@ -474,7 +474,7 @@ export default class Peernet {
   async requestData(hash, store) {
     const providers = await this.providersFor(hash)
     if (!providers || Object.keys(providers).length === 0) throw nothingFoundError(hash)
-    debug(`found ${providers.size} provider(s) for ${hash}`)
+    debug(`found ${Object.keys(providers).length} provider(s) for ${hash}`)
     // get closest peer on earth
     const closestPeer: DHTProvider = Object.values(providers)[0];
     
