@@ -123,7 +123,7 @@ export default class DhtEarth {
   }
 
   addProvider(provider: DHTProvider, hash: string) {
-    let providers: DHTProviderMapValue
+    let providers: DHTProviderMapValue = {}
     if (this.providerMap.has(hash)) {
       providers = this.providerMap.get(hash)
     }
