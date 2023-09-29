@@ -473,7 +473,7 @@ export default class Peernet {
 
   async requestData(hash, store) {
     const providers = await this.providersFor(hash)
-    if (!providers || Object.keys(providers).length === 0) throw nothingFoundError(hash)
+    if (!providers || providers && Object.keys(providers).length === 0) throw nothingFoundError(hash)
     debug(`found ${Object.keys(providers).length} provider(s) for ${hash}`)
     // get closest peer on earth
     const closestPeer: DHTProvider = Object.values(providers)[0];
