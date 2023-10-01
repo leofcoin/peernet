@@ -67,16 +67,20 @@ export default class Identity {
     return this.#wallet.sign(hash.subarray(0, 32))
   }
 
+  lock(password: string) {
+    this.#wallet.lock(password)
+  }
+
+  unlock(password: string) {
+    this.#wallet.unlock(password)
+  }
+
   async export(password: string) {
-    const multiWIF =  this.#wallet.toMultiWif()
-    const encypted = await encrypt(password, multiWIF)
-    return base58.encode(encypted)
+    return this.#wallet.export(password)
   }
 
   async import(password, encrypted: base58String) {
-    this.#wallet = new MultiWallet(this.network)
-    const decrypted = await decrypt(password, base58.decode(encrypted))
-    await this.#wallet.fromMultiWif(decrypted)
+    await this.#wallet.import(password, encrypted)
   }
 
   async exportQR(password: string) {
