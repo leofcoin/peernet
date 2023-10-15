@@ -18,6 +18,19 @@ globalThis.leofcoin = globalThis.leofcoin || {}
 globalThis.pubsub = globalThis.pubsub || new PubSub()
 globalThis.globalSub = globalThis.globalSub || new PubSub()
 
+declare global {
+  var LeofcoinStorage: typeof LeofcoinStorageClass
+  var peernet: Peernet
+  var pubsub: PubSub
+  var globalSub: PubSub
+  var blockStore: LeofcoinStorageClass
+  var transactionStore: LeofcoinStorageClass
+  var messageStore: LeofcoinStorageClass
+  var dataStore: LeofcoinStorageClass
+  var walletStore: LeofcoinStorageClass
+  var chainStore: LeofcoinStorageClass
+}
+
 /**
  * @access public
  * @example
@@ -95,12 +108,20 @@ export default class Peernet {
     return this.identity.id
   }
 
+  get selectedAccount(): string {
+    return this.identity.selectedAccount
+  }
+
   get accounts(): Promise<[[name: string, externalAddress: string, internalAddress: string]]> {
     return this.identity.accounts
   }
 
   get defaultStores() {
     return ['account', 'wallet', 'block', 'transaction', 'chain', 'data', 'message']
+  }
+
+  selectAccount(account: string) {
+    return this.identity.selectAccount(account)
   }
 
   addProto(name, proto) {
@@ -157,7 +178,7 @@ export default class Peernet {
    * @return {String} id - peerId
    */
   getConnection(id) {
-    return this.client.connections[id]
+    return this.connections[id]
   }
 
   /**
@@ -168,7 +189,7 @@ export default class Peernet {
    *
    * @return {Promise} instance of Peernet
    */
-  async _init(options, password): Promise<Peernet>  {
+  async _init(options: {storePrefix?: string, root?: string}, password: string): Promise<Peernet>  {
     this.storePrefix = options.storePrefix
     this.root = options.root
 
@@ -452,7 +473,7 @@ export default class Peernet {
         if (await blockStore.has(hash)) return
         return await blockStore.put(hash, data)
       },
-      has: async (hash: string) => await blockStore.has(hash, 'block'),
+      has: async (hash: string) => await blockStore.has(hash),
     }
   }
 
@@ -750,4 +771,6 @@ export default class Peernet {
     return Buffer
   }
 }
+
+
 globalThis.Peernet = Peernet

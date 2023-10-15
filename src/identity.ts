@@ -6,8 +6,9 @@ import qrcode from 'qrcode'
 
 export default class Identity {
   #wallet: MultiWallet
-  network: MultiWallet.network
+  network
   id: string
+  selectedAccount: string
 
   constructor(network: string) {
     this.network = network
@@ -34,6 +35,7 @@ export default class Identity {
       }
     } 
     if (!password) {
+      // @ts-ignore
       const importee: { default: () => Promise<string> } = await import('./prompts/password.js')
       password = await importee.default()
     }
@@ -43,7 +45,7 @@ export default class Identity {
       const pub = await globalThis.accountStore.get('public')
       this.id = JSON.parse(new TextDecoder().decode(pub)).walletId;
       const selected = await globalThis.walletStore.get('selected-account')
-      globalThis.peernet.selectedAccount = new TextDecoder().decode(selected)
+      this.selectedAccount = new TextDecoder().decode(selected)
     } else {
       const importee = await import(/* webpackChunkName: "generate-account" */ '@leofcoin/generate-account')
       const {identity, accounts} = await importee.default(password, this.network)
@@ -54,13 +56,18 @@ export default class Identity {
       await globalThis.walletStore.put('selected-account', accounts[0][1])
       await globalThis.walletStore.put('identity', JSON.stringify(identity))
 
-      globalThis.peernet.selectedAccount = accounts[0][1]
+      this.selectedAccount = accounts[0][1]
       this.id = identity.walletId
     }
     const identity = JSON.parse(new TextDecoder().decode(await globalThis.walletStore.get('identity')))
     this.#wallet = new MultiWallet(this.network)
     const multiWIF = await decrypt(password, base58.decode(identity.multiWIF))
     await this.#wallet.fromMultiWif(multiWIF)
+  }
+
+  selectAccount(account: string) {
+    this.selectedAccount = account
+    return walletStore.put('selected-account', account)
   }
 
   sign(hash: Uint8Array) {
@@ -89,7 +96,7 @@ export default class Identity {
   }
 
   async importQR(image: File | Blob , password: string) {
-    const multiWIF = QrScanner.scanImage(image)
+    const multiWIF = await QrScanner.default.scanImage(image)
     return this.import(password, multiWIF)
   }
 }
