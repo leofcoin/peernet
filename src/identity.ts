@@ -1,6 +1,6 @@
 import MultiWallet from '@leofcoin/multi-wallet'
 import base58 from '@vandeurenglenn/base58'
-import {encrypt, decrypt} from '@leofcoin/identity-utils'
+import { encrypt, decrypt } from '@leofcoin/identity-utils'
 import QrScanner from 'qr-scanner'
 import qrcode from 'qrcode'
 
@@ -26,31 +26,30 @@ export default class Identity {
 
   async load(password?: string): Promise<void> {
     if (password && password.includes('.txt')) {
-
       const { readFile } = await import('fs/promises')
       try {
         password = (await readFile(password)).toString()
       } catch (error) {
         console.error(error)
       }
-    } 
+    }
     if (!password) {
       // @ts-ignore
       const importee: { default: () => Promise<string> } = await import('./prompts/password.js')
       password = await importee.default()
     }
-    
+
     const accountExists = await globalThis.accountStore.has('public')
     if (accountExists) {
       const pub = await globalThis.accountStore.get('public')
-      this.id = JSON.parse(new TextDecoder().decode(pub)).walletId;
+      this.id = JSON.parse(new TextDecoder().decode(pub)).walletId
       const selected = await globalThis.walletStore.get('selected-account')
       this.selectedAccount = new TextDecoder().decode(selected)
     } else {
       const importee = await import(/* webpackChunkName: "generate-account" */ '@leofcoin/generate-account')
-      const {identity, accounts} = await importee.default(password, this.network)
-      await globalThis.accountStore.put('public', JSON.stringify({walletId: identity.walletId}));
-      
+      const { identity, accounts } = await importee.default(password, this.network)
+      await globalThis.accountStore.put('public', JSON.stringify({ walletId: identity.walletId }))
+
       await globalThis.walletStore.put('version', String(1))
       await globalThis.walletStore.put('accounts', JSON.stringify(accounts))
       await globalThis.walletStore.put('selected-account', accounts[0][1])
@@ -92,10 +91,12 @@ export default class Identity {
 
   async exportQR(password: string) {
     const exported = await this.export(password)
-    return globalThis.navigator ? await qrcode.toDataURL(exported) : await qrcode.toString(exported, {type: 'terminal'})
+    return globalThis.navigator
+      ? await qrcode.toDataURL(exported)
+      : await qrcode.toString(exported, { type: 'terminal' })
   }
 
-  async importQR(image: File | Blob , password: string) {
+  async importQR(image: File | Blob, password: string) {
     const multiWIF = await QrScanner.default.scanImage(image)
     return this.import(password, multiWIF)
   }

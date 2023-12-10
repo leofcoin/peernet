@@ -1,6 +1,6 @@
 import { Codec } from '@leofcoin/codec-format-interface'
 
-export const BufferToUint8Array = data => {
+export const BufferToUint8Array = (data) => {
   if (data.type === 'Buffer') {
     data = new Uint8Array(data.data)
   }
@@ -9,24 +9,23 @@ export const BufferToUint8Array = data => {
 
 export const expected = (expected, actual) => {
   const rule = (entry) => {
-    return !entry ? `: undefined - ${entry} ` :`: ${typeof entry} - `
+    return !entry ? `: undefined - ${entry} ` : `: ${typeof entry} - `
   }
 
-  const entries = Object.entries(actual)
-      .map((entry) => entry.join(rule(entry[1])));
+  const entries = Object.entries(actual).map((entry) => entry.join(rule(entry[1])))
 
   return `\nExpected:
     ${expected.join('\n\t')}
 
     actual:
-      ${entries.join('\n\t')}`;
+      ${entries.join('\n\t')}`
 }
 
 export const protoFor = (message) => {
   const codec = new Codec(message)
   if (!codec.name) throw new Error('proto not found')
   const Proto = globalThis.peernet.protos[codec.name]
-  if (!Proto) throw (new Error(`No proto defined for ${codec.name}`))
+  if (!Proto) throw new Error(`No proto defined for ${codec.name}`)
   return new Proto(message)
 }
 
@@ -45,7 +44,7 @@ export const hasDaemon = async () => {
 }
 
 export const https = () => {
-  if (!globalThis.location) return false;
+  if (!globalThis.location) return false
   return Boolean(globalThis.location.protocol === 'https:')
 }
 
@@ -74,5 +73,5 @@ export const target = async () => {
   let daemon = false
   if (!https()) daemon = await hasDaemon()
 
-  return {daemon, environment: environment()}
+  return { daemon, environment: environment() }
 }

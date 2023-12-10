@@ -8,6 +8,6 @@ export default class PsMessage extends FormatInterface {
 
   constructor(buffer) {
     const name = 'peernet-ps'
-    super(buffer, proto, {name})
+    super(buffer, proto, { name })
   }
 }

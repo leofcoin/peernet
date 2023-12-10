@@ -5,7 +5,6 @@ import { FormatInterface } from '@leofcoin/codec-format-interface'
  * @extends {CodecFormat}
  */
 export default class PeernetFile extends FormatInterface {
-
   get messageName() {
     return 'PeernetFile'
   }
@@ -13,6 +12,6 @@ export default class PeernetFile extends FormatInterface {
    * @param {Buffer|String|Object|DataMessage} data - The data needed to create the DataMessage
    */
   constructor(data) {
-    super(data, proto, {name: 'peernet-file'})
+    super(data, proto, { name: 'peernet-file' })
   }
 }

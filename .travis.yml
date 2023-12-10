@@ -5,9 +5,9 @@ os:
 
 language: node_js
 node_js:
-- 14
-- 16
-- 19
+  - 14
+  - 16
+  - 19
 
 script:
   - npm run c
@@ -24,4 +24,4 @@ after_failure:
 
 branches:
   only:
-  - master
+    - main

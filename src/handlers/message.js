@@ -24,7 +24,7 @@ export default class MessageHandler {
    * @param {String|PeernetMessage} data - data encoded message string
    * or the messageNode itself
    */
-  async prepareMessage(message) {    
+  async prepareMessage(message) {
     if (message.keys.includes('signature')) {
       message = await this.hashAndSignMessage(message)
     }

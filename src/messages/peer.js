@@ -8,6 +8,6 @@ export default class PeerMessage extends FormatInterface {
 
   constructor(data) {
     const name = 'peernet-peer'
-    super(data, proto, {name})
+    super(data, proto, { name })
   }
 }
