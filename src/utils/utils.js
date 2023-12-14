@@ -23,7 +23,7 @@ export const expected = (expected, actual) => {
 
 export const protoFor = (message) => {
   const codec = new Codec(message)
-  if (!codec.name) throw new Error('proto not found')
+  if (!codec.name) throw new Error(`proto not found ${message}`)
   const Proto = globalThis.peernet.protos[codec.name]
   if (!Proto) throw new Error(`No proto defined for ${codec.name}`)
   return new Proto(message)
