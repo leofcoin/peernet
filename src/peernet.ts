@@ -311,12 +311,14 @@ export default class Peernet {
     if (this.#starting || this.#started) return
 
     this.#starting = true
-    const importee = await import('@netpeer/p2pt-swarm')
+    const importee = await import('@netpeer/swarm/client')
     /**
      * @access public
      * @type {PeernetClient}
      */
-    this.client = new importee.default(this.id, this.networkVersion, this.stars)
+    console.log(this.stars)
+
+    this.client = new importee.default(this.id, this.networkVersion, this.version, this.stars)
     this.#started = true
     this.#starting = false
   }
