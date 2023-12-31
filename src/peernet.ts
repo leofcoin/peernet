@@ -10,7 +10,6 @@ import { Storage as LeofcoinStorageClass } from '@leofcoin/storage'
 import { utils as codecUtils } from '@leofcoin/codecs'
 import Identity from './identity.js'
 import swarm from '@netpeer/swarm/client'
-import SwarmPeer from '@netpeer/swarm/peer'
 
 globalThis.LeofcoinStorage = LeofcoinStorageClass
 
@@ -164,15 +163,11 @@ export default class Peernet {
    * @return {Array} peerId
    */
   get peers() {
-    return Object.entries(this.client.connections)
+    return Object.entries(this.client?.connections)
   }
 
   get connections() {
-    return this.client.connections
-  }
-
-  get peerEntries() {
-    return Object.values(this.client.connections)
+    return this.client?.connections || {}
   }
 
   /**
@@ -784,14 +779,14 @@ export default class Peernet {
   async removePeer(peer) {
     console.log('removepeer', peer.id)
     const id = peer.id
-    await this.client._removePeer(peer)
-    if (this.client.peers[id]) {
-      for (const connection of Object.keys(this.client.peers[id])) {
-        // if (this.client.peers[id][connection].connected === false) delete this.client.peers[id][connection]
-        // @ts-ignore
-        if (this.client.peers[id][connection].connected) return this.client.emit('peerconnect', connection)
-      }
-    }
+    // await this.client.connections(peer)
+    // if (this.client.peers[id]) {
+    //   for (const connection of Object.keys(this.client.peers[id])) {
+    //     // if (this.client.peers[id][connection].connected === false) delete this.client.peers[id][connection]
+    //     // @ts-ignore
+    //     if (this.client.peers[id][connection].connected) return this.client.emit('peerconnect', connection)
+    //   }
+    // }
   }
 
   get Buffer() {
