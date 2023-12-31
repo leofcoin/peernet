@@ -9,8 +9,8 @@ import { dhtError, nothingFoundError } from './errors/errors.js'
 import { Storage as LeofcoinStorageClass } from '@leofcoin/storage'
 import { utils as codecUtils } from '@leofcoin/codecs'
 import Identity from './identity.js'
-import swarm, { PeerId } from '@netpeer/p2pt-swarm'
-import P2PTPeer from '@netpeer/p2pt-swarm/peer'
+import swarm from '@netpeer/swarm/client'
+import SwarmPeer from '@netpeer/swarm/peer'
 
 globalThis.LeofcoinStorage = LeofcoinStorageClass
 
@@ -60,11 +60,11 @@ export default class Peernet {
   autoStart: boolean = true
   #starting: boolean = false
   #started: boolean = false
-  #connections: { [index: PeerId]: P2PTPeer } = {}
   requestProtos = {}
   _messageHandler: MessageHandler
   _peerHandler: PeerDiscovery
   protos: {}
+  version
 
   /**
    * @access public
@@ -72,6 +72,7 @@ export default class Peernet {
    * @param {String} options.network - desired network
    * @param {String} options.stars - star list for selected network (these should match, don't mix networks)
    * @param {String} options.root - path to root directory
+   * @param {String} options.version - path to root directory
    * @param {String} options.storePrefix - prefix for datatores (lfc)
    *
    * @return {Promise} instance of Peernet
@@ -86,6 +87,7 @@ export default class Peernet {
     this.network = options.network || 'leofcoin'
     this.autoStart = options.autoStart === undefined ? true : options.autoStart
     this.stars = options.stars
+    this.version = options.version
     const parts = this.network.split(':')
     this.networkVersion = options.networkVersion || parts.length > 1 ? parts[1] : 'mainnet'
 
@@ -162,15 +164,15 @@ export default class Peernet {
    * @return {Array} peerId
    */
   get peers() {
-    return Object.entries(this.#connections)
+    return Object.entries(this.client.connections)
   }
 
   get connections() {
-    return Object.values(this.#connections)
+    return this.client.connections
   }
 
   get peerEntries() {
-    return Object.values(this.#connections)
+    return Object.values(this.client.connections)
   }
 
   /**
@@ -248,40 +250,44 @@ export default class Peernet {
     this._peerHandler = new PeerDiscovery(this.id)
     this.peerId = this.id
 
-    this.addRequestHandler('handshake', () => {
-      return new peernet.protos['peernet-response']({
-        response: { peerId: this.id }
-      })
-    })
+    // this.addRequestHandler('handshake', () => {
+    //   return new peernet.protos['peernet-response']({
+    //     response: { peerId: this.id }
+    //   })
+    // })
 
-    pubsub.subscribe('peer:discovered', async (peer) => {
-      // console.log(peer);
+    // pubsub.subscribe('peer:discovered', async (peer) => {
+    //   // console.log(peer);
 
-      if (this.requestProtos['version']) {
-        let data = await new globalThis.peernet.protos['peernet-request']({
-          request: 'version'
-        })
-        let node = await globalThis.peernet.prepareMessage(data)
-        let response = await peer.request(node.encoded)
-        response = await new globalThis.peernet.protos['peernet-response'](new Uint8Array(Object.values(response)))
-        peer.version = response.decoded.response.version
-      }
+    //   if (this.requestProtos['version'] && !peer.version) {
+    //     let data = await new globalThis.peernet.protos['peernet-request']({
+    //       request: 'version'
+    //     })
+    //     let node = await globalThis.peernet.prepareMessage(data)
+    //     let response = await peer.request(node.encoded)
+    //     response = await new globalThis.peernet.protos['peernet-response'](new Uint8Array(Object.values(response)))
+    //     peer.version = response.decoded.response.version
+    //   }
 
-      let data = await new globalThis.peernet.protos['peernet-request']({
-        request: 'handshake'
-      })
-      let node = await globalThis.peernet.prepareMessage(data)
-      let response = await peer.request(node.encoded)
+    //   if (!peer.peerId) {
+    //     let data = await new globalThis.peernet.protos['peernet-request']({
+    //       request: 'handshake'
+    //     })
+    //     let node = await globalThis.peernet.prepareMessage(data)
+    //     let response = await peer.request(node.encoded)
 
-      response = await new globalThis.peernet.protos['peernet-response'](new Uint8Array(Object.values(response)))
-      // todo: response.decoded should be the response and not response.peerId
+    //     response = await new globalThis.peernet.protos['peernet-response'](new Uint8Array(Object.values(response)))
+    //     // todo: response.decoded should be the response and not response.peerId
+    //     // todo: ignore above and remove discover completly
+    //     response.decoded.response.peerId
+    //   }
 
-      this.#connections[response.decoded.response.peerId] = peer
-      pubsub.publish('peer:connected', peer)
-      // todo: cleanup discovered
-    })
+    // this.connections[peer.peerId] = peer
+    // pubsub.publish('peer:connected', peer)
+    // todo: cleanup discovered
+    // })
 
-    pubsub.subscribe('peer:left', this.#peerLeft.bind(this))
+    // pubsub.subscribe('peer:left', this.#peerLeft.bind(this))
 
     /**
      * converts data -> message -> proto
@@ -289,20 +295,21 @@ export default class Peernet {
      */
     pubsub.subscribe('peer:data', dataHandler)
 
-    if (globalThis.navigator) {
-      globalThis.addEventListener('beforeunload', async () => this.client.destroy())
-    } else {
-      process.on('SIGTERM', async () => {
-        process.stdin.resume()
-        try {
-          await this.client.destroy()
-        } catch (error) {
-          // @ts-ignore
-          await this.client.close()
-        }
-        process.exit()
-      })
-    }
+    // // todo: remove below, already handles in the swarm
+    // if (globalThis.navigator) {
+    //   globalThis.addEventListener('beforeunload', async () => this.client.close())
+    // } else {
+    //   process.on('SIGTERM', async () => {
+    //     process.stdin.resume()
+    //     try {
+    //       await this.client.close()
+    //     } catch (error) {
+    //       // @ts-ignore
+    //       await this.client.close()
+    //     }
+    //     process.exit()
+    //   })
+    // }
     if (this.autoStart) await this.start()
     return this
   }
@@ -318,19 +325,25 @@ export default class Peernet {
      */
     console.log(this.stars)
 
-    this.client = new importee.default(this.id, this.networkVersion, this.version, this.stars)
+    this.client = new importee.default({
+      peerId: this.id,
+      networkVersion: this.networkVersion,
+      version: this.version,
+      stars: this.stars
+    })
     this.#started = true
     this.#starting = false
   }
 
-  #peerLeft(peer: P2PTPeer) {
-    for (const [id, _peer] of Object.entries(this.#connections)) {
-      if (_peer.id === peer.id && this.#connections[id] && !this.#connections[id].connected) {
-        delete this.#connections[id]
-        this.removePeer(_peer)
-      }
-    }
-  }
+  // todo: remove, handled in swarm now
+  // #peerLeft(peer: SwarmPeer) {
+  //   for (const [id, _peer] of Object.entries(this.connections)) {
+  //     if (_peer.id === peer.id && this.connections[id] && !this.connections[id].connected) {
+  //       delete this.connections[id]
+  //       this.removePeer(_peer)
+  //     }
+  //   }
+  // }
 
   addRequestHandler(name, method) {
     this.requestProtos[name] = method
@@ -447,7 +460,7 @@ export default class Peernet {
       if (proto.decoded.has) this.dht.addProvider(peerInfo, proto.decoded.hash)
     }
     let walks = []
-    for (const [peerId, peer] of Object.entries(this.#connections)) {
+    for (const [peerId, peer] of Object.entries(this.connections)) {
       if (peerId !== this.id) {
         walks.push(walk(peer, peerId))
       }
@@ -514,7 +527,7 @@ export default class Peernet {
     if (!closestPeer || !closestPeer.id) return this.requestData(hash, store?.name || store)
 
     const id = closestPeer.id
-    const peer = this.#connections[id]
+    const peer = this.connections[id]
 
     if (peer?.connected) {
       let data = await new globalThis.peernet.protos['peernet-data']({
@@ -530,7 +543,7 @@ export default class Peernet {
         const promises = []
         const providers = await this.providersFor(hash, store)
         for (const provider of Object.values(providers)) {
-          const peer = this.#connections[provider.id]
+          const peer = this.connections[provider.id]
 
           if (peer) promises.push(peer.request(node.encoded))
         }
@@ -745,7 +758,7 @@ export default class Peernet {
     // globalSub.publish(topic, data)
     const id = Math.random().toString(36).slice(-12)
     data = await new globalThis.peernet.protos['peernet-ps']({ data, topic })
-    for (const [peerId, peer] of Object.entries(this.#connections)) {
+    for (const [peerId, peer] of Object.entries(this.connections)) {
       if (peerId !== this.id) {
         const node = await this.prepareMessage(data)
         this.sendMessage(peer, id, node.encoded)
