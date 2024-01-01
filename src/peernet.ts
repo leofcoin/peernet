@@ -348,7 +348,22 @@ export default class Peernet {
     if (peer.connected) {
       await peer.send(data, id)
       this.bw.up += data.length
-    } else this.removePeer(peer)
+      return id
+    } else {
+      return new Promise((resolve, reject) => {
+        const onError = (error) => {
+          this.removePeer(peer)
+          reject(error)
+        }
+        peer.once('error', onError)
+        peer.once('connect', async () => {
+          await peer.send(data, id)
+          this.bw.up += data.length
+          peer.removeListener('error', onError)
+          resolve(id)
+        })
+      })
+    }
   }
 
   async handleDHT(peer, id, proto) {
