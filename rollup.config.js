@@ -1,11 +1,9 @@
-import resolve, { nodeResolve } from '@rollup/plugin-node-resolve'
+import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 import wasm from '@rollup/plugin-wasm'
 import rimraf from 'rimraf'
 import typescript from '@rollup/plugin-typescript'
-import modify from 'rollup-plugin-modify'
-import { readFile } from 'fs/promises'
 
 rimraf.sync('./exports/**')
 
@@ -19,11 +17,6 @@ export default [
     plugins: [
       json(),
       wasm(),
-      // modify({
-      //   "await import('@netpeer/swarm/client')": (
-      //     await readFile('./node_modules/@netpeer/swarm/exports/browser/client.js')
-      //   ).toString()
-      // }),
       resolve({
         browser: true,
         preferBuiltins: false,
@@ -44,9 +37,6 @@ export default [
       dir: './exports'
     },
     plugins: [
-      modify({
-        '@netpeer/swarm/client': '@netpeer/swarm/client'
-      }),
       typescript({
         compilerOptions: {
           outDir: './exports',
