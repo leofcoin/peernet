@@ -47,15 +47,16 @@
     "socket-request-server": "^1.6.6"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^24.0.1",
-    "@rollup/plugin-json": "^6.0.0",
-    "@rollup/plugin-node-resolve": "^15.0.1",
-    "@rollup/plugin-wasm": "^6.1.1",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@rollup/plugin-wasm": "^6.2.2",
     "@types/bs58check": "^2.1.0",
     "@types/node": "^20.11.0",
     "@types/qrcode": "^1.5.2",
     "@types/secp256k1": "^4.0.3",
     "@types/varint": "^6.0.1",
-    "rollup": "^3.12.0"
+    "rollup": "^4.9.4"
   }
 }
