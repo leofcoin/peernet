@@ -18,11 +18,9 @@
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w",
-    "set-flags": "set NODE_OPTIONS=--openssl-legacy-provider",
-    "test": "npm run set-flags && node test/index.js",
+    "test": "node test/index.js",
     "server": "discovery-swarm-webrtc --port=4000",
-    "demo": "jsproject --serve ./ --port 6868",
-    "lint": "./node_modules/.bin/eslint src/**/**.js --fix"
+    "demo": "jsproject --serve ./ --port 6868"
   },
   "keywords": [],
   "author": "",
@@ -33,8 +31,6 @@
     "@leofcoin/generate-account": "^2.0.0",
     "@leofcoin/identity-utils": "^1.0.2",
     "@leofcoin/multi-wallet": "^3.1.4",
-    "@leofcoin/p2pt": "^1.7.6",
-    "@leofcoin/peernet-swarm": "^1.1.0",
     "@leofcoin/storage": "^3.0.0",
     "@netpeer/p2pt-swarm": "^1.3.5",
     "@netpeer/swarm": "^0.8.1",
@@ -44,13 +40,12 @@
     "@vandeurenglenn/debug": "^1.0.0",
     "@vandeurenglenn/is-hex": "^1.0.0",
     "@vandeurenglenn/little-pubsub": "^1.3.1",
-    "events": "^3.3.0",
     "inquirer": "^9.1.4",
     "multi-signature": "^1.3.1",
     "qr-scanner": "^1.4.2",
     "qrcode": "^1.5.1",
     "socket-request-client": "^2.0.6",
-    "socket-request-server": "^1.5.0"
+    "socket-request-server": "^1.6.6"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^24.0.1",
@@ -61,11 +56,6 @@
     "@types/qrcode": "^1.5.2",
     "@types/secp256k1": "^4.0.3",
     "@types/varint": "^6.0.1",
-    "browserify": "^17.0.0",
-    "eslint": "^8.29.0",
-    "eslint-plugin-unicorn": "^45.0.1",
-    "node-stdlib-browser": "^1.2.0",
-    "rollup": "^3.12.0",
-    "webpack-cli": "^5.0.1"
+    "rollup": "^3.12.0"
   }
 }
