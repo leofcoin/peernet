@@ -1,5 +1,6 @@
 import MultiWallet from '@leofcoin/multi-wallet'
 import base58 from '@vandeurenglenn/base58'
+import type { base58String } from '@vandeurenglenn/base58'
 import { encrypt, decrypt } from '@leofcoin/identity-utils'
 import QrScanner from 'qr-scanner'
 import qrcode from 'qrcode'
