@@ -30,6 +30,7 @@ declare global {
   var chainStore: LeofcoinStorageClass
 }
 
+const debug = globalThis.createDebugger('peernet')
 /**
  * @access public
  * @example

@@ -13,7 +13,6 @@ import { utils as codecUtils } from '@leofcoin/codecs'
 import Identity from './identity.js'
 
 declare global {
-  var debug: (message) => string
   var globalSub: PubSub
   var pubsub: PubSub
   var peernet: Peernet
