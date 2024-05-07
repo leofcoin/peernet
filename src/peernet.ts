@@ -488,7 +488,7 @@ export default class Peernet {
     let providers = this.dht.providersFor(hash)
     // walk the network to find a provider
     let tries = 0
-    while ((!providers && tries < 3) || (Object.keys(providers).length === 0 && tries < 3)) {
+    while ((!providers && tries < 3) || (providers && Object.keys(providers).length === 0 && tries < 3)) {
       tries += 1
       await this.walk(hash)
       providers = this.dht.providersFor(hash)
