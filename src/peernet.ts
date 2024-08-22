@@ -390,22 +390,26 @@ export default class Peernet {
   async handleData(peer, id, proto) {
     let { hash, store } = proto.decoded
     let data
-    store = globalThis[`${store}Store`] || (await this.whichStore([...this.stores], hash))
+    try {
+      store = globalThis[`${store}Store`] || (await this.whichStore([...this.stores], hash))
 
-    if (store && !store.private) {
-      data = await store.get(hash)
+      if (store && !store.private) {
+        data = await store.get(hash)
 
-      if (data) {
-        data = await new globalThis.peernet.protos['peernet-data-response']({
-          hash,
-          data
-        })
+        if (data) {
+          data = await new globalThis.peernet.protos['peernet-data-response']({
+            hash,
+            data
+          })
 
-        const node = await this.prepareMessage(data)
-        this.sendMessage(peer, id, node.encoded)
+          const node = await this.prepareMessage(data)
+          this.sendMessage(peer, id, node.encoded)
+        }
+      } else {
+        // ban (trying to access private st)
       }
-    } else {
-      // ban (trying to access private st)
+    } catch (error) {
+      return this.requestData(hash, store)
     }
   }
 
