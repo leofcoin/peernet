@@ -9,7 +9,7 @@ rimraf.sync('./exports/**')
 
 export default [
   {
-    input: ['./src/peernet.ts', './node_modules/@leofcoin/storage/exports/browser-store.js'],
+    input: ['./src/peernet.ts', './src/identity.ts', './node_modules/@leofcoin/storage/exports/browser-store.js'],
     output: {
       format: 'es',
       dir: './exports/browser'
@@ -31,7 +31,7 @@ export default [
     external: ['./prompts/password.js']
   },
   {
-    input: ['./src/peernet.ts', './node_modules/@leofcoin/storage/exports/store.js'],
+    input: ['./src/peernet.ts', './src/identity.ts', './node_modules/@leofcoin/storage/exports/store.js'],
     output: {
       format: 'es',
       dir: './exports'
