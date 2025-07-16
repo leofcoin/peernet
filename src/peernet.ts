@@ -358,6 +358,11 @@ export default class Peernet {
         }
         peer.once('error', onError)
         peer.once('connect', async () => {
+          if (!peer.connected) {
+            peer.removeListener('error', onError)
+            debug('Peer not connected')
+            return
+          }
           await peer.send(data, id)
           this.bw.up += data.length
           peer.removeListener('error', onError)
@@ -476,7 +481,7 @@ export default class Peernet {
     }
     let walks = []
     for (const [peerId, peer] of Object.entries(this.connections)) {
-      if (peerId !== this.id) {
+      if (peerId !== this.id && peer.connected) {
         walks.push(walk(peer, peerId))
       }
     }
