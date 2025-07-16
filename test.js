@@ -3,7 +3,8 @@ import Client from './exports/peernet.js'
 const client = await new Client({
   network: 'leofcoin:peach',
   networkVersion: 'peach',
-  stars: ['wss://star.leofcoin.org']
+  stars: ['wss://star.leofcoin.org'],
+  version: '0.1.0'
 })
 console.log(pubsub.subscribers)
 pubsub.subscribe('peer:discovered', (data) => {
