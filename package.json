@@ -37,7 +37,7 @@
     "@leofcoin/identity-utils": "^1.0.2",
     "@leofcoin/multi-wallet": "^3.1.8",
     "@leofcoin/storage": "^3.5.38",
-    "@netpeer/swarm": "^0.8.19",
+    "@netpeer/swarm": "^0.8.20",
     "@vandeurenglenn/base32": "^1.2.4",
     "@vandeurenglenn/base58": "^1.1.9",
     "@vandeurenglenn/debug": "^1.2.6",
