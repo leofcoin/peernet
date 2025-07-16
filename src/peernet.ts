@@ -467,17 +467,21 @@ export default class Peernet {
     const data = await new globalThis.peernet.protos['peernet-dht']({ hash })
     const walk = async (peer, peerId) => {
       const node = await this.prepareMessage(data)
-      let result = await peer.request(node.encoded)
-      result = new Uint8Array(Object.values(result))
-      const proto = await protoFor(result)
-      if (proto.name !== 'peernet-dht-response') throw dhtError(proto.name)
+      try {
+        let result = await peer.request(node.encoded)
+        result = new Uint8Array(Object.values(result))
+        const proto = await protoFor(result)
+        if (proto.name !== 'peernet-dht-response') throw dhtError(proto.name)
 
-      const peerInfo = {
-        ...peer.connectionStats,
-        id: peerId
+        const peerInfo = {
+          ...peer.connectionStats,
+          id: peerId
+        }
+
+        if (proto.decoded.has) this.dht.addProvider(peerInfo, proto.decoded.hash)
+      } catch (error) {
+        console.error(`Error while walking ${peerId}`, error)
       }
-
-      if (proto.decoded.has) this.dht.addProvider(peerInfo, proto.decoded.hash)
     }
     let walks = []
     for (const [peerId, peer] of Object.entries(this.connections)) {
@@ -557,23 +561,31 @@ export default class Peernet {
 
       const node = await this.prepareMessage(data)
 
-      if (peer) data = await peer.request(node.encoded)
-      else {
-        // fallback and try every provider found
-        const promises = []
-        const providers = await this.providersFor(hash, store)
-        for (const provider of Object.values(providers)) {
-          const peer = this.connections[provider.id]
+      try {
+        if (peer) data = await peer.request(node.encoded)
+        else {
+          // fallback and try every provider found
+          const promises = []
+          const providers = await this.providersFor(hash, store)
+          for (const provider of Object.values(providers)) {
+            const peer = this.connections[provider.id]
 
-          if (peer) promises.push(peer.request(node.encoded))
+            if (peer) promises.push(peer.request(node.encoded))
+          }
+          data = await Promise.race(promises)
         }
-        data = await Promise.race(promises)
+        if (data) data = new Uint8Array(Object.values(data))
+        if (!data || data.length === 0) throw nothingFoundError(hash)
+        const proto = await protoFor(data)
+        // TODO: store data automaticly or not
+        return BufferToUint8Array(proto.decoded.data)
+      } catch (error) {
+        debug(`Error while requesting data from ${id}`, error)
+        // if error, remove provider
+        this.dht.removeProvider(id, hash)
+        // and try again
+        return this.requestData(hash, store?.name || store)
       }
-      if (data) data = new Uint8Array(Object.values(data))
-
-      const proto = await protoFor(data)
-      // TODO: store data automaticly or not
-      return BufferToUint8Array(proto.decoded.data)
 
       // this.put(hash, proto.decoded.data)
     } else {
