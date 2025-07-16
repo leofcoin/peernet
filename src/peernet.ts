@@ -584,10 +584,11 @@ export default class Peernet {
         debug(`Error while requesting data from ${id}`, error)
         // if error, remove provider
         this.dht.removeProvider(id, hash)
-        if (this.#peerAttempts[id] > 3) {
+        if (this.#peerAttempts[id] > 1) {
           this.#peerAttempts[id] = 0
           debug(`Removed provider ${id} for ${hash} after 3 attempts`)
-          throw nothingFoundError(hash)
+          console.error(nothingFoundError(hash))
+          return undefined
         }
 
         if (this.#peerAttempts[id] === undefined) this.#peerAttempts[id] = 0
