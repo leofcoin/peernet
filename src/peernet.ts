@@ -66,6 +66,7 @@ export default class Peernet {
   protos: {}
   version
 
+  #peerAttempts: { [key: string]: number } = {}
   /**
    * @access public
    * @param {Object} options
@@ -583,7 +584,14 @@ export default class Peernet {
         debug(`Error while requesting data from ${id}`, error)
         // if error, remove provider
         this.dht.removeProvider(id, hash)
-        // and try again
+        if (this.#peerAttempts[id] > 3) {
+          this.#peerAttempts[id] = 0
+          debug(`Removed provider ${id} for ${hash} after 3 attempts`)
+          throw nothingFoundError(hash)
+        }
+
+        if (this.#peerAttempts[id] === undefined) this.#peerAttempts[id] = 0
+        this.#peerAttempts[id]++
         return this.requestData(hash, store?.name || store)
       }
 
