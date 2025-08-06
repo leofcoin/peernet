@@ -482,6 +482,7 @@ export default class Peernet {
         if (proto.decoded.has) this.dht.addProvider(peerInfo, proto.decoded.hash)
       } catch (error) {
         console.error(`Error while walking ${peerId}`, error)
+        return undefined
       }
     }
     let walks = []
@@ -490,7 +491,7 @@ export default class Peernet {
         walks.push(walk(peer, peerId))
       }
     }
-    return Promise.all(walks)
+    return Promise.race(walks)
   }
 
   /**
