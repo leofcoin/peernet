@@ -475,7 +475,7 @@ export default class Peernet {
         if (proto.name !== 'peernet-dht-response') throw dhtError(proto.name)
 
         const peerInfo = {
-          ...peer.connectionStats,
+          address: peer.remoteAddress,
           id: peerId
         }
 
@@ -547,22 +547,30 @@ export default class Peernet {
     if (!providers || (providers && Object.keys(providers).length === 0)) throw nothingFoundError(hash)
     debug(`found ${Object.keys(providers).length} provider(s) for ${hash}`)
     // get closest peer on earth
-    const closestPeer: DHTProvider = Object.values(providers)[0]
+    let closestPeer: DHTProvider = await this.dht.closestPeer(Object.values(providers))
+    // fallback to first provider if no closest peer found
+    if (!closestPeer || !closestPeer.id) closestPeer = Object.values(providers)[0]
 
+    debug(`closest peer for ${hash} is ${closestPeer?.address}`)
     // get peer instance by id
     if (!closestPeer || !closestPeer.id) return this.requestData(hash, store?.name || store)
 
     const id = closestPeer.id
     const peer = this.connections[id]
 
+    if (!peer || !peer?.connected) {
+      this.dht.removeProvider(id, hash)
+      return this.requestData(hash, store?.name || store)
+    }
+
+    let data = await new globalThis.peernet.protos['peernet-data']({
+      hash,
+      store: store?.name || store
+    })
+
+    const node = await this.prepareMessage(data)
+
     if (peer?.connected) {
-      let data = await new globalThis.peernet.protos['peernet-data']({
-        hash,
-        store: store?.name || store
-      })
-
-      const node = await this.prepareMessage(data)
-
       try {
         if (peer) data = await peer.request(node.encoded)
         else {
@@ -584,10 +592,11 @@ export default class Peernet {
       } catch (error) {
         debug(`Error while requesting data from ${id}`, error)
         // if error, remove provider
-        this.dht.removeProvider(id, hash)
         if (this.#peerAttempts[id] > 1) {
           this.#peerAttempts[id] = 0
           debug(`Removed provider ${id} for ${hash} after 3 attempts`)
+
+          this.dht.removeProvider(id, hash)
           console.error(nothingFoundError(hash))
           return undefined
         }
