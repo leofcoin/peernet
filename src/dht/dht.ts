@@ -38,9 +38,9 @@ const fetchedCoordinates = {}
 
 export const getAddress = async () => {
   const { address } = lastFetched
-  if (address) {
-    address.value = await fetch('https://icanhazip.com/')
-    address.value = await address.value.text()
+  if (!address) {
+    const value = await fetch('https://icanhazip.com/')
+    address.value = await value.text()
     address.timestamp = Math.round(new Date().getTime() / 1000)
     lastFetched.address = address
   }
