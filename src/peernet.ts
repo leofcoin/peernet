@@ -1,7 +1,7 @@
 import '@vandeurenglenn/debug'
 import PubSub from '@vandeurenglenn/little-pubsub'
 import PeerDiscovery from './discovery/peer-discovery.js'
-import DHT, { DHTProvider, DHTProviderDistanceResult } from './dht/dht.js'
+import DHT, { DHTProvider, DHTProviderDistanceResult, getAddress } from './dht/dht.js'
 import { BufferToUint8Array, protoFor, target } from './utils/utils.js'
 import MessageHandler from './handlers/message.js'
 import dataHandler from './handlers/data.js'
@@ -188,6 +188,7 @@ export default class Peernet {
    * @return {Promise} instance of Peernet
    */
   async _init(options: { storePrefix?: string; root?: string }, password: string): Promise<Peernet> {
+    await getAddress()
     this.storePrefix = options.storePrefix
     this.root = options.root
 

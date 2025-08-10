@@ -36,7 +36,7 @@ const lastFetched = {
 
 const fetchedCoordinates = {}
 
-const getAddress = async () => {
+export const getAddress = async () => {
   const { address } = lastFetched
   if (address) {
     address.value = await fetch('https://icanhazip.com/')
@@ -67,14 +67,7 @@ const distanceInKmBetweenEarthCoordinates = (lat1, lon1, lat2, lon2) => {
 }
 
 export default class DhtEarth {
-  providerMap = new Map<string, DHTProviderMapValue>()
-
-  /**
-   *
-   */
-  constructor() {
-    this.providerMap = new Map()
-  }
+  providerMap: Map<string, DHTProviderMapValue> = new Map()
 
   async getCoordinates(address: string): Promise<Coordinates> {
     if (!fetchedCoordinates[address]) {
