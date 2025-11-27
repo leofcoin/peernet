@@ -31,7 +31,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@leofcoin/codec-format-interface": "^1.7.13",
+    "@leofcoin/codec-format-interface": "^1.7.14",
     "@leofcoin/codecs": "^1.0.7",
     "@leofcoin/generate-account": "^2.0.3",
     "@leofcoin/identity-utils": "^1.0.2",
@@ -43,7 +43,7 @@
     "@vandeurenglenn/debug": "^1.2.6",
     "@vandeurenglenn/is-hex": "^1.1.1",
     "@vandeurenglenn/little-pubsub": "^1.5.1",
-    "inquirer": "^12.10.0",
+    "inquirer": "^13.0.1",
     "multi-signature": "^1.3.1",
     "qr-scanner": "^1.4.2",
     "qrcode": "^1.5.4",
@@ -58,13 +58,13 @@
     "@rollup/plugin-typescript": "^12.3.0",
     "@rollup/plugin-wasm": "^6.2.2",
     "@types/bs58check": "^3.0.1",
-    "@types/node": "^24.9.2",
+    "@types/node": "^24.10.1",
     "@types/qrcode": "^1.5.6",
     "@types/secp256k1": "^4.0.7",
     "@types/varint": "^6.0.3",
-    "chai": "^6.2.0",
+    "chai": "^6.2.1",
     "cross-env": "^10.1.0",
-    "rollup": "^4.52.5",
+    "rollup": "^4.53.3",
     "sinon": "^21.0.0"
   }
 }
