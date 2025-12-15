@@ -1,4 +1,4 @@
-import '@vandeurenglenn/debug'
+import { createDebugger } from '@vandeurenglenn/debug'
 import PubSub from '@vandeurenglenn/little-pubsub'
 import PeerDiscovery from './discovery/peer-discovery.js'
 import DHT, { DHTProvider, DHTProviderDistanceResult, getAddress } from './dht/dht.js'
@@ -30,7 +30,7 @@ declare global {
   var chainStore: LeofcoinStorageClass
 }
 
-const debug = globalThis.createDebugger('peernet')
+const debug = createDebugger('peernet')
 /**
  * @access public
  * @example
