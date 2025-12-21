@@ -33,6 +33,7 @@
   "dependencies": {
     "@leofcoin/codec-format-interface": "^1.7.14",
     "@leofcoin/codecs": "^1.0.7",
+    "@leofcoin/generate-account": "^2.0.3",
     "@leofcoin/identity-utils": "^1.0.2",
     "@leofcoin/multi-wallet": "^3.1.8",
     "@leofcoin/storage": "^3.5.38",
