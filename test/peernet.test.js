@@ -238,3 +238,76 @@ test('error handling methods exist', () => {
   assert.equal(typeof peernet.handleData, 'function')
   assert.equal(typeof peernet.handleRequest, 'function')
 })
+
+test('in-memory broadcast and handleData returns correct data', async () => {
+  // Broadcast a valid file object with path
+  const testString = 'hello in-memory world'
+  const fileObj = {
+    path: '/test',
+    content: new TextEncoder().encode(testString),
+    links: []
+  }
+  const hash = await peernet.broadcast(fileObj)
+
+  // Prepare a mock peer and capture sendMessage output
+  let sentNode = null
+  const mockPeer = {
+    connected: true,
+    send: async (data, id) => {
+      sentNode = { data, id }
+      return Promise.resolve()
+    }
+  }
+  const proto = {
+    decoded: { hash }
+  }
+  await peernet.handleData(mockPeer, 'test-id', proto)
+
+  assert.ok(sentNode)
+  const DataResponseProto = globalThis.peernet.protos['peernet-data-response']
+  const decodedProto = await new DataResponseProto(sentNode.data)
+  await decodedProto.decode()
+  const decodedContent = new TextDecoder().decode(decodedProto.decoded.data)
+  assert.equal(decodedProto.decoded.hash, hash)
+  assert.equal(decodedContent, testString)
+})
+
+test('in-memory broadcast and handleData supports large binary data', async () => {
+  // Create a large binary buffer (e.g., 1MB)
+  const size = 1024 * 1024 // 1MB
+  const largeBuffer = new Uint8Array(size)
+  for (let i = 0; i < size; i++) largeBuffer[i] = i % 256
+  const fileObj = {
+    path: '/large-binary',
+    content: largeBuffer,
+    links: []
+  }
+  const hash = await peernet.broadcast(fileObj)
+
+  // Prepare a mock peer and capture sendMessage output
+  let sentNode = null
+  const mockPeer = {
+    connected: true,
+    send: async (data, id) => {
+      sentNode = { data, id }
+      return Promise.resolve()
+    }
+  }
+  const proto = {
+    decoded: { hash }
+  }
+  await peernet.handleData(mockPeer, 'test-id', proto)
+
+  assert.ok(sentNode)
+  const DataResponseProto = globalThis.peernet.protos['peernet-data-response']
+  const decodedProto = await new DataResponseProto(sentNode.data)
+  await decodedProto.decode()
+  assert.equal(decodedProto.decoded.hash, hash)
+  assert.equal(
+    Buffer.compare(
+      Buffer.from(decodedProto.decoded.data),
+      Buffer.from(largeBuffer)
+    ),
+    0
+  )
+})

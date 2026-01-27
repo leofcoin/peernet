@@ -67,6 +67,7 @@ export default class Peernet {
   version
 
   #peerAttempts: { [key: string]: number } = {}
+  private _inMemoryBroadcasts: any
   /**
    * @access public
    * @param {Object} options
@@ -394,10 +395,72 @@ export default class Peernet {
     this.sendMessage(peer, id, node.encoded)
   }
 
+  /**
+   * Broadcasts data to the network and returns a hash that can be used by another peer
+   * to directly connect and download the data from the broadcasting peer.
+   *
+   * @param {Uint8Array|Buffer|Object|string} data - The data to broadcast
+   * @param {string} [storeName='data'] - The store to use for storing the data
+   * @returns {Promise<string>} The hash that can be shared for direct download
+   */
+  /**
+   * Broadcasts data to the network and returns a hash that can be used by another peer
+   * to directly connect and download the data from the broadcasting peer.
+   * The data is kept in memory only and not persisted to storage.
+   *
+   * @param {Uint8Array|Buffer|Object|string} data - The data to broadcast
+   * @returns {Promise<string>} The hash that can be shared for direct download
+   */
+  async broadcast(
+    data: Uint8Array | Buffer | { path: string; content?: Uint8Array; links?: any[] } | string
+  ): Promise<string> {
+    let protoInput: any
+    if (typeof data === 'string') {
+      protoInput = { path: '/', content: new TextEncoder().encode(data) }
+    } else if (data instanceof Uint8Array || data instanceof Buffer) {
+      protoInput = { path: '/', content: data }
+    } else if (typeof data === 'object' && data.path) {
+      protoInput = data
+    } else {
+      // fallback: treat as JSON string
+      protoInput = { path: '/', content: new TextEncoder().encode(JSON.stringify(data)) }
+    }
+
+    const protoNode = await new globalThis.peernet.protos['peernet-file'](protoInput)
+    const hash = await protoNode.hash()
+    const encoded = await protoNode.encoded
+    if (!this._inMemoryBroadcasts) this._inMemoryBroadcasts = new Map()
+    this._inMemoryBroadcasts.set(hash, encoded)
+
+    await this.publish('broadcast', { hash, from: this.id })
+    return hash
+  }
+
   async handleData(peer, id, proto) {
     let { hash, store } = proto.decoded
     let data
     try {
+      // Check in-memory broadcasts first
+      if (this._inMemoryBroadcasts && this._inMemoryBroadcasts.has(hash)) {
+        data = this._inMemoryBroadcasts.get(hash)
+        let resolvedHash = hash
+        if (typeof hash === 'function') {
+          resolvedHash = await hash()
+        }
+        // Decode the stored proto to extract the content
+        const FileProto = globalThis.peernet.protos['peernet-file']
+        const fileProto = await new FileProto(data)
+        await fileProto.decode()
+        const fileContent = fileProto.decoded.content
+        data = await new globalThis.peernet.protos['peernet-data-response']({
+          hash: resolvedHash,
+          data: fileContent
+        })
+        const node = await this.prepareMessage(data)
+        await this.sendMessage(peer, id, node.encoded)
+        return
+      }
+
       store = globalThis[`${store}Store`] || (await this.whichStore([...this.stores], hash))
 
       if (store && !store.private) {
@@ -410,12 +473,13 @@ export default class Peernet {
           })
 
           const node = await this.prepareMessage(data)
-          this.sendMessage(peer, id, node.encoded)
+          await this.sendMessage(peer, id, node.encoded)
         }
       } else {
         // ban (trying to access private st)
       }
     } catch (error) {
+      console.error('handleData: error', error)
       return this.requestData(hash, store)
     }
   }

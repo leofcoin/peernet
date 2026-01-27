@@ -37,13 +37,15 @@
     "@leofcoin/identity-utils": "^1.0.2",
     "@leofcoin/multi-wallet": "^3.1.8",
     "@leofcoin/storage": "^3.5.38",
+    "@mapbox/node-pre-gyp": "^2.0.3",
     "@netpeer/swarm": "^0.9.0",
     "@vandeurenglenn/base58": "^1.1.9",
     "@vandeurenglenn/debug": "^1.4.0",
     "@vandeurenglenn/little-pubsub": "^1.5.2",
-    "inquirer": "^13.2.0",
+    "inquirer": "^13.2.1",
     "qr-scanner": "^1.4.2",
-    "qrcode": "^1.5.4"
+    "qrcode": "^1.5.4",
+    "tar": "^7.5.6"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^29.0.0",
@@ -51,8 +53,8 @@
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-typescript": "^12.3.0",
     "@rollup/plugin-wasm": "^6.2.2",
-    "@types/node": "^25.0.8",
+    "@types/node": "^25.0.10",
     "@types/qrcode": "^1.5.6",
-    "rollup": "^4.55.1"
+    "rollup": "^4.56.0"
   }
 }
