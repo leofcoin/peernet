@@ -440,7 +440,6 @@ export default class Peernet {
     let { hash, store } = proto.decoded
     let data
     try {
-      // Check in-memory broadcasts first
       if (this._inMemoryBroadcasts && this._inMemoryBroadcasts.has(hash)) {
         data = this._inMemoryBroadcasts.get(hash)
         let resolvedHash = hash

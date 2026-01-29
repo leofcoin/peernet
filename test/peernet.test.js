@@ -303,11 +303,7 @@ test('in-memory broadcast and handleData supports large binary data', async () =
   const decodedProto = await new DataResponseProto(sentNode.data)
   await decodedProto.decode()
   assert.equal(decodedProto.decoded.hash, hash)
-  assert.equal(
-    Buffer.compare(
-      Buffer.from(decodedProto.decoded.data),
-      Buffer.from(largeBuffer)
-    ),
-    0
-  )
+  const receivedBuffer = Buffer.from(decodedProto.decoded.data)
+  const originalBuffer = Buffer.from(largeBuffer)
+  assert.equal(Buffer.compare(receivedBuffer, originalBuffer), 0)
 })

@@ -1,5 +1,5 @@
 export default {
   path: String(),
-  'content?': '',
+  'content?': new Uint8Array(),
   'links?': []
 }
