@@ -70,20 +70,84 @@ const password = await passwordPrompt();
 const node = await new Peernet(config, password);
 ```
 
-## In-Memory Broadcasts
+## In-Memory Broadcasts: API and Usage
 
-Peernet supports in-memory data sharing for fast, temporary distribution of files or data objects between peers. This feature allows you to broadcast a file or data object, which is then available for retrieval by other peers (or yourself) until the process is restarted or the in-memory cache is cleared.
+**What is it?**  
+The `broadcast` method allows you to share files or folders with peers, storing them in-memory (not persisted to disk). Data is available for direct retrieval by hash until the process restarts.
+
+**API:**
+```typescript
+// For files:
+peernet.broadcast(path: string, { content: Uint8Array }): Promise<string>
+
+// For folders:
+peernet.broadcast(path: string, { links: Array<{ path: string, hash: string }> }): Promise<string>
+```
+
+**Parameters:**
+- `path` (string): The virtual path or identifier for the file or folder.
+- `content` (Uint8Array): The file data (for files).
+- `links` (Array): An array of `{ path, hash }` objects (for folders).
+
+**Returns:**  
+A `Promise` that resolves to a hash string, which can be used to retrieve the data.
+
+---
+
+### Examples
+
+**Broadcast a file:**
+```js
+const hash = await peernet.broadcast('/hello.txt', {
+  content: new TextEncoder().encode('Hello world!')
+});
+```
+
+**Broadcast a folder:**
+```js
+const folderHash = await peernet.broadcast('/my-folder', {
+  links: [
+    { path: '/hello.txt', hash: hash }
+  ]
+});
+```
+
+**Retrieve data by hash (peer side):**
+```js
+const proto = { decoded: { hash } };
+await peernet.handleData(peer, 'some-id', proto);
+// The peer will receive either .data (for files) or .links (for folders)
+```
+
+---
+
+### Notes
+
+- If you broadcast a folder, only the `links` property is required; `content` should be omitted.
+- If you broadcast a file, only the `content` property is required; `links` should be omitted.
+- The hash returned is unique to the content or folder structure.
+- Data is lost when the process restarts.
+
+### In-Memory Broadcasts
+
+
+Peernet supports in-memory data sharing for fast, temporary distribution of files or folders between peers. This feature allows you to broadcast a file (with content) or a folder (with just links), which is then available for retrieval by other peers (or yourself) until the process is restarted or the in-memory cache is cleared.
 
 ### Usage Example
 
 ```js
-// Broadcast a file or data object in-memory
-const fileObj = {
-  path: '/example',
-  content: new TextEncoder().encode('hello world'),
-  links: []
-};
-const hash = await peernet.broadcast(fileObj);
+// Broadcast a file in-memory
+const hash = await peernet.broadcast('/example', {
+  content: new TextEncoder().encode('hello world')
+});
+
+// Broadcast a folder (just links) in-memory
+const folderHash = await peernet.broadcast('/folder', {
+  links: [
+    { path: '/file1', hash: 'hash1' },
+    { path: '/file2', hash: 'hash2' }
+  ]
+});
 
 // Another peer can request the data by hash
 // (handled internally by peernet.handleData)
@@ -92,16 +156,22 @@ const hash = await peernet.broadcast(fileObj);
 ### Detailed Example
 
 ```js
-// 1. Broadcast a file object in-memory
-const fileObj = {
-  path: '/example',
-  content: new TextEncoder().encode('Hello Peernet!'),
-  links: []
-};
-const hash = await peernet.broadcast(fileObj);
+// 1. Broadcast a file in-memory
+const hash = await peernet.broadcast('/example', {
+  content: new TextEncoder().encode('Hello Peernet!')
+});
 console.log('Broadcasted hash:', hash);
 
-// 2. Simulate a peer requesting the data by hash
+// 2. Broadcast a folder in-memory
+const folderHash = await peernet.broadcast('/folder', {
+  links: [
+    { path: '/file1', hash: 'hash1' },
+    { path: '/file2', hash: 'hash2' }
+  ]
+});
+console.log('Broadcasted folder hash:', folderHash);
+
+// 3. Simulate a peer requesting the data by hash
 const mockPeer = {
   connected: true,
   send: async (data, id) => {
@@ -109,8 +179,12 @@ const mockPeer = {
     const DataResponseProto = globalThis.peernet.protos['peernet-data-response'];
     const decodedProto = await new DataResponseProto(data);
     await decodedProto.decode();
-    const decodedContent = new TextDecoder().decode(decodedProto.decoded.data);
-    console.log('Received content:', decodedContent);
+    if (decodedProto.decoded.data) {
+      const decodedContent = new TextDecoder().decode(decodedProto.decoded.data);
+      console.log('Received content:', decodedContent);
+    } else if (decodedProto.decoded.links) {
+      console.log('Received folder links:', decodedProto.decoded.links);
+    }
   }
 };
 const proto = { decoded: { hash } };
@@ -137,6 +211,27 @@ await peernet.handleData(mockPeer, 'test-id', proto);
 ### Testing
 
 Automated tests verify that broadcasting and retrieving in-memory data works as expected, including content integrity and hash matching.
+
+## Folder Support (Files with Just Links)
+
+
+Peernet supports "folders" as special file objects that contain only links to other files, without any content. This allows you to represent directory structures or collections of files.
+
+**Example: Broadcasting a Folder**
+```js
+const folderHash = await peernet.broadcast('/folder', {
+  links: [
+    { path: '/file1', hash: 'hash1' },
+    { path: '/file2', hash: 'hash2' }
+  ]
+});
+```
+
+**Retrieving a Folder**
+When a folder is retrieved (e.g., via `handleData`), its `links` array will be preserved, and `content` will be empty or undefined.
+
+**Test Coverage**
+Automated tests verify that broadcasting and retrieving folders works as expected, ensuring the links are preserved and content is empty or undefined.
 
 ## Development
 

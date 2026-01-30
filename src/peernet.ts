@@ -407,24 +407,15 @@ export default class Peernet {
    * Broadcasts data to the network and returns a hash that can be used by another peer
    * to directly connect and download the data from the broadcasting peer.
    * The data is kept in memory only and not persisted to storage.
-   *
-   * @param {Uint8Array|Buffer|Object|string} data - The data to broadcast
+   * @param {string} path - The path or identifier for the content being broadcasted
+   * @param {{content?: Uint8Array, links?: any[]}} data - The data to broadcast
+ 
    * @returns {Promise<string>} The hash that can be shared for direct download
    */
-  async broadcast(
-    data: Uint8Array | Buffer | { path: string; content?: Uint8Array; links?: any[] } | string
-  ): Promise<string> {
+  async broadcast(path: string, { content, links }: { content?: Uint8Array; links?: any[] }): Promise<string> {
     let protoInput: any
-    if (typeof data === 'string') {
-      protoInput = { path: '/', content: new TextEncoder().encode(data) }
-    } else if (data instanceof Uint8Array || data instanceof Buffer) {
-      protoInput = { path: '/', content: data }
-    } else if (typeof data === 'object' && data.path) {
-      protoInput = data
-    } else {
-      // fallback: treat as JSON string
-      protoInput = { path: '/', content: new TextEncoder().encode(JSON.stringify(data)) }
-    }
+    if (content) protoInput = { path, content }
+    else if (links) protoInput = { path, links }
 
     const protoNode = await new globalThis.peernet.protos['peernet-file'](protoInput)
     const hash = await protoNode.hash()
@@ -446,15 +437,18 @@ export default class Peernet {
         if (typeof hash === 'function') {
           resolvedHash = await hash()
         }
-        // Decode the stored proto to extract the content
+        // Decode the stored proto to extract the content or links
         const FileProto = globalThis.peernet.protos['peernet-file']
         const fileProto = await new FileProto(data)
         await fileProto.decode()
-        const fileContent = fileProto.decoded.content
+        const { content, links } = fileProto.decoded
+        console.log(links)
+
         data = await new globalThis.peernet.protos['peernet-data-response']({
           hash: resolvedHash,
-          data: fileContent
+          data: links || content
         })
+
         const node = await this.prepareMessage(data)
         await this.sendMessage(peer, id, node.encoded)
         return

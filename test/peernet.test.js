@@ -242,12 +242,10 @@ test('error handling methods exist', () => {
 test('in-memory broadcast and handleData returns correct data', async () => {
   // Broadcast a valid file object with path
   const testString = 'hello in-memory world'
-  const fileObj = {
-    path: '/test',
-    content: new TextEncoder().encode(testString),
-    links: []
-  }
-  const hash = await peernet.broadcast(fileObj)
+  const path = '/test'
+  const content = new TextEncoder().encode(testString)
+
+  const hash = await peernet.broadcast(path, { content })
 
   // Prepare a mock peer and capture sendMessage output
   let sentNode = null
@@ -277,12 +275,9 @@ test('in-memory broadcast and handleData supports large binary data', async () =
   const size = 1024 * 1024 // 1MB
   const largeBuffer = new Uint8Array(size)
   for (let i = 0; i < size; i++) largeBuffer[i] = i % 256
-  const fileObj = {
-    path: '/large-binary',
-    content: largeBuffer,
-    links: []
-  }
-  const hash = await peernet.broadcast(fileObj)
+  const path = '/large-binary'
+  const content = largeBuffer
+  const hash = await peernet.broadcast(path, { content })
 
   // Prepare a mock peer and capture sendMessage output
   let sentNode = null
