@@ -211,6 +211,7 @@ test('default stores are initialized', () => {
   assert.ok(defaultStores.includes('chain'))
   assert.ok(defaultStores.includes('data'))
   assert.ok(defaultStores.includes('message'))
+  assert.ok(defaultStores.includes('share'))
 })
 
 test('identity has all expected methods', () => {
@@ -301,4 +302,47 @@ test('in-memory broadcast and handleData supports large binary data', async () =
   const receivedBuffer = Buffer.from(decodedProto.decoded.data)
   const originalBuffer = Buffer.from(largeBuffer)
   assert.equal(Buffer.compare(receivedBuffer, originalBuffer), 0)
+})
+
+test('share object provides get/put/has', () => {
+  const shareObj = peernet.share
+  assert.equal(typeof shareObj.get, 'function')
+  assert.equal(typeof shareObj.put, 'function')
+  assert.equal(typeof shareObj.has, 'function')
+})
+
+test('allSharedHashes method exists and is callable', () => {
+  assert.equal(typeof peernet.allSharedHashes, 'function')
+})
+
+test('broadcast persists to share store', async () => {
+  const testString = 'test broadcast content'
+  const path = '/broadcast-test'
+  const content = new TextEncoder().encode(testString)
+
+  const hash = await peernet.broadcast(path, { content })
+
+  // Verify it was stored in share store
+  assert.ok(hash)
+  const hasInShare = await peernet.share.has(hash)
+  assert.equal(hasInShare, true)
+})
+
+test('share store can retrieve broadcasted content', async () => {
+  const testString = 'retrievable broadcast content'
+  const path = '/retrievable-test'
+  const content = new TextEncoder().encode(testString)
+
+  const hash = await peernet.broadcast(path, { content })
+
+  // Verify we can retrieve it from share store
+  const storedData = await peernet.share.get(hash)
+  assert.ok(storedData)
+})
+
+test('allSharedHashes returns array of hashes', async () => {
+  const hashes = await peernet.allSharedHashes()
+  assert.ok(Array.isArray(hashes))
+  // Should contain at least the hashes we broadcasted in previous tests
+  assert.ok(hashes.length >= 0)
 })

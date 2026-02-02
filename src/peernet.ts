@@ -28,6 +28,7 @@ declare global {
   var dataStore: LeofcoinStorageClass
   var walletStore: LeofcoinStorageClass
   var chainStore: LeofcoinStorageClass
+  var shareStore: LeofcoinStorageClass
 }
 
 const debug = createDebugger('peernet')
@@ -121,7 +122,7 @@ export default class Peernet {
   }
 
   get defaultStores() {
-    return ['account', 'wallet', 'block', 'transaction', 'chain', 'data', 'message']
+    return ['account', 'wallet', 'block', 'transaction', 'chain', 'data', 'message', 'share']
   }
 
   selectAccount(account: string) {
@@ -137,7 +138,14 @@ export default class Peernet {
   }
 
   async addStore(name, prefix, root, isPrivate = true) {
-    if (name === 'block' || name === 'transaction' || name === 'chain' || name === 'data' || name === 'message')
+    if (
+      name === 'block' ||
+      name === 'transaction' ||
+      name === 'chain' ||
+      name === 'data' ||
+      name === 'message' ||
+      name === 'share'
+    )
       isPrivate = false
 
     let Storage
@@ -422,6 +430,9 @@ export default class Peernet {
     const encoded = await protoNode.encoded
     if (!this._inMemoryBroadcasts) this._inMemoryBroadcasts = new Map()
     this._inMemoryBroadcasts.set(hash, encoded)
+
+    // Persist to share store
+    await shareStore.put(hash, encoded)
 
     await this.publish('broadcast', { hash, from: this.id })
     return hash
@@ -752,6 +763,68 @@ export default class Peernet {
        */
       has: async (hash) => await dataStore.has(hash)
     }
+  }
+
+  get share() {
+    return {
+      /**
+       * Get content for given share hash
+       *
+       * @todo Add peer permission checking to validate if requesting peer has access
+       *
+       * @param {String} hash
+       */
+      get: async (hash) => {
+        debug(`get share ${hash}`)
+        const data = await shareStore.has(hash)
+        if (data) return await shareStore.get(hash)
+        return undefined
+      },
+      /**
+       * put share content
+       *
+       * @param {String} hash
+       * @param {Buffer} data
+       */
+      put: async (hash, data) => await shareStore.put(hash, data),
+      /**
+       * @param {String} hash
+       * @return {Boolean}
+       */
+      has: async (hash) => await shareStore.has(hash),
+
+      /**
+       * Put folder content
+       *
+       * @param {Array} files
+       */
+      putFolder: async (files) => {
+        const links = []
+        for (const file of files) {
+          const fileNode = await new globalThis.peernet.protos['peernet-file'](file)
+          const hash = await fileNode.hash
+          await dataStore.put(hash, fileNode.encoded)
+          links.push({ hash, path: file.path })
+        }
+        const node = await new globalThis.peernet.protos['peernet-file']({
+          path: '/',
+          links
+        })
+        const hash = await node.hash
+        await dataStore.put(hash, node.encoded)
+
+        return hash
+      }
+    }
+  }
+
+  /**
+   * Get all shared hashes
+   *
+   * @returns {Promise<string[]>} Array of all shared hashes
+   */
+  async allSharedHashes(): Promise<string[]> {
+    return await shareStore.keys()
   }
 
   async addFolder(files) {
