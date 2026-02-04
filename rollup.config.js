@@ -4,6 +4,7 @@ import json from '@rollup/plugin-json'
 import wasm from '@rollup/plugin-wasm'
 import rimraf from 'rimraf'
 import typescript from '@rollup/plugin-typescript'
+import autoExports from 'rollup-plugin-auto-exports'
 
 rimraf.sync('./exports/**')
 
@@ -26,7 +27,7 @@ export default [
         mainFields: ['browser', 'module', 'main']
       }),
 
-      typescript({ compilerOptions: { outDir: './exports/browser' } })
+      typescript({ compilerOptions: { outDir: './exports/browser', declaration: false } })
     ],
     external: ['./prompts/password.js']
   },
@@ -41,6 +42,11 @@ export default [
         compilerOptions: {
           outDir: './exports',
           declarationDir: './exports/types'
+        }
+      }),
+      autoExports({
+        defaultExports: {
+          '.': { import: './exports/peernet.js', types: './exports/types/peernet.d.ts' }
         }
       })
     ],

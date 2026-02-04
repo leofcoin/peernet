@@ -6,15 +6,232 @@
   "exports": {
     ".": {
       "import": "./exports/peernet.js",
-      "require": "./exports/commonjs/peernet.js",
       "types": "./exports/types/peernet.d.ts"
     },
+    "./browser": {
+      "import": "././exports/browser.js",
+      "types": "./exports/types/prompts/password/browser.d.ts"
+    },
+    "./browser.js": {
+      "import": "././exports/browser.js",
+      "types": "./exports/types/prompts/password/browser.d.ts"
+    },
+    "./chat-message.proto": {
+      "import": "././exports/chat-message.proto.js",
+      "types": "./exports/types/proto/chat-message.proto.d.ts"
+    },
+    "./chat-message.proto.js": {
+      "import": "././exports/chat-message.proto.js",
+      "types": "./exports/types/proto/chat-message.proto.d.ts"
+    },
+    "./data-response.proto": {
+      "import": "././exports/data-response.proto.js",
+      "types": "./exports/types/proto/data-response.proto.d.ts"
+    },
+    "./data-response.proto.js": {
+      "import": "././exports/data-response.proto.js",
+      "types": "./exports/types/proto/data-response.proto.d.ts"
+    },
+    "./data": {
+      "import": "././exports/data.js",
+      "types": "./exports/types/handlers/data.d.ts"
+    },
+    "./data.js": {
+      "import": "././exports/data.js",
+      "types": "./exports/types/handlers/data.d.ts"
+    },
+    "./data.proto": {
+      "import": "././exports/data.proto.js",
+      "types": "./exports/types/proto/data.proto.d.ts"
+    },
+    "./data.proto.js": {
+      "import": "././exports/data.proto.js",
+      "types": "./exports/types/proto/data.proto.d.ts"
+    },
+    "./dht-response.proto": {
+      "import": "././exports/dht-response.proto.js",
+      "types": "./exports/types/proto/dht-response.proto.d.ts"
+    },
+    "./dht-response.proto.js": {
+      "import": "././exports/dht-response.proto.js",
+      "types": "./exports/types/proto/dht-response.proto.d.ts"
+    },
+    "./dht": {
+      "import": "././exports/dht.js",
+      "types": "./exports/types/dht/dht.d.ts"
+    },
+    "./dht.js": {
+      "import": "././exports/dht.js",
+      "types": "./exports/types/dht/dht.d.ts"
+    },
+    "./dht.proto": {
+      "import": "././exports/dht.proto.js",
+      "types": "./exports/types/proto/dht.proto.d.ts"
+    },
+    "./dht.proto.js": {
+      "import": "././exports/dht.proto.js",
+      "types": "./exports/types/proto/dht.proto.d.ts"
+    },
+    "./errors": {
+      "import": "././exports/errors.js",
+      "types": "./exports/types/errors/errors.d.ts"
+    },
+    "./errors.js": {
+      "import": "././exports/errors.js",
+      "types": "./exports/types/errors/errors.d.ts"
+    },
+    "./file-link": {
+      "import": "././exports/file-link.js",
+      "types": "./exports/types/messages/file-link.d.ts"
+    },
+    "./file-link.js": {
+      "import": "././exports/file-link.js",
+      "types": "./exports/types/messages/file-link.d.ts"
+    },
+    "./file-link.proto": {
+      "import": "././exports/file-link.proto.js",
+      "types": "./exports/types/proto/file-link.proto.d.ts"
+    },
+    "./file-link.proto.js": {
+      "import": "././exports/file-link.proto.js",
+      "types": "./exports/types/proto/file-link.proto.d.ts"
+    },
+    "./file": {
+      "import": "././exports/file.js",
+      "types": "./exports/types/messages/file.d.ts"
+    },
+    "./file.js": {
+      "import": "././exports/file.js",
+      "types": "./exports/types/messages/file.d.ts"
+    },
+    "./file.proto": {
+      "import": "././exports/file.proto.js",
+      "types": "./exports/types/proto/file.proto.d.ts"
+    },
+    "./file.proto.js": {
+      "import": "././exports/file.proto.js",
+      "types": "./exports/types/proto/file.proto.d.ts"
+    },
     "./identity": {
-      "import": "./exports/identity.js",
-      "require": "./exports/commonjs/identity.js",
+      "import": "././exports/identity.js",
       "types": "./exports/types/identity.d.ts"
     },
-    "./browser": "./exports/browser/peernet.js"
+    "./identity.js": {
+      "import": "././exports/identity.js",
+      "types": "./exports/types/identity.d.ts"
+    },
+    "./message": {
+      "import": "././exports/message.js",
+      "types": "./exports/types/handlers/message.d.ts"
+    },
+    "./message.js": {
+      "import": "././exports/message.js",
+      "types": "./exports/types/handlers/message.d.ts"
+    },
+    "./messages": {
+      "import": "././exports/messages.js",
+      "types": "./exports/types/messages.d.ts"
+    },
+    "./messages.js": {
+      "import": "././exports/messages.js",
+      "types": "./exports/types/messages.d.ts"
+    },
+    "./node": {
+      "import": "././exports/node.js",
+      "types": "./exports/types/prompts/password/node.d.ts"
+    },
+    "./node.js": {
+      "import": "././exports/node.js",
+      "types": "./exports/types/prompts/password/node.d.ts"
+    },
+    "./peer-discovery": {
+      "import": "././exports/peer-discovery.js",
+      "types": "./exports/types/discovery/peer-discovery.d.ts"
+    },
+    "./peer-discovery.js": {
+      "import": "././exports/peer-discovery.js",
+      "types": "./exports/types/discovery/peer-discovery.d.ts"
+    },
+    "./peer-info": {
+      "import": "././exports/peer-info.js",
+      "types": "./exports/types/peer-info.d.ts"
+    },
+    "./peer-info.js": {
+      "import": "././exports/peer-info.js",
+      "types": "./exports/types/peer-info.d.ts"
+    },
+    "./peer-response.proto": {
+      "import": "././exports/peer-response.proto.js",
+      "types": "./exports/types/proto/peer-response.proto.d.ts"
+    },
+    "./peer-response.proto.js": {
+      "import": "././exports/peer-response.proto.js",
+      "types": "./exports/types/proto/peer-response.proto.d.ts"
+    },
+    "./peer.proto": {
+      "import": "././exports/peer.proto.js",
+      "types": "./exports/types/proto/peer.proto.d.ts"
+    },
+    "./peer.proto.js": {
+      "import": "././exports/peer.proto.js",
+      "types": "./exports/types/proto/peer.proto.d.ts"
+    },
+    "./peernet": {
+      "import": "././exports/peernet.js",
+      "types": "./exports/types/peernet.d.ts"
+    },
+    "./peernet.js": {
+      "import": "././exports/peernet.js",
+      "types": "./exports/types/peernet.d.ts"
+    },
+    "./peernet.proto": {
+      "import": "././exports/peernet.proto.js",
+      "types": "./exports/types/proto/peernet.proto.d.ts"
+    },
+    "./peernet.proto.js": {
+      "import": "././exports/peernet.proto.js",
+      "types": "./exports/types/proto/peernet.proto.d.ts"
+    },
+    "./ps.proto": {
+      "import": "././exports/ps.proto.js",
+      "types": "./exports/types/proto/ps.proto.d.ts"
+    },
+    "./ps.proto.js": {
+      "import": "././exports/ps.proto.js",
+      "types": "./exports/types/proto/ps.proto.d.ts"
+    },
+    "./request.proto": {
+      "import": "././exports/request.proto.js",
+      "types": "./exports/types/proto/request.proto.d.ts"
+    },
+    "./request.proto.js": {
+      "import": "././exports/request.proto.js",
+      "types": "./exports/types/proto/request.proto.d.ts"
+    },
+    "./response.proto": {
+      "import": "././exports/response.proto.js",
+      "types": "./exports/types/proto/response.proto.d.ts"
+    },
+    "./response.proto.js": {
+      "import": "././exports/response.proto.js",
+      "types": "./exports/types/proto/response.proto.d.ts"
+    },
+    "./types": {
+      "import": "././exports/types.js",
+      "types": "./exports/types/types.d.ts"
+    },
+    "./types.js": {
+      "import": "././exports/types.js",
+      "types": "./exports/types/types.d.ts"
+    },
+    "./utils": {
+      "import": "././exports/utils.js",
+      "types": "./exports/types/utils/utils.d.ts"
+    },
+    "./utils.js": {
+      "import": "././exports/utils.js",
+      "types": "./exports/types/utils/utils.d.ts"
+    }
   },
   "type": "module",
   "engines": {
@@ -55,6 +272,7 @@
     "@rollup/plugin-wasm": "^6.2.2",
     "@types/node": "^25.2.0",
     "@types/qrcode": "^1.5.6",
-    "rollup": "^4.57.1"
+    "rollup": "^4.57.1",
+    "rollup-plugin-auto-exports": "^1.1.1"
   }
 }
