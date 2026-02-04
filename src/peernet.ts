@@ -1,5 +1,5 @@
 import { createDebugger } from '@vandeurenglenn/debug'
-import PubSub from '@vandeurenglenn/little-pubsub'
+import PubSub, { Handler } from '@vandeurenglenn/little-pubsub'
 import PeerDiscovery from './discovery/peer-discovery.js'
 import DHT, { DHTProvider, DHTProviderDistanceResult, getAddress } from './dht/dht.js'
 import { BufferToUint8Array, protoFor, target } from './utils/utils.js'
@@ -214,7 +214,6 @@ export default class Peernet {
       PsMessage,
       ChatMessage,
       PeernetFile
-      // FolderMessageResponse
     } = await import(/* webpackChunkName: "messages" */ './messages.js')
 
     /**
@@ -257,66 +256,12 @@ export default class Peernet {
     this._peerHandler = new PeerDiscovery(this.id)
     this.peerId = this.id
 
-    // this.addRequestHandler('handshake', () => {
-    //   return new peernet.protos['peernet-response']({
-    //     response: { peerId: this.id }
-    //   })
-    // })
-
-    // pubsub.subscribe('peer:discovered', async (peer) => {
-    //   // console.log(peer);
-
-    //   if (this.requestProtos['version'] && !peer.version) {
-    //     let data = await new globalThis.peernet.protos['peernet-request']({
-    //       request: 'version'
-    //     })
-    //     let node = await globalThis.peernet.prepareMessage(data)
-    //     let response = await peer.request(node.encoded)
-    //     response = await new globalThis.peernet.protos['peernet-response'](new Uint8Array(Object.values(response)))
-    //     peer.version = response.decoded.response.version
-    //   }
-
-    //   if (!peer.peerId) {
-    //     let data = await new globalThis.peernet.protos['peernet-request']({
-    //       request: 'handshake'
-    //     })
-    //     let node = await globalThis.peernet.prepareMessage(data)
-    //     let response = await peer.request(node.encoded)
-
-    //     response = await new globalThis.peernet.protos['peernet-response'](new Uint8Array(Object.values(response)))
-    //     // todo: response.decoded should be the response and not response.peerId
-    //     // todo: ignore above and remove discover completly
-    //     response.decoded.response.peerId
-    //   }
-
-    // this.connections[peer.peerId] = peer
-    // pubsub.publish('peer:connected', peer)
-    // todo: cleanup discovered
-    // })
-
-    // pubsub.subscribe('peer:left', this.#peerLeft.bind(this))
-
     /**
      * converts data -> message -> proto
      * @see DataHandler
      */
     pubsub.subscribe('peer:data', dataHandler)
 
-    // // todo: remove below, already handles in the swarm
-    // if (globalThis.navigator) {
-    //   globalThis.addEventListener('beforeunload', async () => this.client.close())
-    // } else {
-    //   process.on('SIGTERM', async () => {
-    //     process.stdin.resume()
-    //     try {
-    //       await this.client.close()
-    //     } catch (error) {
-    //       // @ts-ignore
-    //       await this.client.close()
-    //     }
-    //     process.exit()
-    //   })
-    // }
     if (this.autoStart) await this.start()
     return this
   }
@@ -957,7 +902,7 @@ export default class Peernet {
    * @param {String} topic
    * @param {Method} cb
    */
-  async subscribe(topic: string, callback: Function) {
+  async subscribe(topic: string, callback: Handler) {
     // TODO: if peer subscribed
     globalSub.subscribe(topic, callback)
   }
