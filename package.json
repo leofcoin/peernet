@@ -248,7 +248,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@leofcoin/codec-format-interface": "^1.7.14",
+    "@leofcoin/codec-format-interface": "^1.7.15",
     "@leofcoin/codecs": "^1.0.7",
     "@leofcoin/generate-account": "^2.0.3",
     "@leofcoin/identity-utils": "^1.0.2",
@@ -270,7 +270,7 @@
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-typescript": "^12.3.0",
     "@rollup/plugin-wasm": "^6.2.2",
-    "@types/node": "^25.2.0",
+    "@types/node": "^25.2.1",
     "@types/qrcode": "^1.5.6",
     "rollup": "^4.57.1",
     "rollup-plugin-auto-exports": "^1.1.1"
