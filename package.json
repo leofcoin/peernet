@@ -248,7 +248,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@leofcoin/codec-format-interface": "^1.8.0",
+    "@leofcoin/codec-format-interface": "^1.8.1",
     "@leofcoin/codecs": "^1.0.7",
     "@leofcoin/generate-account": "^2.0.3",
     "@leofcoin/identity-utils": "^1.0.2",
