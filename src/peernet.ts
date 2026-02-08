@@ -505,7 +505,9 @@ export default class Peernet {
         walks.push(walk(peer, peerId))
       }
     }
-    return Promise.race(walks)
+    // walk the network and return first result.
+    // not waiting for all walks to finish, this is faster and more efficient
+    return Promise.any(walks)
   }
 
   /**
@@ -557,73 +559,78 @@ export default class Peernet {
   }
 
   async requestData(hash, store) {
-    const providers = await this.providersFor(hash)
-    if (!providers || (providers && Object.keys(providers).length === 0)) throw nothingFoundError(hash)
-    debug(`found ${Object.keys(providers).length} provider(s) for ${hash}`)
-    // get closest peer on earth
-    let closestPeer: DHTProvider = await this.dht.closestPeer(Object.values(providers))
-    // fallback to first provider if no closest peer found
-    if (!closestPeer || !closestPeer.id) closestPeer = Object.values(providers)[0]
+    try {
+      const providers = await this.providersFor(hash)
+      if (!providers || (providers && Object.keys(providers).length === 0)) throw nothingFoundError(hash)
+      debug(`found ${Object.keys(providers).length} provider(s) for ${hash}`)
+      // get closest peer on earth
+      let closestPeer: DHTProvider = await this.dht.closestPeer(Object.values(providers))
+      // fallback to first provider if no closest peer found
+      if (!closestPeer || !closestPeer.id) closestPeer = Object.values(providers)[0]
 
-    debug(`closest peer for ${hash} is ${closestPeer?.address}`)
-    // get peer instance by id
-    if (!closestPeer || !closestPeer.id || !closestPeer.address) return undefined
-    const id = closestPeer.id
-    const peer = this.connections[id]
+      debug(`closest peer for ${hash} is ${closestPeer?.address}`)
+      // get peer instance by id
+      if (!closestPeer || !closestPeer.id || !closestPeer.address) return undefined
+      const id = closestPeer.id
+      const peer = this.connections[id]
 
-    if (!peer || !peer?.connected) {
-      this.dht.removeProvider(id, hash)
-      return this.requestData(hash, store?.name || store)
-    }
-
-    let data = await new globalThis.peernet.protos['peernet-data']({
-      hash,
-      store: store?.name || store
-    })
-
-    const node = await this.prepareMessage(data)
-
-    if (peer?.connected) {
-      try {
-        if (peer) data = await peer.request(node.encoded)
-        else {
-          // fallback and try every provider found
-          const promises = []
-          const providers = await this.providersFor(hash, store)
-          for (const provider of Object.values(providers)) {
-            const peer = this.connections[provider.id]
-
-            if (peer) promises.push(peer.request(node.encoded))
-          }
-          data = await Promise.race(promises)
-        }
-        if (data) data = new Uint8Array(Object.values(data))
-        if (!data || data.length === 0) throw nothingFoundError(hash)
-        const proto = await protoFor(data)
-        // TODO: store data automaticly or not
-        return BufferToUint8Array(proto.decoded.data)
-      } catch (error) {
-        debug(`Error while requesting data from ${id}`, error)
-        // if error, remove provider
-        if (this.#peerAttempts[id] > 1) {
-          this.#peerAttempts[id] = 0
-          debug(`Removed provider ${id} for ${hash} after 3 attempts`)
-
-          this.dht.removeProvider(id, hash)
-          console.error(nothingFoundError(hash))
-          return undefined
-        }
-
-        if (this.#peerAttempts[id] === undefined) this.#peerAttempts[id] = 0
-        this.#peerAttempts[id]++
+      if (!peer || !peer?.connected) {
+        this.dht.removeProvider(id, hash)
         return this.requestData(hash, store?.name || store)
       }
 
-      // this.put(hash, proto.decoded.data)
-    } else {
-      this.dht.removeProvider(id, hash)
+      let data = await new globalThis.peernet.protos['peernet-data']({
+        hash,
+        store: store?.name || store
+      })
+
+      const node = await this.prepareMessage(data)
+
+      if (peer?.connected) {
+        try {
+          if (peer) data = await peer.request(node.encoded)
+          else {
+            // fallback and try every provider found
+            const promises = []
+            const providers = await this.providersFor(hash, store)
+            for (const provider of Object.values(providers)) {
+              const peer = this.connections[provider.id]
+
+              if (peer) promises.push(peer.request(node.encoded))
+            }
+            data = await Promise.race(promises)
+          }
+          if (data) data = new Uint8Array(Object.values(data))
+          if (!data || data.length === 0) throw nothingFoundError(hash)
+          const proto = await protoFor(data)
+          // TODO: store data automaticly or not
+          return BufferToUint8Array(proto.decoded.data)
+        } catch (error) {
+          debug(`Error while requesting data from ${id}`, error)
+          // if error, remove provider
+          if (this.#peerAttempts[id] > 1) {
+            this.#peerAttempts[id] = 0
+            debug(`Removed provider ${id} for ${hash} after 3 attempts`)
+
+            this.dht.removeProvider(id, hash)
+            console.error(nothingFoundError(hash))
+            return undefined
+          }
+
+          if (this.#peerAttempts[id] === undefined) this.#peerAttempts[id] = 0
+          this.#peerAttempts[id]++
+          return this.requestData(hash, store?.name || store)
+        }
+
+        // this.put(hash, proto.decoded.data)
+      } else {
+        this.dht.removeProvider(id, hash)
+      }
+      return undefined
+    } catch (error) {
+      console.error(`Error while requesting data for ${hash} from the network`, error)
+      return undefined
     }
-    return
   }
 
   get message() {
