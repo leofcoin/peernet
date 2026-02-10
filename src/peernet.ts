@@ -730,7 +730,7 @@ export default class Peernet {
         debug(`get share ${hash}`)
         const data = await shareStore.has(hash)
         if (data) return await shareStore.get(hash)
-        return undefined
+        return this.requestData(hash, 'share')
       },
       /**
        * put share content
