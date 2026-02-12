@@ -1,6 +1,5 @@
+import './codec.js'
+import './messages.js'
 import './peernet.test.js'
 import './peer-data-exchange.test.js'
 import './peer-file-exchange.test.js'
-// import './messages.js'
-// require('./peernet')
-// require('./hash')
