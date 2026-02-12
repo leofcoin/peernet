@@ -754,7 +754,7 @@ export default class Peernet {
         const links = []
         for (const file of files) {
           const fileNode = await new globalThis.peernet.protos['peernet-file'](file)
-          const hash = await fileNode.hash
+          const hash = await fileNode.hash()
           await dataStore.put(hash, fileNode.encoded)
           links.push({ hash, path: file.path })
         }
@@ -762,7 +762,7 @@ export default class Peernet {
           path: '/',
           links
         })
-        const hash = await node.hash
+        const hash = await node.hash()
         await dataStore.put(hash, node.encoded)
 
         return hash
@@ -783,7 +783,7 @@ export default class Peernet {
     const links = []
     for (const file of files) {
       const fileNode = await new globalThis.peernet.protos['peernet-file'](file)
-      const hash = await fileNode.hash
+      const hash = await fileNode.hash()
       await dataStore.put(hash, fileNode.encoded)
       links.push({ hash, path: file.path })
     }
@@ -791,7 +791,7 @@ export default class Peernet {
       path: '/',
       links
     })
-    const hash = await node.hash
+    const hash = await node.hash()
     await dataStore.put(hash, node.encoded)
 
     return hash
