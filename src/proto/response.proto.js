@@ -1,3 +1,3 @@
 export default {
-  response: {}
+  response: new Uint8Array()
 }

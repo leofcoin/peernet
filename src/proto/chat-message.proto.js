@@ -1,6 +1,6 @@
 export default {
-  value: String(),
-  author: String(),
+  value: new Uint8Array(),
+  author: new Uint8Array(),
   timestamp: Number(),
-  files: [String()]
+  files: [new Uint8Array()]
 }
