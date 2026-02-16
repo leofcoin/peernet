@@ -443,6 +443,41 @@ export default class Peernet {
   }
 
   /**
+   * Send a request to connected peers and return the first response.
+   *
+   * @param {String} requestName - name of the registered request handler on remote peers
+   * @param {Uint8Array} [requested] - optional data to send with the request
+   * @returns {Promise<Uint8Array|undefined>} decoded response data or undefined
+   */
+  async request(requestName: string, requested?: Uint8Array) {
+    const input: { request: string; requested?: Uint8Array } = { request: requestName }
+    if (requested) input.requested = requested
+
+    const data = await new globalThis.peernet.protos['peernet-request'](input)
+    const node = await this.prepareMessage(data)
+
+    const requests: Promise<any>[] = []
+    for (const [peerId, peer] of Object.entries(this.connections)) {
+      if (peerId !== this.id && peer.connected) {
+        requests.push(peer.request(node.encoded))
+      }
+    }
+
+    if (requests.length === 0) return undefined
+
+    try {
+      let result = await Promise.any(requests)
+      if (result) result = new Uint8Array(Object.values(result))
+      if (!result || result.length === 0) return undefined
+      const proto = await protoFor(result)
+      return proto.decoded.response
+    } catch (error) {
+      debug('request failed', error)
+      return undefined
+    }
+  }
+
+  /**
    * @private
    *
    * @param {Buffer} message - peernet message
