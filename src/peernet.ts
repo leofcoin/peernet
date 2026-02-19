@@ -785,23 +785,7 @@ export default class Peernet {
        *
        * @param {Array} files
        */
-      putFolder: async (files) => {
-        const links = []
-        for (const file of files) {
-          const fileNode = await new globalThis.peernet.protos['peernet-file'](file)
-          const hash = await fileNode.hash()
-          await dataStore.put(hash, fileNode.encoded)
-          links.push({ hash, path: file.path })
-        }
-        const node = await new globalThis.peernet.protos['peernet-file']({
-          path: '/',
-          links
-        })
-        const hash = await node.hash()
-        await dataStore.put(hash, node.encoded)
-
-        return hash
-      }
+      putFolder: async (files) => await this.addFolder(files)
     }
   }
 
@@ -815,13 +799,15 @@ export default class Peernet {
   }
 
   async addFolder(files) {
-    const links = []
-    for (const file of files) {
+    const processFile = async (file) => {
       const fileNode = await new globalThis.peernet.protos['peernet-file'](file)
       const hash = await fileNode.hash()
       await dataStore.put(hash, fileNode.encoded)
-      links.push({ hash, path: file.path })
+      return { hash, path: file.path }
     }
+
+    const links = await Promise.all(files.map(processFile))
+
     const node = await new globalThis.peernet.protos['peernet-file']({
       path: '/',
       links
@@ -836,10 +822,10 @@ export default class Peernet {
     let data
     const has = await dataStore.has(hash)
     data = has ? await dataStore.get(hash) : await this.requestData(hash, 'data')
+    if (!data) throw nothingFoundError(hash)
 
-    const node = await new peernet.protos['peernet-file'](data)
+    const node = await new globalThis.peernet.protos['peernet-file'](data)
     await node.decode()
-    console.log(data)
     const paths = []
     if (node.decoded?.links.length === 0) throw new Error(`${hash} is a file`)
     for (const { path, hash } of node.decoded.links) {
@@ -853,7 +839,9 @@ export default class Peernet {
     let data
     const has = await dataStore.has(hash)
     data = has ? await dataStore.get(hash) : await this.requestData(hash, 'data')
-    const node = await new peernet.protos['peernet-file'](data)
+    if (!data) throw nothingFoundError(hash)
+    const node = await new globalThis.peernet.protos['peernet-file'](data)
+    await node.decode()
 
     if (node.decoded?.links.length > 0) throw new Error(`${hash} is a directory`)
     if (options?.pin) await dataStore.put(hash, node.encoded)
@@ -865,15 +853,21 @@ export default class Peernet {
    * @param {Array} stores
    * @param {string} hash
    */
-  async whichStore(stores, hash) {
-    let store = stores.pop()
-    const name = store
-    store = globalThis[`${store}Store`]
-    if (store) {
-      const has = await store.has(hash)
-      if (has) return store
-      if (stores.length > 0) return this.whichStore(stores, hash)
-    } else return
+  async whichStore(stores: string[], hash: string) {
+    const checkStore = async (name) => {
+      const store = globalThis[`${name}Store`]
+      if (store) {
+        const has = await store.has(hash)
+        if (has) return store
+      }
+      throw new Error('Not found')
+    }
+
+    try {
+      return await Promise.any(stores.map(checkStore))
+    } catch {
+      return undefined
+    }
   }
 
   /**
