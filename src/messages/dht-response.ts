@@ -2,11 +2,11 @@ import proto from './../proto/dht-response.proto.js'
 import { FormatInterface } from '@leofcoin/codec-format-interface'
 
 export default class DHTMessageResponse extends FormatInterface {
-  get messageName() {
+  get messageName(): string {
     return 'PeernetDHTMessageResponse'
   }
 
-  constructor(data) {
+  constructor(data: any) {
     const name = 'peernet-dht-response'
     super(data, proto, { name })
   }

@@ -5,13 +5,13 @@ import { FormatInterface } from '@leofcoin/codec-format-interface'
  * @extends {CodecFormat}
  */
 export default class DataMessage extends FormatInterface {
-  get messageName() {
+  get messageName(): string {
     return 'PeernetDataMessage'
   }
   /**
    * @param {Buffer|String|Object|DataMessage} data - The data needed to create the DataMessage
    */
-  constructor(data) {
+  constructor(data: any) {
     super(data, proto, { name: 'peernet-data' })
   }
 }

@@ -10,11 +10,11 @@ import { FormatInterface } from '@leofcoin/codec-format-interface'
  `
  */
 export default class DHTMessage extends FormatInterface {
-  get messageName() {
+  get messageName(): string {
     return 'PeernetDHTMessage'
   }
 
-  constructor(data) {
+  constructor(data: any) {
     const name = 'peernet-dht'
     super(data, proto, { name })
   }

@@ -24,6 +24,22 @@
       "import": "././exports/chat-message.proto.js",
       "types": "./exports/types/proto/chat-message.proto.d.ts"
     },
+    "./chat": {
+      "import": "././exports/chat.js",
+      "types": "./exports/types/messages/chat.d.ts"
+    },
+    "./chat.js": {
+      "import": "././exports/chat.js",
+      "types": "./exports/types/messages/chat.d.ts"
+    },
+    "./data-response": {
+      "import": "././exports/data-response.js",
+      "types": "./exports/types/messages/data-response.d.ts"
+    },
+    "./data-response.js": {
+      "import": "././exports/data-response.js",
+      "types": "./exports/types/messages/data-response.d.ts"
+    },
     "./data-response.proto": {
       "import": "././exports/data-response.proto.js",
       "types": "./exports/types/proto/data-response.proto.d.ts"
@@ -47,6 +63,14 @@
     "./data.proto.js": {
       "import": "././exports/data.proto.js",
       "types": "./exports/types/proto/data.proto.d.ts"
+    },
+    "./dht-response": {
+      "import": "././exports/dht-response.js",
+      "types": "./exports/types/messages/dht-response.d.ts"
+    },
+    "./dht-response.js": {
+      "import": "././exports/dht-response.js",
+      "types": "./exports/types/messages/dht-response.d.ts"
     },
     "./dht-response.proto": {
       "import": "././exports/dht-response.proto.js",
@@ -160,6 +184,14 @@
       "import": "././exports/peer-info.js",
       "types": "./exports/types/peer-info.d.ts"
     },
+    "./peer-response": {
+      "import": "././exports/peer-response.js",
+      "types": "./exports/types/messages/peer-response.d.ts"
+    },
+    "./peer-response.js": {
+      "import": "././exports/peer-response.js",
+      "types": "./exports/types/messages/peer-response.d.ts"
+    },
     "./peer-response.proto": {
       "import": "././exports/peer-response.proto.js",
       "types": "./exports/types/proto/peer-response.proto.d.ts"
@@ -167,6 +199,14 @@
     "./peer-response.proto.js": {
       "import": "././exports/peer-response.proto.js",
       "types": "./exports/types/proto/peer-response.proto.d.ts"
+    },
+    "./peer": {
+      "import": "././exports/peer.js",
+      "types": "./exports/types/messages/peer.d.ts"
+    },
+    "./peer.js": {
+      "import": "././exports/peer.js",
+      "types": "./exports/types/messages/peer.d.ts"
     },
     "./peer.proto": {
       "import": "././exports/peer.proto.js",
@@ -178,11 +218,11 @@
     },
     "./peernet": {
       "import": "././exports/peernet.js",
-      "types": "./exports/types/peernet.d.ts"
+      "types": "./exports/types/messages/peernet.d.ts"
     },
     "./peernet.js": {
       "import": "././exports/peernet.js",
-      "types": "./exports/types/peernet.d.ts"
+      "types": "./exports/types/messages/peernet.d.ts"
     },
     "./peernet.proto": {
       "import": "././exports/peernet.proto.js",
@@ -192,6 +232,14 @@
       "import": "././exports/peernet.proto.js",
       "types": "./exports/types/proto/peernet.proto.d.ts"
     },
+    "./ps": {
+      "import": "././exports/ps.js",
+      "types": "./exports/types/messages/ps.d.ts"
+    },
+    "./ps.js": {
+      "import": "././exports/ps.js",
+      "types": "./exports/types/messages/ps.d.ts"
+    },
     "./ps.proto": {
       "import": "././exports/ps.proto.js",
       "types": "./exports/types/proto/ps.proto.d.ts"
@@ -200,6 +248,14 @@
       "import": "././exports/ps.proto.js",
       "types": "./exports/types/proto/ps.proto.d.ts"
     },
+    "./request": {
+      "import": "././exports/request.js",
+      "types": "./exports/types/messages/request.d.ts"
+    },
+    "./request.js": {
+      "import": "././exports/request.js",
+      "types": "./exports/types/messages/request.d.ts"
+    },
     "./request.proto": {
       "import": "././exports/request.proto.js",
       "types": "./exports/types/proto/request.proto.d.ts"
@@ -207,6 +263,14 @@
     "./request.proto.js": {
       "import": "././exports/request.proto.js",
       "types": "./exports/types/proto/request.proto.d.ts"
+    },
+    "./response": {
+      "import": "././exports/response.js",
+      "types": "./exports/types/messages/response.d.ts"
+    },
+    "./response.js": {
+      "import": "././exports/response.js",
+      "types": "./exports/types/messages/response.d.ts"
     },
     "./response.proto": {
       "import": "././exports/response.proto.js",

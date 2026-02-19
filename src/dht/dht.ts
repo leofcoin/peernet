@@ -101,7 +101,8 @@ export default class DhtEarth {
     const peerLoc = await this.getCoordinates(address)
 
     for (const provider of providers) {
-      if (provider.address === '127.0.0.1' || provider.address === '::1') all.push({ provider, distance: 0 })
+      if (!provider.address || provider.address === '127.0.0.1' || provider.address === '::1')
+        all.push({ provider, distance: 0 })
       else all.push(this.getDistance(peerLoc, provider))
     }
 
@@ -122,18 +123,19 @@ export default class DhtEarth {
   }
 
   addProvider(provider: DHTProvider, hash: string) {
+    if (!provider.address) provider.address = '127.0.0.1'
     let providers: DHTProviderMapValue = {}
     if (this.providerMap.has(hash)) {
       providers = this.providerMap.get(hash)
     }
-    providers[provider.address] = provider
+    providers[provider.id] = provider
     this.providerMap.set(hash, providers)
   }
 
-  removeProvider(address: string, hash: string) {
+  removeProvider(id: string, hash: string) {
     if (this.providerMap.has(hash)) {
       const providers = this.providerMap.get(hash)
-      delete providers[address]
+      delete providers[id]
       this.providerMap.set(hash, providers)
     }
   }
