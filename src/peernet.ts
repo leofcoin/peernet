@@ -605,7 +605,7 @@ export default class Peernet {
 
       debug(`closest peer for ${hash} is ${closestPeer?.address}`)
       // get peer instance by id
-      if (!closestPeer || !closestPeer.id || !closestPeer.address) return undefined
+      if (!closestPeer || !closestPeer.id) return undefined
       const id = closestPeer.id
       const peer = this.connections[id]
 
