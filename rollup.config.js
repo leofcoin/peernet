@@ -13,7 +13,7 @@ export default [
     input: ['./src/peernet.ts', './src/identity.ts', './node_modules/@leofcoin/storage/exports/browser-store.js'],
     output: {
       format: 'es',
-      dir: './exports/browser'
+      dir: 'exports/browser'
     },
     plugins: [
       json(),
@@ -27,7 +27,7 @@ export default [
         mainFields: ['browser', 'module', 'main']
       }),
 
-      typescript({ compilerOptions: { outDir: './exports/browser', declaration: false } })
+      typescript({ compilerOptions: { outDir: 'exports/browser', declaration: false } })
     ],
     external: ['./prompts/password.js']
   },
@@ -35,18 +35,18 @@ export default [
     input: ['./src/peernet.ts', './src/identity.ts', './node_modules/@leofcoin/storage/exports/store.js'],
     output: {
       format: 'es',
-      dir: './exports'
+      dir: 'exports'
     },
     plugins: [
       typescript({
         compilerOptions: {
-          outDir: './exports',
-          declarationDir: './exports/types'
+          outDir: 'exports',
+          declarationDir: 'exports/types'
         }
       }),
       autoExports({
         defaultExports: {
-          '.': { import: './exports/peernet.js', types: './exports/types/peernet.d.ts' }
+          '.': { import: 'exports/peernet.js', types: 'exports/types/peernet.d.ts' }
         }
       })
     ],
@@ -56,14 +56,14 @@ export default [
     input: ['./src/prompts/password/browser.js'],
     output: {
       format: 'es',
-      file: './exports/browser/src/prompts/password.js'
+      file: 'exports/browser/src/prompts/password.js'
     }
   },
   {
     input: ['./src/prompts/password/node.js'],
     output: {
       format: 'es',
-      file: './exports/src/prompts/password.js'
+      file: 'exports/src/prompts/password.js'
     }
   }
 ]
