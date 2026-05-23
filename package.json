@@ -1,6 +1,6 @@
 {
   "name": "@leofcoin/peernet",
-  "version": "1.2.19",
+  "version": "1.2.20",
   "description": "",
   "browser": "./exports/browser/peernet.js",
   "exports": {
