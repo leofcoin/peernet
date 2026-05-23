@@ -31,52 +31,40 @@
       "import": "./exports/browser/browser-store.js"
     },
     "./browser/identity": {
-      "import": "./exports/browser/identity.js",
-      "types": "./exports/types/identity.d.ts"
+      "import": "./exports/browser/identity.js"
     },
     "./browser/identity.js": {
-      "import": "./exports/browser/identity.js",
-      "types": "./exports/types/identity.d.ts"
+      "import": "./exports/browser/identity.js"
     },
     "./browser/peernet": {
-      "import": "./exports/browser/peernet.js",
-      "types": "./exports/types/peernet.d.ts"
+      "import": "./exports/browser/peernet.js"
     },
     "./browser/peernet.js": {
-      "import": "./exports/browser/peernet.js",
-      "types": "./exports/types/peernet.d.ts"
+      "import": "./exports/browser/peernet.js"
     },
     "./browser/prompts/password": {
-      "import": "./exports/browser/prompts/password.js",
-      "types": "./exports/types/prompts/password/browser.d.ts"
+      "import": "./exports/browser/prompts/password.js"
     },
     "./browser/prompts/password.js": {
-      "import": "./exports/browser/prompts/password.js",
-      "types": "./exports/types/prompts/password/browser.d.ts"
+      "import": "./exports/browser/prompts/password.js"
     },
     "./identity": {
-      "import": "./exports/identity.js",
-      "types": "./exports/types/identity.d.ts"
+      "import": "./exports/identity.js"
     },
     "./identity.js": {
-      "import": "./exports/identity.js",
-      "types": "./exports/types/identity.d.ts"
+      "import": "./exports/identity.js"
     },
     "./peernet": {
-      "import": "./exports/peernet.js",
-      "types": "./exports/types/peernet.d.ts"
+      "import": "./exports/peernet.js"
     },
     "./peernet.js": {
-      "import": "./exports/peernet.js",
-      "types": "./exports/types/peernet.d.ts"
+      "import": "./exports/peernet.js"
     },
     "./prompts/password": {
-      "import": "./exports/prompts/password.js",
-      "types": "./exports/types/prompts/password/node.d.ts"
+      "import": "./exports/prompts/password.js"
     },
     "./prompts/password.js": {
-      "import": "./exports/prompts/password.js",
-      "types": "./exports/types/prompts/password/node.d.ts"
+      "import": "./exports/prompts/password.js"
     },
     "./store": {
       "import": "./exports/store.js"

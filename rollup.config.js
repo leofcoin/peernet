@@ -27,6 +27,21 @@ const walk = async (dir) => {
 
 const isHashedChunk = (runtimePath) => /-[A-Za-z0-9_-]{8,}\.js$/.test(runtimePath)
 
+const normalizeNodePromptImport = () => ({
+  name: 'normalize-node-prompt-import',
+  writeBundle: async () => {
+    const filePath = 'exports/identity.js'
+    const code = await readFile(filePath, 'utf8')
+    const normalized = code
+      .replaceAll("'./src/prompts/password.js'", "'./prompts/password.js'")
+      .replace(/(["'])\.\/Users\/[^"']*\/src\/prompts\/password\.js\1/g, '$1./prompts/password.js$1')
+
+    if (normalized !== code) {
+      await writeFile(filePath, normalized)
+    }
+  }
+})
+
 const runtimeFirstExports = ({ exportsDir = 'exports', declarationsDir = 'exports/types' } = {}) => ({
   name: 'runtime-first-exports',
   writeBundle: async () => {
@@ -84,7 +99,10 @@ export default [
     input: ['./src/peernet.ts', './src/identity.ts', './node_modules/@leofcoin/storage/exports/browser-store.js'],
     output: {
       format: 'es',
-      dir: 'exports/browser'
+      dir: 'exports/browser',
+      chunkFileNames: (chunkInfo) =>
+        chunkInfo.name === 'prompts/password' ? 'prompts/password.js' : '[name]-[hash].js',
+      manualChunks: (id) => (id.endsWith('/src/prompts/password.js') ? 'prompts/password' : undefined)
     },
     plugins: [
       json(),
@@ -99,14 +117,14 @@ export default [
       }),
 
       typescript({ compilerOptions: { outDir: 'exports/browser', declaration: false } })
-    ],
-    external: ['./prompts/password.js']
+    ]
   },
   {
     input: ['./src/peernet.ts', './src/identity.ts', './node_modules/@leofcoin/storage/exports/store.js'],
     output: {
       format: 'es',
-      dir: 'exports'
+      dir: 'exports',
+      paths: (id) => (id === './src/prompts/password.js' ? './prompts/password.js' : id)
     },
     plugins: [
       typescript({
@@ -114,9 +132,15 @@ export default [
           outDir: 'exports',
           declarationDir: 'exports/types'
         }
-      })
+      }),
+      normalizeNodePromptImport()
     ],
-    external: ['./prompts/password.js', './prompts/password/browser.js', './prompts/password/node.js']
+    external: [
+      './prompts/password.js',
+      './src/prompts/password.js',
+      './prompts/password/browser.js',
+      './prompts/password/node.js'
+    ]
   },
   {
     input: ['./src/prompts/password/browser.js'],
