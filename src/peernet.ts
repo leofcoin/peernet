@@ -52,6 +52,7 @@ export default class Peernet {
   client: swarm
   network: string
   stars: string[]
+  transport
   networkVersion: string
   bw: {
     up: number
@@ -77,6 +78,7 @@ export default class Peernet {
    * @param {String} options.root - path to root directory
    * @param {String} options.version - path to root directory
    * @param {String} options.storePrefix - prefix for datatores (lfc)
+   * @param {Object} options.transport - transport selection and fallback options passed to @netpeer/swarm
    *
    * @return {Promise} instance of Peernet
    *
@@ -90,6 +92,7 @@ export default class Peernet {
     this.network = options.network || 'leofcoin'
     this.autoStart = options.autoStart === undefined ? true : options.autoStart
     this.stars = options.stars
+    this.transport = options.transport
     this.version = options.version
     const parts = this.network.split(':')
     this.networkVersion = options.networkVersion || parts.length > 1 ? parts[1] : 'mainnet'
@@ -281,7 +284,8 @@ export default class Peernet {
       peerId: this.id,
       networkVersion: this.networkVersion,
       version: this.version,
-      stars: this.stars
+      stars: this.stars,
+      transport: this.transport
     })
     this.#started = true
     this.#starting = false
