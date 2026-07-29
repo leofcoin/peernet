@@ -2,6 +2,10 @@
   "name": "@leofcoin/peernet",
   "version": "1.2.24",
   "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leofcoin/peernet.git"
+  },
   "browser": "./exports/browser/peernet.js",
   "exports": {
     ".": {
@@ -99,6 +103,7 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
+  "packageManager": "npm@11.17.0",
   "dependencies": {
     "@leofcoin/codec-format-interface": "^1.8.2",
     "@leofcoin/codecs": "^1.1.2",
