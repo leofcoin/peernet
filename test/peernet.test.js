@@ -1,5 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import { readFile } from 'node:fs/promises'
 
 import Peernet from '../exports/peernet.js'
 import Identity, { resolveAccountWallets } from '../exports/identity.js'
@@ -17,6 +18,12 @@ const options = {
 
 const password = 'password'
 const peernet = await new Peernet(options, password)
+
+test('node bundle uses a portable password prompt import', async () => {
+  const identityBundle = await readFile(new URL('../exports/identity.js', import.meta.url), 'utf8')
+  assert.match(identityBundle, /import\(['"]\.\/prompts\/password\.js['"]\)/)
+  assert.doesNotMatch(identityBundle, /(?:\/home\/|\/Users\/|[A-Za-z]:\\)/)
+})
 
 test('initializes with provided options', () => {
   assert.equal(peernet.network, options.network)
