@@ -7,6 +7,7 @@ import qrcode from 'qrcode'
 
 export default class Identity {
   #wallet: MultiWallet
+  #accountWallets = new Map<string, { sign: (hash: Uint8Array) => Promise<Uint8Array> }>()
   network
   id: string
   selectedAccount: string
@@ -63,15 +64,43 @@ export default class Identity {
     this.#wallet = new MultiWallet(this.network)
     const multiWIF = await decrypt(password, base58.decode(identity.multiWIF))
     await this.#wallet.fromMultiWif(multiWIF)
+    await this.#loadAccountWallets()
+  }
+
+  async #loadAccountWallets() {
+    this.#accountWallets.clear()
+    const accounts = await this.getAccounts()
+    for (const [index, [, externalAddress, internalAddress]] of accounts.entries()) {
+      const account = this.#wallet.account(index + 1)
+      const external = (await account.external(1)) as unknown as {
+        address: Promise<string>
+        sign: (hash: Uint8Array) => Promise<Uint8Array>
+      }
+      const internal = (await account.internal(1)) as unknown as {
+        address: Promise<string>
+        sign: (hash: Uint8Array) => Promise<Uint8Array>
+      }
+      if ((await external.address) !== externalAddress || (await internal.address) !== internalAddress) {
+        throw new Error(`stored account ${index + 1} does not match this identity`)
+      }
+      this.#accountWallets.set(externalAddress, external)
+      this.#accountWallets.set(internalAddress, internal)
+    }
+    if (!this.#accountWallets.has(this.selectedAccount)) {
+      throw new Error(`selected account ${this.selectedAccount} is not part of this identity`)
+    }
   }
 
   selectAccount(account: string) {
+    if (!this.#accountWallets.has(account)) throw new Error(`unknown identity account ${account}`)
     this.selectedAccount = account
     return walletStore.put('selected-account', account)
   }
 
   sign(hash: Uint8Array) {
-    return this.#wallet.sign(hash.subarray(0, 32))
+    const wallet = this.#accountWallets.get(this.selectedAccount)
+    if (!wallet) throw new Error(`no signer available for selected account ${this.selectedAccount}`)
+    return wallet.sign(hash.subarray(0, 32))
   }
 
   lock(password: string) {
