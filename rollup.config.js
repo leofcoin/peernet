@@ -27,20 +27,10 @@ const walk = async (dir) => {
 
 const isHashedChunk = (runtimePath) => /-[A-Za-z0-9_-]{8,}\.js$/.test(runtimePath)
 
-const normalizeNodePromptImport = () => ({
-  name: 'normalize-node-prompt-import',
-  writeBundle: async () => {
-    const filePath = 'exports/identity.js'
-    const code = await readFile(filePath, 'utf8')
-    const normalized = code
-      .replaceAll("'./src/prompts/password.js'", "'./prompts/password.js'")
-      .replace(/(["'])\.\/Users\/[^"']*\/src\/prompts\/password\.js\1/g, '$1./prompts/password.js$1')
-
-    if (normalized !== code) {
-      await writeFile(filePath, normalized)
-    }
-  }
-})
+const isPromptImport = (id) =>
+  id === './prompts/password.js' ||
+  id === './src/prompts/password.js' ||
+  id.endsWith('/src/prompts/password.js')
 
 const runtimeFirstExports = ({ exportsDir = 'exports', declarationsDir = 'exports/types' } = {}) => ({
   name: 'runtime-first-exports',
@@ -124,7 +114,7 @@ export default [
     output: {
       format: 'es',
       dir: 'exports',
-      paths: (id) => (id === './src/prompts/password.js' ? './prompts/password.js' : id)
+      paths: (id) => (isPromptImport(id) ? './prompts/password.js' : id)
     },
     plugins: [
       typescript({
@@ -132,15 +122,12 @@ export default [
           outDir: 'exports',
           declarationDir: 'exports/types'
         }
-      }),
-      normalizeNodePromptImport()
+      })
     ],
-    external: [
-      './prompts/password.js',
-      './src/prompts/password.js',
-      './prompts/password/browser.js',
-      './prompts/password/node.js'
-    ]
+    external: (id) =>
+      isPromptImport(id) ||
+      id === './prompts/password/browser.js' ||
+      id === './prompts/password/node.js'
   },
   {
     input: ['./src/prompts/password/browser.js'],
