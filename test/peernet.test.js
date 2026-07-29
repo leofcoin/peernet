@@ -3,11 +3,13 @@ import assert from 'node:assert/strict'
 
 import Peernet from '../exports/peernet.js'
 import Identity from '../exports/identity.js'
+import MultiWallet from '@leofcoin/multi-wallet'
+import { fromBase58, toBase58 } from '@vandeurenglenn/typed-array-utils'
 
 const options = {
   network: 'leofcoin:peach',
   stars: [],
-  root: '.testnet',
+  root: `.testnet-${process.pid}`,
   version: '1.0.0',
   storePrefix: 'test',
   autoStart: false
@@ -232,6 +234,14 @@ test('identity wallet is loaded', () => {
 test('selected account is set', () => {
   assert.ok(peernet.identity.selectedAccount)
   assert.ok(typeof peernet.identity.selectedAccount === 'string')
+})
+
+test('identity signatures authenticate the selected account', async () => {
+  const payload = new Uint8Array(32).fill(7)
+  const signature = toBase58(await peernet.identity.sign(payload))
+  const verifier = new MultiWallet(peernet.network)
+  await verifier.fromAddress(peernet.selectedAccount, null, peernet.network)
+  assert.equal(await verifier.verify(fromBase58(signature), payload), true)
 })
 
 test('error handling methods exist', () => {
