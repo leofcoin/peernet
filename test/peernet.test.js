@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 
 import Peernet from '../exports/peernet.js'
-import Identity from '../exports/identity.js'
+import Identity, { resolveAccountWallets } from '../exports/identity.js'
 import MultiWallet from '@leofcoin/multi-wallet'
 import { fromBase58, toBase58 } from '@vandeurenglenn/typed-array-utils'
 
@@ -241,6 +241,23 @@ test('identity signatures authenticate the selected account', async () => {
   const signature = toBase58(await peernet.identity.sign(payload))
   const verifier = new MultiWallet(peernet.network)
   await verifier.fromAddress(peernet.selectedAccount, null, peernet.network)
+  assert.equal(await verifier.verify(fromBase58(signature), payload), true)
+})
+
+test('legacy account(0)/address(0) identities keep their original signer', async () => {
+  const wallet = new MultiWallet(peernet.network)
+  await wallet.generate()
+  const legacyAccount = wallet.account(0)
+  const external = await legacyAccount.external(0)
+  const internal = await legacyAccount.internal(0)
+  const externalAddress = await external.address
+  const wallets = await resolveAccountWallets(wallet, [
+    ['legacy account', externalAddress, await internal.address]
+  ])
+  const payload = new Uint8Array(32).fill(9)
+  const signature = toBase58(await wallets.get(externalAddress).sign(payload))
+  const verifier = new MultiWallet(peernet.network)
+  await verifier.fromAddress(externalAddress, null, peernet.network)
   assert.equal(await verifier.verify(fromBase58(signature), payload), true)
 })
 

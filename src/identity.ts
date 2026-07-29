@@ -5,9 +5,55 @@ import { encrypt, decrypt } from '@leofcoin/identity-utils'
 import QrScanner from 'qr-scanner'
 import qrcode from 'qrcode'
 
+type StoredAccount = [name: string, externalAddress: string, internalAddress: string]
+type AccountWallet = {
+  address: Promise<string>
+  sign: (hash: Uint8Array) => Promise<Uint8Array>
+}
+
+const accountDerivationSchemes = [
+  {
+    name: 'current',
+    accountIndex: (index: number) => index + 1,
+    addressIndex: 1
+  },
+  {
+    name: 'legacy-v1',
+    accountIndex: (index: number) => index,
+    addressIndex: 0
+  }
+] as const
+
+export const resolveAccountWallets = async (
+  wallet: MultiWallet,
+  accounts: StoredAccount[]
+): Promise<Map<string, AccountWallet>> => {
+  for (const scheme of accountDerivationSchemes) {
+    const wallets = new Map<string, AccountWallet>()
+    let matches = true
+
+    for (const [index, [, externalAddress, internalAddress]] of accounts.entries()) {
+      const account = wallet.account(scheme.accountIndex(index))
+      const external = (await account.external(scheme.addressIndex)) as unknown as AccountWallet
+      const internal = (await account.internal(scheme.addressIndex)) as unknown as AccountWallet
+
+      if ((await external.address) !== externalAddress || (await internal.address) !== internalAddress) {
+        matches = false
+        break
+      }
+      wallets.set(externalAddress, external)
+      wallets.set(internalAddress, internal)
+    }
+
+    if (matches) return wallets
+  }
+
+  throw new Error('stored accounts do not match this identity under a supported derivation scheme')
+}
+
 export default class Identity {
   #wallet: MultiWallet
-  #accountWallets = new Map<string, { sign: (hash: Uint8Array) => Promise<Uint8Array> }>()
+  #accountWallets = new Map<string, AccountWallet>()
   network
   id: string
   selectedAccount: string
@@ -68,24 +114,8 @@ export default class Identity {
   }
 
   async #loadAccountWallets() {
-    this.#accountWallets.clear()
     const accounts = await this.getAccounts()
-    for (const [index, [, externalAddress, internalAddress]] of accounts.entries()) {
-      const account = this.#wallet.account(index + 1)
-      const external = (await account.external(1)) as unknown as {
-        address: Promise<string>
-        sign: (hash: Uint8Array) => Promise<Uint8Array>
-      }
-      const internal = (await account.internal(1)) as unknown as {
-        address: Promise<string>
-        sign: (hash: Uint8Array) => Promise<Uint8Array>
-      }
-      if ((await external.address) !== externalAddress || (await internal.address) !== internalAddress) {
-        throw new Error(`stored account ${index + 1} does not match this identity`)
-      }
-      this.#accountWallets.set(externalAddress, external)
-      this.#accountWallets.set(internalAddress, internal)
-    }
+    this.#accountWallets = await resolveAccountWallets(this.#wallet, accounts)
     if (!this.#accountWallets.has(this.selectedAccount)) {
       throw new Error(`selected account ${this.selectedAccount} is not part of this identity`)
     }
