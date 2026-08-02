@@ -1,6 +1,6 @@
 {
   "name": "@leofcoin/peernet",
-  "version": "1.2.26",
+  "version": "1.2.27",
   "description": "",
   "repository": {
     "type": "git",
@@ -112,7 +112,7 @@
     "@leofcoin/multi-wallet": "^3.1.8",
     "@leofcoin/storage": "^3.5.38",
     "@mapbox/node-pre-gyp": "^2.0.3",
-    "@netpeer/swarm": "^0.9.9",
+    "@netpeer/swarm": "^0.9.11",
     "@vandeurenglenn/base58": "^1.1.9",
     "@vandeurenglenn/debug": "^1.4.0",
     "@vandeurenglenn/little-pubsub": "^1.5.2",
