@@ -72,7 +72,7 @@ export default class Identity {
     return JSON.parse(accounts)
   }
 
-  async load(password?: string): Promise<void> {
+  async load(password?: string, fresh = false): Promise<void> {
     if (password && password.includes('.txt')) {
       const { readFile } = await import('fs/promises')
       try {
@@ -88,7 +88,7 @@ export default class Identity {
     }
 
     const accountExists = await globalThis.accountStore.has('public')
-    if (accountExists) {
+    if (accountExists && !fresh) {
       const pub = await globalThis.accountStore.get('public')
       this.id = JSON.parse(new TextDecoder().decode(pub)).walletId
       const selected = await globalThis.walletStore.get('selected-account')
@@ -96,6 +96,10 @@ export default class Identity {
     } else {
       const importee = await import(/* webpackChunkName: "generate-account" */ '@leofcoin/generate-account')
       const { identity, accounts } = await importee.default(password, this.network)
+      if (fresh) {
+        await globalThis.accountStore.clear()
+        await globalThis.walletStore.clear()
+      }
       await globalThis.accountStore.put('public', JSON.stringify({ walletId: identity.walletId }))
 
       await globalThis.walletStore.put('version', String(1))
