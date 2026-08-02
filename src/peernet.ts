@@ -199,7 +199,10 @@ export default class Peernet {
    *
    * @return {Promise} instance of Peernet
    */
-  async _init(options: { storePrefix?: string; root?: string }, password: string): Promise<Peernet> {
+  async _init(
+    options: { storePrefix?: string; root?: string; freshIdentity?: boolean },
+    password: string
+  ): Promise<Peernet> {
     await getAddress()
     this.storePrefix = options.storePrefix
     this.root = options.root
@@ -254,7 +257,7 @@ export default class Peernet {
     }
 
     this.identity = new Identity(this.network)
-    await this.identity.load(password)
+    await this.identity.load(password, options.freshIdentity === true)
 
     this._peerHandler = new PeerDiscovery(this.id)
     this.peerId = this.id

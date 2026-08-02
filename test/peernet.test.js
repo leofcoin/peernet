@@ -35,6 +35,16 @@ test('exposes identity instance', () => {
   assert.ok(peernet.identity instanceof Identity)
 })
 
+test('freshIdentity replaces a persisted identity and signer', async () => {
+  const originalId = peernet.id
+  const originalAccount = peernet.selectedAccount
+  const replacement = await new Peernet({ ...options, freshIdentity: true }, password)
+
+  assert.notEqual(replacement.id, originalId)
+  assert.notEqual(replacement.selectedAccount, originalAccount)
+  assert.equal(new TextDecoder().decode(await globalThis.walletStore.get('selected-account')), replacement.selectedAccount)
+})
+
 test('has a DHT instance', () => {
   assert.ok(peernet.dht)
 })
