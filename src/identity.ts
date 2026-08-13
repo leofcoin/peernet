@@ -87,7 +87,12 @@ export default class Identity {
       password = await importee.default()
     }
 
-    const accountExists = await globalThis.accountStore.has('public')
+    // LevelDB opens lazily. Touch both stores before freshIdentity clears them;
+    // clearing a brand-new, unopened store throws LEVEL_DATABASE_NOT_OPEN.
+    const [accountExists] = await Promise.all([
+      globalThis.accountStore.has('public'),
+      globalThis.walletStore.has('identity')
+    ])
     if (accountExists && !fresh) {
       const pub = await globalThis.accountStore.get('public')
       this.id = JSON.parse(new TextDecoder().decode(pub)).walletId
