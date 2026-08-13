@@ -1,6 +1,11 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
+import { execFile } from 'node:child_process'
+import { mkdtemp, rm } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { promisify } from 'node:util'
 
 import Peernet from '../exports/peernet.js'
 import Identity, { resolveAccountWallets } from '../exports/identity.js'
@@ -18,6 +23,20 @@ const options = {
 
 const password = 'password'
 const peernet = await new Peernet(options, password)
+const execFileAsync = promisify(execFile)
+
+test('freshIdentity initializes against a completely empty store root', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'peernet-fresh-identity-'))
+  try {
+    const { stdout } = await execFileAsync(process.execPath, ['test/fresh-empty-store.js', root], {
+      cwd: new URL('..', import.meta.url),
+      timeout: 20_000
+    })
+    assert.match(stdout, /FRESH_IDENTITY_READY/)
+  } finally {
+    await rm(root, { recursive: true, force: true })
+  }
+})
 
 test('node bundle uses a portable password prompt import', async () => {
   const identityBundle = await readFile(new URL('../exports/identity.js', import.meta.url), 'utf8')
