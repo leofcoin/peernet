@@ -4,7 +4,7 @@ import json from '@rollup/plugin-json'
 import wasm from '@rollup/plugin-wasm'
 import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { extname, relative, sep } from 'node:path'
-import rimraf from 'rimraf'
+import { rimrafSync } from 'rimraf'
 import typescript from '@rollup/plugin-typescript'
 
 const toPosix = (value) => value.split(sep).join('/')
@@ -82,7 +82,7 @@ const runtimeFirstExports = ({ exportsDir = 'exports', declarationsDir = 'export
   }
 })
 
-rimraf.sync('./exports/**')
+rimrafSync('./exports/**')
 
 export default [
   {
