@@ -95,6 +95,7 @@
   },
   "scripts": {
     "build": "rollup -c",
+    "docs": "typedoc --out docs src/peernet.ts --skipErrorChecking",
     "watch": "rollup -c -w",
     "test": "node --test test/peernet.test.js",
     "server": "discovery-swarm-webrtc --port=4000",
@@ -131,6 +132,7 @@
     "@types/qrcode": "^1.5.6",
     "rollup": "^4.60.4",
     "tslib": "^2.8.1",
+    "typedoc": "^0.28.20",
     "typescript": "^6.0.2"
   }
 }

@@ -1,114 +1,200 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <base data-ice="baseUrl">
-  <title data-ice="title">Home | @leofcoin/peernet</title>
-  <link type="text/css" rel="stylesheet" href="css/style.css">
-  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
-  <script src="script/prettify/prettify.js"></script>
-  <script src="script/manual.js"></script>
-</head>
-<body class="layout-container" data-ice="rootContainer">
-
-<header>
-  <a href="./">Home</a>
-  
-  <a href="identifiers.html">Reference</a>
-  <a href="source.html">Source</a>
-  
-  <div class="search-box">
-  <span>
-    <img src="./image/search.png">
-    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
-  </span>
-    <ul class="search-result"></ul>
-  </div>
-</header>
-
-<nav class="navigation" data-ice="nav"><div>
-  <ul>
-    
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/client.js~PeernetClient.html">PeernetClient</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/peer-info.js~PeerInfo.html">PeerInfo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/peer.js~PeernetPeer.html">PeernetPeer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/peernet.js~Peernet.html">Peernet</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#codec">codec</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/codec/codec.js~PeernetCodec.html">PeernetCodec</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#dht">dht</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/dht/dht.js~DhtEarth.html">DhtEarth</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#discovery">discovery</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/discovery/peer-discovery.js~PeerDiscovery.html">PeerDiscovery</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#errors">errors</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dhtError">dhtError</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encapsulatedError">encapsulatedError</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-nothingFoundError">nothingFoundError</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#handlers">handlers</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/handlers/message.js~MessageHandler.html">MessageHandler</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#hash">hash</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/hash/hash.js~PeernetHash.html">PeernetHash</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#http">http</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-http">http</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#http-client">http/client</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/api.js~api.html">api</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/http-client.js~HttpClientApi.html">HttpClientApi</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/http/client/storage.js~LeofcoinStorageClient.html">LeofcoinStorageClient</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-client">client</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#messages">messages</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/chat-message.js~ChatMessage.html">ChatMessage</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data-response.js~DataMessageResponse.html">DataMessageResponse</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/data.js~DataMessage.html">DataMessage</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht-response.js~DHTMessageResponse.html">DHTMessageResponse</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/dht.js~DHTMessage.html">DHTMessage</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/peer-response.js~PeerMessageResponse.html">PeerMessageResponse</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/peer.js~PeerMessage.html">PeerMessage</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/peernet-message.js~PeernetMessage.html">PeernetMessage</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/ps.js~PsMessage.html">PsMessage</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/request.js~RequestMessage.html">RequestMessage</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/messages/response.js~ResponseMessage.html">ResponseMessage</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#utils">utils</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-debug">debug</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-environment">environment</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-expected">expected</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-hasDaemon">hasDaemon</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-https">https</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-protoFor">protoFor</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-target">target</a></span></span></li>
+<!DOCTYPE html><html class="default" lang="en" data-base="./"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@leofcoin/peernet</title><meta name="description" content="Documentation for @leofcoin/peernet"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container"><a href="index.html" class="title">@leofcoin/peernet</a>
+<div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/>
+<ul role="listbox" id="tsd-search-results"></ul>
+<div id="tsd-search-status" aria-live="polite" aria-atomic="true">
+<div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></header>
+<div class="container container-main">
+<div class="col-content">
+<div class="tsd-page-title">
+<h1>@leofcoin/peernet</h1></div>
+<div class="tsd-panel tsd-typography"><h1 id="peernet" class="tsd-anchor-link">peernet<a href="#peernet" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1>
+<p>Peer-to-peer networking for Leofcoin and distributed applications.</p>
+<h2 id="features" class="tsd-anchor-link">Features<a href="#features" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<ul>
+<li>Decentralized peer discovery and messaging</li>
+<li>Pluggable request handlers</li>
+<li>File and data sharing</li>
+<li>Works in Node.js, browser, and Electron</li>
 </ul>
-</div>
-</nav>
+<h2 id="installation" class="tsd-anchor-link">Installation<a href="#installation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<pre><code class="sh"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-2">@leofcoin/peernet</span>
+</code><button type="button">Copy</button></pre>
 
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="socket-discovery">socket-discovery</h1><h2 id="usage">Usage</h2><pre><code class="lang-js"><code class="source-code prettyprint">import discovery from &apos;socket-discovery&apos;</code>
-</code></pre>
-<h2 id="api">API</h2><h4 id="addrequesthandler">addRequestHandler</h4><p>examples</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">peernet.addRequestHandler(&apos;lastBlock&apos;, () =&gt; {
-  let response;
-  const height = await chainStore.get(&apos;localIndex&apos;)
-  const hash = await chainStore.get(&apos;localBlock&apos;)
-  response = JSON.stringify({ height: height.toString(), hash: hash.toString() })
-  return new ResponseMessage({ response })
-  // or
-  return new peernet.protos[&apos;peernet-response&apos;]({ response })
-})</code>
-</code></pre>
-<pre><code class="lang-js"><code class="source-code prettyprint">peernet.addRequestHandler(&apos;hello&apos;, () =&gt; {
-  return new ResponseMessage({ response: &apos;hi&apos; })
-  // or
-  return new peernet.protos[&apos;peernet-response&apos;]({ response: &apos;hi&apos; })
-})</code>
-</code></pre>
-<h2 id="development">Development</h2><h3 id="watch">watch</h3><pre><code class="lang-sh"><code class="source-code prettyprint">npm run w</code>
-</code></pre>
-<h3 id="compile">compile</h3><pre><code class="lang-sh"><code class="source-code prettyprint">npm run c</code>
-</code></pre>
-<h3 id="serve-html">serve html</h3><pre><code class="lang-sh"><code class="source-code prettyprint">npm run demo</code>
-</code></pre>
-<p><code>note: you need to install jsproject</code></p>
-<pre><code class="lang-sh"><code class="source-code prettyprint">npm i -g @vandeurenglenn/project</code>
-</code></pre>
-</div>
-</div>
+<h2 id="usage" class="tsd-anchor-link">Usage<a href="#usage" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<pre><code class="js"><span class="hl-3">import</span><span class="hl-1"> </span><span class="hl-4">Peernet</span><span class="hl-1"> </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&#39;@leofcoin/peernet&#39;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">config</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-4">network:</span><span class="hl-1"> </span><span class="hl-2">&#39;leofcoin:peach&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">networkVersion:</span><span class="hl-1"> </span><span class="hl-2">&#39;peach&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-4">stars:</span><span class="hl-1"> [</span><span class="hl-2">&#39;wss://peach.leofcoin.org&#39;</span><span class="hl-1">]</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-7">// If your identity is password-protected, prompt for password:</span><br/><span class="hl-3">import</span><span class="hl-1"> </span><span class="hl-4">passwordPrompt</span><span class="hl-1"> </span><span class="hl-3">from</span><span class="hl-1"> </span><span class="hl-2">&#39;@leofcoin/peernet/src/prompts/password/node.js&#39;</span><span class="hl-1">;</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">password</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-0">passwordPrompt</span><span class="hl-1">();</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">node</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-0">Peernet</span><span class="hl-1">(</span><span class="hl-4">config</span><span class="hl-1">, </span><span class="hl-4">password</span><span class="hl-1">)</span><br/><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">node</span><span class="hl-1">.</span><span class="hl-0">start</span><span class="hl-1">()</span><br/><br/><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-4">globalThis</span><span class="hl-1">.</span><span class="hl-4">peernet</span><span class="hl-1">)</span>
+</code><button type="button">Copy</button></pre>
 
-<footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
-</footer>
+<h2 id="api" class="tsd-anchor-link">API<a href="#api" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="addrequesthandler" class="tsd-anchor-link">addRequestHandler<a href="#addrequesthandler" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Register a handler for custom requests:</p>
+<pre><code class="js"><span class="hl-4">peernet</span><span class="hl-1">.</span><span class="hl-0">addRequestHandler</span><span class="hl-1">(</span><span class="hl-2">&#39;lastBlock&#39;</span><span class="hl-1">, </span><span class="hl-5">async</span><span class="hl-1"> () </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">height</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">chainStore</span><span class="hl-1">.</span><span class="hl-0">get</span><span class="hl-1">(</span><span class="hl-2">&#39;localIndex&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">  </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">hash</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">chainStore</span><span class="hl-1">.</span><span class="hl-0">get</span><span class="hl-1">(</span><span class="hl-2">&#39;localBlock&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">  </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">response</span><span class="hl-1"> = </span><span class="hl-6">JSON</span><span class="hl-1">.</span><span class="hl-0">stringify</span><span class="hl-1">({ </span><span class="hl-4">height:</span><span class="hl-1"> </span><span class="hl-4">height</span><span class="hl-1">.</span><span class="hl-0">toString</span><span class="hl-1">(), </span><span class="hl-4">hash:</span><span class="hl-1"> </span><span class="hl-4">hash</span><span class="hl-1">.</span><span class="hl-0">toString</span><span class="hl-1">() })</span><br/><span class="hl-1">  </span><span class="hl-3">return</span><span class="hl-1"> </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-0">ResponseMessage</span><span class="hl-1">({ </span><span class="hl-4">response</span><span class="hl-1"> })</span><br/><span class="hl-1">  </span><span class="hl-7">// or</span><br/><span class="hl-1">  </span><span class="hl-7">// return new peernet.protos[&#39;peernet-response&#39;]({ response })</span><br/><span class="hl-1">})</span><br/><br/><span class="hl-4">peernet</span><span class="hl-1">.</span><span class="hl-0">addRequestHandler</span><span class="hl-1">(</span><span class="hl-2">&#39;hello&#39;</span><span class="hl-1">, () </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-3">return</span><span class="hl-1"> </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-0">ResponseMessage</span><span class="hl-1">({ </span><span class="hl-4">response:</span><span class="hl-1"> </span><span class="hl-2">&#39;hi&#39;</span><span class="hl-1"> })</span><br/><span class="hl-1">})</span><br/><br/><span class="hl-4">peernet</span><span class="hl-1">.</span><span class="hl-0">addRequestHandler</span><span class="hl-1">(</span><span class="hl-2">&#39;version&#39;</span><span class="hl-1">, () </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-3">return</span><span class="hl-1"> </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-0">ResponseMessage</span><span class="hl-1">({ </span><span class="hl-4">response:</span><span class="hl-1"> { </span><span class="hl-4">version:</span><span class="hl-1"> </span><span class="hl-8">1</span><span class="hl-1"> } })</span><br/><span class="hl-1">})</span>
+</code><button type="button">Copy</button></pre>
 
-<script src="script/search_index.js"></script>
-<script src="script/search.js"></script>
-<script src="script/pretty-print.js"></script>
-<script src="script/inherited-summary.js"></script>
-<script src="script/test-summary.js"></script>
-<script src="script/inner-link.js"></script>
-<script src="script/patch-for-local.js"></script>
-</body>
-</html>
+<h3 id="password-prompt" class="tsd-anchor-link">Password Prompt<a href="#password-prompt" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>For password-protected identities, use the provided prompt:</p>
+<ul>
+<li><strong>Node.js:</strong> <code>import passwordPrompt from '@leofcoin/peernet/src/prompts/password/node.js'</code></li>
+<li><strong>Browser:</strong> <code>import passwordPrompt from '@leofcoin/peernet/src/prompts/password/browser.js'</code></li>
+</ul>
+<pre><code class="js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">password</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-0">passwordPrompt</span><span class="hl-1">();</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">node</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-0">Peernet</span><span class="hl-1">(</span><span class="hl-4">config</span><span class="hl-1">, </span><span class="hl-4">password</span><span class="hl-1">);</span>
+</code><button type="button">Copy</button></pre>
+
+<h2 id="in-memory-broadcasts-api-and-usage" class="tsd-anchor-link">In-Memory Broadcasts: API and Usage<a href="#in-memory-broadcasts-api-and-usage" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p><strong>What is it?</strong><br>
+The <code>broadcast</code> method allows you to share files or folders with peers, storing them in-memory (not persisted to disk). Data is available for direct retrieval by hash until the process restarts.</p>
+<p><strong>API:</strong></p>
+<pre><code class="typescript"><span class="hl-7">// For files:</span><br/><span class="hl-4">peernet</span><span class="hl-1">.</span><span class="hl-0">broadcast</span><span class="hl-1">(</span><span class="hl-4">path</span><span class="hl-1">: </span><span class="hl-4">string</span><span class="hl-1">, { </span><span class="hl-4">content:</span><span class="hl-1"> </span><span class="hl-4">Uint8Array</span><span class="hl-1"> }): </span><span class="hl-9">Promise</span><span class="hl-1">&lt;</span><span class="hl-4">string</span><span class="hl-1">&gt;</span><br/><br/><span class="hl-7">// For folders:</span><br/><span class="hl-4">peernet</span><span class="hl-1">.</span><span class="hl-0">broadcast</span><span class="hl-1">(</span><span class="hl-4">path</span><span class="hl-1">: </span><span class="hl-4">string</span><span class="hl-1">, { </span><span class="hl-4">links:</span><span class="hl-1"> </span><span class="hl-4">Array</span><span class="hl-1">&lt;{ </span><span class="hl-4">path:</span><span class="hl-1"> </span><span class="hl-4">string</span><span class="hl-1">, </span><span class="hl-4">hash:</span><span class="hl-1"> </span><span class="hl-4">string</span><span class="hl-1"> }&gt; }): </span><span class="hl-9">Promise</span><span class="hl-1">&lt;</span><span class="hl-4">string</span><span class="hl-1">&gt;</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>path</code> (string): The virtual path or identifier for the file or folder.</li>
+<li><code>content</code> (Uint8Array): The file data (for files).</li>
+<li><code>links</code> (Array): An array of <code>{ path, hash }</code> objects (for folders).</li>
+</ul>
+<p><strong>Returns:</strong><br>
+A <code>Promise</code> that resolves to a hash string, which can be used to retrieve the data.</p>
+<hr>
+<h3 id="examples" class="tsd-anchor-link">Examples<a href="#examples" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><strong>Broadcast a file:</strong></p>
+<pre><code class="js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">hash</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">peernet</span><span class="hl-1">.</span><span class="hl-0">broadcast</span><span class="hl-1">(</span><span class="hl-2">&#39;/hello.txt&#39;</span><span class="hl-1">, {</span><br/><span class="hl-1">  </span><span class="hl-4">content:</span><span class="hl-1"> </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-0">TextEncoder</span><span class="hl-1">().</span><span class="hl-0">encode</span><span class="hl-1">(</span><span class="hl-2">&#39;Hello world!&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>Broadcast a folder:</strong></p>
+<pre><code class="js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">folderHash</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">peernet</span><span class="hl-1">.</span><span class="hl-0">broadcast</span><span class="hl-1">(</span><span class="hl-2">&#39;/my-folder&#39;</span><span class="hl-1">, {</span><br/><span class="hl-1">  </span><span class="hl-4">links:</span><span class="hl-1"> [</span><br/><span class="hl-1">    { </span><span class="hl-4">path:</span><span class="hl-1"> </span><span class="hl-2">&#39;/hello.txt&#39;</span><span class="hl-1">, </span><span class="hl-4">hash:</span><span class="hl-1"> </span><span class="hl-4">hash</span><span class="hl-1"> }</span><br/><span class="hl-1">  ]</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>Retrieve data by hash (peer side):</strong></p>
+<pre><code class="js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">proto</span><span class="hl-1"> = { </span><span class="hl-4">decoded:</span><span class="hl-1"> { </span><span class="hl-4">hash</span><span class="hl-1"> } };</span><br/><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">peernet</span><span class="hl-1">.</span><span class="hl-0">handleData</span><span class="hl-1">(</span><span class="hl-4">peer</span><span class="hl-1">, </span><span class="hl-2">&#39;some-id&#39;</span><span class="hl-1">, </span><span class="hl-4">proto</span><span class="hl-1">);</span><br/><span class="hl-7">// The peer will receive either .data (for files) or .links (for folders)</span>
+</code><button type="button">Copy</button></pre>
+
+<hr>
+<h3 id="notes" class="tsd-anchor-link">Notes<a href="#notes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul>
+<li>If you broadcast a folder, only the <code>links</code> property is required; <code>content</code> should be omitted.</li>
+<li>If you broadcast a file, only the <code>content</code> property is required; <code>links</code> should be omitted.</li>
+<li>The hash returned is unique to the content or folder structure.</li>
+<li>Data is lost when the process restarts.</li>
+</ul>
+<h3 id="in-memory-broadcasts" class="tsd-anchor-link">In-Memory Broadcasts<a href="#in-memory-broadcasts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Peernet supports in-memory data sharing for fast, temporary distribution of files or folders between peers. This feature allows you to broadcast a file (with content) or a folder (with just links), which is then available for retrieval by other peers (or yourself) until the process is restarted or the in-memory cache is cleared.</p>
+<h3 id="usage-example" class="tsd-anchor-link">Usage Example<a href="#usage-example" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<pre><code class="js"><span class="hl-7">// Broadcast a file in-memory</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">hash</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">peernet</span><span class="hl-1">.</span><span class="hl-0">broadcast</span><span class="hl-1">(</span><span class="hl-2">&#39;/example&#39;</span><span class="hl-1">, {</span><br/><span class="hl-1">  </span><span class="hl-4">content:</span><span class="hl-1"> </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-0">TextEncoder</span><span class="hl-1">().</span><span class="hl-0">encode</span><span class="hl-1">(</span><span class="hl-2">&#39;hello world&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-7">// Broadcast a folder (just links) in-memory</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">folderHash</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">peernet</span><span class="hl-1">.</span><span class="hl-0">broadcast</span><span class="hl-1">(</span><span class="hl-2">&#39;/folder&#39;</span><span class="hl-1">, {</span><br/><span class="hl-1">  </span><span class="hl-4">links:</span><span class="hl-1"> [</span><br/><span class="hl-1">    { </span><span class="hl-4">path:</span><span class="hl-1"> </span><span class="hl-2">&#39;/file1&#39;</span><span class="hl-1">, </span><span class="hl-4">hash:</span><span class="hl-1"> </span><span class="hl-2">&#39;hash1&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-4">path:</span><span class="hl-1"> </span><span class="hl-2">&#39;/file2&#39;</span><span class="hl-1">, </span><span class="hl-4">hash:</span><span class="hl-1"> </span><span class="hl-2">&#39;hash2&#39;</span><span class="hl-1"> }</span><br/><span class="hl-1">  ]</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-7">// Another peer can request the data by hash</span><br/><span class="hl-7">// (handled internally by peernet.handleData)</span>
+</code><button type="button">Copy</button></pre>
+
+<h3 id="detailed-example" class="tsd-anchor-link">Detailed Example<a href="#detailed-example" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<pre><code class="js"><span class="hl-7">// 1. Broadcast a file in-memory</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">hash</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">peernet</span><span class="hl-1">.</span><span class="hl-0">broadcast</span><span class="hl-1">(</span><span class="hl-2">&#39;/example&#39;</span><span class="hl-1">, {</span><br/><span class="hl-1">  </span><span class="hl-4">content:</span><span class="hl-1"> </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-0">TextEncoder</span><span class="hl-1">().</span><span class="hl-0">encode</span><span class="hl-1">(</span><span class="hl-2">&#39;Hello Peernet!&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">});</span><br/><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-2">&#39;Broadcasted hash:&#39;</span><span class="hl-1">, </span><span class="hl-4">hash</span><span class="hl-1">);</span><br/><br/><span class="hl-7">// 2. Broadcast a folder in-memory</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">folderHash</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">peernet</span><span class="hl-1">.</span><span class="hl-0">broadcast</span><span class="hl-1">(</span><span class="hl-2">&#39;/folder&#39;</span><span class="hl-1">, {</span><br/><span class="hl-1">  </span><span class="hl-4">links:</span><span class="hl-1"> [</span><br/><span class="hl-1">    { </span><span class="hl-4">path:</span><span class="hl-1"> </span><span class="hl-2">&#39;/file1&#39;</span><span class="hl-1">, </span><span class="hl-4">hash:</span><span class="hl-1"> </span><span class="hl-2">&#39;hash1&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-4">path:</span><span class="hl-1"> </span><span class="hl-2">&#39;/file2&#39;</span><span class="hl-1">, </span><span class="hl-4">hash:</span><span class="hl-1"> </span><span class="hl-2">&#39;hash2&#39;</span><span class="hl-1"> }</span><br/><span class="hl-1">  ]</span><br/><span class="hl-1">});</span><br/><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-2">&#39;Broadcasted folder hash:&#39;</span><span class="hl-1">, </span><span class="hl-4">folderHash</span><span class="hl-1">);</span><br/><br/><span class="hl-7">// 3. Simulate a peer requesting the data by hash</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">mockPeer</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-4">connected:</span><span class="hl-1"> </span><span class="hl-5">true</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">send</span><span class="hl-4">:</span><span class="hl-1"> </span><span class="hl-5">async</span><span class="hl-1"> (</span><span class="hl-4">data</span><span class="hl-1">, </span><span class="hl-4">id</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-7">// Handle the received data (for demo/testing)</span><br/><span class="hl-1">    </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">DataResponseProto</span><span class="hl-1"> = </span><span class="hl-4">globalThis</span><span class="hl-1">.</span><span class="hl-4">peernet</span><span class="hl-1">.</span><span class="hl-4">protos</span><span class="hl-1">[</span><span class="hl-2">&#39;peernet-data-response&#39;</span><span class="hl-1">];</span><br/><span class="hl-1">    </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">decodedProto</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-0">DataResponseProto</span><span class="hl-1">(</span><span class="hl-4">data</span><span class="hl-1">);</span><br/><span class="hl-1">    </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">decodedProto</span><span class="hl-1">.</span><span class="hl-0">decode</span><span class="hl-1">();</span><br/><span class="hl-1">    </span><span class="hl-3">if</span><span class="hl-1"> (</span><span class="hl-4">decodedProto</span><span class="hl-1">.</span><span class="hl-4">decoded</span><span class="hl-1">.</span><span class="hl-4">data</span><span class="hl-1">) {</span><br/><span class="hl-1">      </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">decodedContent</span><span class="hl-1"> = </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-0">TextDecoder</span><span class="hl-1">().</span><span class="hl-0">decode</span><span class="hl-1">(</span><span class="hl-4">decodedProto</span><span class="hl-1">.</span><span class="hl-4">decoded</span><span class="hl-1">.</span><span class="hl-4">data</span><span class="hl-1">);</span><br/><span class="hl-1">      </span><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-2">&#39;Received content:&#39;</span><span class="hl-1">, </span><span class="hl-4">decodedContent</span><span class="hl-1">);</span><br/><span class="hl-1">    } </span><span class="hl-3">else</span><span class="hl-1"> </span><span class="hl-3">if</span><span class="hl-1"> (</span><span class="hl-4">decodedProto</span><span class="hl-1">.</span><span class="hl-4">decoded</span><span class="hl-1">.</span><span class="hl-4">links</span><span class="hl-1">) {</span><br/><span class="hl-1">      </span><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-2">&#39;Received folder links:&#39;</span><span class="hl-1">, </span><span class="hl-4">decodedProto</span><span class="hl-1">.</span><span class="hl-4">decoded</span><span class="hl-1">.</span><span class="hl-4">links</span><span class="hl-1">);</span><br/><span class="hl-1">    }</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">};</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">proto</span><span class="hl-1"> = { </span><span class="hl-4">decoded:</span><span class="hl-1"> { </span><span class="hl-4">hash</span><span class="hl-1"> } };</span><br/><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">peernet</span><span class="hl-1">.</span><span class="hl-0">handleData</span><span class="hl-1">(</span><span class="hl-4">mockPeer</span><span class="hl-1">, </span><span class="hl-2">&#39;test-id&#39;</span><span class="hl-1">, </span><span class="hl-4">proto</span><span class="hl-1">);</span>
+</code><button type="button">Copy</button></pre>
+
+<h3 id="data-flow-diagram" class="tsd-anchor-link">Data Flow Diagram<a href="#data-flow-diagram" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<pre><code><span class="hl-1">[</span><span class="hl-4">You</span><span class="hl-1">/</span><span class="hl-4">Peer</span><span class="hl-1">] --(</span><span class="hl-4">broadcast</span><span class="hl-1">)--&gt; [</span><span class="hl-4">Peernet</span><span class="hl-1"> </span><span class="hl-4">Node</span><span class="hl-1">: </span><span class="hl-4">In</span><span class="hl-1">-</span><span class="hl-4">Memory</span><span class="hl-1"> </span><span class="hl-4">Map</span><span class="hl-1">]</span><br/><span class="hl-1">     ^                                 |</span><br/><span class="hl-1">     |                                 |</span><br/><span class="hl-1">     +------(</span><span class="hl-4">handleData</span><span class="hl-1"> </span><span class="hl-4">request</span><span class="hl-1">)--------+</span>
+</code><button>Copy</button></pre>
+
+<ul>
+<li>
+<p><code>broadcast()</code> stores the data in-memory and returns a hash.</p>
+</li>
+<li>
+<p><code>handleData()</code> retrieves the data by hash and sends it to the requesting peer.</p>
+</li>
+<li>
+<p>The broadcasted data is stored in-memory and is not persisted to disk.</p>
+</li>
+<li>
+<p>Retrieval is by hash, matching the value returned from <code>broadcast()</code>.</p>
+</li>
+<li>
+<p>The feature is useful for ephemeral data, rapid prototyping, or testing.</p>
+</li>
+<li>
+<p>If the process restarts, the in-memory data is lost.</p>
+</li>
+</ul>
+<h3 id="testing" class="tsd-anchor-link">Testing<a href="#testing" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Automated tests verify that broadcasting and retrieving in-memory data works as expected, including content integrity and hash matching.</p>
+<h2 id="folder-support-files-with-just-links" class="tsd-anchor-link">Folder Support (Files with Just Links)<a href="#folder-support-files-with-just-links" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>Peernet supports &quot;folders&quot; as special file objects that contain only links to other files, without any content. This allows you to represent directory structures or collections of files.</p>
+<p><strong>Example: Broadcasting a Folder</strong></p>
+<pre><code class="js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">folderHash</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">peernet</span><span class="hl-1">.</span><span class="hl-0">broadcast</span><span class="hl-1">(</span><span class="hl-2">&#39;/folder&#39;</span><span class="hl-1">, {</span><br/><span class="hl-1">  </span><span class="hl-4">links:</span><span class="hl-1"> [</span><br/><span class="hl-1">    { </span><span class="hl-4">path:</span><span class="hl-1"> </span><span class="hl-2">&#39;/file1&#39;</span><span class="hl-1">, </span><span class="hl-4">hash:</span><span class="hl-1"> </span><span class="hl-2">&#39;hash1&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-4">path:</span><span class="hl-1"> </span><span class="hl-2">&#39;/file2&#39;</span><span class="hl-1">, </span><span class="hl-4">hash:</span><span class="hl-1"> </span><span class="hl-2">&#39;hash2&#39;</span><span class="hl-1"> }</span><br/><span class="hl-1">  ]</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>Retrieving a Folder</strong>
+When a folder is retrieved (e.g., via <code>handleData</code>), its <code>links</code> array will be preserved, and <code>content</code> will be empty or undefined.</p>
+<p><strong>Test Coverage</strong>
+Automated tests verify that broadcasting and retrieving folders works as expected, ensuring the links are preserved and content is empty or undefined.</p>
+<h2 id="development" class="tsd-anchor-link">Development<a href="#development" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<blockquote>
+<p><strong>Note:</strong> You need to install <a href="https://www.npmjs.com/package/@vandeurenglenn/project">jsproject</a></p>
+</blockquote>
+<pre><code class="sh"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">i</span><span class="hl-1"> </span><span class="hl-5">-g</span><span class="hl-1"> </span><span class="hl-2">@vandeurenglenn/project</span>
+</code><button type="button">Copy</button></pre>
+
+<h3 id="scripts" class="tsd-anchor-link">Scripts<a href="#scripts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul>
+<li><strong>Watch:</strong><pre><code class="sh"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">watch</span>
+</code><button type="button">Copy</button></pre>
+
+</li>
+<li><strong>Build:</strong><pre><code class="sh"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">build</span>
+</code><button type="button">Copy</button></pre>
+
+</li>
+<li><strong>Test:</strong><pre><code class="sh"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">test</span>
+</code><button type="button">Copy</button></pre>
+
+</li>
+<li><strong>Serve HTML Demo:</strong><pre><code class="sh"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">demo</span>
+</code><button type="button">Copy</button></pre>
+
+</li>
+</ul>
+<h2 id="license" class="tsd-anchor-link">License<a href="#license" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>MIT</p>
+</div></div>
+<div class="col-sidebar">
+<div class="page-menu">
+<div class="tsd-navigation settings">
+<details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div>
+<div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg>
+<h3>On This Page</h3></summary>
+<div class="tsd-accordion-details"><a href="#peernet"><span>peernet</span></a>
+<ul>
+<li><a href="#features"><span>Features</span></a></li>
+<li><a href="#installation"><span>Installation</span></a></li>
+<li><a href="#usage"><span>Usage</span></a></li>
+<li><a href="#api"><span>API</span></a></li>
+<li>
+<ul>
+<li><a href="#addrequesthandler"><span>add<wbr/>Request<wbr/>Handler</span></a></li>
+<li><a href="#password-prompt"><span>Password <wbr/>Prompt</span></a></li></ul></li>
+<li><a href="#in-memory-broadcasts-api-and-usage"><span>In-<wbr/>Memory <wbr/>Broadcasts: <wbr/>API and <wbr/>Usage</span></a></li>
+<li>
+<ul>
+<li><a href="#examples"><span>Examples</span></a></li>
+<li><a href="#notes"><span>Notes</span></a></li>
+<li><a href="#in-memory-broadcasts"><span>In-<wbr/>Memory <wbr/>Broadcasts</span></a></li>
+<li><a href="#usage-example"><span>Usage <wbr/>Example</span></a></li>
+<li><a href="#detailed-example"><span>Detailed <wbr/>Example</span></a></li>
+<li><a href="#data-flow-diagram"><span>Data <wbr/>Flow <wbr/>Diagram</span></a></li>
+<li><a href="#testing"><span>Testing</span></a></li></ul></li>
+<li><a href="#folder-support-files-with-just-links"><span>Folder <wbr/>Support (<wbr/>Files with <wbr/>Just <wbr/>Links)</span></a></li>
+<li><a href="#development"><span>Development</span></a></li>
+<li>
+<ul>
+<li><a href="#scripts"><span>Scripts</span></a></li></ul></li>
+<li><a href="#license"><span>License</span></a></li></ul></div></details></div>
+<div class="site-menu">
+<nav class="tsd-navigation"><a href="modules.html">@leofcoin/peernet</a>
+<ul class="tsd-small-nested-navigation" id="tsd-nav-container">
+<li>Loading...</li></ul></nav></div></div></div><footer>
+<p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer>
+<div class="overlay"></div></body></html>
