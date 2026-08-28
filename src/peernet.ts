@@ -10,6 +10,18 @@ import { Storage as LeofcoinStorageClass } from '@leofcoin/storage'
 import { utils as codecUtils } from '@leofcoin/codecs'
 import Identity from './identity.js'
 import swarm from '@netpeer/swarm/client'
+import FileTransfer from './file-transfer.js'
+
+const DEFAULT_CHUNK_SIZE = 256 * 1024
+const DEFAULT_BLOCK_CHUNK_SIZE = 256 * 1024
+const DEFAULT_BLOCK_CHUNK_THRESHOLD = 1024 * 1024
+const DEFAULT_TRANSFER_CONCURRENCY = 4
+
+const adaptiveChunkSize = (size: number, minimum = DEFAULT_CHUNK_SIZE) => {
+  if (size >= 256 * 1024 * 1024) return Math.max(minimum, 4 * 1024 * 1024)
+  if (size >= 32 * 1024 * 1024) return Math.max(minimum, 1024 * 1024)
+  return minimum
+}
 
 globalThis.LeofcoinStorage = LeofcoinStorageClass
 
@@ -67,6 +79,9 @@ export default class Peernet {
   _peerHandler: PeerDiscovery
   protos: {}
   version
+  blockChunkSize: number
+  blockChunkThreshold: number
+  transferConcurrency: number
 
   #peerAttempts: { [key: string]: number } = {}
   private _inMemoryBroadcasts: any
@@ -94,6 +109,15 @@ export default class Peernet {
     this.stars = options.stars
     this.transport = options.transport
     this.version = options.version
+    this.blockChunkSize = options.blockChunkSize ?? DEFAULT_BLOCK_CHUNK_SIZE
+    this.blockChunkThreshold = options.blockChunkThreshold ?? DEFAULT_BLOCK_CHUNK_THRESHOLD
+    this.transferConcurrency = options.transferConcurrency ?? DEFAULT_TRANSFER_CONCURRENCY
+    if (!Number.isSafeInteger(this.blockChunkSize) || this.blockChunkSize <= 0)
+      throw new TypeError('blockChunkSize must be a positive integer')
+    if (!Number.isSafeInteger(this.blockChunkThreshold) || this.blockChunkThreshold < 0)
+      throw new TypeError('blockChunkThreshold must be a non-negative integer')
+    if (!Number.isSafeInteger(this.transferConcurrency) || this.transferConcurrency <= 0)
+      throw new TypeError('transferConcurrency must be a positive integer')
     const parts = this.network.split(':')
     this.networkVersion = options.networkVersion || parts.length > 1 ? parts[1] : 'mainnet'
 
@@ -372,10 +396,31 @@ export default class Peernet {
  
    * @returns {Promise<string>} The hash that can be shared for direct download
    */
-  async broadcast(path: string, { content, links }: { content?: Uint8Array; links?: any[] }): Promise<string> {
+  async broadcast(
+    path: string,
+    { content, links, chunkSize }: { content?: Uint8Array; links?: any[]; chunkSize?: number }
+  ): Promise<string> {
+    chunkSize = chunkSize ?? (content ? adaptiveChunkSize(content.length) : DEFAULT_CHUNK_SIZE)
+    if (!Number.isSafeInteger(chunkSize) || chunkSize <= 0) throw new TypeError('chunkSize must be a positive integer')
     let protoInput: any
-    if (content) protoInput = { path, content }
+    if (content && content.length > chunkSize) {
+      const chunkLinks = []
+      for (let offset = 0, index = 0; offset < content.length; offset += chunkSize, index++) {
+        const chunkNode = await new globalThis.peernet.protos['peernet-file']({
+          path: `${path}.part-${index}`,
+          content: content.slice(offset, Math.min(offset + chunkSize, content.length))
+        })
+        const chunkHash = await chunkNode.hash()
+        const chunkEncoded = await chunkNode.encoded
+        if (!this._inMemoryBroadcasts) this._inMemoryBroadcasts = new Map()
+        this._inMemoryBroadcasts.set(chunkHash, chunkEncoded)
+        await shareStore.put(chunkHash, chunkEncoded)
+        chunkLinks.push({ hash: chunkHash, path: String(index), size: chunkNode.decoded.content.length })
+      }
+      protoInput = { path, links: chunkLinks, size: content.length, chunkSize, chunked: true }
+    } else if (content) protoInput = { path, content, size: content.length }
     else if (links) protoInput = { path, links }
+    else throw new TypeError('broadcast requires content or links')
 
     const protoNode = await new globalThis.peernet.protos['peernet-file'](protoInput)
     const hash = await protoNode.hash()
@@ -390,6 +435,43 @@ export default class Peernet {
     return hash
   }
 
+  /** Create and immediately start a resumable, integrity-checked file download. */
+  download(hash: string, options: { pin?: boolean; autoStart?: boolean } = {}): FileTransfer {
+    const FileProto = globalThis.peernet.protos['peernet-file']
+    const transfer = new FileTransfer({
+      hash,
+      fetch: async (wantedHash, index) => {
+        if (wantedHash !== hash) {
+          const providers = Object.values(this.dht.providersFor(hash) || {}) as DHTProvider[]
+          for (const provider of providers) this.dht.addProvider(provider, wantedHash)
+        }
+        const store = await this.whichStore([...this.stores], wantedHash)
+        if (store && (await store.has(wantedHash))) return store.get(wantedHash)
+        const result = await this.requestData(wantedHash, undefined, { providerIndex: index })
+        return result
+      },
+      decode: async (encoded) => {
+        const node = await new FileProto(encoded)
+        await node.decode()
+        if (node.decoded?.chunked) {
+          const providers = Object.values(this.dht.providersFor(hash) || {}) as DHTProvider[]
+          for (const link of node.decoded.links || []) {
+            for (const provider of providers) this.dht.addProvider(provider, link.hash)
+          }
+        }
+        return node.decoded
+      },
+      concurrency: this.transferConcurrency,
+      verify: async (encoded, expectedHash) => {
+        const node = await new FileProto(encoded)
+        return (await node.hash()) === expectedHash
+      },
+      pin: options.pin ? (chunkHash, encoded) => dataStore.put(chunkHash, encoded) : undefined
+    })
+    if (options.autoStart !== false) transfer.start()
+    return transfer
+  }
+
   async handleData(peer, id, proto) {
     let { hash, store } = proto.decoded
     let data
@@ -400,16 +482,9 @@ export default class Peernet {
         if (typeof hash === 'function') {
           resolvedHash = await hash()
         }
-        // Decode the stored proto to extract the content or links
-        const FileProto = globalThis.peernet.protos['peernet-file']
-        const fileProto = await new FileProto(data)
-        await fileProto.decode()
-        const { content, links } = fileProto.decoded
-        console.log(links)
-
         data = await new globalThis.peernet.protos['peernet-data-response']({
           hash: resolvedHash,
-          data: links || content
+          data
         })
 
         const node = await this.prepareMessage(data)
@@ -573,16 +648,86 @@ export default class Peernet {
   get block() {
     return {
       get: async (hash: string) => {
-        const data = await blockStore.has(hash)
-        if (data) return blockStore.get(hash)
-        return this.requestData(hash, 'block')
+        return this.#createBlockTransfer(hash).result
       },
       put: async (hash: string, data: Uint8Array) => {
         if (await blockStore.has(hash)) return
+        if (data.length > this.blockChunkThreshold) return this.#putChunkedBlock(hash, data)
         return await blockStore.put(hash, data)
       },
-      has: async (hash: string) => await blockStore.has(hash)
+      has: async (hash: string) => await blockStore.has(hash),
+      download: (hash: string, options: { autoStart?: boolean } = {}) => this.#createBlockTransfer(hash, options)
     }
+  }
+
+  async #putChunkedBlock(hash: string, data: Uint8Array) {
+    const links = []
+    const FileProto = globalThis.peernet.protos['peernet-file']
+    const chunkSize = adaptiveChunkSize(data.length, this.blockChunkSize)
+    for (let offset = 0, index = 0; offset < data.length; offset += chunkSize, index++) {
+      const content = data.slice(offset, Math.min(offset + chunkSize, data.length))
+      const chunk = new FileProto({ path: `block-${hash}.part-${index}`, content })
+      const chunkHash = await chunk.hash()
+      await blockStore.put(chunkHash, chunk.encoded)
+      links.push({ hash: chunkHash, path: String(index).padStart(12, '0'), size: content.length })
+    }
+
+    const manifest = new FileProto({
+      path: `block-${hash}`,
+      links,
+      size: data.length,
+      chunkSize,
+      chunked: true,
+      kind: 'block',
+      blockHash: hash
+    })
+    return blockStore.put(hash, manifest.encoded)
+  }
+
+  #createBlockTransfer(hash: string, options: { autoStart?: boolean } = {}): FileTransfer {
+    const FileProto = globalThis.peernet.protos['peernet-file']
+    const fetch = async (wantedHash: string, index?: number) => {
+      if (wantedHash !== hash) {
+        const providers = Object.values(this.dht.providersFor(hash) || {}) as DHTProvider[]
+        for (const provider of providers) this.dht.addProvider(provider, wantedHash)
+      }
+      if (await blockStore.has(wantedHash)) return blockStore.get(wantedHash)
+      const result = await this.requestData(wantedHash, 'block', { providerIndex: index })
+      return result
+    }
+    const transfer = new FileTransfer({
+      hash,
+      fetch,
+      decode: async (encoded) => {
+        let node
+        try {
+          node = new FileProto(encoded)
+          await node.decode()
+        } catch {
+          // A normal block is intentionally not a peernet-file envelope.
+          return { content: encoded }
+        }
+        if (node.decoded?.kind === 'block') {
+          if (node.decoded.blockHash !== hash) throw new Error(`Block manifest hash mismatch for ${hash}`)
+          const providers = Object.values(this.dht.providersFor(hash) || {}) as DHTProvider[]
+          for (const link of node.decoded.links || []) {
+            for (const provider of providers) this.dht.addProvider(provider, link.hash)
+          }
+          return node.decoded
+        }
+        if (node.decoded?.path?.startsWith(`block-${hash}.part-`)) return node.decoded
+        return { content: encoded }
+      },
+      verify: async (encoded, expectedHash) => {
+        const node = new FileProto(encoded)
+        return (await node.hash()) === expectedHash
+      },
+      verifyManifest: false,
+      concurrency: this.transferConcurrency,
+      pin: (wantedHash, encoded) => blockStore.put(wantedHash, encoded)
+    })
+    if (options.autoStart !== false) transfer.start()
+    return transfer
   }
 
   get transaction() {
@@ -600,13 +745,17 @@ export default class Peernet {
     }
   }
 
-  async requestData(hash, store) {
+  async requestData(hash, store, options: { providerIndex?: number } = {}) {
     try {
       const providers = await this.providersFor(hash)
       if (!providers || (providers && Object.keys(providers).length === 0)) throw nothingFoundError(hash)
       debug(`found ${Object.keys(providers).length} provider(s) for ${hash}`)
       // get closest peer on earth
-      let closestPeer: DHTProvider = await this.dht.closestPeer(Object.values(providers))
+      const providerValues = Object.values(providers) as DHTProvider[]
+      let closestPeer: DHTProvider =
+        options.providerIndex === undefined
+          ? await this.dht.closestPeer(providerValues)
+          : providerValues[options.providerIndex % providerValues.length]
       // fallback to first provider if no closest peer found
       if (!closestPeer || !closestPeer.id) closestPeer = Object.values(providers)[0]
 
@@ -618,7 +767,7 @@ export default class Peernet {
 
       if (!peer || !peer?.connected) {
         this.dht.removeProvider(id, hash)
-        return this.requestData(hash, store?.name || store)
+        return this.requestData(hash, store?.name || store, options)
       }
 
       let data = await new globalThis.peernet.protos['peernet-data']({
@@ -661,7 +810,7 @@ export default class Peernet {
 
           if (this.#peerAttempts[id] === undefined) this.#peerAttempts[id] = 0
           this.#peerAttempts[id]++
-          return this.requestData(hash, store?.name || store)
+          return this.requestData(hash, store?.name || store, options)
         }
 
         // this.put(hash, proto.decoded.data)
@@ -843,16 +992,8 @@ export default class Peernet {
   }
 
   async cat(hash, options) {
-    let data
-    const has = await dataStore.has(hash)
-    data = has ? await dataStore.get(hash) : await this.requestData(hash, 'data')
-    if (!data) throw nothingFoundError(hash)
-    const node = await new globalThis.peernet.protos['peernet-file'](data)
-    await node.decode()
-
-    if (node.decoded?.links.length > 0) throw new Error(`${hash} is a directory`)
-    if (options?.pin) await dataStore.put(hash, node.encoded)
-    return node.decoded.content
+    const transfer = this.download(hash, { pin: options?.pin })
+    return transfer.result
   }
 
   /**
@@ -969,3 +1110,4 @@ export default class Peernet {
 }
 
 globalThis.Peernet = Peernet
+export { FileTransfer }

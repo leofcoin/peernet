@@ -103,6 +103,50 @@ const hash = await peernet.broadcast('/hello.txt', {
 });
 ```
 
+Files larger than 256 KiB are automatically split into independently hashed pieces. The returned hash identifies a manifest, so receivers can verify every piece and request only pieces they still need. Override the piece size with `chunkSize`:
+
+```js
+const hash = await peernet.broadcast('/video.mp4', {
+  content: videoBytes,
+  chunkSize: 1024 * 1024
+})
+```
+
+For a pausable/resumable download, use the transfer controller:
+
+```js
+const transfer = peernet.download(hash, { pin: true })
+const unsubscribe = transfer.onProgress(({ transferredBytes, totalBytes, state }) => {
+  console.log(state, transferredBytes, totalBytes)
+})
+
+transfer.pause()
+transfer.resume() // already completed pieces are not fetched again
+
+const bytes = await transfer.result
+unsubscribe()
+```
+
+`peernet.cat(hash)` also reassembles chunked files transparently. `pin: true` caches verified pieces in the local data store, allowing a later transfer instance to reuse them.
+
+Downloads pipeline four chunks by default. Known manifest providers are reused for all chunk hashes and chunk requests rotate across those peers, allowing different pieces to arrive concurrently from different providers. Configure the queue with `transferConcurrency`. Chunk size adapts to payload size (256 KiB normally, 1 MiB from 32 MiB, and 4 MiB from 256 MiB); an explicit `chunkSize` always overrides it.
+
+### Large blocks
+
+Blocks larger than 1 MiB are also chunked internally, without changing the public block API or the canonical block hash supplied by the chain:
+
+```js
+await peernet.block.put(blockHash, encodedBlock)
+const encodedBlockAgain = await peernet.block.get(blockHash)
+
+const transfer = peernet.block.download(blockHash)
+transfer.pause()
+transfer.resume()
+const bytes = await transfer.result
+```
+
+The block manifest remains stored under the canonical block hash; individual chunks have their own transport hashes. Peernet verifies every chunk before reconstruction. The chain layer must still verify the reconstructed canonical block hash and perform normal consensus validation before loading it. Defaults can be configured with `blockChunkThreshold` and `blockChunkSize` in the Peernet constructor.
+
 **Broadcast a folder:**
 ```js
 const folderHash = await peernet.broadcast('/my-folder', {
@@ -263,4 +307,3 @@ npm i -g @vandeurenglenn/project
 ## License
 
 MIT
-

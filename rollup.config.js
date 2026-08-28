@@ -4,7 +4,7 @@ import json from '@rollup/plugin-json'
 import wasm from '@rollup/plugin-wasm'
 import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { extname, relative, sep } from 'node:path'
-import rimraf from 'rimraf'
+import { rimrafSync } from 'rimraf'
 import typescript from '@rollup/plugin-typescript'
 
 const toPosix = (value) => value.split(sep).join('/')
@@ -28,9 +28,7 @@ const walk = async (dir) => {
 const isHashedChunk = (runtimePath) => /-[A-Za-z0-9_-]{8,}\.js$/.test(runtimePath)
 
 const isPromptImport = (id) =>
-  id === './prompts/password.js' ||
-  id === './src/prompts/password.js' ||
-  id.endsWith('/src/prompts/password.js')
+  id === './prompts/password.js' || id === './src/prompts/password.js' || id.endsWith('/src/prompts/password.js')
 
 const runtimeFirstExports = ({ exportsDir = 'exports', declarationsDir = 'exports/types' } = {}) => ({
   name: 'runtime-first-exports',
@@ -82,7 +80,7 @@ const runtimeFirstExports = ({ exportsDir = 'exports', declarationsDir = 'export
   }
 })
 
-rimraf.sync('./exports/**')
+rimrafSync('./exports/**')
 
 export default [
   {
@@ -125,9 +123,7 @@ export default [
       })
     ],
     external: (id) =>
-      isPromptImport(id) ||
-      id === './prompts/password/browser.js' ||
-      id === './prompts/password/node.js'
+      isPromptImport(id) || id === './prompts/password/browser.js' || id === './prompts/password/node.js'
   },
   {
     input: ['./src/prompts/password/browser.js'],
