@@ -187,6 +187,31 @@ test('block object provides get/put/has', () => {
   assert.equal(typeof blockObj.has, 'function')
 })
 
+test('large blocks are chunked internally and reconstructed transparently', async () => {
+  const previousThreshold = peernet.blockChunkThreshold
+  const previousChunkSize = peernet.blockChunkSize
+  peernet.blockChunkThreshold = 512
+  peernet.blockChunkSize = 256
+  try {
+    const hash = `chunked-block-${Date.now()}`
+    const block = new Uint8Array(1537)
+    for (let index = 0; index < block.length; index++) block[index] = index % 251
+
+    await peernet.block.put(hash, block)
+    const stored = await globalThis.blockStore.get(hash)
+    const manifest = new peernet.protos['peernet-file'](stored)
+    await manifest.decode()
+
+    assert.equal(manifest.decoded.kind, 'block')
+    assert.equal(manifest.decoded.blockHash, hash)
+    assert.equal(manifest.decoded.links.length, 7)
+    assert.deepEqual(await peernet.block.get(hash), block)
+  } finally {
+    peernet.blockChunkThreshold = previousThreshold
+    peernet.blockChunkSize = previousChunkSize
+  }
+})
+
 test('transaction object provides get/put/has', () => {
   const txObj = peernet.transaction
   assert.equal(typeof txObj.get, 'function')
@@ -329,7 +354,10 @@ test('in-memory broadcast and handleData returns correct data', async () => {
   const DataResponseProto = globalThis.peernet.protos['peernet-data-response']
   const decodedProto = await new DataResponseProto(sentNode.data)
   await decodedProto.decode()
-  const decodedContent = new TextDecoder().decode(decodedProto.decoded.data)
+  const FileProto = globalThis.peernet.protos['peernet-file']
+  const decodedFile = new FileProto(decodedProto.decoded.data)
+  await decodedFile.decode()
+  const decodedContent = new TextDecoder().decode(decodedFile.decoded.content)
   assert.equal(decodedProto.decoded.hash, hash)
   assert.equal(decodedContent, testString)
 })
@@ -362,7 +390,8 @@ test('in-memory broadcast and handleData supports large binary data', async () =
   const decodedProto = await new DataResponseProto(sentNode.data)
   await decodedProto.decode()
   assert.equal(decodedProto.decoded.hash, hash)
-  const receivedBuffer = Buffer.from(decodedProto.decoded.data)
+  const transfer = peernet.download(hash)
+  const receivedBuffer = Buffer.from(await transfer.result)
   const originalBuffer = Buffer.from(largeBuffer)
   assert.equal(Buffer.compare(receivedBuffer, originalBuffer), 0)
 })
