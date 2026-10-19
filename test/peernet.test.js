@@ -10,6 +10,7 @@ import { promisify } from 'node:util'
 import Peernet from '../exports/peernet.js'
 import Identity, { resolveAccountWallets } from '../exports/identity.js'
 import MultiWallet from '@leofcoin/multi-wallet'
+import { Codec, CodecHash } from '@leofcoin/codec-format-interface'
 import { fromBase58, toBase58 } from '@vandeurenglenn/typed-array-utils'
 
 const options = {
@@ -52,6 +53,42 @@ test('initializes with provided options', () => {
 
 test('exposes identity instance', () => {
   assert.ok(peernet.identity instanceof Identity)
+})
+
+test('built peernet messages use canonical codec-first hashes', async () => {
+  const message = new peernet.protos['peernet-ps']({ data: new Uint8Array([1, 2, 3]), topic: new Uint8Array([4]) })
+  const hash = new CodecHash()
+  hash.fromBs32(await message.hash())
+  assert.equal(hash.name, 'peernet-ps')
+  assert.equal(hash.size, hash.digest.length)
+  const codec = new Codec('peernet-ps').encode()
+  assert.deepEqual(hash.encoded.subarray(0, codec.length), codec)
+  assert.deepEqual(hash.encoded, new Uint8Array([...codec, ...hash.length, ...hash.digest]))
+  const roundTrip = new peernet.protos['peernet-ps'](message.encoded)
+  assert.equal(await roundTrip.hash(), hash.toBs32())
+  assert.deepEqual(roundTrip.decoded.data, message.decoded.data)
+})
+
+test('hash parser rejects old length-first peernet content addresses', async () => {
+  const message = new peernet.protos['peernet-ps']({ data: new Uint8Array([1, 2, 3]), topic: new Uint8Array([4]) })
+  const hash = new CodecHash()
+  hash.fromBs32(await message.hash())
+  const previousFormat = new Uint8Array([...hash.length, ...hash.codec, ...hash.digest])
+  assert.throws(() => new CodecHash().decode(previousFormat))
+})
+
+test('release dependency graph contains only codec 2.x and no Git varint fallback', async () => {
+  const manifest = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'))
+  const lock = JSON.parse(await readFile(new URL('../package-lock.json', import.meta.url), 'utf8'))
+  assert.equal(manifest.dependencies['@leofcoin/codec-format-interface'], '^2.0.0')
+  assert.equal(lock.packages[''].version, manifest.version)
+  const codecs = Object.entries(lock.packages).filter(([name]) => name.endsWith('/@leofcoin/codec-format-interface'))
+  assert.equal(codecs.length, 1)
+  assert.equal(codecs[0][1].version, '2.0.0')
+  for (const [name, entry] of Object.entries(lock.packages)) {
+    assert.ok(!name.endsWith('/varint'), name)
+    assert.ok(!/^(git\+|git:|github:|file:)/.test(entry.resolved ?? ''), name)
+  }
 })
 
 test('freshIdentity replaces a persisted identity and signer', async () => {
