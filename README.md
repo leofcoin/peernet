@@ -10,6 +10,19 @@ Peer-to-peer networking for Leofcoin and distributed applications.
 
 ## Installation
 
+### Breaking content-address format in 2.0
+
+Peernet 2.x uses `@leofcoin/codec-format-interface` 2.x. All generated content
+addresses use canonical `codec → digest byte length → digest` headers. Length-first
+hashes are not supported by the hash parser. Stored 1.x content-address indexes
+and linked manifests are not automatically migrated or rewritten.
+
+Upgrade all message producers and consumers together. For a chain deployment,
+coordinate the messages, workers, browser node and genesis migration before
+starting against new state. Back up existing stores and owner identities; this
+package does not delete or reset them. Do not mix old content-addressed chainstate
+with the new format or treat an installation update as a completed network reset.
+
 ```sh
 npm install @leofcoin/peernet
 ```
