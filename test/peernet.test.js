@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { readFile } from 'node:fs/promises'
+import { readFile, readdir } from 'node:fs/promises'
 import { execFile } from 'node:child_process'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
@@ -88,6 +88,38 @@ test('release dependency graph contains only codec 2.x and no Git varint fallbac
   for (const [name, entry] of Object.entries(lock.packages)) {
     assert.ok(!name.endsWith('/varint'), name)
     assert.ok(!/^(git\+|git:|github:|file:)/.test(entry.resolved ?? ''), name)
+  }
+})
+
+test('release uses automatic transport without old swarm or native backend copies', async () => {
+  const manifest = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'))
+  const lock = JSON.parse(await readFile(new URL('../package-lock.json', import.meta.url), 'utf8'))
+  assert.equal(manifest.dependencies['@netpeer/swarm'], '^0.10.0')
+  assert.equal(manifest.engines.node, '>=24.15.0')
+  assert.equal(lock.packages[''].version, manifest.version)
+  assert.equal(lock.packages[''].dependencies['@netpeer/swarm'], '^0.10.0')
+  const swarms = Object.entries(lock.packages).filter(([name]) => name.endsWith('/@netpeer/swarm'))
+  assert.equal(swarms.length, 1)
+  assert.equal(swarms[0][1].version, '0.10.0')
+  for (const [name, entry] of Object.entries(lock.packages)) {
+    if (name.endsWith('/@vandeurenglenn/wrtc')) assert.equal(entry.version, '0.7.2', name)
+    assert.ok(!/^(git\+|git:|github:|file:)/.test(entry.resolved ?? ''), name)
+  }
+  assert.deepEqual(manifest.files, ['exports', 'docs/automatic-transport.md'])
+})
+
+test('browser bundles keep Node-only transport loaders external', async () => {
+  const directory = new URL('../exports/browser/', import.meta.url)
+  const files = (await readdir(directory, { recursive: true })).filter(file => file.endsWith('.js'))
+  const sources = await Promise.all(files.map(file => readFile(new URL(file.replaceAll('\\', '/'), directory), 'utf8')))
+  for (const source of sources) {
+    assert.doesNotMatch(source, /(?:src\/lib\/binding\.js|wrtc-linux|wrtc-darwin|wrtc-win32|quiche\.node)/)
+    assert.doesNotMatch(source, /(?:\/Users\/|\/home\/runner\/work\/)/)
+  }
+  for (let index = 0; index < files.length; index++) {
+    const file = files[index].replaceAll('\\', '/').split('/').at(-1)
+    if (!/-[A-Za-z0-9_-]{8,}\.js$/.test(file)) continue
+    assert.ok(sources.some((source, other) => other !== index && source.includes(file)), `orphaned build chunk: ${file}`)
   }
 })
 
