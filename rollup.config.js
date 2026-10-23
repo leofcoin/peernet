@@ -4,10 +4,14 @@ import json from '@rollup/plugin-json'
 import wasm from '@rollup/plugin-wasm'
 import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { extname, relative, sep } from 'node:path'
-import { rimrafSync } from 'rimraf'
+import { rmSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { builtinModules } from 'node:module'
 import typescript from '@rollup/plugin-typescript'
 
 const toPosix = (value) => value.split(sep).join('/')
+const nodeOnlyTransports = new Set(['@vandeurenglenn/wrtc', '@koush/wrtc', '@fails-components/webtransport'])
+const nodeBuiltins = new Set(builtinModules)
 
 const walk = async (dir) => {
   const entries = await readdir(dir, { withFileTypes: true })
@@ -80,11 +84,17 @@ const runtimeFirstExports = ({ exportsDir = 'exports', declarationsDir = 'export
   }
 })
 
-rimrafSync('./exports/**')
+// rimraf's glob expansion is opt-in; a literal "exports/**" left stale hashed
+// bundles in subsequent npm packs. Only remove this known generated directory.
+rmSync(fileURLToPath(new URL('./exports', import.meta.url)), { recursive: true, force: true })
 
 export default [
   {
     input: ['./src/peernet.ts', './src/identity.ts', './node_modules/@leofcoin/storage/exports/browser-store.js'],
+    // Swarm loads these lazily only in Node. Never resolve native bindings
+    // while producing browser bundles, even when their package browser map is
+    // missing or broken. Browsers use their platform WebRTC/WebTransport APIs.
+    external: id => nodeOnlyTransports.has(id) || nodeBuiltins.has(id) || id.startsWith('node:'),
     output: {
       format: 'es',
       dir: 'exports/browser',
