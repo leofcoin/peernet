@@ -11,6 +11,7 @@ import { utils as codecUtils } from '@leofcoin/codecs'
 import Identity from './identity.js'
 import swarm from '@netpeer/swarm/client'
 import FileTransfer from './file-transfer.js'
+import { PeernetArchiveMode, type ArchiveModeOptions } from './archive.js'
 
 const DEFAULT_CHUNK_SIZE = 256 * 1024
 const DEFAULT_BLOCK_CHUNK_SIZE = 256 * 1024
@@ -54,7 +55,7 @@ export default class Peernet {
   root: string
   identity: Identity
   stores: string[] = []
-  peerId: string
+  readonly routingId?: string
   /**
    * @type {Object}
    * @property {Object} peer Instance of Peer
@@ -93,6 +94,7 @@ export default class Peernet {
    * @param {String} options.root - path to root directory
    * @param {String} options.version - path to root directory
    * @param {String} options.storePrefix - prefix for datatores (lfc)
+   * @param {String} options.routingId - optional transport identity, separate from the wallet identity
    * @param {Object} options.transport - transport selection and fallback options passed to @netpeer/swarm
    *
    * @return {Promise} instance of Peernet
@@ -105,6 +107,9 @@ export default class Peernet {
      * @property {String} network - current network
      */
     this.network = options.network || 'leofcoin'
+    if (options.routingId !== undefined && (typeof options.routingId !== 'string' || !options.routingId.trim()))
+      throw new TypeError('routingId must be a non-empty string')
+    this.routingId = options.routingId?.trim()
     this.autoStart = options.autoStart === undefined ? true : options.autoStart
     this.stars = options.stars
     this.transport = options.transport
@@ -137,6 +142,10 @@ export default class Peernet {
   }
 
   get id() {
+    return this.routingId || this.identity.id
+  }
+
+  get peerId() {
     return this.identity.id
   }
 
@@ -162,6 +171,10 @@ export default class Peernet {
 
   addCodec(codec) {
     return codecUtils.addCodec(codec)
+  }
+
+  createArchiveMode(options: Omit<ArchiveModeOptions, 'peernet'>) {
+    return new PeernetArchiveMode({ ...options, peernet: this })
   }
 
   async addStore(name, prefix, root, isPrivate = true) {
@@ -284,7 +297,6 @@ export default class Peernet {
     await this.identity.load(password, options.freshIdentity === true)
 
     this._peerHandler = new PeerDiscovery(this.id)
-    this.peerId = this.id
 
     /**
      * converts data -> message -> proto
@@ -1111,3 +1123,5 @@ export default class Peernet {
 
 globalThis.Peernet = Peernet
 export { FileTransfer }
+export { PeernetArchiveMode }
+export type { ArchivedEnvelope, DeliveryReceipt, InboxRequest } from './archive.js'

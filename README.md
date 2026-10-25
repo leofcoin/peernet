@@ -35,6 +35,8 @@ import Peernet from '@leofcoin/peernet'
 const config = {
   network: 'leofcoin:peach',
   networkVersion: 'peach',
+  // Optional per-installation transport identity; defaults to the wallet identity.
+  routingId: 'lfc-peer-a1b2c3d4',
   stars: ['wss://peach.leofcoin.org']
 }
 
@@ -47,6 +49,49 @@ await node.start()
 
 console.log(globalThis.peernet)
 ```
+
+`node.id` is the routing identity used for peer discovery and swarm connections.
+When `routingId` is omitted it remains the wallet identity for backward
+compatibility. `node.peerId` always identifies the loaded wallet and should be
+used by applications that need the wallet identity, such as chain transaction
+signing. Applications with multiple installations of the same wallet can
+provide a distinct, persisted `routingId` for each installation.
+
+### Encrypted chat archive mode
+
+Applications that already create and verify encrypted chat envelopes can opt in
+to Peernet's bounded ciphertext archive. Archive settings and records are keyed
+by the complete Peernet network string (including its version, such as
+`leofcoin:peach`) in the message store. Archive mode is disabled by default.
+Records expire after 30 days and are limited to 500 messages per network.
+Plaintext message fields are rejected; the application supplies verification
+functions for the signed envelope, inbox request and delivery receipt.
+
+```js
+const archive = node.createArchiveMode({
+  verifyEnvelope,
+  verifyInboxRequest,
+  verifyReceipt
+})
+
+await archive.setEnabled(true) // Explicit opt-in for this node and network.
+archive.onMessage(({ envelope }) => {
+  // Decrypt the envelope in the application, then acknowledge with a signed receipt.
+})
+await archive.start({ account, deviceId })
+await archive.requestInbox(signedInboxRequest)
+
+// The envelope must contain ciphertext, recipient account/device, timestamp,
+// signature, and either `network` or a network-bound device certificate.
+await archive.send(encryptedEnvelope)
+await archive.acknowledge(signedDeliveryReceipt)
+```
+
+Inbox requests and receipts must be signed and verified by the application.
+Archives forward only ciphertext and never decrypt messages. Disabling archive
+mode deletes this network's locally archived copies; it does not revoke or
+erase copies on other nodes. Delivery and best-effort deletion depend on
+reachable peers.
 
 ## API
 

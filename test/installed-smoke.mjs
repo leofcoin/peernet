@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import { join, relative } from 'node:path'
 import { homedir } from 'node:os'
-import Peernet from '@leofcoin/peernet'
+import Peernet, { PeernetArchiveMode } from '@leofcoin/peernet'
 import { CodecHash } from '@leofcoin/codec-format-interface'
 
 const entry = import.meta.resolve('@leofcoin/peernet')
@@ -13,6 +13,7 @@ const swarmEntry = import.meta.resolve('@netpeer/swarm/client')
 const swarmManifest = JSON.parse(await readFile(new URL('../package.json', swarmEntry), 'utf8'))
 assert.match(swarmManifest.version, /^0\.10\./)
 assert.equal(typeof (await import('@netpeer/swarm/client')).default, 'function')
+assert.equal(typeof PeernetArchiveMode, 'function')
 const peer = await new Peernet({
   network: 'leofcoin:peach', version: '0.4.0', stars: [],
   // Storage resolves roots below homedir. Normalize the temporary absolute
@@ -21,6 +22,7 @@ const peer = await new Peernet({
 }, 'ephemeral-package-test-password')
 assert.ok(peer.id)
 assert.ok(peer.selectedAccount)
+assert.equal(typeof peer.createArchiveMode, 'function')
 assert.equal(globalThis.walletStore.db.root, join(process.cwd(), 'ephemeral-identity'))
 const message = new peer.protos['peernet-ps']({ data: new Uint8Array([1, 2, 3]), topic: new Uint8Array([4]) })
 const hash = new CodecHash()

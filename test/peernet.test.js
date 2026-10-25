@@ -218,6 +218,24 @@ test('peerId matches identity id', () => {
   assert.equal(peernet.id, peernet.identity.id)
 })
 
+test('routingId separates the transport id from the wallet identity', async () => {
+  const routingId = `lfc-peer-${'a'.repeat(32)}`
+  try {
+    const scoped = await new Peernet({ ...options, routingId }, password)
+    assert.equal(scoped.id, routingId)
+    assert.equal(scoped.peerId, scoped.identity.id)
+    assert.notEqual(scoped.id, scoped.peerId)
+    assert.equal(scoped._peerHandler.id, routingId)
+  } finally {
+    globalThis.peernet = peernet
+  }
+})
+
+test('routingId rejects empty or non-string values', () => {
+  assert.throws(() => new Peernet({ ...options, routingId: '' }, password), /routingId must be a non-empty string/)
+  assert.throws(() => new Peernet({ ...options, routingId: 42 }, password), /routingId must be a non-empty string/)
+})
+
 test('data store operations', () => {
   const hash = 'test-hash-123'
   const testData = new Uint8Array([1, 2, 3, 4, 5])
