@@ -11,6 +11,9 @@ import { utils as codecUtils } from '@leofcoin/codecs'
 import Identity from './identity.js'
 import swarm from '@netpeer/swarm/client'
 import FileTransfer from './file-transfer.js'
+import { ByteSink, ByteSource, FileStreamProgress, fixedSizeChunks, writeFileStream } from './file-stream.js'
+import { createSaveSink, pickFile, pickFiles } from './file-picker.js'
+import type { TorrentAdapter, TorrentSource } from './torrent-adapter.js'
 import { PeernetArchiveMode, type ArchiveModeOptions } from './archive.js'
 
 const DEFAULT_CHUNK_SIZE = 256 * 1024
@@ -83,6 +86,10 @@ export default class Peernet {
   blockChunkSize: number
   blockChunkThreshold: number
   transferConcurrency: number
+  requestTimeout: number
+  #providerStats = new Map<string, { latency: number; failures: number; active: number }>()
+  #torrentAdapter?: TorrentAdapter
+  #replicationUnsubscribe?: () => void
 
   #peerAttempts: { [key: string]: number } = {}
   private _inMemoryBroadcasts: any
@@ -117,12 +124,15 @@ export default class Peernet {
     this.blockChunkSize = options.blockChunkSize ?? DEFAULT_BLOCK_CHUNK_SIZE
     this.blockChunkThreshold = options.blockChunkThreshold ?? DEFAULT_BLOCK_CHUNK_THRESHOLD
     this.transferConcurrency = options.transferConcurrency ?? DEFAULT_TRANSFER_CONCURRENCY
+    this.requestTimeout = options.requestTimeout ?? 30_000
     if (!Number.isSafeInteger(this.blockChunkSize) || this.blockChunkSize <= 0)
       throw new TypeError('blockChunkSize must be a positive integer')
     if (!Number.isSafeInteger(this.blockChunkThreshold) || this.blockChunkThreshold < 0)
       throw new TypeError('blockChunkThreshold must be a non-negative integer')
     if (!Number.isSafeInteger(this.transferConcurrency) || this.transferConcurrency <= 0)
       throw new TypeError('transferConcurrency must be a positive integer')
+    if (!Number.isSafeInteger(this.requestTimeout) || this.requestTimeout <= 0)
+      throw new TypeError('requestTimeout must be a positive integer')
     const parts = this.network.split(':')
     this.networkVersion = options.networkVersion || parts.length > 1 ? parts[1] : 'mainnet'
 
@@ -484,6 +494,415 @@ export default class Peernet {
     return transfer
   }
 
+  /** Broadcast bytes without buffering the complete file in memory. */
+  async broadcastStream(
+    path: string,
+    source: ByteSource,
+    options: {
+      chunkSize?: number
+      totalSize?: number
+      signal?: AbortSignal
+      onProgress?: (progress: FileStreamProgress) => void
+    } = {}
+  ): Promise<string> {
+    const chunkSize = options.chunkSize ?? adaptiveChunkSize(options.totalSize ?? 0)
+    const links = []
+    let transferredBytes = 0
+    let index = 0
+
+    for await (const content of fixedSizeChunks(source, chunkSize, options.signal)) {
+      const chunkNode = await new globalThis.peernet.protos['peernet-file']({ path: `${path}.part-${index}`, content })
+      const chunkHash = await chunkNode.hash()
+      const encoded = await chunkNode.encoded
+      await shareStore.put(chunkHash, encoded)
+      links.push({ hash: chunkHash, path: String(index), size: content.length })
+      transferredBytes += content.length
+      index += 1
+      options.onProgress?.({ transferredBytes, totalBytes: options.totalSize, completedChunks: index })
+    }
+
+    if (options.signal?.aborted) throw options.signal.reason ?? new Error('File broadcast was aborted')
+    const protoNode = await new globalThis.peernet.protos['peernet-file']({
+      path,
+      links,
+      size: transferredBytes,
+      chunkSize,
+      chunked: true
+    })
+    const hash = await protoNode.hash()
+    const encoded = await protoNode.encoded
+    await shareStore.put(hash, encoded)
+    await this.publish('broadcast', { hash, from: this.id })
+    return hash
+  }
+
+  /** Share a browser File/Blob-like object using its native stream. */
+  shareFile(
+    file: { stream(): ReadableStream<Uint8Array>; size?: number; name?: string },
+    options: {
+      path?: string
+      chunkSize?: number
+      signal?: AbortSignal
+      onProgress?: (progress: FileStreamProgress) => void
+    } = {}
+  ): Promise<string> {
+    if (!file || typeof file.stream !== 'function') throw new TypeError('file.stream() is required')
+    return this.broadcastStream(options.path ?? file.name ?? '/file', file.stream(), {
+      chunkSize: options.chunkSize,
+      signal: options.signal,
+      onProgress: options.onProgress,
+      totalSize: file.size
+    })
+  }
+
+  /** Share multiple File-like objects and return a directory manifest hash. */
+  async shareFiles(
+    files: Iterable<{
+      stream(): ReadableStream<Uint8Array>
+      size?: number
+      name?: string
+      webkitRelativePath?: string
+    }>,
+    options: {
+      path?: string
+      chunkSize?: number
+      signal?: AbortSignal
+      onFileProgress?: (path: string, progress: FileStreamProgress) => void
+    } = {}
+  ): Promise<string> {
+    const links = []
+    for (const file of files) {
+      if (options.signal?.aborted) throw options.signal.reason ?? new Error('Directory share was aborted')
+      const path = file.webkitRelativePath || file.name || `file-${links.length}`
+      const hash = await this.shareFile(file, {
+        path,
+        chunkSize: options.chunkSize,
+        signal: options.signal,
+        onProgress: (progress) => options.onFileProgress?.(path, progress)
+      })
+      links.push({ path, hash })
+    }
+    return this.broadcast(options.path ?? '/', { links })
+  }
+
+  /** Download with ordered output and a bounded in-memory concurrency window. */
+  async downloadStream(
+    hash: string,
+    options: {
+      pin?: boolean
+      signal?: AbortSignal
+      range?: { start?: number; end?: number }
+      retries?: number
+      onProgress?: (progress: FileStreamProgress) => void
+    } = {}
+  ): Promise<ReadableStream<Uint8Array>> {
+    const FileProto = globalThis.peernet.protos['peernet-file']
+    const fetch = async (wantedHash: string, index?: number, skipLocal = false) => {
+      if (options.signal?.aborted) throw options.signal.reason ?? new Error('File download was aborted')
+      if (wantedHash !== hash) {
+        const providers = Object.values(this.dht.providersFor(hash) || {}) as DHTProvider[]
+        for (const provider of providers) this.dht.addProvider(provider, wantedHash)
+      }
+      const store = skipLocal ? undefined : await this.whichStore([...this.stores], wantedHash)
+      if (store && (await store.has(wantedHash))) return store.get(wantedHash)
+      return this.requestData(wantedHash, undefined, { providerIndex: index })
+    }
+    const decode = async (encoded: Uint8Array) => {
+      const node = await new FileProto(encoded)
+      await node.decode()
+      return node
+    }
+    const manifestData = await fetch(hash)
+    if (!manifestData) throw new Error(`Unable to download ${hash}`)
+    const manifestNode = await decode(manifestData)
+    if ((await manifestNode.hash()) !== hash) throw new Error(`Manifest hash mismatch for ${hash}`)
+    const manifest = manifestNode.decoded
+    if (manifest.links?.length && !manifest.chunked) throw new Error(`${hash} is a directory`)
+    if (options.pin) await dataStore.put(hash, manifestData)
+
+    const fileSize = Number(manifest.size) || Number(manifest.content?.length) || 0
+    const rangeStart = Math.max(0, options.range?.start ?? 0)
+    const rangeEnd = Math.min(fileSize, options.range?.end ?? fileSize)
+    if (!Number.isSafeInteger(rangeStart) || !Number.isSafeInteger(rangeEnd) || rangeEnd < rangeStart)
+      throw new RangeError('range must contain integer offsets where 0 <= start <= end <= file size')
+    const allLinks = manifest.chunked ? manifest.links || [] : [{ hash, size: fileSize, inline: true }]
+    let fileOffset = 0
+    const links = allLinks.flatMap((link, originalIndex) => {
+      const size = Number(link.size) || (link.inline ? fileSize : Number(manifest.chunkSize) || 0)
+      const chunkStart = fileOffset
+      const chunkEnd = Math.min(fileSize, chunkStart + size)
+      fileOffset = chunkEnd
+      const start = Math.max(rangeStart, chunkStart)
+      const end = Math.min(rangeEnd, chunkEnd)
+      return end > start
+        ? [{ ...link, originalIndex, sliceStart: start - chunkStart, sliceEnd: end - chunkStart }]
+        : []
+    })
+    const totalBytes = rangeEnd - rangeStart
+    let nextToSchedule = 0
+    let nextToEmit = 0
+    let transferredBytes = 0
+    let cancelled = false
+    const inFlight = new Map<number, Promise<Uint8Array>>()
+
+    const load = async (index: number): Promise<Uint8Array> => {
+      const link = links[index]
+      if (link.inline) return (manifest.content || new Uint8Array()).slice(link.sliceStart, link.sliceEnd)
+      const retries = options.retries ?? 2
+      if (!Number.isSafeInteger(retries) || retries < 0) throw new TypeError('retries must be a non-negative integer')
+      let lastError: unknown
+      for (let attempt = 0; attempt <= retries; attempt++) {
+        try {
+          const encoded = await fetch(link.hash, link.originalIndex + attempt, attempt > 0)
+          if (!encoded) throw new Error(`Missing chunk ${link.originalIndex + 1}/${allLinks.length}`)
+          const node = await decode(encoded)
+          if ((await node.hash()) !== link.hash) throw new Error(`Hash mismatch for chunk ${link.originalIndex + 1}`)
+          if (options.pin) await dataStore.put(link.hash, encoded)
+          const content = node.decoded.content || new Uint8Array()
+          return content.slice(link.sliceStart, link.sliceEnd)
+        } catch (error) {
+          lastError = error
+        }
+      }
+      throw lastError
+    }
+    const schedule = () => {
+      while (!cancelled && nextToSchedule < links.length && inFlight.size < this.transferConcurrency) {
+        const index = nextToSchedule++
+        inFlight.set(index, load(index))
+      }
+    }
+    const stop = () => {
+      cancelled = true
+      for (const pending of inFlight.values()) void pending.catch(() => undefined)
+      inFlight.clear()
+    }
+
+    return new ReadableStream<Uint8Array>({
+      start: (controller) => {
+        const abort = () => {
+          stop()
+          controller.error(options.signal?.reason ?? new Error('File download was aborted'))
+        }
+        if (options.signal?.aborted) abort()
+        else
+          options.signal?.addEventListener('abort', abort, { once: true })
+        schedule()
+      },
+      pull: async (controller) => {
+        if (cancelled || options.signal?.aborted) return
+        if (nextToEmit >= links.length) {
+          controller.close()
+          return
+        }
+        try {
+          const chunk = await inFlight.get(nextToEmit)!
+          inFlight.delete(nextToEmit)
+          nextToEmit += 1
+          transferredBytes += chunk.length
+          controller.enqueue(chunk)
+          options.onProgress?.({
+            transferredBytes,
+            totalBytes,
+            completedChunks: nextToEmit,
+            totalChunks: links.length
+          })
+          schedule()
+        } catch (error) {
+          cancelled = true
+          controller.error(error)
+        }
+      },
+      cancel: () => {
+        stop()
+      }
+    })
+  }
+
+  /** Download directly into a Web writable or a minimal write/close/abort sink. */
+  async saveFile(
+    hash: string,
+    sink: ByteSink,
+    options: {
+      pin?: boolean
+      signal?: AbortSignal
+      range?: { start?: number; end?: number }
+      retries?: number
+      onProgress?: (progress: FileStreamProgress) => void
+    } = {}
+  ): Promise<void> {
+    const stream = await this.downloadStream(hash, options)
+    await writeFileStream(stream, sink, options.signal)
+  }
+
+  /** Resume from any verified chunks already pinned by an earlier attempt. */
+  resumeDownload(
+    hash: string,
+    options: {
+      signal?: AbortSignal
+      range?: { start?: number; end?: number }
+      retries?: number
+      onProgress?: (progress: FileStreamProgress) => void
+    } = {}
+  ): Promise<ReadableStream<Uint8Array>> {
+    return this.downloadStream(hash, { ...options, pin: true })
+  }
+
+  /** Persist a complete verified file locally and make it available to peers. */
+  async pinFile(
+    hash: string,
+    options: { signal?: AbortSignal; onProgress?: (progress: FileStreamProgress) => void } = {}
+  ): Promise<void> {
+    await this.saveFile(hash, { write: () => undefined }, { ...options, pin: true })
+  }
+
+  /** Remove a pinned file and its chunks from the local data cache. */
+  async unpinFile(hash: string): Promise<void> {
+    if (!(await dataStore.has(hash))) return
+    const encoded = await dataStore.get(hash)
+    const FileProto = globalThis.peernet.protos['peernet-file']
+    const node = await new FileProto(encoded)
+    await node.decode()
+    await dataStore.delete(hash)
+    const candidates = new Set<string>((node.decoded?.links || []).map((link) => link.hash))
+    if (candidates.size === 0) return
+    for (const key of await dataStore.keys()) {
+      try {
+        const other = await new FileProto(await dataStore.get(key))
+        await other.decode()
+        for (const link of other.decoded?.links || []) candidates.delete(link.hash)
+      } catch {}
+      if (candidates.size === 0) return
+    }
+    for (const chunkHash of candidates) await dataStore.delete(chunkHash)
+  }
+
+  /** Opt this peer into replication requests from its current network. */
+  async enableReplication(
+    options: { accept?: (hash: string, from: string) => boolean | Promise<boolean>; maxBytes?: number } = {}
+  ): Promise<() => void> {
+    this.#replicationUnsubscribe?.()
+    const topic = `peernet:replicate:${this.network}`
+    const handler = (payload: Uint8Array) => {
+      void (async () => {
+        try {
+          const request = JSON.parse(new TextDecoder().decode(payload))
+          if (!request?.hash || request.from === this.id) return
+          if (options.accept && !(await options.accept(request.hash, request.from))) return
+          const controller = new AbortController()
+          await this.pinFile(request.hash, {
+            signal: controller.signal,
+            onProgress: (progress) => {
+              if (options.maxBytes !== undefined && progress.totalBytes !== undefined && progress.totalBytes > options.maxBytes)
+                controller.abort(new Error(`Replication exceeds the ${options.maxBytes} byte limit`))
+            }
+          })
+          await this.publish(request.replyTopic, new TextEncoder().encode(JSON.stringify({ id: this.id, hash: request.hash })))
+        } catch (error) {
+          debug('replication request failed', error)
+        }
+      })()
+    }
+    await this.subscribe(topic, handler)
+    const unsubscribe = () => globalThis.globalSub.unsubscribe(topic, handler)
+    this.#replicationUnsubscribe = unsubscribe
+    return unsubscribe
+  }
+
+  /** Ask connected peers to pin a file and report acknowledgements before timeout. */
+  async replicate(
+    hash: string,
+    options: { replicas?: number; timeout?: number; signal?: AbortSignal } = {}
+  ): Promise<{ hash: string; requested: number; replicas: string[]; complete: boolean }> {
+    const requested = options.replicas ?? 3
+    if (!Number.isSafeInteger(requested) || requested <= 0) throw new TypeError('replicas must be a positive integer')
+    await this.pinFile(hash, { signal: options.signal })
+    const replicas = new Set<string>([this.id])
+    for (const provider of Object.values(this.dht.providersFor(hash) || {}) as DHTProvider[]) replicas.add(provider.id)
+    if (replicas.size >= requested) return { hash, requested, replicas: [...replicas], complete: true }
+
+    const requestId = `${this.id}-${Date.now()}-${Math.random().toString(36).slice(2)}`
+    const replyTopic = `peernet:replicate:ack:${requestId}`
+    let finish: () => void = () => undefined
+    const completed = new Promise<void>((resolve) => (finish = resolve))
+    const handler = (payload: Uint8Array) => {
+      try {
+        const acknowledgement = JSON.parse(new TextDecoder().decode(payload))
+        if (acknowledgement.hash !== hash || !acknowledgement.id) return
+        replicas.add(acknowledgement.id)
+        if (replicas.size >= requested) finish()
+      } catch {}
+    }
+    await this.subscribe(replyTopic, handler)
+    const timeout = setTimeout(finish, options.timeout ?? 15_000)
+    const abort = () => finish()
+    options.signal?.addEventListener('abort', abort, { once: true })
+    try {
+      await this.publish(
+        `peernet:replicate:${this.network}`,
+        new TextEncoder().encode(JSON.stringify({ hash, from: this.id, replyTopic }))
+      )
+      await completed
+    } finally {
+      clearTimeout(timeout)
+      options.signal?.removeEventListener('abort', abort)
+      globalThis.globalSub.unsubscribe(replyTopic, handler)
+    }
+    if (options.signal?.aborted) throw options.signal.reason ?? new Error('Replication was aborted')
+    return { hash, requested, replicas: [...replicas], complete: replicas.size >= requested }
+  }
+
+  /** Periodically repair a replication target until the returned function is called. */
+  maintainReplicas(
+    hash: string,
+    options: {
+      replicas?: number
+      interval?: number
+      timeout?: number
+      onUpdate?: (result: { hash: string; requested: number; replicas: string[]; complete: boolean }) => void
+      onError?: (error: unknown) => void
+    } = {}
+  ): () => void {
+    const interval = options.interval ?? 60_000
+    if (!Number.isSafeInteger(interval) || interval <= 0) throw new TypeError('interval must be a positive integer')
+    const controller = new AbortController()
+    let running = false
+    const repair = async () => {
+      if (running || controller.signal.aborted) return
+      running = true
+      try {
+        const result = await this.replicate(hash, { ...options, signal: controller.signal })
+        options.onUpdate?.(result)
+      } catch (error) {
+        if (!controller.signal.aborted) options.onError?.(error)
+      } finally {
+        running = false
+      }
+    }
+    void repair()
+    const timer = setInterval(() => void repair(), interval)
+    return () => {
+      clearInterval(timer)
+      controller.abort(new Error('Replica maintenance stopped'))
+    }
+  }
+
+  /** Install an optional BitTorrent wire/metadata adapter. */
+  setTorrentAdapter(adapter: TorrentAdapter): void {
+    if (!adapter?.importTorrent || !adapter?.exportTorrent) throw new TypeError('A complete torrent adapter is required')
+    this.#torrentAdapter = adapter
+  }
+
+  importTorrent(source: TorrentSource, options: { signal?: AbortSignal } = {}): Promise<string> {
+    if (!this.#torrentAdapter) throw new Error('BitTorrent support requires a TorrentAdapter')
+    return this.#torrentAdapter.importTorrent(source, { peernet: this, signal: options.signal })
+  }
+
+  exportTorrent(hash: string, options: { signal?: AbortSignal } = {}): Promise<Uint8Array | string> {
+    if (!this.#torrentAdapter) throw new Error('BitTorrent support requires a TorrentAdapter')
+    return this.#torrentAdapter.exportTorrent(hash, { peernet: this, signal: options.signal })
+  }
+
   async handleData(peer, id, proto) {
     let { hash, store } = proto.decoded
     let data
@@ -764,10 +1183,15 @@ export default class Peernet {
       debug(`found ${Object.keys(providers).length} provider(s) for ${hash}`)
       // get closest peer on earth
       const providerValues = Object.values(providers) as DHTProvider[]
+      const rankedProviders = [...providerValues].sort((left, right) => {
+        const a = this.#providerStats.get(left.id) || { latency: 0, failures: 0, active: 0 }
+        const b = this.#providerStats.get(right.id) || { latency: 0, failures: 0, active: 0 }
+        return a.failures - b.failures || a.active - b.active || a.latency - b.latency
+      })
       let closestPeer: DHTProvider =
         options.providerIndex === undefined
           ? await this.dht.closestPeer(providerValues)
-          : providerValues[options.providerIndex % providerValues.length]
+          : rankedProviders[options.providerIndex % rankedProviders.length]
       // fallback to first provider if no closest peer found
       if (!closestPeer || !closestPeer.id) closestPeer = Object.values(providers)[0]
 
@@ -790,8 +1214,24 @@ export default class Peernet {
       const node = await this.prepareMessage(data)
 
       if (peer?.connected) {
+        const stats = this.#providerStats.get(id) || { latency: 0, failures: 0, active: 0 }
+        stats.active += 1
+        this.#providerStats.set(id, stats)
+        const started = Date.now()
         try {
-          if (peer) data = await peer.request(node.encoded)
+          if (peer) {
+            let timer: ReturnType<typeof setTimeout>
+            try {
+              data = await Promise.race([
+                peer.request(node.encoded),
+                new Promise((_, reject) => {
+                  timer = setTimeout(() => reject(new Error(`Peer ${id} timed out`)), this.requestTimeout)
+                })
+              ])
+            } finally {
+              clearTimeout(timer!)
+            }
+          }
           else {
             // fallback and try every provider found
             const promises = []
@@ -806,9 +1246,13 @@ export default class Peernet {
           if (data) data = new Uint8Array(Object.values(data))
           if (!data || data.length === 0) throw nothingFoundError(hash)
           const proto = await protoFor(data)
+          const elapsed = Date.now() - started
+          stats.latency = stats.latency === 0 ? elapsed : Math.round(stats.latency * 0.75 + elapsed * 0.25)
+          stats.failures = Math.max(0, stats.failures - 1)
           // TODO: store data automaticly or not
           return BufferToUint8Array(proto.decoded.data)
         } catch (error) {
+          stats.failures += 1
           debug(`Error while requesting data from ${id}`, error)
           // if error, remove provider
           if (this.#peerAttempts[id] > 1) {
@@ -823,6 +1267,8 @@ export default class Peernet {
           if (this.#peerAttempts[id] === undefined) this.#peerAttempts[id] = 0
           this.#peerAttempts[id]++
           return this.requestData(hash, store?.name || store, options)
+        } finally {
+          stats.active = Math.max(0, stats.active - 1)
         }
 
         // this.put(hash, proto.decoded.data)
@@ -1100,7 +1546,7 @@ export default class Peernet {
    */
   async subscribe(topic: string, callback: Handler) {
     // TODO: if peer subscribed
-    globalSub.subscribe(topic, callback)
+    return globalSub.subscribe(topic, callback)
   }
 
   async removePeer(peer) {
@@ -1123,5 +1569,9 @@ export default class Peernet {
 
 globalThis.Peernet = Peernet
 export { FileTransfer }
+export { fixedSizeChunks, writeFileStream }
+export { createSaveSink, pickFile, pickFiles }
+export type { ByteSink, ByteSource, FileStreamProgress }
+export type { TorrentAdapter, TorrentSource }
 export { PeernetArchiveMode }
 export type { ArchivedEnvelope, DeliveryReceipt, InboxRequest } from './archive.js'

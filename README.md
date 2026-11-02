@@ -189,6 +189,146 @@ unsubscribe()
 
 Downloads pipeline four chunks by default. Known manifest providers are reused for all chunk hashes and chunk requests rotate across those peers, allowing different pieces to arrive concurrently from different providers. Configure the queue with `transferConcurrency`. Chunk size adapts to payload size (256 KiB normally, 1 MiB from 32 MiB, and 4 MiB from 256 MiB); an explicit `chunkSize` always overrides it.
 
+### Streaming files
+
+Large files can be shared and downloaded without buffering the complete payload in memory. Browser `File` and `Blob` objects are supported directly:
+
+```js
+const [file] = document.querySelector('input[type=file]').files
+const hash = await peernet.shareFile(file, {
+  onProgress: ({ transferredBytes, totalBytes }) => {
+    console.log('shared', transferredBytes, 'of', totalBytes)
+  }
+})
+
+const stream = await peernet.downloadStream(hash, {
+  pin: true,
+  onProgress: ({ transferredBytes, totalBytes }) => {
+    console.log('downloaded', transferredBytes, 'of', totalBytes)
+  }
+})
+```
+
+`broadcastStream(path, source)` accepts a Web `ReadableStream<Uint8Array>` or an async iterable, so Node streams that implement `Symbol.asyncIterator` work as sources too. `saveFile(hash, sink)` accepts a Web `WritableStream` or a framework-neutral `{ write, close?, abort? }` sink:
+
+```js
+const fileHandle = await window.showSaveFilePicker({ suggestedName: file.name })
+const writable = await fileHandle.createWritable()
+await peernet.saveFile(hash, writable, { pin: true })
+```
+
+All streaming methods accept an `AbortSignal`. Downloads preserve manifest order while retaining only the active concurrency window in memory. Each chunk is hash-verified before it is emitted.
+
+Use byte ranges for media seeking or partial retrieval. The end offset is exclusive and only overlapping chunks are requested:
+
+```js
+const segment = await peernet.downloadStream(hash, {
+  range: { start: 10 * 1024 * 1024, end: 12 * 1024 * 1024 },
+  retries: 3
+})
+```
+
+`resumeDownload(hash)` pins each verified piece. A later call reconstructs progress from the content-addressed cache and skips pieces already present, including after an application restart. Requests are distributed using observed provider latency, failures, and active load; stalled requests time out and pieces retry against another provider. Configure `requestTimeout` and `transferConcurrency` on the Peernet constructor.
+
+Framework-neutral browser helpers are exported for applications that do not already have picker components:
+
+```js
+import { pickFile, pickFiles, createSaveSink } from '@leofcoin/peernet'
+
+const file = await pickFile({ accept: 'video/*' })
+const hash = await peernet.shareFile(file)
+
+const directoryFiles = await pickFiles({ directory: true, multiple: true })
+const directoryHash = await peernet.shareFiles(directoryFiles)
+
+const sink = await createSaveSink({ suggestedName: file.name })
+await peernet.saveFile(hash, sink)
+```
+
+### Pinning and replication
+
+```js
+await peernet.pinFile(hash)
+await peernet.unpinFile(hash)
+
+// Peers explicitly opt into storing replication requests.
+const disableReplication = await peernet.enableReplication({
+  maxBytes: 10 * 1024 * 1024 * 1024,
+  accept: async (hash, requestingPeer) => true
+})
+
+const result = await peernet.replicate(hash, { replicas: 3, timeout: 15_000 })
+
+// Recheck and repair the target every minute.
+const stopMaintenance = peernet.maintainReplicas(hash, {
+  replicas: 3,
+  interval: 60_000,
+  onUpdate: console.log
+})
+```
+
+Replication is cooperative: storage peers choose whether to accept content and can enforce quotas. `replicate()` reports whether enough peers acknowledged the request rather than claiming durability when peers are offline.
+
+### Optional BitTorrent interoperability
+
+BitTorrent support is an adapter so applications can choose their preferred implementation without adding a peer-wire client and its attack surface to every Peernet installation:
+
+```js
+peernet.setTorrentAdapter(myTorrentAdapter)
+const hash = await peernet.importTorrent(torrentFileOrMagnet)
+const torrent = await peernet.exportTorrent(hash)
+```
+
+An adapter implements `importTorrent(source, context)` and `exportTorrent(hash, context)`. This boundary supports WebTorrent, native libtorrent bridges, or a server-side torrent service while keeping Peernet manifests, verification, and storage unchanged.
+
+### App Kit: encrypted product workflows
+
+The optional `@leofcoin/peernet/app-kit` entry adds application-level sharing without increasing the default Peernet bundle. It provides AES-256-GCM streaming encryption, capability links, password wrapping with PBKDF2, recipient-specific key wrapping hooks, expiry and local download policies, QR output, quota accounting, settings, and direct-to-sink saving.
+
+```js
+import { PeernetAppKit } from '@leofcoin/peernet/app-kit'
+
+const app = new PeernetAppKit(peernet, {
+  storage: localStorage,
+  quotaBytes: 10 * 1024 * 1024 * 1024
+})
+
+const share = await app.shareEncrypted(file, {
+  password: 'a separately communicated password',
+  baseUrl: location.href,
+  expiresIn: 7 * 24 * 60 * 60 * 1000,
+  maxDownloads: 5
+})
+
+await navigator.clipboard.writeText(share.url)
+const qrDataUrl = await share.toQrDataUrl()
+```
+
+On the receiving side:
+
+```js
+const opened = await app.open(location.href, { password })
+const sink = await createSaveSink({ suggestedName: opened.name })
+await opened.save(sink, { pin: true, onProgress: console.log })
+```
+
+The content hash and encrypted payload travel through Peernet; the AES key remains in the URL fragment or is password-/recipient-wrapped. URL fragments are not sent in HTTP requests. Recipient-restricted shares use application-provided `wrapKey` and `unwrapKey` callbacks so an app can connect its own account key system without Peernet prescribing one.
+
+Expiry and download-count policies are locally enforced usability controls. They cannot erase plaintext already downloaded by another peer, and a fully offline recipient can reset local counters. Applications requiring globally authoritative limits should combine the App Kit with a trusted key-release or accounting service.
+
+Settings can use any `localStorage`-compatible adapter:
+
+```js
+import { PeernetAppSettings } from '@leofcoin/peernet/app-kit'
+
+const settings = new PeernetAppSettings({
+  storage: localStorage,
+  defaults: { theme: 'system', replicas: 3, autoPin: true }
+})
+
+settings.update({ theme: 'dark' })
+```
+
 ### Large blocks
 
 Blocks larger than 1 MiB are also chunked internally, without changing the public block API or the canonical block hash supplied by the chain:

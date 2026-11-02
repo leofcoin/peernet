@@ -94,13 +94,13 @@ test('release dependency graph contains only codec 2.x and no Git varint fallbac
 test('release uses automatic transport without old swarm or native backend copies', async () => {
   const manifest = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'))
   const lock = JSON.parse(await readFile(new URL('../package-lock.json', import.meta.url), 'utf8'))
-  assert.equal(manifest.dependencies['@netpeer/swarm'], '^0.10.0')
+  assert.equal(manifest.dependencies['@netpeer/swarm'], '^0.10.1')
   assert.equal(manifest.engines.node, '>=24.15.0')
   assert.equal(lock.packages[''].version, manifest.version)
-  assert.equal(lock.packages[''].dependencies['@netpeer/swarm'], '^0.10.0')
+  assert.equal(lock.packages[''].dependencies['@netpeer/swarm'], '^0.10.1')
   const swarms = Object.entries(lock.packages).filter(([name]) => name.endsWith('/@netpeer/swarm'))
   assert.equal(swarms.length, 1)
-  assert.equal(swarms[0][1].version, '0.10.0')
+  assert.equal(swarms[0][1].version, '0.10.1')
   for (const [name, entry] of Object.entries(lock.packages)) {
     if (name.endsWith('/@vandeurenglenn/wrtc')) assert.equal(entry.version, '0.7.2', name)
     assert.ok(!/^(git\+|git:|github:|file:)/.test(entry.resolved ?? ''), name)
@@ -481,6 +481,67 @@ test('in-memory broadcast and handleData supports large binary data', async () =
   const receivedBuffer = Buffer.from(await transfer.result)
   const originalBuffer = Buffer.from(largeBuffer)
   assert.equal(Buffer.compare(receivedBuffer, originalBuffer), 0)
+})
+
+test('streaming broadcast and download preserve bytes and report progress', async () => {
+  const original = new Uint8Array(1025)
+  for (let index = 0; index < original.length; index++) original[index] = index % 251
+  const uploadProgress = []
+  const hash = await peernet.broadcastStream(
+    '/stream.bin',
+    (async function* () {
+      yield original.subarray(0, 117)
+      yield original.subarray(117, 900)
+      yield original.subarray(900)
+    })(),
+    {
+      chunkSize: 256,
+      totalSize: original.length,
+      onProgress: (progress) => uploadProgress.push(progress)
+    }
+  )
+
+  const downloadProgress = []
+  const output = []
+  await peernet.saveFile(
+    hash,
+    { write: (chunk) => output.push(...chunk) },
+    { onProgress: (progress) => downloadProgress.push(progress) }
+  )
+
+  assert.deepEqual(new Uint8Array(output), original)
+  assert.equal(uploadProgress.at(-1).transferredBytes, original.length)
+  assert.equal(uploadProgress.at(-1).completedChunks, 5)
+  assert.equal(downloadProgress.at(-1).transferredBytes, original.length)
+  assert.equal(downloadProgress.at(-1).completedChunks, 5)
+
+  const range = []
+  await peernet.saveFile(hash, { write: (chunk) => range.push(...chunk) }, { range: { start: 250, end: 777 } })
+  assert.deepEqual(new Uint8Array(range), original.slice(250, 777))
+
+  await peernet.pinFile(hash)
+  assert.equal(await globalThis.dataStore.has(hash), true)
+  const localReplica = await peernet.replicate(hash, { replicas: 1 })
+  assert.equal(localReplica.complete, true)
+  assert.deepEqual(localReplica.replicas, [peernet.id])
+})
+
+test('torrent interoperability delegates through an optional adapter', async () => {
+  const calls = []
+  peernet.setTorrentAdapter({
+    importTorrent: async (source, context) => {
+      calls.push(['import', source, context.peernet])
+      return 'imported-hash'
+    },
+    exportTorrent: async (hash, context) => {
+      calls.push(['export', hash, context.peernet])
+      return new Uint8Array([1, 2, 3])
+    }
+  })
+  assert.equal(await peernet.importTorrent('magnet:?xt=test'), 'imported-hash')
+  assert.deepEqual(await peernet.exportTorrent('imported-hash'), new Uint8Array([1, 2, 3]))
+  assert.equal(calls[0][2], peernet)
+  assert.equal(calls[1][2], peernet)
 })
 
 test('share object provides get/put/has', () => {

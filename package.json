@@ -28,6 +28,20 @@
       "import": "./exports/prompts/password.js",
       "types": "./exports/types/prompts/password/node.d.ts"
     },
+    "./app-kit": {
+      "import": "./exports/app-kit.js",
+      "types": "./exports/types/app-kit.d.ts"
+    },
+    "./app-kit.js": {
+      "import": "./exports/app-kit.js",
+      "types": "./exports/types/app-kit.d.ts"
+    },
+    "./browser/app-kit": {
+      "import": "./exports/browser/app-kit.js"
+    },
+    "./browser/app-kit.js": {
+      "import": "./exports/browser/app-kit.js"
+    },
     "./browser/browser-store": {
       "import": "./exports/browser/browser-store.js"
     },
@@ -100,7 +114,7 @@
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w",
-    "test": "node --test test/peernet.test.js test/file-transfer.test.js test/archive.test.js",
+    "test": "node --test test/peernet.test.js test/file-transfer.test.js test/archive.test.js test/app-kit.test.js",
     "test:package": "node test/standalone-install.js",
     "server": "discovery-swarm-webrtc --port=4000",
     "demo": "jsproject --serve ./ --port 6868"

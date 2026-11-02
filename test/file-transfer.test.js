@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { FileTransfer } from '../exports/peernet.js'
+import { FileTransfer, fixedSizeChunks, writeFileStream } from '../exports/peernet.js'
 
 const bytes = (value) => new TextEncoder().encode(JSON.stringify(value))
 const decode = async (value) => JSON.parse(new TextDecoder().decode(value))
@@ -78,4 +78,34 @@ test('chunk transfer pipelines up to the configured concurrency', async () => {
 
   assert.deepEqual(await transfer.result, new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7]))
   assert.equal(maximumActive, 4)
+})
+
+test('fixedSizeChunks incrementally rechunks async byte sources', async () => {
+  const source = async function* () {
+    yield new Uint8Array([1, 2])
+    yield new Uint8Array([3, 4, 5, 6, 7])
+  }
+  const chunks = []
+  for await (const chunk of fixedSizeChunks(source(), 3)) chunks.push([...chunk])
+  assert.deepEqual(chunks, [[1, 2, 3], [4, 5, 6], [7]])
+})
+
+test('writeFileStream supports framework-neutral sinks', async () => {
+  const written = []
+  let closed = false
+  const stream = new ReadableStream({
+    start(controller) {
+      controller.enqueue(new Uint8Array([1, 2]))
+      controller.enqueue(new Uint8Array([3]))
+      controller.close()
+    }
+  })
+  await writeFileStream(stream, {
+    write: (chunk) => written.push(...chunk),
+    close: () => {
+      closed = true
+    }
+  })
+  assert.deepEqual(written, [1, 2, 3])
+  assert.equal(closed, true)
 })

@@ -90,7 +90,7 @@ rmSync(fileURLToPath(new URL('./exports', import.meta.url)), { recursive: true, 
 
 export default [
   {
-    input: ['./src/peernet.ts', './src/identity.ts', './node_modules/@leofcoin/storage/exports/browser-store.js'],
+    input: ['./src/peernet.ts', './src/identity.ts', './src/app-kit.ts', './node_modules/@leofcoin/storage/exports/browser-store.js'],
     // Swarm loads these lazily only in Node. Never resolve native bindings
     // while producing browser bundles, even when their package browser map is
     // missing or broken. Browsers use their platform WebRTC/WebTransport APIs.
@@ -118,7 +118,7 @@ export default [
     ]
   },
   {
-    input: ['./src/peernet.ts', './src/identity.ts', './node_modules/@leofcoin/storage/exports/store.js'],
+    input: ['./src/peernet.ts', './src/identity.ts', './src/app-kit.ts', './node_modules/@leofcoin/storage/exports/store.js'],
     output: {
       format: 'es',
       dir: 'exports',
