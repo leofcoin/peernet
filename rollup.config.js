@@ -3,11 +3,24 @@ import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 import wasm from '@rollup/plugin-wasm'
 import { readdir, readFile, writeFile } from 'node:fs/promises'
-import { extname, relative, sep } from 'node:path'
+import { extname, relative, sep, join, resolve as resolvePath } from 'node:path'
 import { rmSync } from 'node:fs'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import { builtinModules } from 'node:module'
 import typescript from '@rollup/plugin-typescript'
+
+// Never silently produce a browser bundle with the old unscoped Swarm client.
+// The opt-in local path is for cross-repository verification before publication.
+const localSwarmDir = process.env.PEERNET_LOCAL_SWARM_DIR ? resolvePath(process.env.PEERNET_LOCAL_SWARM_DIR) : undefined
+const {default: BuildSwarm} = await import(localSwarmDir ? pathToFileURL(join(localSwarmDir,'client.js')).href : '@netpeer/swarm/client')
+if (BuildSwarm.discoveryProtocolVersion !== 3) throw new Error('Publish/install the app-ID Star-enabled Swarm release before building Peernet (or set PEERNET_LOCAL_SWARM_DIR for local verification)')
+const localSwarmBrowser = localSwarmDir ? [{name:'local-swarm-browser-verification',resolveId(id) {
+  if (id === '@netpeer/swarm/client' || id === '@netpeer/swarm/browser') return join(localSwarmDir,'browser/client.js')
+  if (id === '@netpeer/swarm/namespace') return join(localSwarmDir,'namespace.js')
+}}] : []
+const browserCrypto = {name:'browser-wallet-crypto',resolveId(id) {
+  if (id === 'crypto' || id === 'node:crypto') return fileURLToPath(new URL('./src/browser-crypto.ts',import.meta.url))
+}}
 
 const toPosix = (value) => value.split(sep).join('/')
 const nodeOnlyTransports = new Set(['@vandeurenglenn/wrtc', '@koush/wrtc', '@fails-components/webtransport'])
@@ -94,7 +107,7 @@ export default [
     // Swarm loads these lazily only in Node. Never resolve native bindings
     // while producing browser bundles, even when their package browser map is
     // missing or broken. Browsers use their platform WebRTC/WebTransport APIs.
-    external: id => nodeOnlyTransports.has(id) || nodeBuiltins.has(id) || id.startsWith('node:'),
+    external: id => nodeOnlyTransports.has(id) || (id !== 'crypto' && id !== 'node:crypto' && (nodeBuiltins.has(id) || id.startsWith('node:'))),
     output: {
       format: 'es',
       dir: 'exports/browser',
@@ -103,6 +116,8 @@ export default [
       manualChunks: (id) => (id.endsWith('/src/prompts/password.js') ? 'prompts/password' : undefined)
     },
     plugins: [
+      browserCrypto,
+      ...localSwarmBrowser,
       json(),
       wasm(),
       resolve({
@@ -133,7 +148,7 @@ export default [
       })
     ],
     external: (id) =>
-      isPromptImport(id) || id === './prompts/password/browser.js' || id === './prompts/password/node.js'
+      isPromptImport(id) || id === './prompts/password/browser.js' || id === './prompts/password/node.js' || id.startsWith('@netpeer/swarm/')
   },
   {
     input: ['./src/prompts/password/browser.js'],

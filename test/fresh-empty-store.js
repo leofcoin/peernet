@@ -2,7 +2,6 @@ import Peernet from '../exports/peernet.js'
 
 const peernet = await new Peernet(
   {
-    network: 'leofcoin:peach',
     stars: [],
     root: process.argv[2],
     autoStart: false,

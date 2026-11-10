@@ -31,5 +31,5 @@ jobs:
       - run: npm test
       - run: npm run test:package
 
-      - name: Publish with provenance
-        run: npm publish --access public --provenance
+      - name: Stage with provenance for maintainer approval
+        run: npm stage publish --access public --provenance

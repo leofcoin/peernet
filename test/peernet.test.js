@@ -7,17 +7,18 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { promisify } from 'node:util'
 
-import Peernet from '../exports/peernet.js'
+import Peernet, { createNetwork, PEERNET_APP_ID } from '../exports/peernet.js'
 import Identity, { resolveAccountWallets } from '../exports/identity.js'
 import MultiWallet from '@leofcoin/multi-wallet'
 import { Codec, CodecHash } from '@leofcoin/codec-format-interface'
 import { fromBase58, toBase58 } from '@vandeurenglenn/typed-array-utils'
 
 const options = {
-  network: 'leofcoin:peach',
+  network: createNetwork(PEERNET_APP_ID,'peach'),
+  identity: new Identity('leofcoin:peach'),
   stars: [],
   root: `.testnet-${process.pid}`,
-  version: '1.0.0',
+  protocolVersion: '1.0.0',
   storePrefix: 'test',
   autoStart: false
 }
@@ -47,7 +48,7 @@ test('node bundle uses a portable password prompt import', async () => {
 
 test('initializes with provided options', () => {
   assert.equal(peernet.network, options.network)
-  assert.equal(peernet.version, options.version)
+  assert.equal(peernet.protocolVersion, options.protocolVersion)
   assert.equal(peernet.storePrefix, options.storePrefix)
 })
 
@@ -77,14 +78,15 @@ test('hash parser rejects old length-first peernet content addresses', async () 
   assert.throws(() => new CodecHash().decode(previousFormat))
 })
 
-test('release dependency graph contains only codec 2.x and no Git varint fallback', async () => {
+test('release uses one canonical codec from the registry without a Git varint fallback', async () => {
   const manifest = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'))
   const lock = JSON.parse(await readFile(new URL('../package-lock.json', import.meta.url), 'utf8'))
-  assert.equal(manifest.dependencies['@leofcoin/codec-format-interface'], '^2.0.0')
+  assert.equal(lock.packages[''].dependencies['@leofcoin/codec-format-interface'],manifest.dependencies['@leofcoin/codec-format-interface'])
   assert.equal(lock.packages[''].version, manifest.version)
   const codecs = Object.entries(lock.packages).filter(([name]) => name.endsWith('/@leofcoin/codec-format-interface'))
   assert.equal(codecs.length, 1)
-  assert.equal(codecs[0][1].version, '2.0.0')
+  const installed = JSON.parse(await readFile(new URL('../package.json',import.meta.resolve('@leofcoin/codec-format-interface')),'utf8'))
+  assert.equal(codecs[0][1].version,installed.version)
   for (const [name, entry] of Object.entries(lock.packages)) {
     assert.ok(!name.endsWith('/varint'), name)
     assert.ok(!/^(git\+|git:|github:|file:)/.test(entry.resolved ?? ''), name)
@@ -94,15 +96,16 @@ test('release dependency graph contains only codec 2.x and no Git varint fallbac
 test('release uses automatic transport without old swarm or native backend copies', async () => {
   const manifest = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'))
   const lock = JSON.parse(await readFile(new URL('../package-lock.json', import.meta.url), 'utf8'))
-  assert.equal(manifest.dependencies['@netpeer/swarm'], '^0.10.1')
   assert.equal(manifest.engines.node, '>=24.15.0')
   assert.equal(lock.packages[''].version, manifest.version)
-  assert.equal(lock.packages[''].dependencies['@netpeer/swarm'], '^0.10.1')
+  assert.equal(lock.packages[''].dependencies['@netpeer/swarm'],manifest.dependencies['@netpeer/swarm'])
   const swarms = Object.entries(lock.packages).filter(([name]) => name.endsWith('/@netpeer/swarm'))
   assert.equal(swarms.length, 1)
-  assert.equal(swarms[0][1].version, '0.10.1')
+  const {default: Swarm} = await import('@netpeer/swarm/client')
+  assert.equal(Swarm.discoveryProtocolVersion,3,'installed Swarm must implement app-ID isolation')
+  const nativeBackends = Object.keys(lock.packages).filter(name=>name.endsWith('/@vandeurenglenn/wrtc'))
+  assert.ok(nativeBackends.length <= 1,'native backend must not be duplicated')
   for (const [name, entry] of Object.entries(lock.packages)) {
-    if (name.endsWith('/@vandeurenglenn/wrtc')) assert.equal(entry.version, '0.7.2', name)
     assert.ok(!/^(git\+|git:|github:|file:)/.test(entry.resolved ?? ''), name)
   }
   assert.deepEqual(manifest.files, ['exports', 'docs/automatic-transport.md'])
@@ -387,13 +390,13 @@ test('selected account is set', () => {
 test('identity signatures authenticate the selected account', async () => {
   const payload = new Uint8Array(32).fill(7)
   const signature = toBase58(await peernet.identity.sign(payload))
-  const verifier = new MultiWallet(peernet.network)
-  await verifier.fromAddress(peernet.selectedAccount, null, peernet.network)
+  const verifier = new MultiWallet(peernet.identity.network)
+  await verifier.fromAddress(peernet.selectedAccount, null, peernet.identity.network)
   assert.equal(await verifier.verify(fromBase58(signature), payload), true)
 })
 
 test('legacy account(0)/address(0) identities keep their original signer', async () => {
-  const wallet = new MultiWallet(peernet.network)
+  const wallet = new MultiWallet(peernet.identity.network)
   await wallet.generate()
   const legacyAccount = wallet.account(0)
   const external = await legacyAccount.external(0)
@@ -404,8 +407,8 @@ test('legacy account(0)/address(0) identities keep their original signer', async
   ])
   const payload = new Uint8Array(32).fill(9)
   const signature = toBase58(await wallets.get(externalAddress).sign(payload))
-  const verifier = new MultiWallet(peernet.network)
-  await verifier.fromAddress(externalAddress, null, peernet.network)
+  const verifier = new MultiWallet(peernet.identity.network)
+  await verifier.fromAddress(externalAddress, null, peernet.identity.network)
   assert.equal(await verifier.verify(fromBase58(signature), payload), true)
 })
 

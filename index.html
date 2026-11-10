@@ -9,9 +9,9 @@
     </script> -->
 
     <script type="module">
-      import './exports/browser/peernet.js';
+      import Peernet, { createNetwork, PEERNET_APP_ID } from './exports/browser/peernet.js';
       (async () => {
-        const peernet = await new Peernet({network: 'leofcoin:peach', networkVersion: 'peach'})
+        const peernet = await new Peernet({network: createNetwork(PEERNET_APP_ID,'peach'), protocolVersion: '1'})
         peernet.addRequestHandler('lastBlock', () => new peernet.protos['peernet-response']({response: new TextEncoder().encode(100)}))
       })()
     </script>

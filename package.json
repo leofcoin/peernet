@@ -1,6 +1,6 @@
 {
   "name": "@leofcoin/peernet",
-  "version": "3.1.2",
+  "version": "4.0.0",
   "description": "",
   "repository": {
     "type": "git",
@@ -114,7 +114,7 @@
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w",
-    "test": "node --test test/peernet.test.js test/file-transfer.test.js test/archive.test.js test/app-kit.test.js",
+    "test": "node --test test/peernet.test.js test/file-transfer.test.js test/archive.test.js test/app-kit.test.js test/discovery-options.test.js test/browser-crypto.test.js",
     "test:package": "node test/standalone-install.js",
     "server": "discovery-swarm-webrtc --port=4000",
     "demo": "jsproject --serve ./ --port 6868"
@@ -131,7 +131,8 @@
     "@leofcoin/multi-wallet": "^3.1.11",
     "@leofcoin/storage": "^3.5.38",
     "@mapbox/node-pre-gyp": "^2.0.3",
-    "@netpeer/swarm": "^0.10.1",
+    "@netpeer/swarm": "^0.11.0",
+    "@noble/hashes": "^2.4.0",
     "@vandeurenglenn/base58": "^1.1.9",
     "@vandeurenglenn/debug": "^1.4.0",
     "@vandeurenglenn/little-pubsub": "^1.5.2",

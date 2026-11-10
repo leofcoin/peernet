@@ -15,6 +15,8 @@ import { ByteSink, ByteSource, FileStreamProgress, fixedSizeChunks, writeFileStr
 import { createSaveSink, pickFile, pickFiles } from './file-picker.js'
 import type { TorrentAdapter, TorrentSource } from './torrent-adapter.js'
 import { PeernetArchiveMode, type ArchiveModeOptions } from './archive.js'
+import { discoveryOptions } from './discovery-options.js'
+export { createNetwork, PEERNET_APP_ID } from './discovery-options.js'
 
 const DEFAULT_CHUNK_SIZE = 256 * 1024
 const DEFAULT_BLOCK_CHUNK_SIZE = 256 * 1024
@@ -54,6 +56,7 @@ const debug = createDebugger('peernet')
  * const peernet = new Peernet();
  */
 export default class Peernet {
+  static readonly discoveryProtocolVersion = 3
   storePrefix: string
   root: string
   identity: Identity
@@ -69,7 +72,7 @@ export default class Peernet {
   network: string
   stars: string[]
   transport
-  networkVersion: string
+  readonly namespace: Readonly<{network:string;protocolVersion:string;chainId?:string}>
   bw: {
     up: number
     down: number
@@ -82,7 +85,7 @@ export default class Peernet {
   _messageHandler: MessageHandler
   _peerHandler: PeerDiscovery
   protos: {}
-  version
+  protocolVersion: string
   blockChunkSize: number
   blockChunkThreshold: number
   transferConcurrency: number
@@ -96,10 +99,12 @@ export default class Peernet {
   /**
    * @access public
    * @param {Object} options
-   * @param {String} options.network - desired network
-   * @param {String} options.stars - star list for selected network (these should match, don't mix networks)
+   * @param {String} options.network - stable-app-UUID:network-name, independent of wallets
+   * @param {String} options.protocolVersion - wire compatibility version, independent of the npm version
+   * @param {String} options.chainId - optional genesis-bound chain identity; omit for non-chain apps
+   * @param {String[]} options.stars - discovery endpoints, reusable across isolated application networks
    * @param {String} options.root - path to root directory
-   * @param {String} options.version - path to root directory
+   * @param {Identity} options.identity - optional existing wallet provider (default Leofcoin identity)
    * @param {String} options.storePrefix - prefix for datatores (lfc)
    * @param {String} options.routingId - optional transport identity, separate from the wallet identity
    * @param {Object} options.transport - transport selection and fallback options passed to @netpeer/swarm
@@ -107,20 +112,22 @@ export default class Peernet {
    * @return {Promise} instance of Peernet
    *
    * @example
-   * const peernet = new Peernet({network: 'leofcoin', root: '.leofcoin'});
+   * const peernet = new Peernet({network: createNetwork(APP_ID, 'public'), protocolVersion: '1'});
    */
   constructor(options, password) {
     /**
      * @property {String} network - current network
      */
-    this.network = options.network || 'leofcoin'
+    this.namespace = discoveryOptions(options)
+    this.network = this.namespace.network
     if (options.routingId !== undefined && (typeof options.routingId !== 'string' || !options.routingId.trim()))
       throw new TypeError('routingId must be a non-empty string')
     this.routingId = options.routingId?.trim()
     this.autoStart = options.autoStart === undefined ? true : options.autoStart
     this.stars = options.stars
     this.transport = options.transport
-    this.version = options.version
+    this.protocolVersion = this.namespace.protocolVersion
+    this.identity = options.identity ?? new Identity('leofcoin')
     this.blockChunkSize = options.blockChunkSize ?? DEFAULT_BLOCK_CHUNK_SIZE
     this.blockChunkThreshold = options.blockChunkThreshold ?? DEFAULT_BLOCK_CHUNK_THRESHOLD
     this.transferConcurrency = options.transferConcurrency ?? DEFAULT_TRANSFER_CONCURRENCY
@@ -134,12 +141,11 @@ export default class Peernet {
     if (!Number.isSafeInteger(this.requestTimeout) || this.requestTimeout <= 0)
       throw new TypeError('requestTimeout must be a positive integer')
     const parts = this.network.split(':')
-    this.networkVersion = options.networkVersion || parts.length > 1 ? parts[1] : 'mainnet'
 
     if (!options.storePrefix) options.storePrefix = 'lfc'
     if (!options.port) options.port = 2000
     if (!options.root) {
-      parts[1] ? (options.root = `.${parts[0]}/${parts[1]}`) : (options.root = `.${this.network}`)
+      options.root = `.peernet/${parts[0]}/${parts[1]}`
     }
 
     globalThis.peernet = this
@@ -303,7 +309,6 @@ export default class Peernet {
       await this.addStore(store, options.storePrefix, options.root)
     }
 
-    this.identity = new Identity(this.network)
     await this.identity.load(password, options.freshIdentity === true)
 
     this._peerHandler = new PeerDiscovery(this.id)
@@ -322,22 +327,19 @@ export default class Peernet {
     if (this.#starting || this.#started) return
 
     this.#starting = true
-    const importee = await import('@netpeer/swarm/client')
-    /**
-     * @access public
-     * @type {PeernetClient}
-     */
-    console.log(this.stars)
-
-    this.client = new importee.default({
-      peerId: this.id,
-      networkVersion: this.networkVersion,
-      version: this.version,
-      stars: this.stars,
-      transport: this.transport
-    })
-    this.#started = true
-    this.#starting = false
+    try {
+      const importee = await import('@netpeer/swarm/client')
+      if ((importee.default as any).discoveryProtocolVersion !== 3)
+        throw new Error('This Peernet requires a multiplexed Star-enabled @netpeer/swarm release; refusing unscoped discovery')
+      this.client = new importee.default({
+        peerId: this.id,
+        ...this.namespace,
+        stars: this.stars,
+        transport: this.transport
+      })
+      await (this.client as any).ready
+      this.#started = true
+    } finally { this.#starting = false }
   }
 
   // todo: remove, handled in swarm now

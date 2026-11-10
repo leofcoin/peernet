@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import Peernet from '../exports/peernet.js'
+import Peernet, { createNetwork, PEERNET_APP_ID } from '../exports/peernet.js'
 import { createHash } from 'crypto'
 
 // This test simulates two peers: one saves data, the other retrieves it
@@ -10,10 +10,10 @@ test('peer can save data and other peer can get it', async (t) => {
   // Peer 1
   const peer1 = await new Peernet(
     {
-      network: 'leofcoin:peach',
+      network: createNetwork(PEERNET_APP_ID, 'peach'),
       stars: [],
       root: '.testnet-peer1',
-      version: '1.0.0',
+      protocolVersion: '1.0.0',
       storePrefix: 'test-peer1',
       autoStart: true
     },
@@ -23,10 +23,10 @@ test('peer can save data and other peer can get it', async (t) => {
   // Peer 2
   const peer2 = await new Peernet(
     {
-      network: 'leofcoin:peach',
+      network: createNetwork(PEERNET_APP_ID, 'peach'),
       stars: [],
       root: '.testnet-peer2',
-      version: '1.0.0',
+      protocolVersion: '1.0.0',
       storePrefix: 'test-peer2',
       autoStart: true
     },

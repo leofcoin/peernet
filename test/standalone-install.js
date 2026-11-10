@@ -9,19 +9,31 @@ import { fileURLToPath } from 'node:url'
 
 const project = fileURLToPath(new URL('..', import.meta.url))
 if (!existsSync(join(project, 'exports', 'peernet.js'))) throw new Error('run npm run build before test:package')
+const manifest = JSON.parse(readFileSync(join(project, 'package.json'), 'utf8'))
 const temporary = mkdtempSync(join(tmpdir(), 'peernet-package-test-'))
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm'
-const run = (command, args, cwd, timeout = 120_000) => execFileSync(command, args, { cwd, timeout, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })
+const run = (command, args, cwd, timeout = 120_000, env = process.env) =>
+  execFileSync(command, args, { cwd, timeout, env, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })
 try {
   const [packed] = JSON.parse(run(npm, ['pack', '--json', '--pack-destination', temporary], project))
-  assert.equal(packed.version, '3.0.0')
+  assert.equal(packed.version, manifest.version)
   assert.ok(packed.files.some(file => file.path === 'exports/peernet.js'))
   assert.ok(packed.files.every(file => !/^(?:src|test|node_modules)\//.test(file.path)), 'development files must not be published')
   writeFileSync(join(temporary, 'package.json'), JSON.stringify({ private: true, type: 'module' }))
   // Do not run dependency installation hooks merely to check packaging. Native
   // QUIC is verified separately; fresh identity/hash creation needs no relay.
   run(npm, ['install', '--ignore-scripts', '--omit=dev', '--no-audit', '--no-fund', join(temporary, packed.filename)], temporary)
-  const output = run(process.execPath, ['--input-type=module', '-e', readFileSync(new URL('./installed-smoke.mjs', import.meta.url), 'utf8')], temporary, 30_000)
+  const output = run(
+    process.execPath,
+    ['--input-type=module', '-e', readFileSync(new URL('./installed-smoke.mjs', import.meta.url), 'utf8')],
+    temporary,
+    30_000,
+    {
+      ...process.env,
+      EXPECTED_PEERNET_VERSION: manifest.version,
+      EXPECTED_SWARM_RANGE: manifest.dependencies['@netpeer/swarm']
+    }
+  )
   assert.match(output, /STANDALONE_PEERNET_READY/)
   const lock = JSON.parse(readFileSync(join(temporary, 'package-lock.json'), 'utf8'))
   for (const [name, entry] of Object.entries(lock.packages)) {
