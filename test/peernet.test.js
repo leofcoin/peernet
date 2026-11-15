@@ -10,6 +10,8 @@ import { promisify } from 'node:util'
 import Peernet, { createNetwork, PEERNET_APP_ID } from '../exports/peernet.js'
 import Identity, { resolveAccountWallets } from '../exports/identity.js'
 import MultiWallet from '@leofcoin/multi-wallet'
+import base58 from '@vandeurenglenn/base58'
+import { encrypt, decrypt } from '@leofcoin/identity-utils'
 import { Codec, CodecHash } from '@leofcoin/codec-format-interface'
 import { fromBase58, toBase58 } from '@vandeurenglenn/typed-array-utils'
 
@@ -26,6 +28,56 @@ const options = {
 const password = 'password'
 const peernet = await new Peernet(options, password)
 const execFileAsync = promisify(execFile)
+
+test('migrates legacy identities without a BIP32 chain code', async () => {
+  const legacyWallet = new MultiWallet('leofcoin:peach')
+  const mnemonic = await legacyWallet.generate(password)
+  const external = await legacyWallet.account(1).external(1)
+  const internal = await legacyWallet.account(1).internal(1)
+  const externalAddress = await external.address
+  const internalAddress = await internal.address
+
+  const walletWithoutChainCode = new MultiWallet('leofcoin:peach')
+  await walletWithoutChainCode.fromPrivateKey(legacyWallet.privateKey, undefined, 'leofcoin:peach')
+  const legacyIdentity = {
+    mnemonic: base58.encode(await encrypt(password, mnemonic)),
+    multiWIF: base58.encode(await encrypt(password, await walletWithoutChainCode.multiWIF)),
+    walletId: await external.id
+  }
+  const accountValues = new Map([
+    ['public', new TextEncoder().encode(JSON.stringify({ walletId: legacyIdentity.walletId }))]
+  ])
+  const walletValues = new Map([
+    ['identity', new TextEncoder().encode(JSON.stringify(legacyIdentity))],
+    ['accounts', new TextEncoder().encode(JSON.stringify([['main account', externalAddress, internalAddress]]))],
+    ['selected-account', new TextEncoder().encode(externalAddress)]
+  ])
+  const previousAccountStore = globalThis.accountStore
+  const previousWalletStore = globalThis.walletStore
+
+  globalThis.accountStore = {
+    has: async key => accountValues.has(key),
+    get: async key => accountValues.get(key)
+  }
+  globalThis.walletStore = {
+    has: async key => walletValues.has(key),
+    get: async key => walletValues.get(key),
+    put: async (key, value) => walletValues.set(key, new TextEncoder().encode(value))
+  }
+
+  try {
+    const identity = new Identity('leofcoin:peach')
+    await identity.load(password)
+
+    const migrated = JSON.parse(new TextDecoder().decode(walletValues.get('identity')))
+    const restoredWallet = new MultiWallet('leofcoin:peach')
+    await restoredWallet.fromMultiWif(await decrypt(password, base58.decode(migrated.multiWIF)))
+    assert.equal(restoredWallet.hdnode.chainCode.length, 32)
+  } finally {
+    globalThis.accountStore = previousAccountStore
+    globalThis.walletStore = previousWalletStore
+  }
+})
 
 test('freshIdentity initializes against a completely empty store root', async () => {
   const root = await mkdtemp(join(tmpdir(), 'peernet-fresh-identity-'))

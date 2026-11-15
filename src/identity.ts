@@ -99,8 +99,10 @@ export default class Identity {
       const selected = await globalThis.walletStore.get('selected-account')
       this.selectedAccount = new TextDecoder().decode(selected)
     } else {
-      const importee = await import(/* webpackChunkName: "generate-account" */ '@leofcoin/generate-account')
-      const { identity, accounts } = await importee.default(password, this.network)
+      const { default: generateAccount } = await import('@leofcoin/generate-account')
+      const generated = await generateAccount(password, this.network)
+      const identity = { ...generated.identity, network: this.network }
+      const accounts = generated.accounts
       if (fresh) {
         await globalThis.accountStore.clear()
         await globalThis.walletStore.clear()
@@ -116,10 +118,32 @@ export default class Identity {
       this.id = identity.walletId
     }
     const identity = JSON.parse(new TextDecoder().decode(await globalThis.walletStore.get('identity')))
-    this.#wallet = new MultiWallet(this.network)
+    const needsNetworkMetadata = identity.network === undefined
+    const identityNetwork = identity.network ?? this.network
+    this.#wallet = new MultiWallet(identityNetwork)
+    const expectedNetwork = this.#wallet.network
     const multiWIF = await decrypt(password, base58.decode(identity.multiWIF))
     await this.#wallet.fromMultiWif(multiWIF)
+    const actualNetwork = this.#wallet.network
+    const networkMismatch =
+      actualNetwork.version !== expectedNetwork.version ||
+      actualNetwork.multiCodec !== expectedNetwork.multiCodec ||
+      actualNetwork.coin_type !== expectedNetwork.coin_type
+    const needsWalletRecovery = !this.#wallet.hdnode.chainCode || networkMismatch
+    if (needsWalletRecovery) {
+      const mnemonic = await decrypt(password, base58.decode(identity.mnemonic))
+      const recoveredWallet = new MultiWallet(identityNetwork)
+      await recoveredWallet.recover(mnemonic, password, identityNetwork)
+      this.#wallet = recoveredWallet
+    }
     await this.#loadAccountWallets()
+    if (needsWalletRecovery || needsNetworkMetadata) {
+      identity.network = identityNetwork
+      if (needsWalletRecovery) {
+        identity.multiWIF = base58.encode(await encrypt(password, await this.#wallet.multiWIF))
+      }
+      await globalThis.walletStore.put('identity', JSON.stringify(identity))
+    }
   }
 
   async #loadAccountWallets() {

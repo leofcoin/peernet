@@ -3,11 +3,12 @@ import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 import wasm from '@rollup/plugin-wasm'
 import { readdir, readFile, writeFile } from 'node:fs/promises'
-import { extname, relative, sep, join, resolve as resolvePath } from 'node:path'
-import { rmSync } from 'node:fs'
+import { extname, relative, sep, join, dirname, resolve as resolvePath } from 'node:path'
+import { existsSync, rmSync } from 'node:fs'
+import { execFileSync } from 'node:child_process'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { builtinModules } from 'node:module'
-import typescript from '@rollup/plugin-typescript'
+import esbuild from 'rollup-plugin-esbuild'
 
 // Never silently produce a browser bundle with the old unscoped Swarm client.
 // The opt-in local path is for cross-repository verification before publication.
@@ -47,8 +48,32 @@ const isHashedChunk = (runtimePath) => /-[A-Za-z0-9_-]{8,}\.js$/.test(runtimePat
 const isPromptImport = (id) =>
   id === './prompts/password.js' || id === './src/prompts/password.js' || id.endsWith('/src/prompts/password.js')
 
+const typescriptExtensionResolver = {
+  name: 'typescript-extension-resolver',
+  resolveId(source, importer) {
+    if (!importer || !source.startsWith('.') || !source.endsWith('.js')) return null
+
+    const resolved = resolvePath(dirname(importer), source)
+    if (existsSync(resolved)) return null
+
+    const typescriptPath = `${resolved.slice(0, -'.js'.length)}.ts`
+    return existsSync(typescriptPath) ? typescriptPath : null
+  }
+}
+
 const runtimeFirstExports = ({ exportsDir = 'exports', declarationsDir = 'exports/types' } = {}) => ({
   name: 'runtime-first-exports',
+  buildStart: () => {
+    const tsc = fileURLToPath(new URL('./node_modules/typescript/bin/tsc', import.meta.url))
+    execFileSync(process.execPath, [
+      tsc,
+      '--project', 'tsconfig.json',
+      '--emitDeclarationOnly',
+      '--noCheck',
+      '--outDir', exportsDir,
+      '--declarationDir', declarationsDir
+    ], { stdio: 'inherit' })
+  },
   writeBundle: async () => {
     const runtimeFiles = (await walk(exportsDir))
       .map((file) => toPosix(relative(exportsDir, file)))
@@ -118,6 +143,7 @@ export default [
     plugins: [
       browserCrypto,
       ...localSwarmBrowser,
+      typescriptExtensionResolver,
       json(),
       wasm(),
       resolve({
@@ -129,7 +155,7 @@ export default [
         mainFields: ['browser', 'module', 'main']
       }),
 
-      typescript({ compilerOptions: { outDir: 'exports/browser', declaration: false } })
+      esbuild({ target: 'esnext' })
     ]
   },
   {
@@ -140,12 +166,8 @@ export default [
       paths: (id) => (isPromptImport(id) ? './prompts/password.js' : id)
     },
     plugins: [
-      typescript({
-        compilerOptions: {
-          outDir: 'exports',
-          declarationDir: 'exports/types'
-        }
-      })
+      typescriptExtensionResolver,
+      esbuild({ target: 'esnext' })
     ],
     external: (id) =>
       isPromptImport(id) || id === './prompts/password/browser.js' || id === './prompts/password/node.js' || id.startsWith('@netpeer/swarm/')
