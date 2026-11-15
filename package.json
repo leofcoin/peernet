@@ -124,12 +124,12 @@
   "license": "MIT",
   "packageManager": "npm@12.2.2",
   "dependencies": {
-    "@leofcoin/codec-format-interface": "^2.1.0",
+    "@leofcoin/codec-format-interface": "^2.1.1",
     "@leofcoin/codecs": "^1.1.5",
     "@leofcoin/generate-account": "^2.1.0",
     "@leofcoin/identity-utils": "^1.0.2",
-    "@leofcoin/multi-wallet": "^4.0.1",
-    "@leofcoin/storage": "^3.5.39",
+    "@leofcoin/multi-wallet": "^5.0.0",
+    "@leofcoin/storage": "^3.5.40",
     "@mapbox/node-pre-gyp": "^2.0.3",
     "@netpeer/swarm": "^0.11.0",
     "@noble/hashes": "^2.4.0",
@@ -142,7 +142,7 @@
     "tar": "^7.5.23"
   },
   "devDependencies": {
-    "@leofcoin/multi-wallet-legacy": "npm:@leofcoin/multi-wallet@3.1.12",
+    "@leofcoin/multi-wallet-legacy": "npm:@leofcoin/multi-wallet@5.0.0",
     "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
