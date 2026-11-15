@@ -9,6 +9,13 @@ type StoredAccount = [name: string, externalAddress: string, internalAddress: st
 type AccountWallet = {
   address: Promise<string>
   sign: (hash: Uint8Array) => Promise<Uint8Array>
+  clearPrivateKey?: () => void
+}
+
+type MigratedAccounts = {
+  schema: 'peernet:imported-accounts:v1'
+  network: string
+  wallets: { address: string; multiWIF: string }[]
 }
 
 const accountDerivationSchemes = [
@@ -54,6 +61,8 @@ export const resolveAccountWallets = async (
 export default class Identity {
   #wallet: MultiWallet
   #accountWallets = new Map<string, AccountWallet>()
+  #importedAccounts = false
+  #importedLocked = false
   network
   id: string
   selectedAccount: string
@@ -120,6 +129,33 @@ export default class Identity {
     const identity = JSON.parse(new TextDecoder().decode(await globalThis.walletStore.get('identity')))
     const needsNetworkMetadata = identity.network === undefined
     const identityNetwork = identity.network ?? this.network
+    if (identity.importedAccounts !== undefined) {
+      if (identityNetwork !== this.network) throw new Error('imported identity network mismatch')
+      const imported: MigratedAccounts = JSON.parse(await decrypt(password, base58.decode(identity.importedAccounts)))
+      const accounts = await this.getAccounts()
+      const addresses = accounts.flatMap(([, external, internal]) => [external, internal])
+      if (imported.schema !== 'peernet:imported-accounts:v1' || imported.network !== identityNetwork ||
+        !Array.isArray(imported.wallets) || !addresses.length || new Set(addresses).size !== addresses.length ||
+        imported.wallets.length !== addresses.length) throw new Error('Invalid imported identity accounts')
+      const wallets = new Map<string, AccountWallet>()
+      for (const entry of imported.wallets) {
+        if (!entry || !addresses.includes(entry.address) || wallets.has(entry.address) ||
+          typeof entry.multiWIF !== 'string') throw new Error('Invalid imported identity account')
+        const wallet = new MultiWallet(identityNetwork)
+        await wallet.fromMultiWif(entry.multiWIF)
+        if (await wallet.address !== entry.address) throw new Error('Imported identity account address mismatch')
+        wallets.set(entry.address, {
+          address: Promise.resolve(entry.address),
+          sign: hash => wallet.sign(hash),
+          clearPrivateKey: () => wallet.hdnode.clearPrivateKey()
+        })
+      }
+      if (!wallets.has(this.selectedAccount)) throw new Error('Selected account is not part of imported identity')
+      this.#accountWallets = wallets
+      this.#importedAccounts = true
+      this.#importedLocked = false
+      return
+    }
     this.#wallet = new MultiWallet(identityNetwork)
     const expectedNetwork = this.#wallet.network
     const multiWIF = await decrypt(password, base58.decode(identity.multiWIF))
@@ -166,19 +202,34 @@ export default class Identity {
     return wallet.sign(hash.subarray(0, 32))
   }
 
-  lock(password: string) {
-    this.#wallet.lock(password)
+  async lock(password: string) {
+    if (this.#importedAccounts) {
+      const identity = JSON.parse(new TextDecoder().decode(await globalThis.walletStore.get('identity')))
+      await decrypt(password, base58.decode(identity.importedAccounts))
+      for (const wallet of this.#accountWallets.values()) wallet.clearPrivateKey?.()
+      this.#accountWallets.clear()
+      this.#importedLocked = true
+      return
+    }
+    await this.#wallet.lock(password)
   }
 
-  unlock(password: string) {
-    this.#wallet.unlock(password)
+  async unlock(password: string) {
+    if (this.#importedAccounts) {
+      if (!this.#importedLocked) throw new Error('Identity is not locked')
+      await this.load(password)
+      return
+    }
+    await this.#wallet.unlock(password)
   }
 
   async export(password: string) {
+    if (this.#importedAccounts) throw new Error('Imported accounts require a backup of the complete wallet store')
     return this.#wallet.export(password)
   }
 
   async import(password, encrypted: base58String) {
+    if (this.#importedAccounts) throw new Error('Cannot replace an imported identity using a single-wallet backup')
     await this.#wallet.import(password, encrypted)
   }
 

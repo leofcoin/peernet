@@ -502,6 +502,45 @@ npm i -g @vandeurenglenn/project
   npm run demo
   ```
 
+## Migrating v3 identities
+
+Peernet 4.1.1 can load existing v3 accounts after an explicit offline migration.
+The migration validates the legacy mnemonic, both stored addresses for every
+account and their signatures. It retains the original encrypted identity, and
+adds the existing account keys encrypted with the same password. New identities
+continue to use the current wallet; the legacy wallet is only a development
+dependency of the migration tool.
+
+The imported keys preserve existing accounts, but are not a BIP32 wallet.
+They cannot derive additional accounts, and single-wallet `identity.export()`
+and `identity.import()` are unavailable for migrated identities. Preserve the
+complete wallet and account stores and the original v3 backup for recovery.
+
+Before migrating, stop every process using the data root. Install and deploy
+Peernet 4.1.1 or later everywhere that will open the migrated identity. An older
+Peernet does not understand the migrated format. In a Peernet checkout with
+development dependencies installed, build the package, then validate without
+writing:
+
+```sh
+npm run build
+node scripts/migrate-v3-store.js --root /path/to/data \
+  --network leofcoin:peach --password-file /secure/path/password
+```
+
+Only after validating the backup location and the upgraded runtime, apply:
+
+```sh
+node scripts/migrate-v3-store.js --root /path/to/data \
+  --network leofcoin:peach --password-file /secure/path/password \
+  --apply --backup-file /secure/path/identity-backup.json
+```
+
+The backup file must not already exist. It contains sensitive identity-store
+data, is created with mode 0600, and must be kept in a private directory. The
+migration does not change the ledger, genesis, validator membership or network
+protocol and does not migrate incompatible chain history.
+
 ## License
 
 MIT

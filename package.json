@@ -1,6 +1,6 @@
 {
   "name": "@leofcoin/peernet",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "",
   "repository": {
     "type": "git",
@@ -114,7 +114,7 @@
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w",
-    "test": "node --test test/peernet.test.js test/file-transfer.test.js test/archive.test.js test/app-kit.test.js test/discovery-options.test.js test/browser-crypto.test.js",
+    "test": "node --test test/peernet.test.js test/file-transfer.test.js test/archive.test.js test/app-kit.test.js test/discovery-options.test.js test/browser-crypto.test.js test/migrate-v3-identity.test.js",
     "test:package": "node test/standalone-install.js",
     "server": "discovery-swarm-webrtc --port=4000",
     "demo": "jsproject --serve ./ --port 6868"
@@ -128,7 +128,7 @@
     "@leofcoin/codecs": "^1.1.5",
     "@leofcoin/generate-account": "^2.1.0",
     "@leofcoin/identity-utils": "^1.0.2",
-    "@leofcoin/multi-wallet": "^4.0.0",
+    "@leofcoin/multi-wallet": "^4.0.1",
     "@leofcoin/storage": "^3.5.39",
     "@mapbox/node-pre-gyp": "^2.0.3",
     "@netpeer/swarm": "^0.11.0",
@@ -142,6 +142,7 @@
     "tar": "^7.5.23"
   },
   "devDependencies": {
+    "@leofcoin/multi-wallet-legacy": "npm:@leofcoin/multi-wallet@3.1.12",
     "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
